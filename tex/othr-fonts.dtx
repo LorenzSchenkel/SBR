@@ -1,0 +1,341 @@
+% \iffalse meta-comment
+%
+% OTHR-CI -- LaTeX using the Corporate Design of OTH Regensburg
+% ----------------------------------------------------------------------------
+%
+%  Copyright (C) 2015-2024 Michael Nietmetz <michael.niemetz@oth-regensburg.de>
+%                 and the OTH Regensburg-LaTeX-Team
+%                2025 Marei Peischl (peiTeX) <othr-ci@peitex.de>
+%                 and Michael Nietmetz <michael.niemetz@oth-regensburg.de>
+%
+% ============================================================================
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3c
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+% http://www.latex-project.org/lppl.txt
+% and version 1.3c or later is part of all distributions of LaTeX
+% version 2008/05/04 or later.
+%
+% This work has the LPPL maintenance status `maintained'.
+%
+% The Current Maintainers of this work are
+%   Marei Peischl <othr-ci@peitex.de>
+%   Michael Niemetz <michael.niemetz@oth-regensburg.de>
+%
+% The development repository can be found at
+% https://codeberg.org/OTH-Regensburg/OTHRegensburg-LaTeX
+% Please use the issue tracker for feedback!
+% ============================================================================
+%
+% \fi
+% \iffalse
+%<*driver>
+\ProvidesFile{othr-fonts.dtx}
+  [2025-05-22 v0.01-dev Font Setup for the CI of OTH Regensburg]
+%</driver>
+%<@@=ptxcd>
+%<*identification>
+%<package>\NeedsTeXFormat{LaTeX2e}[2022-10-01]
+%<package>\ProvidesExplPackage{othr-fonts}{2025-05-22}{0.01-dev}{Font Setup for the CI of OTH Regensburg}
+%</identification>
+%<*driver>
+\title{\textsf{othr-fonts} -- General font setup for the Corporate Design of OTH Regensburg%
+  \thanks{This file describes version \fileversion, last revised \filedate.}
+}
+\providecommand*{\OTHRDocDTXfiles}{othr-fonts.dtx}
+\input{othr-ci.dtx}
+%</driver>
+% \fi
+% \PTXToolsDocSection{Fonts}
+%
+% \begin{implementation}
+% \iffalse
+%<*package>
+% \fi
+% \begin{variable}{\g_@@_font_tl}
+%    \begin{macrocode}
+\tl_new:N \g_@@_font_tl
+%    \end{macrocode}
+% \end{variable}
+%    \begin{macrocode}
+\keys_define:nn {ptxcd/fonts} {
+%    \end{macrocode}
+% \end{implementation}
+% \iffalse
+%</package>
+%<*options>
+% \fi
+% \begin{documentation}
+% \DescribeKeyOption{sfdefault=\meta{boolean}}{false}
+% Option to chage the default family to sf.
+% \end{documentation}
+% \begin{implementation}
+% \begin{optionenv}{sfdefault}
+%    \begin{macrocode}
+  sfdefault .bool_gset:N = \g_@@_sfdefault_bool,
+%<package>  sfdefault .initial:n = false,
+  sfdefault .default:n = true,
+  sfdefault .usage:n = load,
+%    \end{macrocode}
+% \end{optionenv}
+% \end{implementation}
+% \begin{documentation}
+% \DescribeOption{KeepRoman}{default}
+% Compatibility only option. This option is equal to \code{sfdefault=false}.
+% \end{documentation}
+% \begin{implementation}
+% \begin{optionenv}{KeepRoman}
+%    \begin{macrocode}
+  KeepRoman .meta:n = {sfdefault=false},
+  KeepRoman .value_forbidden:n = true,
+%    \end{macrocode}
+% \end{optionenv}
+% \end{implementation}
+% \begin{documentation}
+% \DescribeKeyOption{main-font=default/LucidaGrande/Lucida/DejaVu}{default}
+% The font options of the old font package have been merged to a single one to simplify maintenance.
+% The option to directly select OpenType has been removed.
+% The selection will be done if the compiler supports OTF fonts.
+% \end{documentation}
+% \begin{implementation}
+% \begin{optionenv}{main-font}
+%   \iffalse
+%<*package>
+% \fi
+%    \begin{macrocode}
+  main-font .choices:nn = {default, lucidagrande, lucida, dejavu} {
+      \tl_gset_eq:NN \g_@@_font_tl \l_keys_value_tl
+    },
+%    \end{macrocode}
+%   Allow casing in the same way it was before the new implementation.
+%    \begin{macrocode}
+  main-font .choices:nn = { LucidaGrande, DejaVu, Lucida} {
+      \tl_gset:Ne \g_@@_font_tl {\str_lowercase:f {\l_keys_value_tl}}
+    },
+  main-font .choices:nn = {  lucidaOT, LucidaOT } {
+      \tl_gset:Ne \g_@@_font_tl {lucida}
+    },
+  main-font .initial:n = dejavu,
+%    \end{macrocode}
+%   \iffalse
+%</package>
+% \fi
+%    \begin{macrocode}
+%<!package>  main-font .code:n = \exp_args:Ne \PassOptionsToPackage{main-font=\l_keys_value_tl}{othr-fonts},
+  LucidaGrande .meta:n = {main-font=lucidagrande},
+  LucidaGrande .value_forbidden:n = true,
+  DejaVu .meta:n = {main-font=dejavu},
+  DejaVu .value_forbidden:n = true,
+  Lucida .meta:n = {main-font=lucida},
+  Lucida .value_forbidden:n = true,
+  lucidaOT .meta:n = {main-font=lucida},
+  lucidaOT .value_forbidden:n = true,
+  LucidaOT .meta:n = {main-font=lucida},
+  LucidaOT .value_forbidden:n = true,
+%    \end{macrocode}
+% \end{optionenv}
+% \end{implementation}
+% \begin{documentation}
+% \DescribeKeyOption{cache-font-selection=\meta{boolean}}{true}
+% As the testing for availability of fonts is quite slow we provide a mechanism to cache the selection within the aux file.
+% This can be disbabled to avoid errors when files are going to be shared.
+% \end{documentation}
+% \begin{implementation}
+% \begin{optionenv}{cache-font-selection}
+%    \begin{macrocode}
+  cache-font-selection .bool_gset:N = \g_@@_cache_font_bool,
+%<package>  cache-font-selection .initial:n = false,
+  cache-font-selection .default:n = true,
+  cache-font-selection .usage:n = load,
+%    \end{macrocode}
+% \end{optionenv}
+% \end{implementation}
+% \iffalse
+%</options>
+% \fi
+% \begin{implementation}
+%    \begin{macrocode}
+%<package>}
+%    \end{macrocode}
+% \iffalse
+%<*package>
+% \fi
+%    \begin{macrocode}
+\ProcessKeyOptions[ptxcd/fonts]
+
+\RequirePackage{iftex}
+
+%    \end{macrocode}
+% To be included into \TeX{} Live we need to get rid of hardcoded dependencies for commercial fonts.
+% All of these have to be optional.
+% We will check for availability and fall back to DejaVu including a warning if necessary.
+%    \begin{macrocode}
+\msg_new:nnn {othr-fonts} {option-not-supported-pdflatex} {
+  The~option~#1~is~currently~not~supported~for~pdfLaTeX.\\
+  Please~change~the~setting~or~switch~to~LuaLaTeX~(recommended!).
+}
+\msg_new:nnn {othr-fonts} {missing-font} {
+  Missing~font~"#1".
+  Skipping~the~activation!
+}
+\msg_new:nnn {othr-fonts} {missing-font-fallback} {
+  Missing~main~font~"#1".\\
+  The~fallback~font~DejaVu~will~be~used~for~compilation.
+}
+
+\ifTUTeX
+  \RequirePackage{fontspec}
+\else
+  \RequirePackage[T1]{fontenc}
+\fi
+\RequirePackage{anyfontsize}
+
+\cs_new:Nn \_@@_setup_font: {
+
+  \ifTUTeX
+    \str_if_eq:VnTF \g_@@_font_tl  {default} {
+      \fontspec_font_if_exist:nTF {Lucida Grande}{
+        \keys_set:nn {ptxcd/fonts} {main-font=lucidagrande}
+      }{
+        \fontspec_font_if_exist:nTF  {Lucida Bright OT} {
+          \keys_set:nn {ptxcd/fonts} {main-font=lucida}
+        } {
+          \keys_set:nn {ptxcd/fonts} {main-font=dejavu}
+        }
+      }
+    } {
+      \str_case:VnF \g_@@_font_tl  {
+        {lucidagrande} {\fontspec_font_if_exist:nF {Lucida Grande}}
+          {lucida} {\fontspec_font_if_exist:nF  {Lucida Bright OT}}
+      }
+      \use_none:n
+      {
+        \msg_warning:nne {othr-fonts} {missing-font-fallback} {\g_@@_font_tl}
+        \keys_set:nn {ptxcd/fonts} {main-font=dejavu}
+      }
+    }
+  \else
+%    \end{macrocode}
+% As Type 1 currently only dejavu is supported.
+% Maybe the others will be added later.
+%    \begin{macrocode}
+    \str_case:Vn \g_@@_font_tl  {
+      {lucidagrande} {
+          \msg_error:nne {othr-fonts} {option-not-supported-pdflatex} {main-font=\g_@@_font_tl}
+          \keys_set:nn {ptxcd/fonts} {main-font=dejavu}
+        }
+        {lucida} {
+          \file_if_exist:nF {lucidabr.sty} {
+            \msg_warning:nne {othr-fonts} {missing-font-fallback} {\g_@@_font_tl}
+            \keys_set:nn {ptxcd/fonts} {main-font=dejavu}
+          }
+        }
+    }
+    \str_if_eq:VnT \g_@@_font_tl  {default} {
+      \keys_set:nn {ptxcd/fonts} {main-font=dejavu}
+    }
+  \fi
+
+  \str_case:Vn \g_@@_font_tl  {
+    {lucidagrande} {
+        \setmainfont[Ligatures={TeX, Common},
+          Numbers={OldStyle, Proportional},
+          Kerning=On]{Lucida Grande}
+        \setsansfont[Ligatures={TeX, Common},
+          Numbers={OldStyle, Proportional}]{Lucida Grande}
+%    \end{macrocode}
+% Courier New also is a non-free font.
+% The new release will only use it if available.
+%    \begin{macrocode}
+        \fontspec_font_if_exist:nTF {Courier New} {
+          \setmonofont{Courier New}
+        } {
+          \msg_warning:nnn {othr-fonts} {missing-font}  {Courier~New}
+        }
+      }
+      {lucida} {
+        \ifTUTeX
+%    \end{macrocode}
+% Setting which was Lucida OTF but using lucida-otf for improved kerning if available.
+% Since this package is included in MikTeX it is not a good option to use for the availability check of the font.
+%    \begin{macrocode}
+          \file_if_exist:nTF {lucida-otf.sty} {
+            \usepackage{lucida-otf}
+%    \end{macrocode}
+% The lucida-otf package does not provide an option to disable the automatic enabled embolding.
+% It has to be overwritten.
+%    \begin{macrocode}
+            \setsansfont{LucidaSansOT}[
+              Extension = .otf,
+              \lucidaSS@features,
+              ItalicFont = *-Italic,
+              BoldFont = *-Demi,
+              BoldItalicFont = *-DemiItalic,
+            ]
+          } {
+            \defaultfontfeatures{
+              Ligatures={TeX, Common},
+              Numbers={OldStyle, Proportional},
+              Scale=0.94
+            }
+            \setmainfont[Kerning=On]{Lucida Bright OT}
+            \setsansfont{Lucida Sans OT}
+            \setmonofont[Ligatures=ResetAll]{Lucida Sans Typewriter OT}
+          }
+        \else
+          \RequirePackage[expert,vargreek,altbullet]{lucidabr}
+        \fi
+      }
+      {dejavu} {
+        \ifTUTeX
+          \RequirePackage[
+            usefilenames=false,%
+            TT={Scale=0.91},%
+            SS={Scale=0.91},%
+            RM={Scale=0.91},%
+            DefaultFeatures={Ligatures=TeX}
+          ]{dejavu-otf}%
+          \bool_if:NT \g_@@_sfdefault_bool {
+            \RequirePackage{unicode-math}
+            \setmathfont{Fira Math}
+            \setmathfont[range={"22EE,"22F1,"2144,"25B3,"25B7}]{XITS Math}
+            \setmathrm{Deja Vu Sans}
+          }
+        \else
+          \RequirePackage[scaled=0.91]{DejaVuSansCondensed}%
+          \RequirePackage[scaled=0.91]{DejaVuSansMono}%
+          \RequirePackage[scaled=0.91]{DejaVuSerif}%
+        \fi
+      }
+  }
+
+}
+
+\newcommand*{\ptxcd@@@@setupOTHRfont}[1]{
+  \keys_set:nn {ptxcd/fonts} {main-font=#1}
+}
+
+\bool_lazy_and:nnTF {\g_@@_cache_font_bool} {\file_if_exist_p:n {\jobname-othr-font.cfg}} {
+  \input{\jobname-othr-fontcache.cfg}
+}
+
+\_@@_setup_font:
+
+\bool_if:NT \g_@@_cache_font_bool {
+  \iow_new:N \l_@@_iow
+  \iow_open:Nn \l_@@_iow {\jobname-othr-font.cfg}
+  \iow_now:Ne \l_@@_iow {\tl_to_str:N \ptxcd@@@@setupOTHRfont {\g_@@_font_tl}}
+  \iow_close:N \l_@@_iow
+}
+
+\bool_if:NT \g_@@_sfdefault_bool {
+  \renewcommand*{\familydefault}{\sfdefault}
+}
+
+%    \end{macrocode}
+% \iffalse
+%</package>
+% \fi
+% \end{implementation}
+\endinput

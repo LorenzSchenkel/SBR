@@ -1,0 +1,145 @@
+% arara: pdflatex: { shell: yes } until !found('log', '\\(?(R|r)e\\)?run (to get|LaTeX)')
+\documentclass[
+paper=a4,
+DIV=11,
+fontsize=12pt,
+twoside=true,
+parskip=half-,
+department=FakS,
+logostyle=flat
+]{OTHRartcl}
+
+
+\setlength{\overfullrule}{2pt}
+
+\usepackage[german]{babel}
+\usepackage{microtype}
+\usepackage{tcolorbox}
+\usepackage{booktabs}
+\usepackage{tikz}
+\usetikzlibrary{shadows, decorations.pathmorphing}
+\usepackage[tikz]{bclogo}
+\usepackage{colortbl}
+\usepackage{tabularx}
+\usepackage{latexsym}
+\usepackage[hidelinks]{hyperref}
+\usepackage{tablefootnote}
+\usepackage{csquotes}
+
+\defineUserLogo{OTHR_OTHRLaTeX_Logo}
+\shorthandon{"}
+\newcommand{\docoption}[1]{\marginpar{\tiny\ttfamily #1}}
+\newcommand{\datei}[1]{{\ttfamily #1}}
+\usepackage{lipsum}
+
+\newcommand{\Wichtig}[1]{\begin{bclogo}[margeG=0,margeD=0,couleur=OTHR25,
+ logo=\bctakecare
+]{Wichtig:}#1\end{bclogo}}
+
+%\useDepartmentLogo
+
+\title{Das \LaTeX"=Paket der OTH Regensburg}
+\author{OTHR"=\LaTeX"=Team}
+\documenttype{Benutzerhandbuch}
+\date{\today}
+
+\usepackage{biblatex}
+\addbibresource{OTHRtex.bib}
+
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+\clearpage
+
+\section{Übergreifende Dokumentoptionen}
+
+\begin{description}
+    \item \texttt{department}\docoption{department} Diese Option nimmt diverse Einstellungen entsprechend der jeweils spezifizierten Einheit im Dokument vor. Dies betrifft z.B. Farben.
+        Dadurch wird eine einfache Anpassung von Dokumenten möglich.
+        Details, inklusive der unterstützten Optionen, finden Sie im Abschnitt~\ref{Sec:Farben} und Beispiele im Anhang~\ref{Sec:Samples}.
+        Wird diese Option weggelassen, so wird automatisch der Defaultwert \texttt{OTHR} verwendet.
+    \item \texttt{blackFont}\docoption{blackFont} Schaltet die über die Option \texttt{department} umschaltbaren Farben temporär auf Schwarz--Weiß--Betrieb, um eine verbesserte Ausgabe beim Druck zu erhalten.
+        Es werden nur die \LaTeX"=Farben umgestellt, die Farben in Grafiken und Logos bleiben ggf. unverändert erhalten.
+    \item \texttt{Lucida}\docoption{Lucida} Verwendung der kommerziellen Schrift Lucida als Dokumentschrift.
+        Dies benötigt einen Zukauf einer Lucida-Lizenz und Installation des Zeichensatzes..
+    \item \texttt{LucidaGrande}\docoption{LucidaGrande}  Verwendung der kommerziellen Schrift LucidaGrande als Dokumentschrift wie sie bei einigen Apple-Systemen vorinstalliert ist.
+    \item \texttt{KeepRoman}\docoption{KeepRoman} Für lange geschlossene Texte ist serifenlose Schrift, die per Default gewählt wird, suboptimal in der Lesbarkeit und wirkt insbesondere ohne weitere flankierende typografische Maßnahmen leicht ermüdend.
+        Daher kann mit dieser Option die serifenbehaftete Schrift als Standardschrift für das Dokument beibehalten werden.
+\end{description}
+
+\section{Vorhandene Dokumententypen}\label{Sec:Klassen}
+
+\begin{center}
+\begin{tabularx}{.9\linewidth}{lX}\toprule
+\textbf{Dokumententyp} & \textbf{Beschreibung} \\\midrule
+\texttt{OTHRartcl} & Dokumentklasse basierend auf der KOMA"=Skript Klasse \texttt{scrartcl} mit Einbindung aller im folgenden beschriebenen Teilpakete zur Farb"=, Font"= und Logowahl, der offiziellen Titelseite, und Zusätzen für die formgerechte Erstellung von Abschlussarbeiten;\\
+\texttt{OTHRreprt} & dito, basierend auf der KOMA"=Skript Klasse \texttt{scrreprt};\\
+\texttt{OTHRbook} & dito, basierend auf der KOMA"=Skript Klasse \texttt{scrbook};\\
+Briefvorlage & Eine mit \texttt{scrlttr2} zu verwendende Stildatei, welche das Layout der OTHR"=Briefvorlage umsetzt;\\
+Präsentation & Ein Beamer"=Template zur Erstellung von Präsentationen entsprechend der CI"=Vorgaben;\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+In den folgenden Unterabschnitten werden lediglich die spezifischen Besonderheiten der jeweiligen Dokumentarten beschrieben.
+Alle Vorlagen unterstützen die in den danach folgenden Kapiteln beschriebenen Funktionen zur Schriftart"=, Farb"= und Logoauswahl.
+
+\subsection{\texttt{OTHRartcl}, \texttt{OTHRreprt}, \texttt{OTHRbook}}
+
+Diese Klassen unterstützen eine Titelseite oder auch den titelseitenlosen Modus (Dokumentenoption \verb|notitlepage|).
+Die Daten für die Titelseite werden wie bei den Dokumentklassen in KOMA"=Skript üblich mit \verb|\author|, \verb|\title| und ggf. \verb|\date| gesetzt (siehe~\cite{KOMA}) .
+
+Zusätzlich erfordern diese Klassen die Definition eines Dokumenttyps (beliebiger Text wie \enquote{Bericht} oder \enquote{Skript} zur korrekten Darstellung der Titelseite.
+
+Der Titel wird wie gewohnt mit \verb|\maketitle| erzeugt.
+
+\begin{center}
+\begin{tabularx}{.9\linewidth}{lX}\toprule
+\textbf{Kommando} & \textbf{Erklärung} \\\midrule
+\verb+\documenttype{}+ & Definiert den Dokumenttyp, z.B. Masterarbeit, Bachelorarbeit, Projektarbeit, Studienarbeit, Handbuch oder Versuchsanleitung.
+Dieser wird für die Titelseite bzw. den Dokumentkopf verwendet.\\
+\verb+\studentid{}+ & Zum Setzen der Matrikelnummer auf die Titelseite von Abschlussarbeiten\\
+\verb+\department{}+ & Zum Setzen des Namens der Fakultät auf die Titelseite von Abschlussarbeiten\\
+\verb+\studyprogramme{}+ & Name des Studiengangs, primär für die Titelseite von Abschlussarbeiten\\
+\verb+\startingdate{}+ & Beginn der Arbeit, ebenfalls für Abschlussarbeiten\\
+\verb+\closingdate{}+ & Abgabetermin, ebenfalls für Abschlussarbeiten\\
+\verb+\firstadvisor{}+ & Erstprüfer, ebenfalls für Abschlussarbeiten\\
+\verb+\secondadvisor{}+ & Zweitprüfer, ebenfalls für Abschlussarbeiten\\
+\verb+\externaladvisor{}+ & Externe Betreuung , ebenfalls für Abschlussarbeiten\\
+\verb+\externallogo[]{}+ & Optionales Logo für die Titelseite; Diese Option ist mit Vorsicht zu genießen und wird ausdrücklich nicht empfohlen. Das optionale Argument wird an \verb|\includegraphcs| weitergereicht.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+Außerdem ist es noch möglich, mit \verb|\makedeclaration| eine Erklärung zur selbständigen Bearbeitung der Aufgabe auszugeben.
+Die Korrektheit des Textes bezüglich der aktuellen Anforderungen der relevanten  Prüfungsordnungen an diesen Text ist zu prüfen.
+
+\subsection{Briefvorlage}
+
+Die Biefklasse stützt sich auf die KOMA"=Skript Klasse \verb|scrlettr2|.
+Für weitere Details beachten Sie bitte die Beispieldatei sowie die Anleitung zu \verb|scrlettr2| in~\cite{KOMA}.
+
+
+\subsection{Präsentation}
+
+Das Präsentationstemplate wurde in 2025 komplett neu erstellt. Die zugehörige Dokumentation findet sich in \cite{othr-beamer}.
+
+\subsection{Andere Dokumenttypen}
+
+Nicht immer sind die hier vorgestellten Dokumentklassen bzw. Beispieldokumente für die eigene Anwendung passend.
+Für diese Fälle kann die entsprechende Infrastruktur zur Erzeugung eines Dokuments nach der CI"=Richtlinie auch über das Paket \datei{OTHR.sty} in ein beliebiges Dokument eingebunden werden.
+
+\begin{verbatim}
+\usepackage{OTHR}
+\end{verbatim}
+
+Sollten in Spezialfällen nur Teile davon benötigt werden, so können die Pakete \texttt{othr-colors} und \texttt{other-fonts} auch einzeln eingebunden werden.
+
+Damit stehen die ausgewählten vordefinierten Elemente für eigene Dokumente zur Verfügung.
+
+\include{content/farben}
+\include{content/schrift}
+
+\end{document}

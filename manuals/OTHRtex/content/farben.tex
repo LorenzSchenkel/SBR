@@ -1,0 +1,162 @@
+\section{Farben}\label{Sec:Farben}
+
+\subsection{Adaptive Farbe}
+
+Die Farbdefinition \texttt{Accent} und ihre Verwandtschaft passt sich der Dokumentenoption \verb+department+\docoption{department} an und stellt so eine konsistente Farbdarstellung über das Dokument sicher - auf beim Wechsel der \texttt{department}"=Einstellung.
+
+Hier sind die Farbnamen zur Verwendung der adaptiver Farben am Beispiel der gewählten Stiloption \verb+department=FakSG+ dargestellt.
+
+\verb|\textcolor{Accent}{...}|\\
+\textcolor{Accent}{\bfseries Die Akzentfarbe \texttt{Accent} wird automatisch an die Fakultät angepasst.}
+
+\verb|\textcolor{Accent90}{...}|\\
+\textcolor{Accent90}{\bfseries Die Akzentfarbe \texttt{Accent90} wird automatisch an die Fakultät angepasst.}
+
+\verb|\textcolor{Accent50}{...}|\\
+\textcolor{Accent50}{\bfseries Die Akzentfarbe \texttt{Accent50} wird automatisch an die Fakultät angepasst.}
+
+\verb|\textcolor{Accent25}{...}|\\
+\textcolor{Accent25}{\bfseries Die Akzentfarbe \texttt{Accent25} wird automatisch an die Fakultät angepasst.}
+
+\verb|\textcolor{AccentFontColor}{...}|\\
+\textcolor{AccentFontColor}{Die Akzentfarbe \texttt{AccentFontColor} wird automatisch an die Fakultät angepasst, wobei bei im unterschied zur Farbe \texttt{Accent} bei Farben mit mangelndem Kontrast vor weißem Hintergrund  auf \texttt{OTHgrau} ausgewichen wird.}
+
+\begin{center}
+\colorbox{Accent}{\begin{minipage}{.9\linewidth}\color{AccentContrastColor} Die Farbdefinition \texttt{AccentContrastColor} kann verwendet werden, um sicher lesbaren Text auf einen Hintergrund in Akzentfarbe zu setzen.\end{minipage}}
+\end{center}
+
+Die Dokumentenoption \verb+blackFont+ \docoption{blackFont} setzt die \texttt{AccentFontColor} ungeachtet der verwendeten Stiloption \verb+department+ auf schwarz und die \texttt{AccentContrastColor} auf weiß.
+Damit lässt sich bei Nutzung der farbigen Textgestaltung z.B. in Präsentationen leicht auf ein evtl. druckfreundlicheres Farbschema wechseln.
+
+\Wichtig{\sloppy Es wird dringend empfohlen, die vorhandenen adaptiven Farben \texttt{Accent}, \texttt{Accent90}, \texttt{Accent50}, \texttt{Accent25}, \texttt{AccentFontColor} und bei Bedarf auch \texttt{AccentContrastColor} zu verwenden.
+Dadurch passt sich die Gestaltung des Dokuments automatisch korrekt an die Dokumentenoption \texttt{department} an.}
+
+
+Derzeit unterstützte Werte für die Option \verb+department+\docoption{department} und ihre Bedeutung:
+
+\begin{table}[!h!]
+\centering\scriptsize
+\begin{tabular}{lcccc}\toprule
+\textbf{Wert} & Einrichtung & Farbschema & \verb+AccentFontColor+ & \verb+AccentContrastColor+\\\midrule
+OTHR & alle & Schwarz/grau & \verb+OTHRgrau+ & \verb+black+ \\
+FakA & Fakultät A & Fakultätsfarbe & \verb+OTHRgrau+ & \verb+black+ \\
+%\textcolor{black!20}{FakAM} & \textcolor{black!20}{Fakultät AM} & \textcolor{black!20}{Fakultätsfarbe} & \textcolor{black!20}{Fakultätsfarbe} & \color{black!20}\verb+white+ \\
+FakANK & Fakultät ANK & Fakultätsfarbe & Fakultätsfarbe & \verb+white+ \\
+FakB & Fakultät B & Fakultätsfarbe & Fakultätsfarbe & \verb+white+ \\
+FakBM & Fakultät BM & Fakultätsfarbe & Fakultätsfarbe & \verb+white+ \\
+FakEI & Fakultät EI & Fakultätsfarbe & Fakultätsfarbe & \verb+white+ \\
+FakIM & Fakultät IM & Fakultätsfarbe & Fakultätsfarbe & \verb+white+ \\
+FakM & Fakultät M & Fakultätsfarbe & Fakultätsfarbe & \verb+white+ \\
+FakSG & Fakultät SG & Fakultätsfarbe & Fakultätsfarbe & \verb+white+ \\
+ZWW & ZWW & ZWW-Farbe & \verb+OTHgrau+ & \verb+black+ \\
+Labornamen & Labore & diverse & diverse & diverse \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Hierbei ist die Farbe \verb+AccentFontColor+ jeweils für Text auf weißem Grund gedacht und wird im Allgemeinen auf die Farbe des mit der Stiloption  \verb+department+ gewählten Bereichs gesetzt.
+Da bei manchen der vordefinierten Farben aber der Kontrast auf weißem Hintergrund zu schwach ausfällt, wird in diesen Fällen Hochschulgrau für \verb+AccentFontColor+ gewählt.
+
+Zudem zeigt sich, dass bei Verwendung der Bereichsfarben als Hintergrund je nach Farbe der Einrichtung eine andere Schriftfarbe nötig ist, um ausreichenden Kontrast zu erreichen.
+Durch Verwendung der Farbe \verb+AccentContrastColor+ kann hier eine automatische Anpassung im Dokument vorgenommen werden.
+
+\subsection{Farbübersicht}
+
+Auch die Farben der einzelnen Einheiten stehen als stabile Definitionen unabhängig von der Stiloption \verb+department+\docoption{department} zur Verfügung.
+
+\newcommand{\farbTabellenZeile}[1]{
+{\color{#1}\texttt{#1}} &
+{\color{#190}\texttt{#190}} &
+{\color{#150}\texttt{#150}} &
+{\color{#125}\texttt{#125}} &
+{\color{#1FontColor}\texttt{#1FontColor}} &
+{\cellcolor{#1}\color{#1ContrastColor}\texttt{#1ContrastColor}} \\
+}
+\begin{center}\scriptsize
+\begin{flushleft}\small\textbf{Fakultäten und Einrichtungen}\end{flushleft}\nopagebreak
+\begin{tabular}{cccccc}
+\farbTabellenZeile{Accent}
+\farbTabellenZeile{OTHR}
+\farbTabellenZeile{FakA}
+\farbTabellenZeile{FakANK}
+\farbTabellenZeile{FakAM}
+\farbTabellenZeile{FakB}
+\farbTabellenZeile{FakBM}
+\farbTabellenZeile{FakBW}
+\farbTabellenZeile{FakEI}
+\farbTabellenZeile{FakIM}
+\farbTabellenZeile{FakM}
+\farbTabellenZeile{FakSG}
+\farbTabellenZeile{FakS}
+\farbTabellenZeile{ZWW}
+\\
+\farbTabellenZeile{RCAI}
+\farbTabellenZeile{RCER}
+\farbTabellenZeile{RCHST}
+\farbTabellenZeile{RSDS}
+\\
+\end{tabular}
+
+\vspace{\fill}\pagebreak
+
+\begin{flushleft}\small\textbf{Laborfarben}\end{flushleft}\nopagebreak
+\begin{tabular}{cccccc}
+%A
+\farbTabellenZeile{FMIS}
+%ANK
+\farbTabellenZeile{NACH}
+\farbTabellenZeile{SappZ}
+%B
+\farbTabellenZeile{Geo}
+\farbTabellenZeile{KNB}
+%BW
+\farbTabellenZeile{12Science}
+\farbTabellenZeile{FEURO}
+%EI
+\farbTabellenZeile{Bisp}
+\farbTabellenZeile{DK0PT}
+\farbTabellenZeile{FENES}
+\farbTabellenZeile{LAS3}
+\farbTabellenZeile{MRU}
+\farbTabellenZeile{SES}
+%IM
+\farbTabellenZeile{CCSE}
+\farbTabellenZeile{eHealth}
+\farbTabellenZeile{IMDS}
+\farbTabellenZeile{LFD}
+\farbTabellenZeile{MD}
+\farbTabellenZeile{ReMIC}
+\farbTabellenZeile{SEC}
+%M
+\farbTabellenZeile{AIMS}
+\farbTabellenZeile{BFM}
+\farbTabellenZeile{BMA}
+\farbTabellenZeile{CEEC}
+\farbTabellenZeile{CFD}
+\farbTabellenZeile{FEM}
+\farbTabellenZeile{IPF}
+\farbTabellenZeile{KIB}
+\farbTabellenZeile{KWK}
+\farbTabellenZeile{LAT}
+\farbTabellenZeile{LBM}
+\farbTabellenZeile{LeanLab}
+\farbTabellenZeile{LFT}
+\farbTabellenZeile{LFW}
+\farbTabellenZeile{LMP}
+\farbTabellenZeile{LMS}
+\farbTabellenZeile{LRT}
+\farbTabellenZeile{LWS}
+\farbTabellenZeile{LWM}
+\farbTabellenZeile{MKS}
+\farbTabellenZeile{MST}
+\farbTabellenZeile{RRRU}
+\farbTabellenZeile{RST}
+%
+\farbTabellenZeile{IST}
+\farbTabellenZeile{LP}
+\farbTabellenZeile{PF}
+\farbTabellenZeile{PT}
+
+
+\end{tabular}
+\end{center}

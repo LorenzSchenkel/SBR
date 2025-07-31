@@ -1,0 +1,39 @@
+*.swp
+*.log
+*.aux
+ls-R
+*.bak
+*.synctex.gz
+*.idx
+*.bak
+*.synctex.gz
+*.idx
+*.out
+*.toc
+*.dvi
+*.tar.bz2
+*.tar.bz2
+*.vrb
+*.bbl
+*.blg
+*.bcf
+*.run.xml
+*.lof
+*.old
+*.lot
+# TODO check if all pdfs should be ignored
+*.pdf
+!/logos/*.pdf
+*.zip
+*.fls
+*.fdb_latexmk
+
+*.nav
+*.snm
+
+# l3build directory
+build/
+
+# latexindent
+*.doc_bak*
+*.source_bak*

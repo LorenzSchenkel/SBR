@@ -1,0 +1,43 @@
+name: Automated testing
+# Currently we run in two situations:
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: write
+
+jobs:
+  doc:
+    runs-on: ubuntu-22.04
+    container:
+      image: registry.gitlab.com/islandoftex/images/texlive:latest
+    name: Documentation
+    steps:
+      - run: apt-get update && apt-get install -y nodejs
+      - run: node -v
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          show-progress: 'false'
+      - name: Run l3build
+        run: l3build doc -q -H
+      - name: Archive documentation
+        # temporary fork since actions/upload-artifact@v4 is not working it not on github
+        uses: https://code.forgejo.org/forgejo/upload-artifact@v4
+        with:
+          name: Documentation
+          path: "*.pdf"
+          retention-days: 21
+      - name: move pdf
+        run: mkdir -p pdf-output && mv *.pdf pdf-output/.
+      - uses: https://github.com/crazy-max/ghaction-github-pages@v4
+        # only publish pdf from main branch
+        if: github.ref == 'refs/heads/main'
+        with:
+          target_branch: pdf-output
+          build_dir: pdf-output
+          domain: codeberg.org
+          commit_message: Publish PDF Output
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

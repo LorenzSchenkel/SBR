@@ -1,0 +1,16 @@
+\section{Schriftarten: \datei{OTHR\_fonts.sty}}
+
+Die Hausschrift des Corporate Designs der OTH Regensburg ist die Lucida Sans.
+Um diesem Schriftbild möglichst nah zu kommen, unterstützt das Zeichensatzpaket verschiedene Optionen.
+
+Default ist die Verwendung der DejaVU Sans, welche dem Original sehr ähnlich ist.
+Diese Schrift wird bei vielen Distributionen im Standardumfang mitgeliefert, bietet aber in der Type~1 Variante keinen Zeichensatz für den Formelsatz, der daher mit pdflatex traditionell gesetzt wird.
+
+Bei Verwendung von LuaTeX wird versucht, als Standard eine der Originalschriftarten einzusetzen, sofern diese Auf dem Rechner installiert sind.
+Alternativ wird auch hier die OpenType"=Variante von DejaVU Sans inklusive des Zeichensatzes für den Formelsatz verwendet.
+
+Falls eine Lizenz für die Lucida"=Zeichensätze vorhanden ist, kann auch bei pdflatex über die Option \texttt{Lucida}\docoption{Lucida\\lucida} auf die Lucida"=Schriftfamilie umgeschaltet werden, die auch den Formelsatz unterstützt und insgesamt ein sehr harmonisches Schriftbild liefert\footnote{Lizenzen für die Lucida Fonts im OpenType"= und T1"= Format sind bei der \TeX Users Group erhältlich: \href{https://www.tug.org/store/lucida/index.html}{https://www.tug.org/store/lucida/index.html}.}.
+
+Bei Verwendung von LuaTeX und einer vorhandenen Installation der Lucida Schriftart Grande auf dem System (typisch für Apple"=Systeme), kann über die Option \texttt{LucidaGrande}\docoption{LucidaGrande} auch diese Schriftart verwendet werden.
+
+Da sich in manchen Fällen die serifenlose Schriftart nur bedingt eignet (z.B. sehr lange geschlossene Texte mit relativ langen Zeilen bzw. hoher Zeichenanzahl) kann über die Option \texttt{KeepRoman}\docoption{KeepRoman} die Variante der jeweils gewählten Schrift mit Serifen als Standardschrift beibehalten werden.

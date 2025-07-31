@@ -1,0 +1,28 @@
+\subsection{\texttt{OTHRartcl}, \texttt{OTHRreprt}, \texttt{OTHRbook}}
+
+Diese Klassen unterstützen eine Titelseite oder auch den titelseitenlosen Modus (Dokumentenoption \verb|notitlepage|).
+Die Daten für die Titelseite werden wie bei den Dokumentklassen in KOMA"=Skript üblich mit \verb|\author|, \verb|\title| und ggf. \verb|\date| gesetzt (siehe~\cite{KOMA}) .
+
+Zusätzlich erfordern diese Klassen die Definition eines Dokumenttyps (beliebiger Text wie \enquote{Bericht} oder \enquote{Skript} zur korrekten Darstellung der Titelseite.
+
+Der Titel wird wie gewohnt mit \verb|\maketitle| erzeugt.
+
+\begin{center}
+\begin{tabularx}{.9\linewidth}{lX}\toprule
+\textbf{Kommando} & \textbf{Erklärung} \\\midrule
+\verb+\documenttype{}+ & Definiert den Dokumenttyp, z.B. Masterarbeit, Bachelorarbeit, Projektarbeit, Studienarbeit, Handbuch oder Versuchsanleitung.
+Dieser wird für die Titelseite bzw. den Dokumentkopf verwendet.\\
+\verb+\studentid{}+ & Zum Setzen der Matrikelnummer auf die Titelseite von Abschlussarbeiten\\
+\verb+\department{}+ & Zum Setzen des Namens der Fakultät auf die Titelseite von Abschlussarbeiten\\
+\verb+\studyprogramme{}+ & Name des Studiengangs, primär für die Titelseite von Abschlussarbeiten\\
+\verb+\startingdate{}+ & Beginn der Arbeit, ebenfalls für Abschlussarbeiten\\
+\verb+\closingdate{}+ & Abgabetermin, ebenfalls für Abschlussarbeiten\\
+\verb+\firstadvisor{}+ & Erstprüfer, ebenfalls für Abschlussarbeiten\\
+\verb+\secondadvisor{}+ & Zweitprüfer, ebenfalls für Abschlussarbeiten\\
+\verb+\externaladvisor{}+ & Externe Betreuung , ebenfalls für Abschlussarbeiten\\
+\verb+\externallogo[]{}+ & Optionales Logo für die Titelseite; Diese Option ist mit Vorsicht zu genießen und wird ausdrücklich nicht empfohlen. Das optionale Argument wird an \verb|\includegraphcs| weitergereicht.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+Außerdem ist es noch möglich, mit \verb|\makedeclaration| eine Erklärung zur selbständigen Bearbeitung der Aufgabe auszugeben.
+Die Korrektheit des Textes bezüglich der aktuellen Anforderungen der relevanten  Prüfungsordnungen an diesen Text ist zu prüfen.

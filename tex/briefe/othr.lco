@@ -1,0 +1,217 @@
+%
+% othr.lco -- scrlttr2 using the Corporate Design of OTH Regensburg
+% ----------------------------------------------------------------------------
+%
+%  Copyright (C) 2015-2025 Michael Nietmetz <michael.niemetz@oth-regensburg.de>
+%
+% ============================================================================
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3c
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+% http://www.latex-project.org/lppl.txt
+% and version 1.3c or later is part of all distributions of LaTeX
+% version 2008/05/04 or later.
+%
+% This work has the LPPL maintenance status `maintained'.
+%
+% The Current Maintainers of this work are
+%   Michael Niemetz <michael.niemetz@oth-regensburg.de>
+%
+% The development repository can be found at
+% https://codeberg.org/OTH-Regensburg/OTHRegensburg-LaTeX
+% Please use the issue tracker for feedback!
+% ============================================================================
+
+\ProvidesFile{othr.lco}[2025-05-22 v0.01-dev  scrletter config for OTH Regensburg CI]
+%
+% Zusatzpakete, die zum Setzen des Briefs nötig sind
+\RequirePackage{OTHR}
+\RequirePackage{iflang}
+%
+\newkomavar{funktion}
+\newkomavar{orgeinheit}
+\newkomavar{ourmail}
+\newkomavar{faksimilesignature}
+\newlength{\faksimilesignatureextraspace}
+\newlength{\extrasignaturespace}
+\setlength{\extrasignaturespace}{0pt}
+\setlength{\faksimilesignatureextraspace}{0pt}
+\Ifkomavar{frommobilephone}{}{\newkomavar{frommobilephone}}
+%
+% Defaultwerte
+\setkomavar{funktion}{}
+\setkomavar{orgeinheit}[]{}
+\setkomavar{faksimilesignature}[]{}
+\setkomavar{signature}{%
+\setlength{\faksimilesignatureextraspace}{2.5ex}%
+\Ifkomavarempty{faksimilesignature}{}{\settoheight{\faksimilesignatureextraspace}{\usekomavar{faksimilesignature}}}%
+\setlength{\faksimilesignatureextraspace}{.75\faksimilesignatureextraspace}%
+\addtolength{\faksimilesignatureextraspace}{\extrasignaturespace}%
+\rule{0pt}{\faksimilesignatureextraspace}%
+\Ifkomavarempty{faksimilesignature}{}{%
+\setlength{\unitlength}{1ex}%
+\begin{picture}(0,0)%
+\put(0,2){\usekomavar{faksimilesignature}}%
+\end{picture}}%
+\usekomavar{fromname}\Ifkomavarempty*{funktion}{\Ifkomavarempty{funktion}{}{\newline\usekomavar{funktion}}}{\newline\usekomavar*{funktion}}}
+%
+% Sprachabhängige Einstellungen
+% Default: German
+\setkomavar{place}{Regensburg}
+\setkomavar{fromaddress}{Seybothstraße 2, Postfach 12 03 27\\ 93025 Regensburg}
+\setkomavar{backaddress}{OTH REGENSBURG\\Postfach 12\,03\,27\\D-93025 Regensburg}
+\setkomavar{ourmail}[Unsere Nachricht vom]{}
+\setkomavar{yourmail}[Ihre Nachricht vom]{}
+\setkomavar{frommobilephone}[Mobiltelefon]{}
+\providecommand{\the@footertext}{\textbf{Menschen bilden.\quad Neues erforschen. \quad Zukunft gestalten.}}
+%\textbf{Gemeinsam noch stärker:}\\%
+%Die OTH Regensburg und die OTH Amberg-Weiden sind Kooperationspartner im Hochschulverbund \textbf{O}stbayerische \textbf{T}echnische \textbf{H}ochschule.%
+%}
+% English
+\IfLanguageName{english}{%
+\setkomavar{fromaddress}{Seybothstraße 2, Postfach 12 03 27\\ D-93025 Regensburg\\ Germany}
+\setkomavar{backaddress}{OTH REGENSBURG\\Postfach 12\,03\,27\\D-93025 Regensburg}
+\setkomavar{ourmail}[Our Message]{}
+\setkomavar{yourmail}[Your Message]{}
+\setkomavar{frommobilephone}[Mobile Phone]{}
+\providecommand{\the@footertext}{\textbf{Menschen bilden.\quad Neues erforschen. \quad Zukunft gestalten.}
+%Gemeinsam noch stärker:}\\%
+%Die OTH Regensburg und die OTH Amberg-Weiden sind Kooperationspartner im Hochschulverbund \textbf{O}stbayerische \textbf{T}echnische \textbf{H}ochschule.
+}
+}{}%%
+\setkomavar{backaddressseparator}{\,$\cdot$\,}
+% Implementierungen
+\setkomavar{firsthead}{\usekomavar{fromlogo}}
+\setkomavar{firstfoot}{%
+\vbox{%\begin{picture}(0,0)(0,0)\put(-40,-30){\includegraphics[width=1cm]{totalQualityLogo.pdf}}\end{picture}
+\begin{minipage}[t]{\linewidth}\vspace*{3mm}\fontsize{2.35mm}{.7em}\selectfont
+\the@footertext{}
+\\
+\Ifkomavarempty{frombank}{}{\usekomavar{frombank}}
+\end{minipage}%
+}%
+}
+\setkomavar{fromlogo}{\OfficialLogoNormal}
+\renewcommand*{\raggedsignature}{\raggedright}
+\setplength{firstfootvpos}{\paperheight}
+\addtoplength[-1]{firstfootvpos}{2cm}
+%
+\setkomavar{location}{\raggedright\scriptsize{}%
+\Ifkomavarempty{fromname}{}{\textbf{\usekomavar{fromname}}\Ifkomavarempty{funktion}{}{\\\textbf{\usekomavar{funktion}} }%
+\\}
+\Ifkomavarempty{orgeinheit}{}{\textbf{%
+\usekomavar{orgeinheit}}%
+\Ifkomavarempty*{orgeinheit}{}{\\\usekomavar*{orgeinheit}}%
+\\}
+\par\vspace*{1ex}\par\vspace*{1.5ex}\par
+\Ifkomavarempty{fromaddress}{}{\usekomavar{fromaddress}\\}
+\par\vspace*{1ex}\par\vspace*{1.5ex}\par
+\Ifkomavarempty{fromphone}{}{\usekomavar*{fromphone}\usekomavar{fromphone}\\}
+\Ifkomavarempty{fromfax}{}{\usekomavar*{fromfax}%
+\usekomavar{fromfax}\\}
+\Ifkomavar{frommobilephone}{\Ifkomavarempty{frommobilephone}{}{\usekomavar*{frommobilephone}: \usekomavar{frommobilephone}\\}}{}
+\Ifkomavarempty{fromemail}{}{\usekomavar{fromemail}\\}
+\par\vspace*{1ex}\par\vspace*{1.5ex}\par
+\Ifkomavarempty{yourref}{}{\usekomavar*{yourref}: \usekomavar{yourref}\\}
+\Ifkomavarempty{yourmail}{}{\usekomavar*{yourmail}: \usekomavar{yourmail}\\}
+\Ifkomavarempty{myref}{}{\usekomavar*{myref}: \usekomavar{myref}\\}
+\Ifkomavarempty{ourmail}{}{\usekomavar*{ourmail}: \usekomavar{ourmail}\\}
+\par\vspace*{1ex}\par\vspace*{1.5ex}\par
+\Ifkomavarempty{place}{}{\usekomavar{place}, }\usekomavar{date}
+}
+%
+\setplength{locwidth}{.34\paperwidth}
+%
+\renewcommand{\defaultreffields}{\removereffields{}}
+% Kopiert aus Origalcode von scrlttr2 und modifiziert
+\renewcommand{\@datefield}{{%
+    \setparsizes{\z@}{\z@}{\z@ plus 1fil}\par@updaterelative
+    \ifdim\useplength{refwidth}=\z@
+      \if@refwide
+        \setplength{refwidth}{\paperwidth}%
+        \ifdim \useplength{toaddrhpos}>\z@
+          \setplength{refhpos}{\useplength{toaddrhpos}}%
+        \else
+          \setplength[-]{refhpos}{\useplength{toaddrhpos}}%
+        \fi
+        \addtoplength[-2]{refwidth}{\useplength{refhpos}}%
+      \else
+        \setplength{refwidth}{\textwidth}%
+        \setplength{refhpos}{\oddsidemargin}%
+        \addtoplength{refhpos}{1in}%
+      \fi
+    \else
+      \ifdim\useplength{refhpos}=\z@
+        \begingroup
+          \setlength\@tempdima{\textwidth}%
+          \addtolengthplength[-]{\@tempdima}{refwidth}%
+          \setlength\@tempdimb{\oddsidemargin}%
+          \addtolength\@tempdimb{1in}%
+          \setlength{\@tempdimc}{\paperwidth}%
+          \addtolength{\@tempdimc}{-\textwidth}%
+          \divide\@tempdimb by 32768\relax
+          \divide\@tempdimc by 32768\relax
+          \ifdim\@tempdimc=\z@\else
+            \multiply\@tempdima by\@tempdimb
+            \divide\@tempdima by\@tempdimc
+          \fi
+          \edef\@tempa{\noexpand\endgroup
+            \noexpand\setplength{refhpos}{\the\@tempdima}}%
+        \@tempa
+    \fi\fi
+    \@tempswafalse
+    \move@topt\vskip\useplength{refvpos}%
+    \@tempswafalse
+    \let\do@set@reffield\@test@reffield
+    \@set@reffields
+    \ifcase \@datepos\else\@test@reffield{date}\fi
+    \if@tempswa
+      \@tempswafalse
+      \rlap{\noindent\move@topl\hskip\useplength{refhpos}%
+        \vbox{\hsize\useplength{refwidth}%
+          \noindent
+          \ifnum \@datepos=2
+            \@set@reffields
+            \if@tempswa
+              \@tempswafalse
+              %\@set@reffield{date}%
+            \fi
+          \fi
+          \let\do@set@reffield\@set@reffield
+          \@set@reffields%
+          \if@tempswa
+            \ifnum \@datepos=1 %\@set@reffield{date}%
+\fi%
+            \setbox0\hbox{\usekomafont{refname}\strutbox}%
+            \ifdim\ht0>\ht\strutbox
+              \ClassWarningNoLine{scrlttr}{%
+                Font element `refname' should not be larger than
+                \string\normalsize!}%
+            \fi
+            \setbox0\hbox{\usekomafont{refvalue}\strutbox}%
+            \ifdim\ht0>\ht\strutbox
+              \ClassWarningNoLine{scrlttr}{%
+                Font element `refvalue' should not be larger than
+                \string\normalsize!}%
+            \fi
+          \else
+%            \ifcase \@datepos\else
+%              \ifnum \@datepos=1 \enskip\hfill\fi
+%              \Ifkomavarempty{place}{}{%
+%                \usekomavar{place}\usekomavar{placeseparator}}%
+%              \usekomavar{date}%
+%            \fi
+          \fi
+        }%
+      }%
+    \fi
+    \vskip\useplength{refaftervskip}%
+  }%
+}
+%
+\removereffields{}
+\renewcommand{\addtoreffields}[1]{}
+%
+\KOMAoptions{pagenumber=footright}
+%

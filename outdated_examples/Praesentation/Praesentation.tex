@@ -1,0 +1,599 @@
+% arara: pdflatex: { shell: yes } until !found('log', '\\(?(R|r)e\\)?run (to get|LaTeX)')
+% arara: bibtex
+% arara: pdflatex: { shell: yes } until !found('log', '\\(?(R|r)e\\)?run (to get|LaTeX)')
+% Die Beamer-Klasse unterstützt folgende Optionen, die von
+% besonderem Interesse sind (alle Standardoptionen werden
+% ebenfalls unterstützt; siehe beamer-Basisdokumentation):
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% aspectratio: Seitenverhältnis des resultierenden Dokuments
+% (Achtung: Aufgrund der Designvorgaben ergeben sich unterschiedliche
+% Größen der effektiv nutzbaren Textblöcke)
+%
+% Standardeinstellung: 'aspectratio=43'
+%
+% Mögliche Einstellungen:
+% 'aspectratio=43'   (4:3)
+% 'aspectratio=169'  (16:9)
+% 'aspectratio=1610' (16:10)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% fontsize: Basisschriftgröße (Größen für Überschriften etc. werden
+% aus dieser Basis automatisch abgeleitet)
+%
+% Standardeinstellung: '22pt' (entspricht den Design-Vorgaben; sehr groß!)
+%
+% Mögliche Einstellungen:
+% '8pt', '9pt', '10pt', '11pt', '12pt', '14pt', '16pt',
+% '17pt','20pt','22pt', '24pt', '26pt', '28pt'
+
+
+\documentclass[aspectratio=169,16pt]{beamer}
+
+% Der OTHR-Theme unterstützt folgende Optionen:
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% department: (Wahl der Abteilung/Fakultät)
+%
+% default: 'OTHR'
+%
+% Mögliche Einstellungen:
+% 'FakA', 'FakAM', 'FakB', 'FakBW', 'FakEI',
+% 'FakIM', 'FakM', 'FakS', 'ZWW', 'IPF',
+% 'SappZ', 'KNB', 'ReMIC', 'LFD', 'LAS3',
+% 'DK0PT', 'LBM', 'LeanLab', 'LFT', 'LFW',
+% 'LMP', 'LMS', 'LRT', 'LWS', 'RRRU',
+% 'RST', 'CEEC', 'FEM', 'IST'
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% headerMode: Aussehen und Inhalt der Kopfleiste
+%
+% Standardeinstellung: 'full'
+%
+% Mögliche Einstellungen:
+% 'full', 'frametitle', 'frametitleSection'
+%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Binäre Schalter (können angegeben oder nicht angegeben werden;
+% Standardeinstellung: Nicht angegeben)
+%
+%%%%%%%%%%%%%%%
+% navbar: Navigationssymbole anzeigen (Seite vor/zurück, Kapitel vor/zurück etc.)
+
+% pageNumbers: Seitennummerierung
+
+% blackFont: Nur schwarze Schriftfarbe verwenden (ansonsten: Fakultätsfarben)
+
+% frametitleCenter: Titel in der Kopfzeile zentrieren (ansonsten: rechtsbündig)
+
+\usetheme[department=LFD,pageNumbers,logostyle=flat]{OTHR}
+
+%Folgende Fontschemas müssen, falls geünscht, *nach* dem Hauptschema gewählt werden:
+%%\usefonttheme{othr_flat} % Alternatives Fontscheme ohne Größenänderungen in hierarchischen Strukturen, experimentell
+%%\usefonttheme{othr_shallow} % Alternatives Fontscheme mit redizierten Größenänderungen in hierarchischen Strukturen, experimentell
+
+% Inhaltsspezifische Zusatzpakete laden (im Produktivbetrieb bitte
+% an die jeweiligen Erfordernisse anpassen)
+\usepackage[ngerman]{babel}
+\usepackage{filecontents}
+\usepackage{subfigure}
+\usepackage{numprint}
+\usepackage{tikz}
+\usepackage{tikzpagenodes}
+\usetikzlibrary{calc, shapes, backgrounds, arrows}
+\usepackage{ragged2e}
+\usepackage{blindtext}
+\usepackage{enumerate}
+\usepackage{calc}
+
+% Inline BibTeX-Einträge (alternativ kann natürlich auch eine
+% externe Quelle verwendet werden)
+\begin{filecontents}{\jobname.bib}
+  @misc{wiki:baeren,
+    author = "Wikipedia",
+    title = "Bären --- {W}ikipedia{,} The Free Encyclopedia",
+    year = "2015",
+    url = "https://de.wikipedia.org/w/index.php?title=B%C3%A4ren&oldid=148136539",
+    note = "[Online; besucht am 23. Dez. 2015]"
+  }
+  @article{article,
+    author  = {Peter Adams},
+    title   = {The title of the work},
+    journal = {The name of the journal},
+    year    = 1993,
+    number  = 2,
+    pages   = {201-213},
+    month   = 7,
+    note    = {An optional note},
+    volume  = 4
+  }
+
+  @book{book,
+    author    = {Peter Babington},
+    title     = {The title of the work},
+    publisher = {The name of the publisher},
+    year      = 1993,
+    volume    = 4,
+    series    = 10,
+    address   = {The address},
+    edition   = 3,
+    month     = 7,
+    note      = {An optional note},
+    isbn      = {3257227892}
+  }
+
+  @booklet{booklet,
+    title        = {The title of the work},
+    author       = {Peter Caxton},
+    howpublished = {How it was published},
+    address      = {The address of the publisher},
+    month        = 7,
+    year         = 1993,
+    note         = {An optional note}
+  }
+
+  @conference{conference,
+    author       = {Peter Draper},
+    title        = {The title of the work},
+    booktitle    = {The title of the book},
+    year         = 1993,
+    editor       = {The editor},
+    volume       = 4,
+    series       = 5,
+    pages        = 213,
+    address      = {The address of the publisher},
+    month        = 7,
+    organization = {The organization},
+    publisher    = {The publisher},
+    note         = {An optional note}
+  }
+
+  @inbook{inbook,
+    author       = {Peter Eston},
+    title        = {The title of the work},
+    chapter      = 8,
+    pages        = {201-213},
+    publisher    = {The name of the publisher},
+    year         = 1993,
+    volume       = 4,
+    series       = 5,
+    address      = {The address of the publisher},
+    edition      = 3,
+    month        = 7,
+    note         = {An optional note}
+  }
+
+  @manual{manual,
+    title        = {The title of the work},
+    author       = {Peter Gainsford},
+    organization = {The organization},
+    address      = {The address of the publisher},
+    edition      = 3,
+    month        = 7,
+    year         = 1993,
+    note         = {An optional note}
+  }
+
+  @mastersthesis{mastersthesis,
+    author       = {Peter Harwood},
+    title        = {The title of the work},
+    school       = {The school where the thesis was written},
+    year         = 1993,
+    address      = {The address of the publisher},
+    month        = 7,
+    note         = {An optional note}
+  }
+
+  @misc{misc,
+    author       = {Peter Isley},
+    title        = {The title of the work},
+    howpublished = {How it was published},
+    month        = 7,
+    year         = 1993,
+    note         = {An optional note}
+  }
+
+  @phdthesis{phdthesis,
+    author       = {Peter Joslin},
+    title        = {The title of the work},
+    school       = {The school where the thesis was written},
+    year         = 1993,
+    address      = {The address of the publisher},
+    month        = 7,
+    note         = {An optional note}
+  }
+}
+\end{filecontents}
+
+% Zitationsstil wählen: amsalpha
+\bibliographystyle{amsalpha}
+
+% Interessante Standardalternativen:
+% Numerisch, in Reihenfolge der \cite befehle
+% \bibliographystyle{unsrt}
+% Numerisch, sortiert nach Erstautor
+% \bibliographystyle{plain}
+
+% Lokaler Hack für das Beispieldokument, um Schriftgrößen
+% systematisch ausgeben zu können (im Produktivbetrieb nicht
+% erforderlich)
+\makeatletter
+\newcommand{\showfontsize}{\nprounddigits{2}\numprint{\f@size{}} pt}
+\newcommand{\showfontfamily}{\f@family}
+\makeatother
+
+% Umschalten auf Bereichslogo; hier ist immer abzuwägen,
+% inwieweit die Päsentation auf Department-Ebene oder auf
+% Hochschulebene wirksam wird.
+% Im Zweifelsfall empfiehlt sich vor dem Einsatz des folgenden
+% Kommandos eine Rückfrage bei der Abteilung
+% Öffentlichkeitsarbeit und Hochschulkommunikation
+
+%\useDepartmentLogo
+
+\begin{document}
+
+\newcommand{\genemail}[1]{\href{mailto:#1}{\textless\nolinkurl{#1}\textgreater}}
+\title{Beispielfoliensatz OTH-\LaTeX}
+\author[M.~Dollinger, Prof.~Dr.~W.~Mauerer]{Markus Dollinger\(^{1}\)~\genemail{markus.dollinger@oth-regensburg.de}\\%
+  Prof.~Dr.~Wolfgang
+  Mauerer\(^{2}\)~\genemail{wolfgang.mauerer@oth-regensburg.de}}
+\institute{Labor für Digitalisierung\\Fakultät Informatik und Mathematik}
+\date{\today}
+
+% Angepasstes Titelformat definieren (verwendet bewusst nicht die
+% Beamer-Infrastruktur, um einfache Anpassungen zu zeigen)
+\newcommand{\fillme}{\vskip0pt plus 1filll}
+\newenvironment{references}{\begin{tiny}\begin{flushleft}}%
+    {\end{flushleft}\end{tiny}\vspace*{\fill}}
+\defbeamertemplate*{title page}{customized}[1][]
+{
+  \vspace*{1em}\usebeamerfont{title}\textbf{\inserttitle}\bigskip\par
+
+  \begin{scriptsize}
+  \insertauthor\bigskip\par
+  \textit{\insertinstitute}\\\insertdate
+  \end{scriptsize}
+
+  \fillme\begin{references}
+    \(^{1}\){\color{gray}{GPG/PGP-ID \href{http://pgp.mit.edu/pks/lookup?op=vindex&search=0xD22BCBB9E835336F}{E835336F},
+    Fingerprint: A62E FFFC 4029 7339 357B  D04D D22B CBB9 E835 336F.}}\\
+   \(^{2}\){\color{gray}{GPG/PGP-ID \href{http://keys.gnupg.net/pks/lookup?op=get&search=0xF16F252398356E1E}{98356E1E},
+    Fingerprint: 5920 9407 AB5C 8B28 3C7B 4F02 F16F 2523 9835 6E1E.}}
+  \end{references}
+}
+
+\maketitle
+
+\begin{frame}
+  \frametitle{Über die \LaTeX-Vorlage I}
+
+  \LaTeX{} ist\dots
+  \begin{itemize}
+  \item der De-Fakto-Standard bei wissenschaftlichen und technischen Arbeiten
+  \item ein herstellerunabhängiger offener Standard mit
+    jahrzehntelanger(!) Abwärtskompatibilität
+  \item sehr gut geeignet für die automatisierte Erstellung und
+    Verarbeitung von Dokumenten
+  \item unabhängig vom verwendeten Betriebssystem
+  \end{itemize}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Über die \LaTeX-Vorlage II}
+
+  Der OTH-\LaTeX-Stil\dots
+
+  \begin{itemize}
+  \item wurde in einem fakultätsübergreifenden offenen
+    Entwicklungs- ansatz mit verteilten SW-Entwicklungsmethoden erstellt
+  \item arbeitet mit generischem statt visuellem Markup
+  \item bietet alle Funktionalitäten der Word-Vorlage (und vieles mehr)
+  \item erlaubt die einfache Integration strukturierter Erweiterungen,
+    um die Vorlagen auf die Bedürfnisse der Anwender zu optimieren!
+  \end{itemize}
+
+  \emph{Die folgenden Seiten stellen Vorlagen für wissenschaftliche
+    Präsentationen und Vorlesungsfolien bereit.}
+\end{frame}
+
+\frame{\frametitle{Inhalt}\tableofcontents}
+
+\section{Eine Kapiteldemonstration}
+\frame{\tableofcontents[currentsection,currentsubsection]}
+
+\subsection{Ein Unterkapitel}
+\frame{\tableofcontents[currentsection,currentsubsection]}
+
+\subsection{Ein anderes Unterkapitel}
+\frame{\tableofcontents[currentsection,currentsubsection]}
+
+\subsubsection{Ein Unterunterkapitel}
+\frame{\tableofcontents[currentsection,currentsubsection]}
+
+\section{Beispiele}
+\frame{\tableofcontents[currentsection]}
+
+\begin{frame}
+  \frametitle{Einfache Aufzählung}
+
+  \begin{description}
+  \item[Komplexe Systeme] Computer
+    \begin{enumerate}
+    \item Ebene 1
+      \begin{enumerate}
+      \item Ebene 2, Punkt 1
+      \item Ebene 2, Punkt 2
+      \item Ebene 2, Punkt 3
+      \end{enumerate}
+    \item Zurück in Ebene 1
+    \end{enumerate}
+  \item[Simple Systeme] Kaffemaschinen
+  \end{description}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Parallele Aufzählungen mit Referenzen}
+
+  \begin{columns}[onlytextwidth]
+    \begin{column}{0.5\textwidth}
+      \begin{enumerate}
+      \item Drosophila melanogaster (siehe \cite{manual})
+        \begin{enumerate}
+        \item Mit Flügeln (siehe~\cite{article})
+        \item Ohne Flügel (siehe~\cite{book})
+        \item Mit vier Flügeln (siehe~\cite{booklet})
+        \end{enumerate}
+      \item Arabidopsis thaliana (siehe~\cite{phdthesis})
+      \end{enumerate}
+    \end{column}%
+    \begin{column}{0.5\textwidth}
+      \begin{itemize}
+      \item Endianess
+        \begin{itemize}
+        \item Big Endian (siehe~\cite{conference})
+        \item Little Endan (siehe~\cite{inbook})
+        \end{itemize}
+      \item RISC und CISC
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Eine beschreibende Aufzählung}
+  \begin{description}
+  \item[\(b\)] Taxa agregada de bits alcançável para o sistema
+  \item[\(H(f)\)] Espectro do canal
+  \item[\(H_{k}\)] Ganho do \(k\)-ésimo subcanal
+  \item[\(P_{x}\)] Potência total de transmissão
+  \end{description}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Ein TikZ-Bild (mit Animationen)}
+  Baum \(B=(V, E)\), zusammenhängend und zyklenfrei:
+
+
+  \begin{columns}[onlytextwidth]
+    \begin{column}{0.5\textwidth}
+      \vspace{-1em}
+      \begin{itemize}
+      \item Wurzel \tikz[remember picture]{\node[] (t1) {};}
+      \item Knoten \tikz[remember picture]{\node[] (t2) {};}
+      \item Blätter \tikz[remember picture]{\node[] (t3) {};}
+      \end{itemize}
+    \end{column}%
+    \begin{column}{0.5\textwidth}
+      \begin{tikzpicture}[remember picture,
+        leaf/.style = {fill = orange!90!blue},
+        inode/.style = {fill = blue!70!yellow},
+        root/.style= {fill = yellow!70!green},
+        transform shape, thick,
+        every node/.style = {draw, circle, minimum size = 8mm},
+        level 0/.style = {sibling distance=2cm},
+        level 1/.style = {sibling distance=3cm},
+        level 2/.style = {sibling distance=1.5cm},
+        level distance = 1cm
+        ]
+        \node[root] (Start) {}
+            child { node [inode] (A) {}
+            child { node [leaf] (B) {} }
+            child { node [leaf] (C) {} }
+          }
+          child {   node [inode] (D) {}
+            child { node [inode] (E) {}
+              child { node [leaf] (G) {} }
+            }
+            child { node [leaf] (F) {} }
+          }
+	  ;
+	\end{tikzpicture}
+      \end{column}
+    \end{columns}
+    \textcolor{gray}{\tiny(Hinweis: TikZ-Bilder erfordern typischerweise
+      mehrere \LaTeX-Läufe.}
+
+  \begin{tikzpicture}[remember picture, overlay]
+    \onslide<+->{}
+    \onslide<+->{\draw[thick,->,>=stealth', shorten >=1ex] (t1) -- (Start);}
+    \onslide<+->{\draw[thick,->,>=stealth', shorten >=1ex] (t2) -- (A);}
+    \onslide<+->{\draw[thick,->,>=stealth', shorten >=1ex] (t3) -- (B);}
+  \end{tikzpicture}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Baum-Quellcode}
+
+  \begin{block}{Abbildung: Generisches Markup}
+  \vspace*{0.5em}\begin{tiny}\begin{verbatim}
+  \begin{tikzpicture}
+    \node[root] (Start) {}
+      child { node [inode] (A) {}
+        child { node [leaf] (B) {} }
+        child { node [leaf] (C) {} }
+      }
+
+      child { node [inode] (D) {}
+        child { node [inode] (E) {}
+          child { node [leaf] (G) {} }
+        }
+        child { node [leaf] (F) {} }
+      }
+    ;
+  \end{tikzpicture}
+  \end{verbatim}\end{tiny}
+  \end{block}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Etwas Mathematik}
+  Formel besitzen intrinsische Schönheit:
+%
+  \begin{equation} \label{formel1}
+    \frac{d}{dx}\left(\int_{0}^{x} f(u)\,du\right)=f(x).
+  \end{equation}
+%
+ Aus Formel~(\ref{formel1}) folgt nicht folgende Erkenntnis:
+%
+  \begin{equation*}
+    {\frac {d}{dx}}\arctan(\sin({x}^{2}))=-2\,{\frac {\cos({x}^{2})x}{-2+
+        \left (\cos({x}^{2})\right )^{2}}}
+  \end{equation*}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Eine Abbildung (in der \texttt{figure}-Umgebung)}
+  \begin{figure}
+    \centering\includegraphics[height=.6\paperheight]{einBaer}
+    \caption{Ein sch"oner Bär (siehe~\cite{wiki:baeren}).}
+  \end{figure}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Eine Abbildung mit Text}
+  \begin{columns}[onlytextwidth]
+    \begin{column}{0.5\textwidth-1em}
+      {\small Die Bären (Ursidae) sind eine Säugetierfamilie aus der
+        Ordnung der Raubtiere (Carnivora).}
+    \end{column}\hspace*{1.5em}%
+    \begin{column}{0.5\textwidth-1em}
+      \begin{center}
+        \begin{figure}
+          \centering\includegraphics[width=.9\textwidth]{einBaer}
+          \caption{Ein noch sch"onerer B"ar.}
+        \end{figure}
+      \end{center}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Viele Bilder mit Text (\texttt{subfigure}-Umgebung)}
+  \vspace{.5cm}
+
+  \begin{columns}[onlytextwidth]
+    \begin{column}{0.5\textwidth-1em}
+      {\small Die Bären (Ursidae) sind eine Säugetierfamilie aus der
+        Ordnung der Raubtiere (Carnivora).}
+    \end{column}\hspace*{1.5em}%
+    \begin{column}{0.5\textwidth-1em}
+      \begin{figure}
+        \centering
+        \subfigure{\includegraphics[width=.45\textwidth]{einBaer}}
+        \subfigure{\includegraphics[width=.45\textwidth]{einBaer}}
+        \subfigure{\includegraphics[width=.45\textwidth]{einBaer}}
+        \caption{Drei sch"one B"aren (Ref.~\cite{wiki:baeren} zeigt
+          Gefahren).}
+      \end{figure}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Viele Bilder mit Text (\texttt{minipage}-Umgebung)}
+
+  \begin{columns}[onlytextwidth]
+    \begin{column}{0.5\textwidth-1em}
+      {\small Die Bären (Ursidae) sind eine Säugetierfamilie aus der
+        Ordnung der Raubtiere (Carnivora).}
+    \end{column}\hspace*{1.5em}%
+    \begin{column}{.5\textwidth-1em}
+      \vbox{\begin{minipage}{0.5\textwidth}
+          \includegraphics[width=\textwidth]{einBaer}
+        \end{minipage}%
+        \begin{minipage}{0.5\textwidth}
+          \includegraphics[width=\textwidth]{einBaer}
+        \end{minipage}} \vskip2mm
+      \begin{minipage}{\textwidth}
+        \centering\includegraphics[width=.5\textwidth]{einBaer}
+      \end{minipage}
+    \end{column}
+  \end{columns}
+
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+  \frametitle{Schriftgrößen}
+  \tiny \textbackslash tiny \showfontsize\\
+  \scriptsize \textbackslash scriptsize \showfontsize\\
+  \footnotesize \textbackslash footnotesize \showfontsize\\
+  \small \textbackslash small \showfontsize\\
+  \normalsize \textbackslash normalsize \showfontsize\\
+  \large \textbackslash large \showfontsize\\
+  \Large \textbackslash Large \showfontsize\\
+  \LARGE \textbackslash LARGE \showfontsize\\
+  \huge \textbackslash huge \showfontsize\\
+  \hbox{\Huge \textbackslash Huge \showfontsize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Blöcke I}
+
+  \begin{block}{}
+    Ein Block ohne Überschrift
+  \end{block}
+
+  \begin{block}{Wichtige Erkenntnis}
+    Ein Block mit Überschrift
+  \end{block}
+
+  \begin{exampleblock}{Beispielblock}
+    Ein \texttt{exampleblock} mit Überschrift
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Blöcke II}
+  \begin{alertblock}{alertblock}
+    Ein \texttt{alertblock} mit Überschrift
+  \end{alertblock}
+
+  {
+    \setbeamercolor{block title}{bg=green!50!blue, fg=white}
+    \setbeamercolor{block body}{bg=block title.bg!20, fg=black}
+    \begin{block}{Noch ein Block}
+      Mit individueller Farbwahl
+    \end{block}
+  }
+
+\end{frame}
+
+\appendix\nocite{*}
+\section{Literaturverzeichnis (automatisch generiert)}
+\begin{frame}[allowframebreaks,nosection]
+  \frametitle{Literatur}
+
+  % Pfad zur bib-Datei relativ zur Master tex-Datei
+  \IfFileExists{build/\jobname.bib}{
+    % directory named build is used for building the document
+    \bibliography{build/\jobname}
+  }{% else
+    \bibliography{\jobname}
+  }
+\end{frame}
+
+\end{document}

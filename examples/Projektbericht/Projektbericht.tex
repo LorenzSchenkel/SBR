@@ -1,0 +1,118 @@
+% arara: pdflatex: { shell: yes } until !found('log', '\\(?(R|r)e\\)?run (to get|LaTeX)')
+\documentclass[a4paper,
+DIV=13,
+12pt,
+BCOR=10mm,
+department=FakEI,
+%lucida,
+%KeepRoman,
+twoside,
+parskip=half,
+automark,
+logostyle=flat,
+%headsepline,
+]{OTHRartcl}
+
+
+\usepackage[english,ngerman]{babel}
+\usepackage[ngerman]{babel}
+\usepackage[hidelinks]{hyperref}
+
+\date{\today}
+
+\usepackage{lipsum}
+
+
+
+
+
+
+\usepackage[headsepline]{scrlayer-scrpage}
+\pagestyle{scrheadings}
+\automark[section]{section}
+\automark*[subsection]{}
+
+\documenttype{Projektbericht}
+
+\title{Thema der Arbeit in Worten mit ausgewogener Allgemeinheit und sinnvoller Präzisierung}
+\author{Nikodemus Hoffnungsvoll}
+\studentid{123456789}
+\department{Elektro- und Informationstechnik}
+\studyprogramme{Bachelor Elektro- und Informationstechnik}
+\startingdate{1.\,November 2088}
+\closingdate{11.\,Dezember 2089}
+\firstadvisor{Prof. Dr. Paula Strikt}
+\secondadvisor{Prof. Dr. Petra Hart}
+\externaladvisor{Dr. Klara Endlos, ACME Inc.}
+
+%\externallogo[height=1.5cm]{firmenlogo}
+
+% Hiermit trägt pdflatex die PDF-Metadaten des erzeugten Dokuments ein:
+\hypersetup{pdftitle={\csname @title\endcsname{}},%
+	pdfauthor={\csname @author\endcsname{}},%
+	%pdfsubject={Optionaler Untertitel / englischer Titel},%
+	%pdfkeywords={Optionale Schlüsselwörter}
+	}
+
+\begin{document}
+\maketitle
+
+\tableofcontents
+
+%\cleardoublepage
+
+\section{Something}
+
+Hier müsste nun etwas Text stehen, den man sich hierfür erst noch ausdenken müsste, denn man kann ja nicht einfach irgendwas in so ein wichtiges Dokument schreiben.
+
+So ein Abschnitt sollte auch mehrere Absätze besitzen, denn allzu kurze Texte wirken ansonsten etwas ermüdend, manchmal.
+
+\lipsum[6]
+\lipsum[2]
+
+\subsection{Probleme}
+
+\lipsum[0]
+
+
+\lipsum[3]
+
+\lipsum[4]
+
+
+\subsection{Lösungen}
+
+\lipsum[1]
+
+\lipsum[4]
+
+\lipsum[6]
+
+
+
+\section{Something Else}
+
+Hier müsste nun aber auch etwas Text stehen, den man sich hierfür erst noch ausdenken müsste, denn man kann ja nicht einfach irgendwas in so ein wichtiges Dokument schreiben.
+
+\subsection{Sowas}
+
+\lipsum
+
+\subsection{Oder sowas}
+
+\lipsum
+
+
+\cleardoublepage
+\appendix
+\listoffigures
+
+\cleardoublepage
+\begin{thebibliography}{99}
+\bibitem{Nemo} Dr. Nemo: \textit{Submarines through the ages}, Atlantis, 1876.
+\end{thebibliography}
+
+\cleardoublepage
+\makedeclaration
+
+\end{document}

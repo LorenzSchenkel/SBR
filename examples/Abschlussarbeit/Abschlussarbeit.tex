@@ -1,0 +1,138 @@
+% arara: pdflatex: { shell: yes } until !found('log', '\\(?(R|r)e\\)?run (to get|LaTeX)')
+\documentclass[fontsize=12pt,
+parskip=half,	% Abstände statt Einrückungen bei Absätzen
+department=FakM,  % Farbanpassungen
+logostyle=flat,
+twoside, % Spart Papier und erhöht die Lesbarkeit
+DIV=15,BCOR=10mm, % Seitenlayout wie bei Koma-Script
+]{OTHRreprt}
+\usepackage[english,ngerman]{babel} % German documents with some fragments of English
+%%\usepackage[ngerman,english]{babel} % Use instead for English documents
+%%\usepackage[svgnames, table]{xcolor} % Will work only using recent LaTeX cores
+\usepackage{acronym} % Abkürzungsverzeichnis
+\usepackage[bookmarks, raiselinks, pageanchor, hyperindex, colorlinks, hidelinks]{hyperref}
+
+%\usepackage{amsmath}				% Pakete fuer den Mathematikmodus
+%\usepackage{amssymb}
+\usepackage{pifont}				% zusaetzliche Symbole
+
+
+\usepackage[format=hang,			% Einstellung fuer Bildunterschriften
+font={footnotesize},
+labelfont={bf},
+margin=1cm,
+aboveskip=5pt,
+position=bottom]{caption}
+
+\usepackage{booktabs} % Hübschere Tabellen
+%\usepackage{tikz}								% Erstellen von Grafiken
+%\usetikzlibrary{positioning,arrows,plotmarks} 	% TikZ-Bibliotheken
+\usepackage[autostyle=true,german=quotes]{csquotes}	% Zur Nutzung von deutschen Anführungszeichen, innerhalb des Textes mit dem Befehl \enquote vorgehen
+\usepackage[bottom]{footmisc}
+\usepackage[gen]{eurosym}				% Eurozeichen einfügen
+%\usepackage{chngpage}
+%\usepackage{lscape}						% Nützlich, falls querformatierte 	Seiten gewünscht sind
+%\usepackage{pdflscape}					% Zum exportieren der Landscapes in PDF-Dateien
+\usepackage{lipsum}						% Dummy-Text generieren
+
+\usepackage[headsepline]{scrlayer-scrpage}
+\pagestyle{scrheadings}
+\automark[chapter]{chapter}
+\automark*[section]{}
+
+\documenttype{Bachelorarbeit}
+\title{Mustertitel der Musterarbeit}
+\author{Max Musterman}
+\studentid{12345678}
+\department{Musterfakultät}
+\studyprogramme{Bachelor Musterstudiengang}
+\startingdate{1.\,November 2088}
+\closingdate{11.\,Dezember 2089}
+\firstadvisor{Prof. Dr. Paula Strikt}
+\secondadvisor{Prof. Dr. Petra Hart}
+\externaladvisor{Dr. Klara Endlos, ACME Inc.}
+
+%\externallogo[height=1.5cm]{firmenlogo}
+
+% Hiermit trägt pdflatex die PDF-Metadaten des erzeugten Dokuments ein:
+\hypersetup{pdftitle={\csname @title\endcsname{}},%
+	pdfauthor={\csname @author\endcsname{}},%
+	%pdfsubject={Optionaler Untertitel / englischer Titel},%
+	%pdfkeywords={Optionale Schlüsselwörter}
+	}
+
+
+\begin{document}
+	\maketitle
+	\cleardoublepage
+	\pagenumbering{roman}
+	\begin{abstract}
+	\section*{Kurzzusammenfassung}
+	\begin{quote}
+	\lipsum[1]
+	\end{quote}
+	\end{abstract}
+	\cleardoublepage
+	\tableofcontents
+	\cleardoublepage
+	\pagenumbering{arabic}
+
+	%\include{Kapitel1}	% Die Kapitel als seperate .tex Datei im Ordner abspeichern. Dort dann Befehle wie \chapter{} und \section{} sowie \subsection{} verwenden (Keine neue "documentclass!")
+	%\include{Kapitel2}
+
+	%%% Die folgenden Zeilen dienen nur zur Veranschaulichung des Textlayouts, sie sollten später gelöscht werden!
+	\chapter{Mustereinleitung}
+	\lipsum[1]
+
+	Manchmal ist es nicht ganz zu vermeiden, Abkürzungen wie \ac{I2C} zu verwenden.
+	Diese sollten dann in einem Abkürzungsverzeichnis (siehe in diesem Dokument auf Seite~\pageref{Sec:Abkuerzungen}) zu finden sein, damit sie bei späterer Verwendung wie hier \ac{I2C} auch nachgeschlagen werden können.
+
+	\lipsum[2-4]
+	\section{Musterüberschrift}
+	\lipsum[5-7]
+	\subsection{Musterunterpunkt}
+	\lipsum[8-9]
+	\chapter{Musterhauptteil}
+	\lipsum[1]
+
+
+	% Literaturverzeichnis in das Inhaltsverzeichnis einfügen
+	\addcontentsline{toc}{chapter}{Literaturverzeichnis}
+
+	% Style für die Bibliothek festlegen
+  	\bibliographystyle{plain}
+
+  	% Einfügen des Literaturverzeichnisses in das Dokument
+	%\bibliography{Musterpfad/Zum/Literaturverzeichnis}
+
+	\newpage
+
+	\thispagestyle{empty}
+	\addcontentsline{toc}{chapter}{Abkürzungsverzeichnis}\label{Sec:Abkuerzungen}
+	\chapter*{Abkürzungsverzeichnis}
+	\begin{acronym}[OTH R]
+	 \acro{OTH R}{Ostbayerische Technische Hochschule Regensburg}
+	 \acro{OTH}{Ostbayerische Technische Hochschule}
+	 \acro{GCC}{Der Compiler namens gcc}
+	 \acro{I2C}[I²C]{Inter-Integrated Circuit}
+	\end{acronym}
+
+	% Anhang
+	\addcontentsline{toc}{chapter}{Abbildungsverzeichnis}
+	\listoffigures
+
+	\addcontentsline{toc}{chapter}{Tabellenverzeichnis}
+	\listoftables
+
+	%\addcontentsline{toc}{chapter}{Listingsverzeichnis} % für Quellcode
+	%\lstlistoflistings
+
+	%\addcontentsline{toc}{chapter}{Digitaler Anhang}	% für digitalen Anhang, falls nötig
+	%\include{anhang}
+	\cleardoublepage
+	\thispagestyle{empty}
+	\makedeclaration
+
+	\cleardoublepage
+
+\end{document}

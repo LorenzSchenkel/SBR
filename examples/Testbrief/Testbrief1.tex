@@ -1,0 +1,94 @@
+% arara: pdflatex: { shell: yes } until !found('log', '\\(?(R|r)e\\)?run (to get|LaTeX)')
+\documentclass[paper=a4,fontsize=12pt,parskip=half,department=FakEI,logostyle=flat]{scrlttr2}
+
+\usepackage[ngerman]{babel}
+\LoadLetterOption{othr}
+
+
+\usepackage{lipsum} % Nur für den Beispieltext unten
+
+%\setkomavar{yourref}{irgendwas}
+%\setkomavar{myref}{irgendwas anderes}
+%\setkomavar{yourmail}{irgendwann}
+%\setkomavar{ourmail}{irgendwann anders}
+%\setkomavar{place}{Regensburg}
+%\setkomavar{frombank}{Die eine Bank: IBAN 3746wefuhdkqwhe, BIC qoeziuhdiadhiuad\\ Die andere Bank: IBAN 3746wefuhdkqwhe, BIC qoeziuhdiadhiuad}
+
+\setkomavar{fromemail}{michael.niemetz@oth-regensburg.de}
+\setkomavar{fromphone}{+49 941 943-1100}
+%\setkomavar{frommobilephone}{+49 xxxxxxxx}
+%\setkomavar{fromfax}{+49 941 943-xxxx}
+\setkomavar{fromname}{Prof. Dr. Michael Niemetz}
+
+%Beispiele für Funktionen (Optionales Argument: Kurzfassung)
+%\setkomavar{funktion}{Dekan}
+%\setkomavar{funktion}[Vorsitzender der Prüfungskommission]{Vorsitzender der Prüfungskommission Regenerative Energietechnik und Energieeffizienz}
+%\setkomavar{funktion}{Vorsitzender des Senats}
+
+%Standardbeispiele
+\setkomavar{orgeinheit}{Fakultät Elektro- und Informationstechnik}
+%\setkomavar{orgeinheit}{Fakultät Angewandte Sozial- und Gesundheitswissenschaften}
+%\setkomavar{orgeinheit}{Fakultät Allgemeinwissenschaften und
+%Mikrosystemtechnik}
+%\setkomavar{orgeinheit}{Fakultät Informatik und Mathematik}
+
+% Beispiele mit Labor/Untereinheit (Optionales Argument}
+%\setkomavar{orgeinheit}[Labor Regelungstechnik]{Fakultät Maschinenbau}
+%\setkomavar{orgeinheit}[Labor Datenkommunikation]{Elektro- und Informationstechnik}
+
+
+%Beispiele für Absenderadressen:
+%\setkomavar{fromaddress}{Seybothstraße 2, Postfach 12 03 27\\D-93025 Regensburg}
+%\setkomavar{fromaddress}{Prüfeninger Straße 58, Postfach 12 03 27\\D-93025 Regensburg}
+%\setkomavar{fromaddress}{Universitätsstr. 31, Postfach 12 03 27\\D-93025 Regensburg}
+%\setkomavar{fromaddress}{Galgenbergstraße 30, Postfach 12 03 27\\D-93025 Regensburg}
+
+% Ein explizites Datum
+\setkomavar{date}{4. Januar 2016}
+
+% Eine Signatur mit digitaler Unterschrift
+%\setkomavar{faksimilesignature}{\includegraphics[width=6cm]{unterschrift_perlviolett}}
+%\setkomavar{faksimilesignature}{\rule{6cm}{8ex}}
+
+% Falls die Unterschrift mal mehr Platz braucht
+%\setlength{\extrasignaturespace}{3ex}
+
+\setkomavar{subject}{Darum geht es hier}
+
+%\setkomavar{specialmail}{Eilige Sendung}
+
+
+\begin{document}
+
+\begin{letter}{OTH Regensburg\\
+z. Hd. Frau Beispiel\\[1ex]
+Im Hause
+}
+
+\opening{Sehr geehrte Frau Beispiel,}
+
+\lipsum[2]
+
+\emph{Hervorhebungen sind nützlich.}
+
+\textbf{Fette Schrift dominiert den Satz sehr!}
+
+\textit{Kursive Schrift kann so dargestellt werden.}
+
+\textsc{Eine andere Art der Hervorhebung.}
+
+\textsl{Geneigte Schrift ist eine andere Variante.}
+
+\texttt{Schreibmaschinenschrift wirkt technisch.}
+
+\textcolor{Accent}{\lipsum[2]}
+
+\lipsum
+
+\closing{Viele Grüße,}
+
+\encl{Was noch so dabei ist}
+\ps{Was noch zu sagen wäre}
+
+\end{letter}
+\end{document}

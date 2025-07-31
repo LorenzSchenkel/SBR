@@ -1,0 +1,67 @@
+%% This is file `othr-ci.ins' version 0.01 (2025-04-18)
+%% it is part of
+%% OTHR-CI -- Corporate Design for OTH Regensburg
+%% ----------------------------------------------------------------------------
+%%
+%%  Copyright (C) 2025 by Marei Peischl <othr-ci@peitex.de>
+
+\input docstrip.tex
+\keepsilent
+\askforoverwritefalse
+
+\usedir{tex/latex/othr-ci}
+
+\generate{
+	\file{othr-beamer.cls}{
+		\from{othr-beamer.dtx}{class,identification,declareoptions}
+		\from{othr-ci.dtx}{class,beamer,options}
+		\from{othr-beamer.dtx}{class,head,body}
+		%\from{othr-ci.dtx}{class,beamer,processoptions}
+		%\from{othr-beamer.dtx}{class,body}
+	}
+	\file{beamerthemeOTHR.sty}{
+		\from{othr-beamer.dtx}{theme,identification,declareoptions,options}
+		\from{othr-ci.dtx}{options,init-department,theme}
+		\from{othr-beamer.dtx}{theme,head,init-department,body}
+	}
+	\file{beamerinnerthemeOTHR.sty}{
+		\from{othr-beamer.dtx}{main,inner,identification,body}
+	}
+	\file{beamercolorthemeOTHR.sty}{
+		\from{othr-beamer.dtx}{main,color,identification,body}
+	}
+	\file{beamerfontthemeOTHR.sty}{
+		\from{othr-beamer.dtx}{main,font,identification,body}
+	}
+	\file{beamerouterthemeOTHR.sty}{
+		\from{othr-beamer.dtx}{main,outer,identification,body}
+	}
+}
+
+\generate{
+	\file{othr-fonts.sty}{
+		\from{othr-fonts.dtx}{package,identification,options}
+	}
+}
+
+\generate{
+	\file{othr-colors.def}{
+		\from{othr-colors.dtx}{definitions,identification}
+	}
+	\file{othr-colors.sty}{
+		\from{othr-colors.dtx}{package,identification,declareoptions}
+		\from{othr-ci.dtx}{options,colors,declareoptions}
+		\from{othr-colors.dtx}{options,body,package}
+	}
+}
+
+\generate{
+	\file{OTHR.sty}{
+		\from{othr-ci.dtx}{package,identification,options,wrapper}
+		\from{othr-fonts.dtx}{options}
+		\from{othr-colors.dtx}{options}
+		\from{othr-ci.dtx}{wrapper,processoptions,initdepartment,main}
+	}
+}
+
+\endbatchfile

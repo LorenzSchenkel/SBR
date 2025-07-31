@@ -1,0 +1,89 @@
+% arara: pdflatex: { shell: yes } until !found('log', '\\(?(R|r)e\\)?run (to get|LaTeX)')
+% arara: bibtex
+% arara: pdflatex: { shell: yes } until !found('log', '\\(?(R|r)e\\)?run (to get|LaTeX)')
+% Die Beamer-Klasse unterstützt folgende Optionen, die von
+% besonderem Interesse sind (alle Standardoptionen werden
+% ebenfalls unterstützt; siehe beamer-Basisdokumentation):
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% aspectratio: Seitenverhältnis des resultierenden Dokuments
+% (Achtung: Aufgrund der Designvorgaben ergeben sich unterschiedliche
+% Größen der effektiv nutzbaren Textblöcke)
+%
+% Standardeinstellung: 'aspectratio=43'
+%
+% Mögliche Einstellungen:
+% 'aspectratio=43'   (4:3)
+% 'aspectratio=169'  (16:9)
+% 'aspectratio=1610' (16:10)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% fontsize: Basisschriftgröße (Größen für Überschriften etc. werden
+% aus dieser Basis automatisch abgeleitet)
+%
+% Standardeinstellung: '22pt' (entspricht den Design-Vorgaben; sehr groß!)
+%
+% Mögliche Einstellungen:
+% '8pt', '9pt', '10pt', '11pt', '12pt', '14pt', '16pt',
+% '17pt','20pt','22pt', '24pt', '26pt', '28pt'
+
+
+\documentclass[aspectratio=169,16pt]{beamer}
+
+% Der OTHR-Theme unterstützt folgende Optionen:
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% department: (Wahl der Abteilung/Fakultät)
+%
+% default: 'OTHR'
+%
+% Mögliche Einstellungen:
+% 'FakA', 'FakAM', 'FakB', 'FakBW', 'FakEI',
+% 'FakIM', 'FakM', 'FakS', 'ZWW', 'IPF',
+% 'SappZ', 'KNB', 'ReMIC', 'LFD', 'LAS3',
+% 'DK0PT', 'LBM', 'LeanLab', 'LFT', 'LFW',
+% 'LMP', 'LMS', 'LRT', 'LWS', 'RRRU',
+% 'RST', 'CEEC', 'FEM', 'IST'
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% headerMode: Aussehen und Inhalt der Kopfleiste
+%
+% Standardeinstellung: 'full'
+%
+% Mögliche Einstellungen:
+% 'full', 'frametitle', 'frametitleSection'
+%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Binäre Schalter (können angegeben oder nicht angegeben werden;
+% Standardeinstellung: Nicht angegeben)
+%
+%%%%%%%%%%%%%%%
+% navbar: Navigationssymbole anzeigen (Seite vor/zurück, Kapitel vor/zurück etc.)
+
+% pageNumbers: Seitennummerierung
+
+% blackFont: Nur schwarze Schriftfarbe verwenden (ansonsten: Fakultätsfarben)
+
+% frametitleCenter: Titel in der Kopfzeile zentrieren (ansonsten: rechtsbündig)
+
+\usetheme[department=LFD,pageNumbers,]{OTHR}
+
+% Inhaltsspezifische Zusatzpakete laden
+\usepackage[german]{babel}
+
+\title{Template OTH-\LaTeX Folien}
+\author{Max Mustermann}
+\institute{Fakultät Muster}
+\date{\today}
+
+
+\begin{document}
+
+
+\maketitle
+
+\begin{frame}
+	Text ...
+\end{frame}
+
+\end{document}

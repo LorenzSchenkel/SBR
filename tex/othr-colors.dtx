@@ -1,0 +1,348 @@
+% \iffalse meta-comment
+%
+% OTHR-CI -- LaTeX using the Corporate Design of OTH Regensburg
+% ----------------------------------------------------------------------------
+%
+%  Copyright (C) 2015-2024 Michael Nietmetz <michael.niemetz@oth-regensburg.de>
+%                 and the OTH Regensburg-LaTeX-Team
+%                2025 Marei Peischl (peiTeX) <othr-ci@peitex.de>
+%                 and Michael Nietmetz <michael.niemetz@oth-regensburg.de>
+%
+% ============================================================================
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3c
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+% http://www.latex-project.org/lppl.txt
+% and version 1.3c or later is part of all distributions of LaTeX
+% version 2008/05/04 or later.
+%
+% This work has the LPPL maintenance status `maintained'.
+%
+% The Current Maintainers of this work are
+%   Marei Peischl <othr-ci@peitex.de>
+%   Michael Niemetz <michael.niemetz@oth-regensburg.de>
+%
+% The development repository can be found at
+% https://codeberg.org/OTH-Regensburg/OTHRegensburg-LaTeX
+% Please use the issue tracker for feedback!
+% ============================================================================
+%
+% \fi
+% \iffalse
+%<*driver>
+\ProvidesFile{othr-colors.dtx}
+  [2025-05-22 v0.01-dev Color setup for  CI of OTH Regensburg]
+%</driver>
+%<@@=ptxcd>
+%<*identification>
+%<package>\NeedsTeXFormat{LaTeX2e}[2022-10-01]
+%<package>\ProvidesExplPackage{othr-colors}{2025-05-22}{0.01-dev}{Color setup for  CI of OTH Regensburg}
+%<definitions>\ProvidesFile{othr-colors.def}[2025-05-22 v0.01-dev Color definitions for OTHR-CI]
+%</identification>
+%<*driver>
+\title{\textsf{othr-colors} --Color setup for the Corporate Design of OTH Regensburg%
+  \thanks{This file describes version \fileversion, last revised \filedate.}
+}
+\providecommand*{\OTHRDocDTXfiles}{othr-colors.dtx}
+\input{othr-ci.dtx}
+%</driver>
+% \fi
+% \PTXToolsDocSection{Colors}
+% \begin{documentation}
+%
+% The colors can be used like within standard \LaTeX.
+% The predefined OTHR-CI specific colors are:
+% \begin{multicols}{4}
+%   \raggedright
+%   \ExplSyntaxOn
+%   \RenewDocumentCommand{\ProvidesFile}{mo}{}
+%   \RenewDocumentCommand{\definecolor}{ommm}{\makebox[5em]{#2}\textcolor{#2}{\rule{1cm}{\ht\strutbox}}\par\ignorespaces}
+%   \let\endinput\relax
+%   \file_get:nnN {othr-colors.def} {\cctab_select:N \c_code_cctab} \l_tmpa_tl
+%   \l_tmpa_tl
+%   \ExplSyntaxOff
+% \end{multicols}
+% \end{documentation}
+% \begin{implementation}
+% \iffalse
+%<*declareoptions>
+% \fi
+%    \begin{macrocode}
+\str_if_exist:NF \g_ptxcd_department_str {
+  \str_new:N \g_ptxcd_department_str
+  \str_gset:Nn \g_ptxcd_department_str {default}
+}
+
+\bool_new:N \g_@@_color_blacktext_bool
+\keys_define:nn {ptxcd/colors} {
+%    \end{macrocode}
+% \iffalse
+%</declareoptions>
+%<*options>
+% \fi
+% \end{implementation}
+%
+% \begin{documentation}
+% \DescribeKeyOption{accentcolor=\meta{Color}}{0b}*
+% \DescribeOption{accent=}
+%
+% Highlight color used for all highlight elements by default.
+% The options below will reference this color as  default setting meta{accentcolor}.
+% Depending on the documentclass it might be used for the so-called \enquote{identbar} as well as highlighted test elements, e.\,g. within letters if \option{premium} is enabled.
+%
+% |accent| is an alias.
+% We recommend using |accentcolor| to simplify recognizing the purpose of that option.
+% \end{documentation}
+%
+% \begin{implementation}
+% \begin{optionenv}{accent=}
+%    \begin{macrocode}
+  accent .tl_gset:N = \g_ptxcd_color_accent_tl,
+%<package>  accent .initial:n = 0b,
+  accentcolor .meta:n = {accent =#1},
+%    \end{macrocode}
+% \end{optionenv}^^A accent
+% \end{implementation}
+%
+% \begin{documentation}
+% \DescribeKeyOption{textaccent=\meta{color}}{\meta{accentcolor}}*
+% The accent color for highlighted text. Usage depends on the document class.
+% \end{documentation}
+%
+% \begin{implementation}
+% \begin{optionenv}{textaccent=\meta{color}}
+%    \begin{macrocode}
+  textaccent .tl_gset:N = \g_ptxcd_color_textaccent_tl,
+%<package>  textaccent .initial:n = \g_ptxcd_color_accent_tl,
+  textaccentcolor .meta:n = {textaccent = #1},
+%    \end{macrocode}
+% \end{optionenv}^^A textaccent
+% \end{implementation}
+%
+% \begin{documentation}
+% \DescribeKeyOption{text=black/default}{default}*
+% The text placed on top a colored area, e.\,g. colored title background, is defined to have enough contrast.
+% \end{documentation}
+%
+% \begin{implementation}
+% \begin{optionenv}{text}
+%   \iffalse
+%<*package>
+% \fi
+%    \begin{macrocode}
+  text .choice:,
+  text/black .code:n = \bool_gset_true:N \g_@@_color_blacktext_bool,
+  text/default .code:n = \bool_gset_false:N \g_@@_color_blacktext_bool,
+  text .initial:n = {default},
+%    \end{macrocode}
+%   \iffalse
+%</package>
+% \fi
+%    \begin{macrocode}
+%<!package>  text .code:n = \exp_args:Ne \PassOptionsToPackage{text=\l_keys_value_tl}{othr-colors},
+%    \end{macrocode}
+%   For compatibility reasons there is an alias for \option{text=black} called \option{blackFont}.
+%    \begin{macrocode}
+  blackFont.meta:n = {text=black},
+  blackFont .value_forbidden:n = true,
+%    \end{macrocode}
+% \end{optionenv}^^A text
+% \end{implementation}
+% \begin{documentation}
+% \DescribeKeyOption*{colormode=cmyk/RGB}{Depends on document type}*
+% The colormode can be selected to overwrite the default setting.
+% Please be aware, that there is a difference in casing and \code{RGB} has to be used uppercase and \code{cmyk} lowercase.
+% The reason for this is that internally uppercase and lowercase model names slightly differ because of rounding.
+% \end{documentation}
+% \begin{implementation}
+% \begin{optionenv}{colormode}
+%    \begin{macrocode}
+  colormode .choices:nn = {cmyk,RGB}{
+      \PassOptionsToPackage{\l_keys_value_tl}{xcolor}
+    },
+  colormode .usage:n = load,
+  RGB .meta:n = {colormode=RGB},
+  cymk .meta:n = {colormode=cmyk},
+%    \end{macrocode}
+% \end{optionenv}
+% \iffalse
+%<*package>
+% \fi
+%    \begin{macrocode}
+}
+\ProcessKeyOptions[ptxcd/colors]
+\RequirePackage{xcolor}
+
+\input{othr-colors.def}
+%    \end{macrocode}
+% \iffalse
+%</package>
+%</options>
+%<*definitions>
+% \fi
+%    \begin{macrocode}
+
+\definecolor{OTHRgrau}{cmyk/RGB/HTML}{0,0,0,.5/157,157,156/9D9D9C}
+
+\definecolor{FakANK}{cmyk/RGB/HTML}{.03,.03,.15,.20/213,210,194/D5D2C2}
+\definecolor{FakA}{cmyk/RGB/HTML}{0,0,1,0/255,237,0/FFED00}
+\definecolor{FakB}{cmyk/RGB/HTML}{0,.6,1,0/239,125,0/EF7D00}
+\definecolor{FakBM}{cmyk/RGB/HTML}{0,.9,1,.2/194,46,12/C22E0C}
+\definecolor{FakEI}{cmyk/RGB/HTML}{.6,1,0,0/131,31,130/831F82}
+\definecolor{FakIM}{cmyk/RGB/HTML}{1,.8,0,0/22,65,148/164194}
+\definecolor{FakM}{cmyk/RGB/HTML}{1,0,.35,0/0,155,172/009BAC}
+\definecolor{FakSG}{cmyk/RGB/HTML}{1,0,.9,.1/0,140,73/008C49}
+
+% Fakultäten (Grundfarben), die nicht im Handbuch vorkommen
+\definecolor{FakAM}{cmyk}{.03,.03,.15,.2}
+\definecolor{FakBW}{cmyk}{0,.9,1,.2}
+\definecolor{FakS}{cmyk}{1,0,.9,.1}
+
+\definecolor{ZWW}{cmyk}{.2,0,1,0}
+\definecolor{LASIII}{rgb}{.223,.412,.489}
+\definecolor{LASIIIcontrast}{rgb}{.737,.850,.482}
+
+%    \end{macrocode}
+% \iffalse
+%</definitions>
+%<*package&body>
+% \fi
+%    \begin{macrocode}
+
+\ExplSyntaxOn
+% 1. Arg: Basisname der Farbe
+% 2. Arg: Farbe von der abgeleitet wird
+% 3. Arg: Schriftfarbe
+% 4. Arg: Kontrastfarbe
+\newcommand{\@createColors}[4]{
+  \colorlet{#1}{#2}
+  \colorlet{#125}{#1!25}
+  \colorlet{#150}{#1!50}
+  \colorlet{#190}{#1!90}
+  \bool_if:NTF \g_@@_color_blacktext_bool {
+% wenn die Kontrastfarbe nicht weiss ist,
+% so darf sie auch bei blackFont nicht weiss sein
+    \str_if_eq:nnTF {#4} {white} {
+      \colorlet{#1FontColor}{black}
+      \colorlet{#1ContrastColor}{white}
+    }{
+      \colorlet{#1FontColor}{white}
+      \colorlet{#1ContrastColor}{black}
+    }
+  }{
+    \colorlet{#1FontColor}{#3}
+    \colorlet{#1ContrastColor}{#4}
+  }
+}
+\ExplSyntaxOff
+
+\newcommand{\@createCurrentDepartmentColors}[1]{
+  \colorlet{Accent}{#1}
+  \colorlet{Accent25}{#125}
+  \colorlet{Accent50}{#150}
+  \colorlet{Accent90}{#190}
+  \colorlet{AccentFontColor}{#1FontColor}
+  \colorlet{AccentContrastColor}{#1ContrastColor}
+}
+
+% OTHR Farben
+\@createColors{default}{OTHRgrau}{OTHRgrau}{white}
+\@createColors{OTHR}{OTHRgrau}{OTHRgrau}{white}
+
+% sonstiges
+\@createColors{ZWW}{ZWW}{OTHRgrau}{black}
+
+% Fakultätsfarben
+\@createColors{FakA}{FakA}{OTHRgrau}{black}
+\@createColors{FakAM}{FakAM}{FakAM}{black}
+\@createColors{FakANK}{FakANK}{FakANK}{black}
+\@createColors{FakB}{FakB}{FakB}{white}
+\@createColors{FakBW}{FakBW}{FakBW}{white}
+\@createColors{FakBM}{FakBM}{FakBM}{white}
+\@createColors{FakEI}{FakEI}{FakEI}{white}
+\@createColors{FakIM}{FakIM}{FakIM}{white}
+\@createColors{FakM}{FakM}{FakM}{white}
+\@createColors{FakS}{FakS}{FakS}{white}
+\@createColors{FakSG}{FakSG}{FakSG}{white}
+
+% % Centers and Schools
+\@createColors{RCER}{OTHRgrau}{OTHRgrau}{white}
+\@createColors{RCHST}{OTHRgrau}{OTHRgrau}{white}
+\@createColors{RCAI}{OTHRgrau}{OTHRgrau}{white}
+\@createColors{RSDS}{OTHRgrau}{OTHRgrau}{white}
+
+% Laborfarben
+% FakA
+\@createColors{FMIS}{FakA}{OTHRgrau}{black}
+
+% FakAM
+\@createColors{NACH}{FakANK}{FakANK}{white}
+\@createColors{SappZ}{FakANK}{FakANK}{white}
+
+% FakB
+\@createColors{Geo}{FakB}{FakB}{white}
+\@createColors{KNB}{FakB}{FakB}{white}
+
+% Fak BW
+\@createColors{12Science}{FakBW}{FakBW}{white}
+\@createColors{FEURO}{FakBW}{FakBW}{white}
+
+% FakEI
+\@createColors{Bisp}{FakEI}{FakEI}{white}
+\@createColors{LAS3}{LASIII}{LASIII}{LASIIIcontrast}
+\@createColors{DK0PT}{FakEI}{FakEI}{white}
+\@createColors{FENES}{FakEI}{FakEI}{white}
+\@createColors{MRU}{FakEI}{FakEI}{white}
+\@createColors{SES}{FakEI}{FakEI}{white}
+
+% FakIM
+\@createColors{CCSE}{FakIM}{FakIM}{white}
+\@createColors{eHealth}{FakIM}{FakIM}{white}
+\@createColors{ITZ}{FakIM}{FakIM}{white}
+\@createColors{LFD}{FakIM}{FakIM}{white}
+\@createColors{MD}{FakIM}{FakIM}{white}
+\@createColors{ReMIC}{FakIM}{FakIM}{white}
+\@createColors{SEC}{FakIM}{FakIM}{white}
+\@createColors{IMDS}{FakIM}{FakIM}{white}
+
+% FakM
+\@createColors{AIMS}{FakM}{FakM}{white}
+\@createColors{BFM}{FakM}{FakM}{white}
+\@createColors{BMA}{FakM}{FakM}{white}
+\@createColors{CEEC}{FakM}{FakM}{white}
+\@createColors{CFD}{FakM}{FakM}{white}
+\@createColors{IPF}{FakM}{FakM}{white}
+\@createColors{KIB}{FakM}{FakM}{white}
+\@createColors{KWK}{FakM}{FakM}{white}
+\@createColors{LAT}{FakM}{FakM}{white}
+\@createColors{LBM}{FakM}{FakM}{white}
+\@createColors{LeanLab}{FakM}{FakM}{white}
+\@createColors{LFT}{FakM}{FakM}{white}
+\@createColors{LFW}{FakM}{FakM}{white}
+\@createColors{LMP}{FakM}{FakM}{white}
+\@createColors{LMS}{FakM}{FakM}{white}
+\@createColors{LRT}{FakM}{FakM}{white}
+\@createColors{LWM}{FakM}{FakM}{white}
+\@createColors{LWS}{FakM}{FakM}{white}
+\@createColors{MKS}{FakM}{FakM}{white}
+\@createColors{MST}{FakM}{FakM}{white}
+\@createColors{RRRU}{FakM}{FakM}{white}
+\@createColors{RST}{FakM}{FakM}{white}
+\@createColors{FEM}{FakM}{FakM}{white}
+
+% FakS
+\@createColors{IST}{FakS}{FakS}{white}
+\@createColors{LP}{FakS}{FakS}{white}
+\@createColors{PT}{FakS}{FakS}{white}
+\@createColors{PF}{FakS}{FakS}{white}
+
+% current Department
+\@createCurrentDepartmentColors{\UseName{g_ptxcd_department_str}}
+
+%    \end{macrocode}
+% \iffalse
+%</package&body>
+% \fi
+% \end{implementation}
+\endinput

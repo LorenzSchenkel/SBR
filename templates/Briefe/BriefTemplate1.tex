@@ -1,0 +1,54 @@
+% arara: pdflatex: { shell: yes } until !found('log', '\\(?(R|r)e\\)?run (to get|LaTeX)')
+\documentclass[paper=a4,fontsize=12pt,parskip=half,logostyle=flat]{scrlttr2}
+
+\usepackage[ngerman]{babel}
+\LoadLetterOption{othr}
+
+
+
+%\setkomavar{yourref}{irgendwas}
+%\setkomavar{myref}{irgendwas anderes}
+%\setkomavar{yourmail}{irgendwann}
+%\setkomavar{ourmail}{irgendwann anders}
+%\setkomavar{place}{Regensburg}
+
+\setkomavar{fromemail}{\rule{3em}{2ex}}
+\setkomavar{fromphone}{+49 941 943-\rule{3em}{2ex}}
+%\setkomavar{frommobilephone}{+49 \rule{3em}{2ex}}
+%\setkomavar{fromfax}{+49 941 943-\rule{3em}{2ex}}
+\setkomavar{fromname}{\rule{3em}{2ex}}
+
+%\setkomavar{funktion}{\rule{3em}{2ex}}
+
+\setkomavar{orgeinheit}{Fakultät \rule{3em}{2ex}}
+
+%\setkomavar{fromaddress}{Seybothstraße 2, Postfach 12 03 27\\D-93025 Regensburg}
+%\setkomavar{fromaddress}{Prüfeninger Straße 58, Postfach 12 03 27\\D-93025 Regensburg}
+%\setkomavar{fromaddress}{Universitätsstr. 31, Postfach 12 03 27\\D-93025 Regensburg}
+%\setkomavar{fromaddress}{Galgenbergstraße 30, Postfach 12 03 27\\D-93025 Regensburg}
+
+\setkomavar{subject}{\rule{3em}{2ex}}
+
+%\setkomavar{specialmail}{Eilige Sendung}
+%\setkomavar{faksimilesignature}{\includegraphics[width=6cm]{unterschrift_perlviolett}}
+%\setlength{\extrasignaturespace}{3ex}
+
+\begin{document}
+
+\begin{letter}{\rule{3em}{2ex}\\
+\rule{3em}{2ex}\\[1ex]
+\rule{3em}{2ex}
+}
+
+\opening{Sehr geehrte }
+
+...
+
+
+\closing{Viele Grüße,}
+
+%\encl{}
+%\ps{}
+
+\end{letter}
+\end{document}

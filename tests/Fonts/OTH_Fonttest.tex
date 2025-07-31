@@ -1,0 +1,34 @@
+\documentclass[fontsize=12pt, parskip=half, paper=A4, DIV=12,
+%KeepRoman,
+DejaVu,
+%Lucida,
+department=FakEI]{OTHRartcl}
+
+
+\usepackage[ngerman]{babel}
+\usepackage{lipsum}
+\usepackage{blindtext}
+
+\begin{document}
+Dies ist ein Dokument um die Font"=Einstellungen des OTH"=Pakets in verschiedenen Umgebungen zu testen.
+
+\section{Fließtext}
+\subsection{Neutral}
+
+\lipsum
+
+
+\subsection{Deutsch}
+
+\Blindtext
+
+\blindlistlist[3]{itemize}
+
+\blindlistlist[3]{enumerate}
+
+\section{Formeln}
+
+\blindmathpaper
+
+
+\end{document}

@@ -1,0 +1,766 @@
+% \iffalse meta-comment
+%
+% OTHR-CI -- LaTeX using the Corporate Design of OTH Regensburg
+% ----------------------------------------------------------------------------
+%
+%  Copyright (C) 2015-2024 Michael Nietmetz <michael.niemetz@oth-regensburg.de>
+%                 and the OTH Regensburg-LaTeX-Team
+%                2025 Marei Peischl (peiTeX) <othr-ci@peitex.de>
+%                 and Michael Nietmetz <michael.niemetz@oth-regensburg.de>
+%
+% ============================================================================
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3c
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+% http://www.latex-project.org/lppl.txt
+% and version 1.3c or later is part of all distributions of LaTeX
+% version 2008/05/04 or later.
+%
+% This work has the LPPL maintenance status `maintained'.
+%
+% The Current Maintainers of this work are
+%   Marei Peischl <othr-ci@peitex.de>
+%   Michael Niemetz <michael.niemetz@oth-regensburg.de>
+%
+% The development repository can be found at
+% https://codeberg.org/OTH-Regensburg/OTHRegensburg-LaTeX
+% Please use the issue tracker for feedback!
+% ============================================================================
+%
+% \fi
+% \iffalse
+%<*driver>
+\ProvidesFile{othr-beamer.dtx}
+  [2025-05-22 v0.01-dev  Beamer slides using the CI of OTH Regensburg]
+%</driver>
+%<@@=ptxcd>
+%<*identification>
+%<package|class>\NeedsTeXFormat{LaTeX2e}[2022-10-01]
+%<class>\ProvidesExplClass{othr-beamer}{2025-05-22}{0.01-dev}{Beamer slides using the CI of OTH Regensburg}
+%<theme>\ProvidesExplPackage{beamerthemeOTHR}{2025-05-22}{0.01-dev}{Beamer theme for othr-CI}
+%<font>\ProvidesPackage{beamerfontthemeOTHR}[2025-05-22 v0.01-dev Beamer font theme for othr-CI]
+%<color>\ProvidesPackage{beamercolorthemeOTHR}[2025-05-22 v0.01-dev Beamer color theme for othr-CI]
+%<inner>\ProvidesPackage{beamerinnerthemeOTHR}[2025-05-22 v0.01-dev Beamer inner theme for othr-CI]
+%<outer>\ProvidesPackage{beamerouterthemeOTHR}[2025-05-22 v0.01-dev Beamer outer theme for othr-CI]
+%</identification>
+%<*driver>
+\title{\textsf{othr-beamer} -- Beamer slides using the Corporate Design of OTH Regensburg%
+  \thanks{This file describes version \fileversion, last revised \filedate.}
+}
+\providecommand*{\OTHRDocDTXfiles}{othr-beamer.dtx}
+\input{othr-ci.dtx}
+%</driver>
+% \fi
+% \PTXToolsDocSection{Beamer presentations}
+%
+% \begin{documentation}
+% The  structure to use OTHRegensburg CI within beamer presentations has been completly reworked.
+% With \version{1.0} there also exists a dedicated class \cls{othr-beamer} to simplify the usage even further.
+%
+% The easiest way to make use of it is by exchanging the \cls{beamer} with \cls{other-beamer}.
+% \begin{examplecode}
+%   \documentclass{othr-beamer}
+%   % <additional packages/config>
+%   \begin{document}
+%
+%   \maketitle
+%
+%   \begin{frame}{frametitle}
+%     …
+%   \end{frame}
+%   \end{document}
+% \end{examplecode}
+% \end{documentation}
+% \iffalse
+%<*declareoptions>
+% \fi
+% \begin{implementation}
+%    \begin{macrocode}
+
+\msg_if_exist:nnF  {othr-ci} {deprecated-option} {
+  \msg_new:nnn {othr-ci} {deprecated-option} {
+    The~option~`#1`~is~deprecated~and~will~be~removed~in~the~future~as~it~is~obsolete!\\
+    Please~remove~this~option~from~your~file.\\
+    It~has~no~effect.
+  }
+}
+
+\bool_if_exist:NF \g_@@_compatibility_logos_bool {
+  \bool_new:N \g_@@_compatibility_logos_bool
+}
+%    \end{macrocode}
+% \iffalse
+%<*!class>
+% \fi
+%    \begin{macrocode}
+\define@key{beamerframe}{nosection}[true]{%
+  \msg_warning:nnn  {othr-ci} {deprecated-option} {nosection}
+}
+%    \end{macrocode}
+% \iffalse
+%</!class>
+%</declareoptions>
+% \fi
+% \end{implementation}
+% \iffalse
+%<*options>
+% \fi
+% \begin{documentation}
+% \DescribeKeyOption{block-auto-pagestyle=\meta{boolean}}{true}
+% This option can be used to disable the automatic pagestyle selection for the shading when using blocks.
+% \end{documentation}
+% \begin{implementation}
+% \begin{optionenv}{block-auto-pagestyle}
+%    \begin{macrocode}
+%<!class>\keys_define:nn {ptxcd/beamer} {
+  block-auto-pagestyle .bool_gset:N = \l_@@_block_auto_pagestyle_bool,
+  block-auto-pagestyle .initial:n = true,
+  block-auto-pagestyle .default:n = true,
+%    \end{macrocode}
+% \end{optionenv}
+% Deprecated options
+%    \begin{macrocode}
+  pageNumbers .code:n = \msg_warning:nnnn {othr-ci} {deprecated-option} {pageNumbers} {Frame~numbers~are~now~part~of~the~official~layout.},
+  pageNumbers .value_forbidden:n = true,
+  logostyle .code:n = {
+      \PassOptionsToPackage{logostyle=#1}{othr-logos}
+      \bool_gset_true:N \g_@@_compatibility_logos_bool
+      \msg_warning:nnnn {othr-ci} {deprecated-option} {pageNumbers} {The different logos are not supported by the official release. See the internal package othr-logos for more information.}
+    },
+%    \end{macrocode}
+% \end{implementation}
+% \iffalse
+%</options>
+%<*outer>
+% \fi
+% \begin{documentation}
+% \DescribeKeyOption{subtitle-rule-if-empty=\meta{boolean}}{true}
+% According to the corporate design the rule next to a frame's subtitle should also be placed when the subtitle is empty.
+% This matches the default behavor of the template.
+% To save space in the the headline it can be switched off using the option \option{subtitle-rule-if-empty=false}.
+% \end{documentation}
+% \begin{implementation}
+% \begin{optionenv}{subtitle-rule-if-empty}
+%    \begin{macrocode}
+  \ExplSyntaxOn
+  \keys_define:nn {ptxcd/beamer/outer} {
+    subtitle-rule-if-empty .bool_set:N = \l_@@_framesubtitlerule_if_empty_bool,
+    subtitle-rule-if-empty .initial:n = true,
+    subtitle-rule-if-empty .default:n = true,
+  }
+  \ProcessKeyOptions[ptxcd/beamer/outer]
+  \ExplSyntaxOff
+%    \end{macrocode}
+% \end{optionenv}
+% \iffalse
+%</outer>
+%<*class&head>
+% \fi
+%    \begin{macrocode}
+  subtitle-rule-if-empty  .code:n = \PassOptionsToPackage{subtitle-rule-if-empty=#1}{beamerouterthemeOTHR},
+%    \end{macrocode}
+% \iffalse
+%</class&head>
+% \fi
+%    \begin{macrocode}
+%<head&!init-department>}
+%    \end{macrocode}
+% \iffalse
+%<*class&head>
+% \fi
+%    \begin{macrocode}
+\DeclareOption*{%
+  \PassOptionsToClass{\CurrentOption}{beamer}
+}
+\ProcessKeyOptions[ptxcd/beamer]
+\ProcessOptions*
+%    \end{macrocode}
+% Load the beamer class
+%    \begin{macrocode}
+\PassOptionsToClass{t,aspectratio=169}{beamer}
+\LoadClass{beamer}
+\usetheme{OTHR}
+\file_if_exist_input:n {\g_@@_config_prefix_tl\g_ptxcd_department_str.cfg}
+%    \end{macrocode}
+% \iffalse
+%</class&head>
+%<*body>
+% \fi
+%    \begin{macrocode}
+%<!class>\mode<presentation>
+%    \end{macrocode}
+% \iffalse
+%<*theme>
+% \fi
+%    \begin{macrocode}
+\ProcessKeyOptions[ptxcd/beamer]
+\setbeamersize{
+  text~margin~left=0.0625\paperwidth,% 1cm
+  text~margin~right=0.0625\paperwidth,% 1cm
+}
+\bool_if:NT \g_@@_compatibility_logos_bool {
+  \RequirePackage{othr-logos}
+}
+\usefonttheme{OTHR}
+\usecolortheme{OTHR}
+\useinnertheme{OTHR}
+\useoutertheme{OTHR}
+%    \end{macrocode}
+% \iffalse
+%</theme>
+%<*color>
+% \fi
+%    \begin{macrocode}
+\RequirePackage{othr-colors}
+\setbeamercolor{structure}{fg=black}
+
+% Additional colors which only exist as RGB
+\definecolor{OTHR-BeamerGray}{RGB/HTML}{137,137,137/898989}
+\definecolor{OTHR-BeamerBlue}{RGB/HTML}{241,245,249/F1F5F9}
+\setbeamercolor{footline}{fg=OTHR-BeamerGray}%^^A Schriftfarbe aus powerpoint
+%^^A wird aktuell auch für die linien verwendet … unklar ob… bild ist so schlecht skaliert, dass farbe nicht eindeutig.
+\setbeamercolor{titlegraphic}{bg=OTHR-BeamerGray}
+\setbeamercolor{background canvas}{parent=normal text,bg=}
+%    \end{macrocode}
+% contact block for the last slide of the template
+%    \begin{macrocode}
+\setbeamercolor{contact block}{bg=black, fg=white}
+%    \end{macrocode}
+% block colors
+%    \begin{macrocode}
+\setbeamercolor{block body}{bg=white,fg=black}
+\setbeamercolor{block title}{parent={block body}}
+\setbeamercolor{image block title}{parent={block title}}
+\setbeamercolor{image block body}{parent={block body}}
+
+\setbeamercolor{framesubtitle rule}{parent=framesubtitle}
+%    \end{macrocode}
+% \iffalse
+%</color>
+% \fi
+%    \begin{macrocode}
+
+% \setbeamercolor{alerted text}{fg=red}
+% \setbeamercolor{example text}{fg=green!50!black}
+%
+% \setbeamercolor{structure}{fg=beamer@blendedblue}
+%
+% \setbeamercolor{background canvas}{parent=normal text}
+% \setbeamercolor{background}{parent=background canvas}
+%
+% \setbeamercolor{palette primary}{use=structure,fg=structure.fg}
+% \setbeamercolor{palette secondary}{use=structure,fg=structure.fg!75!black}
+% \setbeamercolor{palette tertiary}{use=structure,fg=structure.fg!50!black}
+% \setbeamercolor{palette quaternary}{fg=black}
+%    \end{macrocode}
+% \iffalse
+%<*font>
+% \fi
+%    \begin{macrocode}
+\RequirePackage{othr-fonts}
+
+\beamer@suppressreplacementstrue
+\def\ptxcd@beamer@size{{size11.clo}}
+\ifx\ptxcd@beamer@size\beamer@size
+  \DeclareRobustCommand\huge{\@setfontsize\huge\@xviipt{24}}
+  \DeclareRobustCommand\LARGE{\@setfontsize\LARGE{15.5}{19}}
+\fi
+\setbeamerfont{title}{size=\huge,series=\bfseries}
+
+\setbeamerfont{tiny structure}{size=\tiny}
+\setbeamerfont{footline}{size*={4.8pt}{5.2pt}}
+
+\setbeamerfont{itemize item}{size=\tiny}
+\setbeamerfont{itemize subitem}{size=\tiny}
+\setbeamerfont{itemize subsubitem}{size=\tiny}
+
+\setbeamerfont{structure}{series=\bfseries}
+\setbeamerfont{frametitle}{parent=structure,size=\LARGE}
+\setbeamerfont{framesubtitle}{parent=frametitle,size=\normalsize}
+\setbeamerfont{framesubtitle rule}{parent=framesubtitle}
+
+\setbeamerfont{tiny structure}{size=\tiny}
+\setbeamerfont{footline}{size*={4pt}{5pt}}
+
+\setbeamerfont{contact block title}{series=\bfseries}
+
+\setbeamerfont*{block title}{parent={structure,block body}}
+\setbeamerfont{block body}{}
+\setbeamerfont{block title}{parent={block body}, series=\bfseries}
+\setbeamerfont{image block title}{parent={block title}}
+\setbeamerfont{image block body}{parent={block body}}
+\setbeamercolor{background shading}{bg=OTHR-BeamerBlue}
+%    \end{macrocode}
+% \iffalse
+%</font>
+%<*inner>
+% \fi
+% The titlegraphic requires a background pattern.
+% The PowerPoint template is using a fixed size but since \pkg{othbeamer} also wants to support images of different aspect ratio we extend this mechanism to be more flexible.
+%    \begin{macrocode}
+\def\ps@OTHR@titlepage{
+  \setbeamertemplate{background canvas}[OTHR-Titlepage]
+  \@nameuse{ps@navigation}
+}
+
+\usepgflibrary{patterns.meta}
+
+\ExplSyntaxOn
+\box_if_exist:NF  \l_@@_tmpa_box {
+  \box_new:N  \l_@@_tmpa_box
+}
+\dim_if_exist:NF  \l_@@_tmpa_dim {
+  \dim_new:N  \l_@@_tmpa_dim
+}
+\dim_new:N \g_@@_titlegraphic_ht_dim
+\dim_new:N \g_@@_titlegraphic_wd_dim
+\dim_set:Nn \g_@@_titlegraphic_ht_dim {.46\paperheight}
+\dim_set:Nn \g_@@_titlegraphic_wd_dim {.395\paperwidth}
+\dim_const:Nn \c_@@_beamer_framesep_dim {.25\beamer@leftmargin}
+
+\cs_new:Nn \_@@_background_pattern:n {
+\par
+\begingroup
+\hbox_set:Nn \l_@@_tmpa_box {
+  #1
+}
+\skip_vertical:n {1.5\c_@@_beamer_framesep_dim}
+\leavevmode
+\edef\@tmpa{{\dim_eval:n {\box_wd:N  \l_@@_tmpa_box +1.5\c_@@_beamer_framesep_dim}}{\dim_eval:n {\box_ht_plus_dp:N  \l_@@_tmpa_box}}}
+\exp_last_unbraced:Nno \use:n {\begin{pgfpicture}{0pt}{0pt}}\@tmpa
+    \pgfsetfillpattern{Lines[angle=45,yshift=-.5pt,distance=2.9pt]}{bg}
+    \pgfpathrectanglecorners{\pgfpoint{0}{0}}{\exp_last_unbraced:No \pgfpoint\@tmpa}
+    \pgfusepath{fill}
+  \end{pgfpicture}
+  \par\nointerlineskip\skip_vertical:n {-1.5\c_@@_beamer_framesep_dim-\box_ht_plus_dp:N \l_@@_tmpa_box}
+  \leavevmode\box_use:N \l_@@_tmpa_box
+  \par
+  \endgroup
+}
+
+\cs_new:Nn \_@@_box_use_background_pattern:Nnn {
+\par\skip_vertical:n {#2}
+\vbox:n {
+  \edef\@tmpa{{\dim_eval:n {\box_wd:N  #1 + #2}}{\dim_eval:n {\box_ht_plus_dp:N #1}}}
+  \exp_last_unbraced:Nno \use:n {\begin{pgfpicture}{0pt}{0pt}}\@tmpa
+      \pgfsetfillpattern{Lines[angle=45,yshift=-.5pt,distance=5pt]}{#3}
+      \pgfpathrectanglecorners{\pgfpoint{#2}{0}}{\exp_last_unbraced:No \pgfpoint\@tmpa}
+      \pgfusepath{fill}
+    \end{pgfpicture}
+    \par\nointerlineskip\skip_vertical:n {-#2-\box_ht_plus_dp:N #1}
+    \box_use:N #1
+  }
+}
+
+\defbeamertemplate{background~canvas}{OTHR-Titlepage}{
+  \skip_horizontal:n {\beamer@leftmargin}
+  \begin{beamercolorbox}[wd=\paperwidth,ht=\paperheight,dp=0pt,vmode]{background~canvas}
+    \vbox_to_ht:nn {\paperheight}{
+      \vskip .3\paperheight
+      \vskip\dp\strutbox
+      \usebeamertemplate**{titlegraphic}
+      \par
+      \vfill
+      \leavevmode\smash{\makebox[\paperwidth][r]{
+          \includegraphics[width=.2\paperwidth]{othr-beamer-title-background}
+        }}
+    }
+  \end{beamercolorbox}
+}
+
+\defbeamertemplate*{titlegraphic}{OTHR}{%
+  \_@@_background_pattern:n {
+    \def\width{\g_@@_titlegraphic_wd_dim}
+    \def\height{\g_@@_titlegraphic_ht_dim}
+    \inserttitlegraphic
+  }
+  \par
+}
+
+\defbeamertemplate*{title}{OTHR}[1][]{%
+  \par
+  \hbox_set:Nn \l_@@_tmpa_box {
+    \begin{beamercolorbox}[left,colsep=1pt,#1]{title}
+      \usebeamerfont{title}\inserttitle\par%
+      \ifx\insertsubtitle\@empty%
+      \else%
+        \vskip.65em%
+        {\usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle\par}%
+      \fi%
+    \end{beamercolorbox}
+  }
+  \leavevmode\makebox[0pt][r]{
+    \rule[\dim_eval:n {-\box_dp:N \l_@@_tmpa_box-.4\ht\strutbox}]{1pt}{\dim_eval:n {\box_ht_plus_dp:N \l_@@_tmpa_box+1.4\ht\strutbox}}
+    \skip_horizontal:n {1.2\c_@@_beamer_framesep_dim}}
+  \box_use:N \l_@@_tmpa_box\par
+}
+
+\defbeamertemplate*{title~page}{OTHR}[1][]
+{
+  \vbox{}
+  \par
+  \thispagestyle{OTHR@titlepage}
+  \skip_vertical:n  {.625\c_@@_beamer_framesep_dim}
+  \makebox[.915\textwidth][r]{\includegraphics[width=.455\paperwidth]{\g_@@_logofile_flat_tl}
+  }
+  \par
+  \skip_vertical:n {4.3\c__ptxcd_beamer_framesep_dim}
+  \par
+  \hspace*{.4\paperwidth}\begin{beamercolorbox}[
+      wd=\dim_eval:n {.6\paperwidth-2\beamer@rightmargin},
+    ]{title~page}
+    \setlength{\textwidth}{\linewidth}
+    \usebeamertemplate{title}
+  \end{beamercolorbox}
+}[action]{
+  \iffalse
+  \setbeamertemplate{title}[OTHR][#1]
+  \setbeamertemplate{author}[OTHR][#1]
+  \setbeamertemplate{institute}[OTHR][#1]
+  \setbeamertemplate{date}[OTHR][#1]
+  \setbeamertemplate{titlegraphic}[OTHR]
+  \fi
+}
+%    \end{macrocode}
+% \begin{macro}{\department}
+%    \begin{macrocode}
+\NewDocumentCommand{\department}{O{#2}m}{
+  \tl_if_blank:nTF {#2} {
+    \def\insertdepartment{}
+  } {
+    \def\insertdepartment{\def\inst{\beamer@instinst}#2}
+  }
+  \def\beamer@shortdepartment{#1}
+}
+\department{}
+%    \end{macrocode}
+% \end{macro}
+%
+% \begin{macro}{\insertshortdepartment}
+%    \begin{macrocode}
+\newcommand\insertshortdepartment[1][]{%
+  {%
+      \let\thanks=\@gobble%
+      \beamer@setupshort{#1}%
+      \beamer@insertshort{\beamer@shortdepartment}%
+    }%
+}
+%    \end{macrocode}
+% \end{macro}
+% Setting up list spacing and itemize items:
+%    \begin{macrocode}
+\ExplSyntaxOff
+\setbeamertemplate{itemize items}[circle]
+\setlength\leftmargini{1em}
+\setlength\leftmarginii{1em}
+\setlength\leftmarginiii{1em}
+
+\setlength  \labelsep  {.5em}
+\setlength  \labelwidth{\leftmargini}
+\addtolength\labelwidth{-\labelsep}
+
+\def\@listi{\leftmargin\leftmargini
+  \topsep 3\p@ \@plus2\p@ \@minus2.5\p@
+  \parsep    \z@   \@plus\p@ \@minus 0\z@
+% Add an  option to reduce itemsep?
+  \itemsep1\baselineskip\@plus2\p@ \@minus3\p@
+}
+\let\@listI\@listi
+\def\@listii{\leftmargin\leftmarginii
+  \topsep    2\p@ \@plus1\p@ \@minus2\p@
+  \parsep    \z@   \@plus\p@ \@minus 0\z@
+  \itemsep   \parsep}
+\def\@listiii{\leftmargin\leftmarginiii
+  \topsep    2\p@ \@plus1\p@ \@minus2\p@
+  \parsep    \z@   \@plus\p@ \@minus 0\z@
+  \itemsep   \parsep}
+\setlength\partopsep{\z@skip}
+%    \end{macrocode}
+% \end{implementation}
+% \begin{documentation}
+% \subsection{Structures to simplify reproducing CI compliant slide layouts}
+% OTHR-CI adds some environments to simplify the
+% \end{documentation}
+% \begin{implementation}
+% picture block
+% Power Point template is using 4 columns for the image and 10 columnes for the text block
+%    \begin{macrocode}
+\newenvironment<>{imageblock}[2][]{%
+\setlength{\columnsep}{\z@}%
+\addvspace{\medskipamount}
+\begin{columns}#3[onlytextwidth,T]%
+  \begin{column}{.3\linewidth}%
+    #2
+  \end{column}%
+  \begin{column}{.7\linewidth}%
+    \setbeamertemplate{block begin}[OTHR][colsep*=0pt,colsep=.75ex]
+    \begin{block}{#1}
+      }{%
+    \end{block}%
+  \end{column}%
+\end{columns}
+}
+
+\defbeamertemplate*{block title}{OTHR}{
+  \strut\insertblocktitle
+}
+
+\ExplSyntaxOn% \l_@@_block_auto_pagestyle_bool,
+\define@key{beamercolbox}{fullheight}{\def\beamer@colbox@ht{.6\paperheight}}
+
+\newenvironment<>{fullheightblock}[1]{%
+\unskip
+\bool_set_true:N  \l_@@_fullheight_block_bool
+\begin{block}#2{#1}
+  }{
+\end{block}
+}
+
+\bool_new:N  \l_@@_fullheight_block_bool
+\newlength{\fullheightblockheight}
+\setlength{\fullheightblockheight}{0.5833\paperheight}
+\defbeamertemplate*{block~begin}{OTHR}[1][]
+{
+\ifvmode
+\else
+  \dim_compare:nNnTF {\lastskip} = {\c_zero_dim} {
+  \addvspace{\medskipamount}
+  }
+  \par
+\fi
+\leavevmode
+\bool_if:NT \l_@@_block_auto_pagestyle_bool {\thispagestyle{OTHR-shading}}
+\begin{beamercolorbox}[colsep*=.5ex,vmode,#1]{block~body}
+\skip_vertical:n {.5\c__ptxcd_beamer_framesep_dim}
+\leavevmode\rule[1pt]{1.6\c__ptxcd_beamer_framesep_dim}{1pt}\hfill
+\bool_if:NTF \l_@@_fullheight_block_bool {
+  \begin{minipage}[t][0.5833\paperheight]
+} {
+  \begin{minipage}[t]
+    }
+%    \end{macrocode}
+% colsep has to be subtracted because of using this for image block as well
+%    \begin{macrocode}
+    {\dim_eval:n {\linewidth-2\c__ptxcd_beamer_framesep_dim-2\dimexpr\beamer@colbox@colsep}}
+    \leavevmode\usebeamertemplate***{block~title}
+    \par
+    }
+
+    \defbeamertemplate*{block~end}{OTHR}  {
+    \par\skip_vertical:n {.5\c__ptxcd_beamer_framesep_dim \@plus 1 fil}
+  \end{minipage}
+  \end{beamercolorbox}
+  \par
+  \addvspace{\medskipamount}
+}
+\ExplSyntaxOff
+%    \end{macrocode}
+% \iffalse
+%</inner>
+%<*outer>
+% \fi
+%    \begin{macrocode}
+\RequirePackage{fontawesome5}
+\RequirePackage{multicol}
+
+\setbeamertemplate{navigation symbols}{}
+\ExplSyntaxOn
+\defbeamertemplate*{footline}{OTHR}{
+  \begin{beamercolorbox}[leftskip=\beamer@leftmargin,rightskip=\beamer@rightmargin]{footline}
+    \usebeamerfont{footline}
+    \bool_set_false:N \l_@@_tmpa__bool
+    \clist_map_variable:nNn {department, institute, author, title} \l_tmpa_tl {
+      \tl_if_empty:cF {beamer@short\l_tmpa_tl} {
+        \bool_if:NTF \l_@@_tmpa__bool
+        {\usebeamertemplate{footline~sep}}
+        {\bool_set_true:N  \l_@@_tmpa__bool}
+        \use:c {insertshort\l_tmpa_tl}
+      }
+    }
+    \hfill
+    \usebeamertemplate**{page~number~in~head/foot}
+    \par\vskip\baselineskip
+  \end{beamercolorbox}
+}
+\setbeamertemplate{page~numer~in~head/foot}[predefined option]
+\setbeamertemplate{footline~sep}{\hspace{1ex}\smash{\rule[-.5\dp\strutbox]{.25pt}{\ht\strutbox}}\hspace{1ex}}
+
+\box_new:N \g_@@_logo_box
+\hbox_gset:Nn \g_@@_logo_box {
+  \includegraphics[height=4 \c_@@_beamer_framesep_dim]{\g_@@_logofile_short_tl}
+}
+
+\defbeamertemplate*{framesubtitle~rule}{OTHR}{
+  \leavevmode
+  \skip_horizontal:n {-2pt}\makebox[0pt][r]{
+    \rule[
+      \dim_eval:n {-\dim_max:nn {\box_dp:N \l_@@_tmpa_box}{\dp\strutbox}}
+    ]{1pt}{
+      \dim_eval:n {\dim_max:nn {\box_ht_plus_dp:N \l_@@_tmpa_box+.2\baselineskip} {1.2\baselineskip}}
+    }
+  }
+  \skip_horizontal:n {.5ex}
+}
+
+\box_new:N \l_@@_frametitle_box
+\defbeamertemplate*{frametitle}{OTHR}{%
+  \nointerlineskip%
+  \skip_vertical:n {\c_@@_beamer_framesep_dim}
+  \leavevmode
+  \begin{beamercolorbox}[
+% TODO??!
+      leftskip=\dim_eval:n {\beamer@leftmargin},
+      rightskip=\c_@@_beamer_framesep_dim,
+      wd=\paperwidth,
+    ]{frametitle}
+    \leavevmode\parbox[t]
+    {\dim_eval:n {\linewidth- \beamer@leftmargin-2\c_@@_beamer_framesep_dim-\box_wd:N \g_@@_logo_box}}{%
+      \vskip1pt
+      {\usebeamerfont{frametitle}\strut\insertframetitle}
+      \usebeamerfont{framesubtitle}
+      \par
+      \ifx\insertframesubtitle\@empty
+        \bool_if:NT \l_@@_framesubtitlerule_if_empty_bool {
+          \hbox_set:Nn \l_@@_tmpa_box {\null}
+          \usebeamertemplate***{framesubtitle~rule}
+        }
+      \else
+        \hbox_set:Nn\l_@@_tmpa_box {\parbox{\linewidth}{
+            \usebeamercolor[fg]{framesubtitle}
+            \usebeamerfont{framesubtitle}
+            \strut\insertframesubtitle
+            \par
+          }}
+        \usebeamertemplate***{framesubtitle~rule}
+        \box_use:N \l_@@_tmpa_box\par
+      \fi
+    }
+    \hfill%
+    \raisebox{\dim_eval:n {-\height}}%-.7\c_@@_beamer_framesep_dim}}
+    {\box_use:N \g_@@_logo_box}
+  \end{beamercolorbox}%
+  \addvspace{.5\baselineskip}
+}
+%    \end{macrocode}
+% \end{implementation}
+% \begin{documentation}
+% \DescribeKeyOption{frame-mode=shading/no-shading}{}
+% The \option{frame-mode} is a custom option which is added by \pkg{OTHR-CI} to be used with the \env{frame} environment.
+% It can be used to enable the blue shaded background, which is used by the block environment using default settings.
+% This would use the \value{shading} whereas \value{no-shading} can be used to locally overwrite the automatic selecting by the \env{block} environment.
+% \end{documentation}
+% \begin{implementation}
+%    \begin{macrocode}
+\define@key{beamerframe}{frame-mode}{
+  \keys_set:nn {ptxcd/beamer/outer} {
+    frame-mode=#1
+  }
+}
+
+\defbeamertemplate{background~canvas}{OTHR-shading}{
+  \skip_horizontal:n {\beamer@leftmargin}
+  \vbox_to_ht:nn {\paperheight} {
+    \skip_vertical:n {8\c__ptxcd_beamer_framesep_dim}
+    \begin{beamercolorbox}[wd=\paperwidth,ht=.72\paperheight,dp=0pt]{OTHR~background~shading}
+    \end{beamercolorbox}
+    \vfill
+    \null
+  }
+}
+
+\cs_new:cpn {ps@OTHR-shading} {
+  \setbeamertemplate{background~canvas}[OTHR-shading]
+  \@nameuse{ps@navigation}
+}
+
+\keys_define:nn {ptxcd/beamer/outer} {
+  frame-mode .choice:,
+  frame-mode / shading .code:n = \thispagestyle{OTHR-shading},
+  frame-mode / no-shading .code:n = \bool_set_false:N \l_@@_block_auto_pagestyle_bool
+}
+
+\newtranslation[to = German]{CONTACT}{KONTAKT}
+
+\newcommand*{\columnsepbox}[2][\fullheightblockheight]{
+  \leavevmode\rotatebox[origin=tr]{90}{\makebox[#1]{\small\hrulefill\hspace{1ex}\raisebox{-.5\height}{#2}}}
+  \hfill
+}
+
+\newenvironment<>{contactblock}[1]{%
+\begin{actionenv}#2%
+  \def\insertblocktitle{#1}%
+  \par%
+  \hbox_set:Nw  \l_@@_tmpa_box
+  \begin{minipage}[t][.5\paperheight]{\dim_eval:n {\linewidth-2.5cm}}
+    \usebeamercolor*{contact~block}
+    \usebeamerfont*{contact~block}
+    \color{fg}
+    \setlength{\premulticols}{0pt}
+    \setlength{\topskip}{0pt}
+    \begin{multicols}{2}
+      \setlength{\parindent}{\z@}
+      }{
+      \vfill\null
+    \end{multicols}
+  \end{minipage}
+  \hbox_set_end:
+  \hbox_set:Nn \l_@@_tmpa_box {
+    \begin{beamercolorbox}[wd=.875\paperwidth,dp=0pt,colsep=5mm,vmode]{contact~ block}
+      \vbox_to_ht:nn {0.5833\paperheight} {
+        \vskip0pt\par
+        \ifx\insertblocktitle\@empty
+          \else
+          {\usebeamerfont*{contact~ block~ title}\insertblocktitle\par}
+        \fi
+        \vskip\baselineskip
+        \columnsepbox{\translate{CONTACT}}{.32\paperheight}
+        \hbox_unpack_drop:N  \l_@@_tmpa_box
+        \par\vfill
+      }
+    \end{beamercolorbox}
+  }
+  \usebeamercolor{contact~block}
+  \_@@_box_use_background_pattern:Nnn \l_@@_tmpa_box {7.5mm} {bg}
+\end{actionenv}
+}
+
+\newcommand*{\contactEntry}[2]{
+  \par
+  \leavevmode\raisebox{-.5\height}{\makebox[5mm]{\LARGE#1}}\hfill
+  \raisebox{-.5\height}{\parbox{\dim_eval:n {\linewidth-7.5mm}}{#2}}
+  \par\vskip\baselineskip
+}
+
+\newcommand{\contactAddress}[1]{
+  \contactEntry{\faMapMarker*}{#1}
+}
+
+\newcommand{\contactEmail}[1]{
+  \contactEntry{\faEnvelope[regular]}{#1}
+}
+\newcommand{\contactPhone}[1]{
+  \contactEntry{\faPhone}{#1}
+}
+
+\newcommand*{\contactLink}[1]{
+  \contactEntry{\faLink}{#1}
+}
+
+\ExplSyntaxOff
+%    \end{macrocode}
+% \iffalse
+%</outer>
+%<*!class>
+% \fi
+%    \begin{macrocode}
+\mode
+<all>
+%    \end{macrocode}
+% \iffalse
+%</!class>
+%</body>
+% \fi
+% \end{implementation}
+% \Finale
+\endinput

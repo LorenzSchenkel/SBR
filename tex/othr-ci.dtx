@@ -1,0 +1,335 @@
+% \iffalse meta-comment
+%
+% OTHR-CI -- LaTeX using the Corporate Design of OTH Regensburg
+% ----------------------------------------------------------------------------
+%
+%  Copyright (C) 2015-2024 Michael Nietmetz <michael.niemetz@oth-regensburg.de>
+%                 and the OTH Regensburg-LaTeX-Team
+%                2025 Marei Peischl (peiTeX) <othr-ci@peitex.de>
+%                 and Michael Nietmetz <michael.niemetz@oth-regensburg.de>
+%
+% ============================================================================
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3c
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+% http://www.latex-project.org/lppl.txt
+% and version 1.3c or later is part of all distributions of LaTeX
+% version 2008/05/04 or later.
+%
+% This work has the LPPL maintenance status `maintained'.
+%
+% The Current Maintainers of this work are
+%   Marei Peischl <othr-ci@peitex.de>
+%   Michael Niemetz <michael.niemetz@oth-regensburg.de>
+%
+% The development repository can be found at
+% https://codeberg.org/OTH-Regensburg/OTHRegensburg-LaTeX
+% Please use the issue tracker for feedback!
+% ============================================================================
+%
+% \fi
+% \iffalse
+%<*driver>
+\typeout{Currently this file does not create documenation.}
+%</driver>
+%<@@=ptxcd>
+%<*identification>
+\NeedsTeXFormat{LaTeX2e}[2022-06-01]
+%<driver>\ProvidesFile{othr-ci.dtx}
+%<driver>  [2025-05-22 v0.01-dev  Fundamental configuration for OTHR-CI – LaTeX using the Coporate Design of OTH Regensburg]
+%<package>\ProvidesExplPackage{OTHR}{2025-05-22}{0.01-dev}{Fundamental configuration for OTHR-CI – LaTeX using the Coporate Design of OTH Regensburg}
+%</identification>
+%<*driver>
+\documentclass[lm-default=false,cs-break-nohyphen]{l3doc}
+
+\usepackage{minted}
+\usepackage{accsupp}
+\setminted{breaksymbol={\BeginAccSupp{method=escape,ActualText={}}\tiny\ensuremath{\hookrightarrow}\EndAccSupp{}}}
+\newminted[examplecode]{latex}{tabsize=3,gobble=1,escapeinside=||,breaklines}
+
+\ExplSyntaxOn
+\makeatletter
+\tl_new:N \l__ptxtools_doc_values_tl
+\newcommand*{\codefamily}{\MacroFont}
+\DeclareTextFontCommand{\codefont}{\codefamily}
+\providecommand{\option}[1]{\codefont{#1}}
+
+\cs_new:Npn \__ptxctools_parse_key_option:w #1 #2 #3 #4 = #5 \q_stop {
+  \begingroup
+  \let\PrintDescribeOption\PrintDescribeKeyOption
+  \tl_set:Nn \l__ptxtools_doc_values_tl {\small\IfBooleanTF{#3}{\textsf{#5}}{\textsf{(\codefont{#5})}}}
+  \noindent\DescribeOption{#4}\hfill
+  \small
+  \tl_if_blank:nTF {#2} {\meta{\textrm{initially~unset}}} {
+    \IfBooleanTF{#1}
+    {#2}
+    {(default:~\codefont{#2})}
+  }\strut\par
+  \endgroup
+}
+
+\newcommand*{\PrintDescribeKeyOption}[1]{
+  {\MacroFont #1=}\rlap{\hskip\marginparsep\l__ptxtools_doc_values_tl}
+}
+
+\bool_new:N \l_ptxtools_last_was_describe_bool
+\NewDocumentCommand{\DescribeKeyOption}{smms}{
+  \bool_if:NTF \l_ptxtools_last_was_describe_bool {
+    \vskip -\lastskip
+  }{
+    \par
+    \dim_compare:nNnF {\parskip} > {\c_zero_dim} {\medskip}
+  }
+  \__ptxctools_parse_key_option:w #1 {#3} #4 #2 \q_stop
+
+  \bool_set_true:N \l_ptxtools_last_was_describe_bool
+  \AddToHookNext{para/begin}{
+    \bool_set_false:N \l_ptxtools_last_was_describe_bool
+    \OmitIndent
+  }
+  \smallskip
+}
+
+% to support small layout adjustments for the texdoc version
+\newcommand*{\IfOnlyDocumentation}[1]{
+  \bool_if_exist:NT \g__codedoc_typeset_implementation_bool {
+    \bool_if:NF \g__codedoc_typeset_implementation_bool {#1}
+  }
+}
+
+\NewDocumentCommand{\PTXToolsDocSection}{om}{
+  \str_if_eq:NNF  \CurrentFile \OTHRDocDTXfiles {
+    \section[#1]{#2}
+  }
+}
+\ExplSyntaxOff
+
+\usepackage{underscore-ltx}
+
+\DeclareRobustCommand{\issue}[1]{%
+  {\DeclareFieldFormat{citeurlpostfix}{\href{##1/issues/#1}{\##1}}\citefield{othr-ci-repo}[citeurlpostfix]{url}}%
+}
+\newcommand*{\version}[1]{v#1}
+
+\EnableCrossrefs
+% \CodelineIndex
+\RecordChanges
+
+\DoNotIndex{\newcommand,\newenvironment}
+
+\expandafter\ifx\csname OTHRDocDTXfiles\endcsname\relax
+  \title{OTHRegensburg-CI --- \LaTeX\ using the Corporate Design of OTH-Regensburg%
+    \thanks{This file describes version \fileversion, last revised \filedate.}
+  }
+  \GetFileInfo{othr-ci.dtx}
+\else
+  \GetFileInfo{\OTHRDocDTXfiles}
+% subtitle? \fileinfo?
+\fi
+
+\author{%
+  Marei Peischl\thanks{Email: \href{mailto:othr-ci@peitex.de}{othr-ci@peitex.de}}%
+  \and Michael Niemetz\thanks{Email: \href{mailto:michael.niemetz@oth-regensburg.de}{michael.niemetz@oth-regensburg.de}}%
+}
+\date{\fileversion~from \filedate}
+
+\usepackage{OTHR}
+
+\providecommand*{\OTHRDocDTXfiles}{
+  othr-ci.dtx,
+  othr-beamer.dtx,
+  othr-colors.dtx,
+  othr-fonts.dtx
+}
+
+\begin{document}
+
+\maketitle
+\EnableDocumentation\DisableImplementation
+
+\begin{abstract}
+  The OTHRegensburg-CI bundle provides possibilities to use the CI of OTH Regensburg for \LaTeX{}.
+
+  Parts of this bundle are historically grown, but the beamer template was completely rewritten in 2025. This document is the starting point for a full documentation of the bundle, but all document types beside beamer are described within the old documentation, which is only available in German \cite{othrTeX}.
+\end{abstract}
+
+\tableofcontents
+
+\iffalse
+\section{Contained packages and supported document types}
+
+This bundle supports the following document types:
+
+\begin{description}
+\item[Beamer slides], see section \ref{sec:beamer}
+\end{description}
+\fi
+
+\UseName{exp_args:No} \DocInput {\OTHRDocDTXfiles}
+
+\DisableDocumentation\EnableImplementation
+
+\begin{implementation}
+\section{Implementation}
+\end{implementation}
+
+\DocInputAgain
+
+\PrintChanges
+\PrintIndex
+\end{document}
+%</driver>
+% \fi
+% \iffalse
+%<*declareoptions|options>
+%<*class>
+% \fi
+% \begin{implementation}
+%    \begin{macrocode}
+\str_const:Nn \c_@@_base_str {
+%<beamer>  beamer
+}
+
+\exp_args:Ne \keys_define:nn {ptxcd/\c__ptxcd_base_str} {
+%    \end{macrocode}
+% \iffalse
+%</class>
+%    \begin{macrocode}
+%<wrapper>  \keys_define:nn {ptxcd/othr-ci} {
+%<gobble>  }^^A gobble brace for latexindent
+%    \end{macrocode}
+% \fi
+% \end{implementation}
+% \begin{documentation}
+% \section{General layout options}
+% The OTHRegensburg-CI bundle supports multiple document types.
+% While rewriting the beamer theme the options which are available within multiple classes or packages of this bundle have been constructe separately to simplfy maintenance.
+%
+% Currently these options are only fully supporte by the beamer class \cls{othr-beamer} but this might be extended in the future.
+% \end{documentation}
+% \begin{documentation}
+% \DescribeKeyOption{department=\meta{departmentshorthand}}{default}
+% As the CI guideline is attaching colors to specific departments as well as there is a mechanism to load department specific config files this option may be used in a lot of different ways.
+% For example the \pkg{othr-colors} package is using it to set  a department specific highlighting color.%^^A TODO provide reference!!
+% The \value{default} is used to determine if a user specific setting as provided or not.
+% In the current setup it has no effect towards leaving it empty.
+% \end{documentation}
+% \begin{implementation}
+% \begin{optionenv}{department}
+%    \begin{macrocode}
+  department .choice:,
+  department / default .code:n = \str_gset:Nn \g_ptxcd_department_str {default},
+%<class>  department .initial:n = default,
+  department / unknown .code:n = {
+      \str_gset:NV \g_ptxcd_department_str \l_keys_value_tl
+    },
+%    \end{macrocode}
+% \end{optionenv}
+% \end{implementation}
+% \begin{documentation}
+% \DescribeKeyOption{departmentconfigprefix=\meta{prefix}}{othr-}
+% The loading mechanism to be used to load department specific config files allows to change the file prefix.
+% This might be useful if a specific department wants some internal templates to be shared separately.
+% In that case it is also possible to use this option to set a specific directory where those config files can be found.
+% By default this setting will search for files called |othr-|\meta{department}|.cfg|, where |othr-| can be set using this option and \option{department} would configure the second part.
+% \end{documentation}
+% \begin{implementation}
+% \begin{optionenv}{departmentconfigprefix}
+%    \begin{macrocode}
+  departmentconfigprefix .tl_gset:N = \g_@@_config_prefix_tl,
+%<class>  departmentconfigprefix .initial:n = othr-,
+%    \end{macrocode}
+% \end{optionenv}
+% \end{implementation}
+% \begin{documentation}
+% \DescribeKeyOption{logofile=\meta{<main-logo-filename/prefix>}}{othr-logo}
+% \DescribeKeyOption{titlelogofile=\meta{filename}}{\meta{logofile}_flat}
+% \DescribeKeyOption{logofile=\meta{filename}}{\meta{logofile}_short}
+% The beamer template is using two different logo files.
+% The \enquote{flat} variant is used for the title page and the \enquote{short} appears within the frame title.
+% To simplify the global config the option \option{logofile} is used as a wrapper to configure both defaults.
+%
+% As the official logos are shipped within this bundle it should not be necessary for users to use these options.
+%
+% \end{documentation}
+% \begin{implementation}
+% \begin{optionenv}{logofile,short-logofile,flat-logofile}
+%    \begin{macrocode}
+  logofile .tl_gset:N = \g_ptxcd_logofile_tl,
+%<class>  logofile .initial:n = othr-logo,
+  short-logofile .tl_gset:N = \g_@@_logofile_short_tl,
+%<class>  short-logofile .initial:n =  \g_ptxcd_logofile_tl _short,
+  flat-logofile .tl_gset:N = \g_@@_logofile_flat_tl,
+%<class>  flat-logofile .initial:n =  \g_ptxcd_logofile_tl _flat,
+%    \end{macrocode}
+% \end{optionenv}
+% \end{implementation}
+% \begin{documentation}
+% \DescribeKeyOption{accept-missing-logos=\meta{boolean}}{false}
+% This option exists for compatibility reasons.
+% It allows to use the \pkg{othr-logos} package which has been existing the former logo variants.
+% In case you need to compile old tex-files and get error messages about missing logos, this option can be enabled.
+% \end{documentation}
+% \begin{implementation}
+% \begin{optionenv}{accept-missing-logos}
+%    \begin{macrocode}
+  accept-missing-logos .bool_gset:N = \g_ptxcd_logo_workaround_bool,
+%<class>  accept-missing-logos .initial:n = false,
+  accept-missing-logos .usage:n = load,
+  accept-missing-logos .default:n = true,
+%    \end{macrocode}
+% \end{optionenv}
+% \iffalse
+%<*wrapper>
+% \fi
+% \begin{optionenv}{useDepartmentLogo,useOTHRLogo}
+%   Compatibility options for logo package.
+%    \begin{macrocode}
+  useDepartmentLogo .code:n = \PassOptionsToPackage{useDepartmentLogo}{othr-logos},
+  useOTHRLogo .code:n = \PassOptionsToPackage{useOTHRLogo}{othr-logos},
+%    \end{macrocode}
+% \end{optionenv}
+% \iffalse
+%</wrapper>
+%</declareoptions|options>
+% \fi
+%    \begin{macrocode}
+%<processoptions|init-department>}
+%    \end{macrocode}
+% \iffalse
+%<*init-department>
+% \fi
+% Configure defaults, in case the packages are used without loading a class being part of  OTHR-CI.
+%    \begin{macrocode}
+\str_if_exist:NF \g_ptxcd_department_str {
+  \str_new:N \g_ptxcd_department_str
+  \str_gset:Nn \g_ptxcd_department_str {default}
+  \tl_gset:Nn \g_ptxcd_logofile_tl {othr-logo}
+  \tl_gset:Nn \g_@@_logofile_short_tl { \g_ptxcd_logofile_tl _short}
+  \tl_gset:Nn \g_@@_logofile_flat_tl { \g_ptxcd_logofile_tl _flat}
+  \tl_gset:Nn \g_@@_config_prefix_tl {othr-}
+}
+%    \end{macrocode}
+% \iffalse
+%</init-department>
+%<*processoptions>
+% \fi
+%    \begin{macrocode}
+%<!wrapper>\ProcessKeyOptions[ptxcd/\c__ptxcd_base_str]
+%<wrapper>\ProcessKeyOptions[ptxcd/othr-ci]
+%    \end{macrocode}
+% \iffalse
+%</processoptions>
+%<*wrapper&main>
+% \fi
+%    \begin{macrocode}
+\RequirePackage{othr-colors}
+\RequirePackage{othr-logos}
+\RequirePackage{othr-fonts}
+%    \end{macrocode}
+% \iffalse
+%</wrapper&main>
+% \fi
+% \end{implementation}
+\endinput

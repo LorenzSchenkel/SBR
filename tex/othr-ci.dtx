@@ -43,7 +43,13 @@
 %<*driver>
 \documentclass[lm-default=false,cs-break-nohyphen]{l3doc}
 
-\usepackage{minted}
+% Hacky workaround to detect if minted is >= v3 without loading it
+\IfFileExists{minted2.sty}{
+	\usepackage{minted}
+} {
+	\usepackage[draft]{minted}
+}
+
 \usepackage{accsupp}
 \setminted{breaksymbol={\BeginAccSupp{method=escape,ActualText={}}\tiny\ensuremath{\hookrightarrow}\EndAccSupp{}}}
 \newminted[examplecode]{latex}{tabsize=3,gobble=1,escapeinside=||,breaklines}

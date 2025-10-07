@@ -8,13 +8,13 @@ Zur Installation der LaTeX-Stilvorlagen nach dem CI-Design der OTH Regensburg is
 
 * Der Inhalt des Pakets ist (am Besten komplett) an eine geeignete Stelle zu kopieren. (Im Folgenden wird C:/OTHRtex verwendet, natürlich ist eine für den jeweiligen Rechner geeignete Stelle zu wählen). Das betreffende Verzeichnis sollte jetzt z.B. Unterverzeichnisse wie "doc" oder "texmf_OTHR" enthalten.
 
-Wichtig: Das gewählte Verzeichnis darf nicht innerhalb des "texmf"-Verzeichnisses der vorhandenen Miktex-Installation liegen. 
+Wichtig: Das gewählte Verzeichnis darf nicht innerhalb des "texmf"-Verzeichnisses der vorhandenen Miktex-Installation liegen.
 
 * In der MiKTeX-eigenen Setup-Anwendung (am Besten verwendet man stets die admin-Variante, wenn möglich) ist jetzt zusätzlich zu den bisher eventuell bereits registrierten texmf-Verzeichnissen (trees) zusätzlich der neu gelieferte texmf-Baum <...hier steht der gewählte Ort, z.B. C:/OTHRtex>/texmf_OTHR einzutragen.
   * Seite Einstellungen wählen
   * Reiter "Verzeichnisse" auswählen
   * Das texmf_OTHR-Verzeichnis <...hier steht der gewählte Installationsort, z.B. C:/OTHRtex>/texmf_OTHR hinzufügen
-  
+
 * Nun ist noch die Dateinamendatenbank (FNDB) zu aktualisieren, da sonst die neuen Dateien nicht gefunden werden. Dazu im Menü "Aufgaben" die Option "Dateinamendatenbank aktualisieren" auswählen
 
 * Fertig! Zum Test der Installation kann nun einfach eine der mitgelieferten Test- oder Beispieldateien *in ein neues Verzeichnis kopiert* und dort übersetzt werden. Wie üblich müssen hierbei eventuell noch einige benötigte Pakete nachinstalliert werden.
@@ -33,7 +33,7 @@ TEXMFLOCAL = {/usr/local/share/texmf,/usr/local/share/texmf_OTHR}
 
 geändert werden.
 
-* Nun sind die Dateirechte zu kontrollieren. Zweckmäßigerweise sollten die Rechte auf den selben Wert wie in anderen texmf-Verzeichnissen des Systems gesetzt werden. 
+* Nun sind die Dateirechte zu kontrollieren. Zweckmäßigerweise sollten die Rechte auf den selben Wert wie in anderen texmf-Verzeichnissen des Systems gesetzt werden.
 
 * Nun ist noch die Dateinamendatenbank über den Aufruf von texhash zu aktualisieren.
 
@@ -41,11 +41,8 @@ geändert werden.
 
 # Overleaf
 
-Overleaf (www.overleaf.com) bietet einen Online-Editor mit Compiler. 
+Overleaf (www.overleaf.com) bietet einen Online-Editor mit Compiler.
 
-Das im OTH-Paket für Overleaf enthaltene(!) zip-File kann direkt als zip-File in Overleaf hochgeladen werden. 
+Das im OTH-Paket für Overleaf enthaltene(!) zip-File kann direkt als zip-File in Overleaf hochgeladen werden.
 
 Die Compilierung der darin enthaltenen Beispieldatei oder auch anderer Beispieldateien, die im Paket aber außerhalb des overleaf-Zip-Files enthalten sind (einzeln hochladen!) sollte dort umgehend lauffähig sein.
-
-
-

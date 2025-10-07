@@ -32,5 +32,3 @@ Studiengangsprofil:
 
 Testbrief:
 	cd Testbrief && make
-
-

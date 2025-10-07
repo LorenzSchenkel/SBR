@@ -36,7 +36,7 @@ rm -rf $tmpDir/$prefix/examples/Testbrief/build/
 rm -rf $tmpDir/$prefix/texmf_OTHR/ls-R
 
 echo packing full release...
-#tar caf $fullRelease.tar.bz2 --exclude-vcs -C $tmpDir $prefix 
+#tar caf $fullRelease.tar.bz2 --exclude-vcs -C $tmpDir $prefix
 (cd $tmpDir && zip -qr - $prefix -x *.git*) > $fullRelease.zip
 
 #using existing temporary full package

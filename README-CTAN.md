@@ -18,7 +18,7 @@ or later. See http://www.latex-project.org/lppl.txt for details.
 
 The OTHRegensburg-CI bundle provides a possibility to use the Corporate Design of OTH Regensburg in LaTeX.
 
-The beamer template was completly reworked in 2025 the other parts are historically grown. The other document types may be considered work in progress. 
+The beamer template was completly reworked in 2025 the other parts are historically grown. The other document types may be considered work in progress.
 
 
 ## Included templates and document types

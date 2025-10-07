@@ -5,4 +5,3 @@
 SUBDIR+=	Farbtest
 
 include	/usr/local/share/latex-mk/latex.subdir.gmk
-

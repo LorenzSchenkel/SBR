@@ -6,7 +6,7 @@ DEST ?= $(shell kpsewhich -expand-var '$$TEXMFHOME')
 # into $TEXMFHOME
 #
 
-release: manuals examples 
+release: manuals examples
 
 package: release clean
 	./generateRelease.sh
@@ -26,5 +26,3 @@ manuals:
 
 examples:
 	cd examples && make
-
-

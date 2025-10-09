@@ -117,16 +117,13 @@
 
     \vfill\vfill
 
-    \noindent{\fontsize{28}{34}\selectfont\bfseries\MakeUppercase\othr@thesis@thesistype}\\[1em]
-    \begin{flushleft}\noindent\LARGE\@author\end{flushleft}
-
+    \noindent\begin{flushleft}\fontsize{28}{30}\selectfont\sloppy\bfseries\MakeUppercase\othr@thesis@thesistype\par\end{flushleft}\vspace{.1em}
+    \noindent\begin{flushleft}\LARGE\@author\par\end{flushleft}
     \vfill\vfill
 
-    {\noindent\fontsize{20}{24}\selectfont\raggedright\textbf\@title \par%
-    \ifdefempty{\@subtitle}{}{\vspace{1.5ex}\@subtitle\par}}
-
-    \vfill\vfill\vfill\vfill
-
+    \noindent\begin{flushleft}\fontsize{20}{24}\selectfont\textbf\@title \par%
+    \ifdefempty{\@subtitle}{}{\vspace{1.5ex}\@subtitle\par}\end{flushleft}
+    \vfill\vfill\vfill\vfill\par
         \ifdefempty{\@date}{
                 \ifdefempty{\othr@thesis@version}{}{\noindent\large\othr@common@versionlabel: \othr@thesis@version}}%
         {\noindent{\large\@date}\ifdefempty{\othr@thesis@version}{}{\large, \othr@common@versionlabel: \othr@thesis@version}}

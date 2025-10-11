@@ -82,25 +82,7 @@
 
 \RequirePackage{graphicx}
 \RequirePackage{pdftexcmds}
-%
-\newlength{\extendedlogosmall}
-\setlength{\extendedlogosmall}{16mm}
-\newlength{\extendedlogonormal}
-\setlength{\extendedlogonormal}{20mm}
-\newlength{\extendedlogolarge}
-\setlength{\extendedlogolarge}{24mm}
-\newlength{\extendedlogohuge}
-\setlength{\extendedlogohuge}{28mm}
-%
-\newlength{\basiclogosmall}
-\setlength{\basiclogosmall}{12mm}
-\newlength{\basiclogonormal}
-\setlength{\basiclogonormal}{16mm}
-\newlength{\basiclogolarge}
-\setlength{\basiclogolarge}{20mm}
-\newlength{\basiclogohuge}
-\setlength{\basiclogohuge}{24mm}
-%
+
 \ExplSyntaxOn
 \dim_new:N \l__ptxcd_logoheight_dim
 \dim_new:N \l__ptxcd_logowidth_dim
@@ -111,13 +93,24 @@
 		{\c_@@_OTHR_classiclogofile_tl} {}
 	} {
 % standard logo height
-		\dim_set_eq:Nc \l__ptxcd_logoheight_dim {basiclogo#2}
-		\dim_set:Nn \l__ptxcd_logowidth_dim {
-			\l__ptxcd_logoheight_dim * 11/2
-		}
+			\str_case:nn {#2} {
+				{small} {\dim_set:Nn \l__ptxcd_logoheight_dim {12mm}}
+				{normal} {\dim_set:Nn \l__ptxcd_logoheight_dim {16mm}}
+				{large} {\dim_set:Nn \l__ptxcd_logoheight_dim {20mm}}
+				{huge} {\dim_set:Nn \l__ptxcd_logoheight_dim {24mm}}
+			}
+% set width for fallback mode based on the image size
+			\dim_set:Nn \l__ptxcd_logowidth_dim {
+				\l__ptxcd_logoheight_dim * 11/2
+			}
 	}{
 % extended logo height
-		\dim_set_eq:Nc \l__ptxcd_logoheight_dim {extendedlogo#2}
+		\str_case:nn {#2} {
+			{small} {\dim_set:Nn \l__ptxcd_logoheight_dim {16mm}}
+			{normal} {\dim_set:Nn \l__ptxcd_logoheight_dim {20mm}}
+			{large} {\dim_set:Nn \l__ptxcd_logoheight_dim {24mm}}
+			{huge} {\dim_set:Nn \l__ptxcd_logoheight_dim {28mm}}
+		}
 % set width for fallback mode based on the image size
 		\dim_set:Nn \l__ptxcd_logowidth_dim {
 			\l__ptxcd_logoheight_dim * 6 / 2

@@ -92,7 +92,7 @@
 \end{minipage}%
 }%
 }
-\setkomavar{fromlogo}{\OfficialLogoNormal}
+\setkomavar{fromlogo}{\logoNormal}
 \renewcommand*{\raggedsignature}{\raggedright}
 \setplength{firstfootvpos}{\paperheight}
 \addtoplength[-1]{firstfootvpos}{2cm}

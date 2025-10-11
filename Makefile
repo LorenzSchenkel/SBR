@@ -1,10 +1,4 @@
-DEST ?= $(shell kpsewhich -expand-var '$$TEXMFHOME')
-
 .PHONY: release install manuals purge fullpurge examples package
-
-# NOTE: Running mktexlsr or texhash is not required for installations
-# into $TEXMFHOME
-#
 
 release: manuals examples
 

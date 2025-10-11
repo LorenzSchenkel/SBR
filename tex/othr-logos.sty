@@ -61,6 +61,7 @@
 % map logostyle empty/flat to default?
 	logostyle .initial:n = default,
 % deprecate options?
+	logostyle / flat .code:n = \keys_set:nn {ptxcd/othr-logos} {logostyle=default},
 	useDepartmentLogo .meta:n = {logostyle=dynamic},
 	useOTHRLogo .meta:n = {logostyle=default},
 }

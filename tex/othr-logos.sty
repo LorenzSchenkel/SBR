@@ -17,7 +17,7 @@
 %
 % This work has the LPPL maintenance status `maintained'.
 %
-% The current maintainer of this work ist
+% The current maintainer of this work is
 %   Michael Niemetz <michael.niemetz@oth-regensburg.de>
 %
 % The development repository can be found at
@@ -31,9 +31,10 @@
 \RequirePackage{xkeyval}
 
 \ExplSyntaxOn
-\tl_new:N \g__ptxcd_logo_mode_tl
-\tl_gset:Nn \g__ptxcd_logo_mode_tl {extended}
-
+\tl_const:Nn \c_@@_OTHR_logofile_tl {othr-logo_flat}
+% this file is not part of the official release. Undocumented compatibility feature.
+\tl_const:Nn \c_@@_OTHR_classiclogofile_tl {OTHR_OTHR_Logo}
+\tl_clear_new:N \l__@@_use_logoprefix_tl
 
 \keys_define:nn {ptxcd/othr-logos} {
 	accept-missing-logos .bool_gset:N = \g_ptxcd_logo_workaround_bool,
@@ -41,23 +42,27 @@
 	accept-missing-logos .default:n = true,
 	department .choice:,
 	department / default .code:n = \str_gset:Nn \g_ptxcd_department_str {default},
-	%<class>  department .initial:n = default,
 	department / unknown .code:n = {
 		\str_gset:NV \g_ptxcd_department_str \l_keys_value_tl
-		\tl_if_in:VnTF \g_ptxcd_department_str {OTHR} {
-			\tl_gset:Nn \g__ptxcd_logo_mode_tl {basic}
-		} {
-			\tl_gset:Nn \g__ptxcd_logo_mode_tl {extended}
-		}
 	},
 	logofile .tl_gset:N = \g_ptxcd_logofile_tl,
 	short-logofile .tl_gset:N = \g_@@_logofile_short_tl,
 	departmentlogofile .tl_gset:N = \g_ptxcd_department_logofile_tl,
 	departmentlogofile .initial:n = {OTHR_ \g_ptxcd_department_str _Logo},
-	logostyle .choices:nn = {empty,flat,dynamic,user}{\tl_gset_eq:NN \g__ptxcd_logostyle_tl \l_keys_choice_tl},
-	logostyle .initial:n = flat,
-	useDepartmentLogo .meta:n = {flat-logofile=OTHR_ \g_ptxcd_department_str _Logo},
-	useOTHRLogo .code:n = \PackageWarning{othr-logos}{deprecated~ option~ useOTHRLogo}
+	logostyle .choice:,
+	logostyle / default .code:n = \tl_clear:N \l__@@_use_logoprefix_tl,
+	logostyle / dynamic .code:n = \tl_set:Nn  \l__@@_use_logoprefix_tl {_department},
+	logostyle / user .code:n = {
+		\def\logo{\userlogoSmall}
+		\clist_map_inline:nn {small,normal,large,huge,flexible} {
+			\cs_set:cpn {logo\text_titlecase_first:n {##1}} {\use:c {userlogo\text_titlecase_first:n {##1}}}
+		}
+	},
+% map logostyle empty/flat to default?
+	logostyle .initial:n = default,
+% deprecate options?
+	useDepartmentLogo .meta:n = {logostyle=dynamic},
+	useOTHRLogo .meta:n = {logostyle=default},
 }
 
 \ProcessKeyOptions[ptxcd/othr-logos]
@@ -67,11 +72,11 @@
 \str_if_exist:NF \g_ptxcd_department_str {
   \str_new:N \g_ptxcd_department_str
   \str_gset:Nn \g_ptxcd_department_str {default}
-  \tl_if_blank:VT \g_ptxcd_logofile_tl  {
-  	\tl_gset:Nn\g_ptxcd_logofile_tl {default}
-  }
 }
 
+\tl_if_blank:VT \g_ptxcd_logofile_tl  {
+	\tl_gset:NV \g_ptxcd_logofile_tl \c_@@_OTHR_logofile_tl
+}
 \ExplSyntaxOff
 
 \RequirePackage{graphicx}

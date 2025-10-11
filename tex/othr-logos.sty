@@ -139,8 +139,8 @@
 }
 
 \clist_map_inline:nn {small,normal,large,huge} {
-	\cs_new:cpn {OfficialLogo\text_titlecase_first:n {#1}} {
-		\use:c  {logo\text_titlecase_first:n {#1}} * [ othr-logo_flat ]
+	\cs_new:cpn {logo\text_titlecase_first:n {#1}OTHR} {
+		\use:c  {logo\text_titlecase_first:n {#1}} [ \c_@@_OTHR_logofile_tl ]
 	}
 	\exp_args:Nc \NewDocumentCommand {logo\text_titlecase_first:n {#1}}
 		{O{\tl_use:c {g_ptxcd \l__@@_use_logoprefix_tl _logofile_tl}}}
@@ -153,7 +153,6 @@
 						\rule{\dim_eval:n {\l__ptxcd_logowidth_dim-\fboxrule}}{0pt}
 					}
 		} {height=\l__ptxcd_logoheight_dim} {##1}
-		}
 	}
 	\cs_new:cpn {kurzlogo\text_titlecase_first:n {#1}} {
 		\use:c  {logo\text_titlecase_first:n {#1}} [\g_@@_logofile_short_tl]
@@ -166,32 +165,25 @@
 	}
 }
 
-\newcommand*{\classiclogoFile}{OTHR_OTHR_Logo}
-
-\NewDocumentCommand{\OfficialLogoFlexible}{O{demo}}{
- 	\__ptxcd_loadOTHRCompatibilityLogo_aux:nnn {
-		\includegraphics[#1]{example-image}
-	} {#1} { othr-logo_flat }
-}
 \NewDocumentCommand{\logoFlexibleOTHR}{O{demo}}{
 	\begingroup
 		\__ptxcd_loadOTHRCompatibilityLogo_aux:nnn {
 			\includegraphics[#1]{example-image}
-		} {#1} {\g_ptxcd_logofile_tl}
+		} {#1} { \c_@@_OTHR_logofile_tl }
 	\endgroup
 }
 \NewDocumentCommand{\kurzlogoFlexibleOTHR}{O{demo}}{
 	\begingroup
 	\__ptxcd_loadOTHRCompatibilityLogo_aux:nnn {
 		\includegraphics[#1]{example-image}
-	} {#1} {\g_@@_logofile_short_tl}
+	} {#1} { \g_@@_logofile_short_tl }
 	\endgroup
 }
 
 \NewDocumentCommand{\dynamiclogoFlexible}{O{demo}}{
  	\__ptxcd_loadOTHRCompatibilityLogo_aux:nnn {
 		\includegraphics[#1]{example-image}
-	} {#1} {\g_ptxcd_department_logofile_tl}
+	} {#1} { \g_ptxcd_department_logofile_tl }
 }
 
 \NewDocumentCommand{\logoFlexible}{O{demo}}{\use:c {\g__ptxcd_logostyle_tl logoFlexible}[#1]}

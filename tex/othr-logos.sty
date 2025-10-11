@@ -17,7 +17,7 @@
 %
 % This work has the LPPL maintenance status `maintained'.
 %
-% The Current Maintainers of this work are
+% The current maintainer of this work ist
 %   Michael Niemetz <michael.niemetz@oth-regensburg.de>
 %
 % The development repository can be found at
@@ -32,7 +32,9 @@
 
 \ExplSyntaxOn
 \tl_new:N \g__ptxcd_logo_mode_tl
-\tl_gset:Nn \g__ptxcd_logo_mode_tl {main}
+\tl_gset:Nn \g__ptxcd_logo_mode_tl {extended}
+
+
 \keys_define:nn {ptxcd/othr-logos} {
 	accept-missing-logos .bool_gset:N = \g_ptxcd_logo_workaround_bool,
 	accept-missing-logos .usage:n = load,
@@ -43,14 +45,13 @@
 	department / unknown .code:n = {
 		\str_gset:NV \g_ptxcd_department_str \l_keys_value_tl
 		\tl_if_in:VnTF \g_ptxcd_department_str {OTHR} {
-			\tl_gset:Nn \g__ptxcd_logo_mode_tl {main}
+			\tl_gset:Nn \g__ptxcd_logo_mode_tl {basic}
 		} {
-			\tl_gset:Nn \g__ptxcd_logo_mode_tl {fak}
+			\tl_gset:Nn \g__ptxcd_logo_mode_tl {extended}
 		}
 	},
 	logofile .tl_gset:N = \g_ptxcd_logofile_tl,
 	short-logofile .tl_gset:N = \g_@@_logofile_short_tl,
-	flat-logofile .tl_gset:N = \g_@@_logofile_flat_tl,
 	departmentlogofile .tl_gset:N = \g_ptxcd_department_logofile_tl,
 	departmentlogofile .initial:n = {OTHR_ \g_ptxcd_department_str _Logo},
 	logostyle .choices:nn = {empty,flat,dynamic,user}{\tl_gset_eq:NN \g__ptxcd_logostyle_tl \l_keys_choice_tl},
@@ -76,23 +77,23 @@
 \RequirePackage{graphicx}
 \RequirePackage{pdftexcmds}
 %
-\newlength{\faklogosmall}
-\setlength{\faklogosmall}{16mm}
-\newlength{\faklogonormal}
-\setlength{\faklogonormal}{20mm}
-\newlength{\faklogolarge}
-\setlength{\faklogolarge}{24mm}
-\newlength{\faklogohuge}
-\setlength{\faklogohuge}{28mm}
+\newlength{\extendedlogosmall}
+\setlength{\extendedlogosmall}{16mm}
+\newlength{\extendedlogonormal}
+\setlength{\extendedlogonormal}{20mm}
+\newlength{\extendedlogolarge}
+\setlength{\extendedlogolarge}{24mm}
+\newlength{\extendedlogohuge}
+\setlength{\extendedlogohuge}{28mm}
 %
-\newlength{\mainlogosmall}
-\setlength{\mainlogosmall}{12mm}
-\newlength{\mainlogonormal}
-\setlength{\mainlogonormal}{16mm}
-\newlength{\mainlogolarge}
-\setlength{\mainlogolarge}{20mm}
-\newlength{\mainlogohuge}
-\setlength{\mainlogohuge}{24mm}
+\newlength{\basiclogosmall}
+\setlength{\basiclogosmall}{12mm}
+\newlength{\basiclogonormal}
+\setlength{\basiclogonormal}{16mm}
+\newlength{\basiclogolarge}
+\setlength{\basiclogolarge}{20mm}
+\newlength{\basiclogohuge}
+\setlength{\basiclogohuge}{24mm}
 %
 \ExplSyntaxOn
 \cs_new:Nn \__ptxcd_loadOTHRCompatibilityLogo_aux:nnn{
@@ -114,7 +115,7 @@
 		\use:c  {logo\text_titlecase_first:n {#1}} * [ othr-logo_flat ]
 	}
 	\exp_args:Nc \NewDocumentCommand {logo\text_titlecase_first:n {#1}} {sO{\g_ptxcd_logofile_tl}}{
-		{\IfBooleanT{##1}{\tl_set:Nn \g__ptxcd_logo_mode_tl {main}}
+		{\IfBooleanT{##1}{\tl_set:Nn \g__ptxcd_logo_mode_tl {basic}}
 		\__ptxcd_loadOTHRCompatibilityLogo_aux:nnn {
 			\IfBooleanTF{##1}{
 				{

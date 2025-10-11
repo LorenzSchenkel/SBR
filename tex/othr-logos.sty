@@ -141,8 +141,7 @@
 	\cs_new:cpn {OfficialLogo\text_titlecase_first:n {#1}} {
 		\use:c  {logo\text_titlecase_first:n {#1}} * [ othr-logo_flat ]
 	}
-	\exp_args:Nc \NewDocumentCommand {logo\text_titlecase_first:n {#1}} {sO{\g_ptxcd_logofile_tl}}{
-		{\IfBooleanT{##1}{\tl_set:Nn \g__ptxcd_logo_mode_tl {main}}
+	\exp_args:Nc \NewDocumentCommand {logo\text_titlecase_first:n {#1}} {O{\g_ptxcd_logofile_tl}}{
 		\__ptxcd_selectOTHRLogoSize:nn {#1} {#2}
 		\__ptxcd_loadOTHRCompatibilityLogo_aux:nnn {
 					\setlength{\fboxsep}{0pt}
@@ -150,17 +149,17 @@
 						\rule{0pt}{\dim_eval:n {\l__ptxcd_logoheight_dim-\fboxrule}}
 						\rule{\dim_eval:n {\l__ptxcd_logowidth_dim-\fboxrule}}{0pt}
 					}
-		} {height=\l__ptxcd_logoheight_dim} {##2}
+		} {height=\l__ptxcd_logoheight_dim} {##1}
 		}
 	}
 	\cs_new:cpn {kurzlogo\text_titlecase_first:n {#1}} {
-		\use:c  {logo\text_titlecase_first:n {#1}} * [\g_@@_logofile_short_tl]
+		\use:c  {logo\text_titlecase_first:n {#1}} [\g_@@_logofile_short_tl]
 	}
 	\cs_new:cpn {dynamiclogo\text_titlecase_first:n {#1}} {
 		\use:c  {logo\text_titlecase_first:n {#1}} [\g_ptxcd_department_logofile_tl]
 	}
 	\cs_new:cpn {classiclogo\text_titlecase_first:n {#1}OTHR} {
-			\use:c  {logo\text_titlecase_first:n {#1}} * [\classiclogoFile]
+			\use:c  {logo\text_titlecase_first:n {#1}} [\c_@@_OTHR_classiclogofile_tl]
 	}
 }
 
@@ -173,7 +172,6 @@
 }
 \NewDocumentCommand{\logoFlexibleOTHR}{O{demo}}{
 	\begingroup
-		\str_set:Nn \g_ptxcd_department_str {OTHR}
 		\__ptxcd_loadOTHRCompatibilityLogo_aux:nnn {
 			\includegraphics[#1]{example-image}
 		} {#1} {\g_ptxcd_logofile_tl}
@@ -181,7 +179,6 @@
 }
 \NewDocumentCommand{\kurzlogoFlexibleOTHR}{O{demo}}{
 	\begingroup
-		\str_set:Nn \g_ptxcd_department_str {OTHR}
 	\__ptxcd_loadOTHRCompatibilityLogo_aux:nnn {
 		\includegraphics[#1]{example-image}
 	} {#1} {\g_@@_logofile_short_tl}
@@ -195,19 +192,6 @@
 }
 
 \NewDocumentCommand{\logoFlexible}{O{demo}}{\use:c {\g__ptxcd_logostyle_tl logoFlexible}[#1]}
-
-\str_case:Vn \g__ptxcd_logostyle_tl {
-	{empty} {}
-	{flat} {\keys_set:nn  {ptxcd/othr-logos} {logofile = othr-logo_flat}}
-	{dynamic} {\keys_set:nn  {ptxcd/othr-logos} {logofile = OTHR_ \g_ptxcd_department_str _Logo}}
-	{user} {
-		\def\logo \userlogoSmall
-		\clist_map_inline:nn {small,normal,large,huge,flexible} {
-			\cs_set:cpn {logo\text_titlecase_first:n {#1}} {\use:c {userlogo\text_titlecase_first:n {#1}}}
-			\cs_set:cpn {OfficialLogo\text_titlecase_first:n {#1}} {\use:c {userlogo\text_titlecase_first:n {#1}}}
-	}
-	}
-}
 
 \NewDocumentCommand{\defineUserLogo}{O{20mm}m}{%
     \newcommand*{\userlogoSmall}{{\includegraphics[height=.75\dimexpr#1]{#2}}}

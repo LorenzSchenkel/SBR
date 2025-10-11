@@ -101,6 +101,28 @@
 \setlength{\basiclogohuge}{24mm}
 %
 \ExplSyntaxOn
+\dim_new:N \l__ptxcd_logoheight_dim
+\dim_new:N \l__ptxcd_logowidth_dim
+\cs_new:Nn \__ptxcd_selectOTHRLogoSize:nn {
+	\str_case_e:enTF {#1} {
+		{\g_ptxcd_logofile_tl} {}
+		{\c_@@_OTHR_logofile_tl} {}
+		{\c_@@_OTHR_classiclogofile_tl} {}
+	} {
+% standard logo height
+		\dim_set_eq:Nc \l__ptxcd_logoheight_tl {mainlogo#2}
+		\dim_set:Nn \l__ptxcd_logowidth_dim {
+			\l__ptxcd_logoheight_dim * 11/2
+		}
+	}{
+% extended logo height
+		\dim_set_eq:Nc \l__ptxcd_logoheight_tl {extendedlogo#2}
+% set width for fallback mode based on the image size
+		\dim_set:Nn \l__ptxcd_logowidth_dim {
+			\l__ptxcd_logoheight_dim * 6 / 2
+		}
+	}
+}
 \cs_new:Nn \__ptxcd_loadOTHRCompatibilityLogo_aux:nnn{
 			  \bool_if:NTF \g_ptxcd_logo_workaround_bool {
 			    \file_if_exist:nTF {#3.pdf}
@@ -120,26 +142,15 @@
 		\use:c  {logo\text_titlecase_first:n {#1}} * [ othr-logo_flat ]
 	}
 	\exp_args:Nc \NewDocumentCommand {logo\text_titlecase_first:n {#1}} {sO{\g_ptxcd_logofile_tl}}{
-		{\IfBooleanT{##1}{\tl_set:Nn \g__ptxcd_logo_mode_tl {basic}}
+		{\IfBooleanT{##1}{\tl_set:Nn \g__ptxcd_logo_mode_tl {main}}
+		\__ptxcd_selectOTHRLogoSize:nn {#1} {#2}
 		\__ptxcd_loadOTHRCompatibilityLogo_aux:nnn {
-			\IfBooleanTF{##1}{
-				{
 					\setlength{\fboxsep}{0pt}
 					\fbox{
-						\rule{0pt}{\dim_use:c {\g__ptxcd_logo_mode_tl logo #1}}
-						\rule{\dim_eval:n {\use:c {\g__ptxcd_logo_mode_tl logo #1}* 11 / 2}}{0pt}
+						\rule{0pt}{\dim_eval:n {\l__ptxcd_logoheight_dim-\fboxrule}}
+						\rule{\dim_eval:n {\l__ptxcd_logowidth_dim-\fboxrule}}{0pt}
 					}
-				}
-			} {
-				{
-					\setlength{\fboxsep}{0pt}
-					\fbox{
-						\rule{0pt}{\dim_use:c {\g__ptxcd_logo_mode_tl logo #1}}
-						\rule{\dim_eval:n {\use:c {\g__ptxcd_logo_mode_tl logo #1}* 6 / 2}}{0pt}
-					}
-				}
-			}
-		} {height=\dim_use:c {\g__ptxcd_logo_mode_tl logo #1}} {##2}
+		} {height=\l__ptxcd_logoheight_dim} {##2}
 		}
 	}
 	\cs_new:cpn {kurzlogo\text_titlecase_first:n {#1}} {

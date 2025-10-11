@@ -51,7 +51,7 @@
 	departmentlogofile .initial:n = {OTHR_ \g_ptxcd_department_str _Logo},
 	logostyle .choice:,
 	logostyle / default .code:n = \tl_clear:N \l__@@_use_logoprefix_tl,
-	logostyle / dynamic .code:n = \tl_set:Nn  \l__@@_use_logoprefix_tl {_department},
+	logostyle / dynamic .code:n = \tl_set:Nn \l__@@_use_logoprefix_tl {_department},
 	logostyle / user .code:n = {
 		\def\logo{\userlogoSmall}
 		\clist_map_inline:nn {small,normal,large,huge,flexible} {
@@ -110,13 +110,13 @@
 		{\c_@@_OTHR_classiclogofile_tl} {}
 	} {
 % standard logo height
-		\dim_set_eq:Nc \l__ptxcd_logoheight_tl {mainlogo#2}
+		\dim_set_eq:Nc \l__ptxcd_logoheight_dim {basiclogo#2}
 		\dim_set:Nn \l__ptxcd_logowidth_dim {
 			\l__ptxcd_logoheight_dim * 11/2
 		}
 	}{
 % extended logo height
-		\dim_set_eq:Nc \l__ptxcd_logoheight_tl {extendedlogo#2}
+		\dim_set_eq:Nc \l__ptxcd_logoheight_dim {extendedlogo#2}
 % set width for fallback mode based on the image size
 		\dim_set:Nn \l__ptxcd_logowidth_dim {
 			\l__ptxcd_logoheight_dim * 6 / 2
@@ -141,8 +141,10 @@
 	\cs_new:cpn {OfficialLogo\text_titlecase_first:n {#1}} {
 		\use:c  {logo\text_titlecase_first:n {#1}} * [ othr-logo_flat ]
 	}
-	\exp_args:Nc \NewDocumentCommand {logo\text_titlecase_first:n {#1}} {O{\g_ptxcd_logofile_tl}}{
-		\__ptxcd_selectOTHRLogoSize:nn {#1} {#2}
+	\exp_args:Nc \NewDocumentCommand {logo\text_titlecase_first:n {#1}}
+		{O{\tl_use:c {g_ptxcd \l__@@_use_logoprefix_tl _logofile_tl}}}
+	{
+		\__ptxcd_selectOTHRLogoSize:nn {##1} {#1}
 		\__ptxcd_loadOTHRCompatibilityLogo_aux:nnn {
 					\setlength{\fboxsep}{0pt}
 					\fbox{

@@ -15,7 +15,6 @@ jobs:
     name: Documentation
     steps:
       - run: apt-get update && apt-get install -y nodejs
-      - run: node -v
       - name: Checkout repository
         uses: actions/checkout@v4
         with:

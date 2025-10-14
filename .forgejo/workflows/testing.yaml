@@ -1,0 +1,36 @@
+name: Test document
+
+# Currently we run in two situations:
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: write
+
+jobs:
+  test-document-iot:
+    # tests using full TeX Live images provided by Island of TeX: https://gitlab.com/islandoftex/images/texlive
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        image: ["TL2022-historic", "TL2023-historic", "TL2024-historic", "latest"]
+        engine: [pdflatex, xelatex, lualatex]
+    name: "Test Suite Linux (IoT) on ${{ matrix.image }}, ${{ matrix.engine }}"
+    container:
+      image: registry.gitlab.com/islandoftex/images/texlive:${{ matrix.image }}
+    steps:
+      - name: install NodeJS
+        run: apt-get update && apt-get install -y nodejs
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          show-progress: 'false'
+      - name: Run latexmk
+        run: "latexmk --${{(matrix.engine == 'pdflatex' && 'pdf') || (matrix.engine == 'xelatex' && 'xelatex') || (matrix.engine == 'lualatex' && 'lualatex')}}"
+      - name: Archive pdf file
+        uses: https://code.forgejo.org/forgejo/upload-artifact@v4
+        with:
+          name: PDF-${{matrix.engine}}-${{matrix.image}}
+          path: "*.pdf"
+          retention-days: 3

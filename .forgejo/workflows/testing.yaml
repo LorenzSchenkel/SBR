@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        image: ["TL2022-historic", "TL2023-historic", "TL2024-historic", "latest"]
+        image: ["TL2023-historic", "TL2024-historic", "latest"]
         engine: [pdflatex, xelatex, lualatex]
     name: "Test Suite Linux (IoT) on ${{ matrix.image }}, ${{ matrix.engine }}"
     container:

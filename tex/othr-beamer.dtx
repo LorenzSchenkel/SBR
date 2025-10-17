@@ -392,7 +392,7 @@
   }
   \leavevmode\makebox[0pt][r]{
     \rule[\dim_eval:n {-\box_dp:N \l_@@_tmpa_box-.4\ht\strutbox}]{1pt}{\dim_eval:n {\box_ht_plus_dp:N \l_@@_tmpa_box+1.4\ht\strutbox}}
-    \skip_horizontal:n {1.2\c_@@_beamer_framesep_dim}}
+    \skip_horizontal:n {1.3\c_@@_beamer_framesep_dim}}
   \box_use:N \l_@@_tmpa_box\par
 }
 
@@ -402,12 +402,11 @@
   \par
   \thispagestyle{OTHR@titlepage}
   \skip_vertical:n  {.625\c_@@_beamer_framesep_dim}
-  \makebox[.915\textwidth][r]{\includegraphics[width=.455\paperwidth]{\g_@@_logofile_flat_tl}
-  }
+\rule{.445\textwidth}{\z@}\rlap{\includegraphics[width=.456\paperwidth]{\g_@@_logofile_flat_tl}}\par
   \par
   \skip_vertical:n {4.3\c__ptxcd_beamer_framesep_dim}
   \par
-  \hspace*{.4\paperwidth}\begin{beamercolorbox}[
+  \hspace*{.398\paperwidth}\begin{beamercolorbox}[
       wd=\dim_eval:n {.6\paperwidth-2\beamer@rightmargin},
     ]{title~page}
     \setlength{\textwidth}{\linewidth}

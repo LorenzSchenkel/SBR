@@ -3,7 +3,7 @@
 Copyright (C) xxxx-2024 Michael Niemetz <michael.niemetz@oth-regensburg.de>
       2025 Michael Nietmetz <michael.niemetz@oth-regensburg.de>, Marei Peischl (peiTeX) <othr-ci@peitex.de>
 
-othr-ci v0.01-dev (2025-05-22)
+othr-ci v0.02 (2025-10-20)
 
 ***************************************************************************
 

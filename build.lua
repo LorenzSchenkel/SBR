@@ -28,11 +28,11 @@ typesetexe="lualatex"
 -- change font setting for release
 typesetopts="\\\\PassOptionsToPackage{main-font=lucida}{othr-fonts}"
 
-demofiles = {"examples/*/*.tex","manuals/*/*.tex","templates/*/*.tex"}
+demofiles = {"examples/*/*.tex"}--,"manuals/*/*.tex","templates/*/*.tex"}
 supportdir="."--"examples"
 
 typesetsuppfiles={ "**/*.bib", "*.bib", "*.lco", "**/*.jpg"}
---typesetdemofiles = demofiles
+typesetdemofiles = demofiles
 
 -- allow to tag the build.lua file by only excluding it for other targets
 excludefiles={"*/Example-*.tex","Examples-*","*~"}

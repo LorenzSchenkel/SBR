@@ -1,0 +1,206 @@
+\documentclass[
+english,% Main language as global option
+]{othr-beamer}
+
+%%%%%%%%%%%%%%%%%%%
+% Language setup
+%%%%%%%%%%%%%%%%%%%
+\usepackage[english]{babel}
+\usepackage[autostyle]{csquotes}% \enquote, to simplify use of quotation marks
+
+%%%%%%%%%%%%%%%%%%%
+% Document specific setup for demonstration, generally not needed!
+%%%%%%%%%%%%%%%%%%%
+\newcommand*{\code}[1]{\texttt{#1}}
+%%%%%%%%%%%%%%%%%%%
+% End of demo specific setup
+%%%%%%%%%%%%%%%%%%%
+
+\title{OTHR-CI Beamer}
+\subtitle{\LaTeX~Beamer using the CI of OTH Regensburg}
+\author[M. Peischl]{Marei Peischl}
+\department{\TeX/\LaTeX}
+\institute{pei\TeX}
+\titlegraphic{\rule{\width}{\height}}
+%\date{2025-10-20}% In case \today should not be used
+
+% \AtBeginSection{\sectionpage}% Enable section pages
+
+\begin{document}
+
+\maketitle
+
+\begin{frame}{\contentsname}
+\tableofcontents
+\end{frame}
+
+\section{Slide examples}
+
+\begin{frame}{Frame with a subtitle}
+\framesubtitle{Subtitle}
+An example.
+\end{frame}
+
+\begin{frame}{Color Scheme}
+The new design introduced new colors to be used to highlight specific content.
+
+The additional colors are:
+
+\renewcommand*{\do}[1]{OTHR-####1: \textcolor{OTHR-####1}{\rule{1cm}{\ht\strutbox}}\par}
+\docsvlist{BeamerBlue,BeamerGray}
+
+Please be aware, that these are specific for the beamer setup.
+
+Secondary colors to be used for department specific highlights. These also exist within the other packages.
+\begin{multicols}{3}
+\renewcommand*{\do}[1]{\makebox[.3\linewidth][l]{Fak####1:} \textcolor{Fak####1}{\rule{1cm}{\ht\strutbox}}\par}
+\docsvlist{ANK,A,B,BM,EI,IM,M,SG}
+\end{multicols}
+\end{frame}
+
+\begin{frame}{Remark on vertical alignment (especially columns)}
+The vertical alignment has been changed from \code{c} to \code{t} in contrast to beamers default setup.
+Therefore frame content will be top aligned as required by the design guideline.
+This is leading to some side effects,  e\,g. with the columns environment.
+
+To resolve this one can either globally add the \code{c} option to restore beamer's default or pass it to the environment itself.
+
+\begin{columns}[onlytextwidth,c]
+\column{.8\linewidth}
+\begin{itemize}
+\item one
+\item two
+\end{itemize}
+\column{.2\linewidth}
+\includegraphics[width=\linewidth]{example-image}
+\end{columns}
+\end{frame}
+\section{Section page}
+
+\sectionpage
+
+\sectionpage[{\includegraphics[width=\linewidth]{example-image}}]
+
+\section{Blocks}
+
+\begin{frame}{Blocks in columns}
+\begin{columns}[T]
+\begin{column}{.3\linewidth}
+\begin{block}{Text}
+content...
+\end{block}
+\end{column}
+\begin{column}{.3\linewidth}
+\begin{block}{Text}
+content...
+\end{block}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}[frame-mode=shading]{Blocks in columns using shading}
+\begin{columns}[onlytextwidth]
+\begin{column}{.3\linewidth}
+\begin{block}{Text}
+content...
+\end{block}
+\end{column}
+\begin{column}{.3\linewidth}
+\begin{block}{Text}
+content...
+\end{block}
+\end{column}
+\begin{column}{.3\linewidth}
+\begin{block}{Text}
+content...
+\end{block}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}[frame-mode=no-shading]{Blocks in columns (no-shading)}
+\begin{columns}[onlytextwidth]
+\begin{column}{.3\linewidth}
+\begin{block}{Text}
+content...
+\end{block}
+\end{column}
+\begin{column}{.3\linewidth}
+\begin{block}{Text}
+content...
+\end{block}
+\end{column}
+\begin{column}{.3\linewidth}
+\begin{block}{Text}
+content...
+\end{block}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{fullheightblock}
+\framesubtitle{ggf. Unterüberschrift}
+
+\begin{fullheightblock}{Text}
+content...
+\end{fullheightblock}
+\end{frame}
+
+\begin{frame}{imageblock}
+\begin{imageblock}[block title]{\includegraphics[width=\linewidth]{example-image}}
+Block content
+\end{imageblock}
+
+\begin{imageblock}{\rule{\linewidth}{2cm}}
+May also contain other \LaTeX{} Code
+\end{imageblock}
+
+\end{frame}
+
+
+\begin{frame}[frame-mode=shading]{Titel}
+
+\begin{columns}[T]
+
+\begin{column}{.6\linewidth}
+\begin{itemize}
+\item Items
+\end{itemize}
+\end{column}
+
+\columnsepbox{Seperating Text}
+
+\begin{column}{.3\linewidth}
+\rule{\linewidth}{2cm}
+\end{column}
+
+\end{columns}
+\end{frame}
+
+\section{Contact block}
+
+\begin{frame}{Kontakt}
+\begin{contactblock}{OTH Regensburg}
+\contactPhone{0000-0000}
+
+\contactAddress{Adresse}
+
+\contactEmail{xx@othr-regensburg.de}
+
+\columnbreak
+
+Ansprechpartner:in
+
+Marei Peischl
+
+\vfill
+
+\contactEntry{\faIcon{git}}{\tiny \url{https://codeberg.org/OTH-Regensburg/OTHRegensburg-CI}}
+
+\contactEmail{othr-ci-beamer@peitex.de}
+
+\end{contactblock}
+\end{frame}
+
+\end{document}
+%% End of file `DEMO-OTHR-Beamer.tex'.

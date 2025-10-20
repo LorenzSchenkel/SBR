@@ -399,6 +399,18 @@
   \box_use:N \l_@@_tmpa_box\par
 }
 
+\defbeamertemplate*{author}{OTHR}[1][]{%
+    \begin{beamercolorbox}[left,colsep=1pt,#1]{author}
+      \usebeamerfont{author}\insertauthor\par
+    \end{beamercolorbox}
+}
+
+\defbeamertemplate*{institute}{OTHR}[1][]{%
+    \begin{beamercolorbox}[left,colsep=1pt,#1]{institute}
+      \usebeamerfont{institute}\insertinstitute\par
+    \end{beamercolorbox}
+}
+
 \defbeamertemplate*{title~page}{OTHR}[1][]
 {
   \vbox{}
@@ -409,17 +421,22 @@
   \par
   \skip_vertical:n {4.3\c__ptxcd_beamer_framesep_dim}
   \par
-  \hspace*{.398\paperwidth}\begin{beamercolorbox}[
-      wd=\dim_eval:n {.6\paperwidth-2\beamer@rightmargin},
-    ]{title~page}
-    \setlength{\textwidth}{\linewidth}
-    \usebeamertemplate{title}
-  \end{beamercolorbox}
+	\leavevmode\hspace*{.398\paperwidth}\begin{beamercolorbox}[
+	wd=\dim_eval:n {.6\paperwidth-2\beamer@rightmargin},
+	]{title~page}
+	\vbox_to_ht:nn {.45\paperheight} {
+	\setlength{\textwidth}{\linewidth}
+	\usebeamertemplate{title}
+	\vfill
+	\usebeamertemplate{author}
+	\usebeamertemplate{institute}
+	}
+	\end{beamercolorbox}
 }[action]{
-  \iffalse
   \setbeamertemplate{title}[OTHR][#1]
   \setbeamertemplate{author}[OTHR][#1]
-  \setbeamertemplate{institute}[OTHR][#1]
+ \setbeamertemplate{institute}[OTHR][#1]
+    \iffalse
   \setbeamertemplate{date}[OTHR][#1]
   \setbeamertemplate{titlegraphic}[OTHR]
   \fi

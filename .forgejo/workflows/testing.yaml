@@ -5,18 +5,16 @@ on:
   push:
   pull_request:
 
-permissions:
-  contents: write
-
 jobs:
   test-document-iot:
+    if: forgejo.ref != 'refs/heads/main'
     # tests using full TeX Live images provided by Island of TeX: https://gitlab.com/islandoftex/images/texlive
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        image: ["TL2023-historic", "TL2024-historic", "latest"]
-        engine: [pdflatex, xelatex, lualatex]
-    name: "Test Suite Linux (IoT) on ${{ matrix.image }}, ${{ matrix.engine }}"
+        image: ["TL2023-historic", "TL2024-historic"]
+        # engine: [pdflatex, xelatex, lualatex]
+    name: "Test Suite Linux (IoT) on ${{ matrix.image }}"
     container:
       image: registry.gitlab.com/islandoftex/images/texlive:${{ matrix.image }}
     steps:

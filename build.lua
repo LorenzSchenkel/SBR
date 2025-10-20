@@ -40,7 +40,7 @@ if not options["target"] == "tag" then
 	excludefiles={table.unpack(excludefiles),"build.lua","config-*.lua"}
 end
 
-packageversion = "0.01"
+packageversion = "0.02-dev"
 packagedate = "2025-10-20"
 
 tagfiles = {"*.cfg", "*.md", "*.clo", "*.tex", "*.lco", "*.def", "*.bib", "*.lua", "*.ins", "**/*.dtx"}

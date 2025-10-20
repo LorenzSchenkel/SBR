@@ -235,6 +235,7 @@
 \setbeamercolor{image block body}{parent={block body}}
 
 \setbeamercolor{framesubtitle rule}{parent=framesubtitle}
+\setbeamercolor{OTHR background shading}{bg=OTHR-BeamerBlue}
 %    \end{macrocode}
 % \iffalse
 %</color>
@@ -290,7 +291,9 @@
 \setbeamerfont{block title}{parent={block body}, series=\bfseries}
 \setbeamerfont{image block title}{parent={block title}}
 \setbeamerfont{image block body}{parent={block body}}
-\setbeamercolor{background shading}{bg=OTHR-BeamerBlue}
+
+\setbeamerfont{section title}{size=\huge,series=\bfseries}
+\setbeamerfont{section name}{size=\large}
 %    \end{macrocode}
 % \iffalse
 %</font>
@@ -479,10 +482,9 @@
 % \end{implementation}
 % \begin{documentation}
 % \subsection{Structures to simplify reproducing CI compliant slide layouts}
-% OTHR-CI adds some environments to simplify the
+% OTHR-CI adds some environments to simplify the placements.
 % \end{documentation}
 % \begin{implementation}
-% picture block
 % Power Point template is using 4 columns for the image and 10 columnes for the text block
 %    \begin{macrocode}
 \newenvironment<>{imageblock}[2][]{%
@@ -676,7 +678,71 @@
 \keys_define:nn {ptxcd/beamer/outer} {
   frame-mode .choice:,
   frame-mode / shading .code:n = \thispagestyle{OTHR-shading},
-  frame-mode / no-shading .code:n = \bool_set_false:N \l_@@_block_auto_pagestyle_bool
+  frame-mode / no-shading .code:n = \bool_set_false:N \l_@@_block_auto_pagestyle_bool,
+  frame-mode / sectionpage .code:n = {
+		\thispagestyle{OTHR-sectionpage}
+		\setkeys{beamerframe}{c}
+		\AddToHookNext{env/beamer@frameslide/begin}{
+			\hsize=\ptxcd@sectionpage@hsize%
+			\textwidth=\ptxcd@sectionpage@hsize%
+			\linewidth=\ptxcd@sectionpage@hsize%
+		}
+  }
+}
+
+\newlength{\ptxcd@sectionpage@hsize}
+\setlength{\ptxcd@sectionpage@hsize}{.55\textwidth}
+
+\defbeamertemplate{background~canvas}{OTHR-sectionpage}{
+  \skip_horizontal:n {\beamer@leftmargin + .6\textwidth}
+  \vbox_to_ht:nn {\paperheight} {
+    \vfill
+    \usebeamertemplate{section~title}
+    \vfill
+    \null
+  }
+}
+
+\cs_new:cpn {ps@OTHR-sectionpage} {
+  \setbeamertemplate{background~canvas}[OTHR-sectionpage]
+  \@nameuse{ps@navigation}
+}
+
+\defbeamertemplate*{section~title}{OTHR}[1][]{%
+  \par
+  \hbox_set:Nn \l_@@_tmpa_box {
+    \begin{beamercolorbox}[left,wd=.4\textwidth,colsep=1pt,#1]{section~title}
+		\usebeamerfont{section~title}
+		\ifx\insertsectionnumber\@empty
+			\strut
+		\else
+			{\usebeamerfont{section~name}\usebeamercolor[fg]{section~name}\sectionname\space\insertsectionnumber}\par
+		\fi
+		\insertsection\strut\par
+    \end{beamercolorbox}
+  }
+  \leavevmode\makebox[0pt][r]{
+    \rule[\dim_eval:n {-\box_dp:N \l_@@_tmpa_box-.4\ht\strutbox}]{1pt}{\dim_eval:n {\box_ht_plus_dp:N \l_@@_tmpa_box+1.4\ht\strutbox}}
+    \skip_horizontal:n {1.2\c_@@_beamer_framesep_dim}}
+  \box_use:N \l_@@_tmpa_box\par
+}
+
+\setbeamertemplate{section~page}{
+	\thispagestyle{OTHR-sectionpage}
+}
+
+\RenewDocumentCommand{\sectionpage}{o}{
+	\IfNoValueTF{#1}{
+		\ifbeamer@inframe
+			\usebeamertemplate*{section~page}
+		\else
+			\frame{\usebeamertemplate*{section~page}}
+		\fi
+	} {
+		\begin{frame}[frame-mode=sectionpage]
+		#1
+		\end{frame}
+	}
 }
 
 \newtranslation[to = German]{CONTACT}{KONTAKT}

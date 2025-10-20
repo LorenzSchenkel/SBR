@@ -27,6 +27,8 @@ ls-R
 *.zip
 *.fls
 *.fdb_latexmk
+*.glo
+*.hd
 
 *.nav
 *.snm

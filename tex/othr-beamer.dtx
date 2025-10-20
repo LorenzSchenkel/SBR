@@ -681,8 +681,8 @@
 
 \newtranslation[to = German]{CONTACT}{KONTAKT}
 
-\newcommand*{\columnsepbox}[2][\fullheightblockheight]{
-  \leavevmode\rotatebox[origin=tr]{90}{\makebox[#1]{\small\hrulefill\hspace{1ex}\raisebox{-.5\height}{#2}}}
+\newcommand*{\columnsepbox}[2][\fullheightblockheight]{%
+  \leavevmode\rotatebox[origin=tr]{90}{\makebox[#1]{\small\hrulefill\hspace{1ex}\raisebox{-.5\height}{#2}}}%
   \hfill
 }
 
@@ -713,7 +713,7 @@
           {\usebeamerfont*{contact~ block~ title}\insertblocktitle\par}
         \fi
         \vskip\baselineskip
-        \columnsepbox{\translate{CONTACT}}{.32\paperheight}
+        \columnsepbox[.32\paperheight]{\translate{CONTACT}}
         \hbox_unpack_drop:N  \l_@@_tmpa_box
         \par\vfill
       }

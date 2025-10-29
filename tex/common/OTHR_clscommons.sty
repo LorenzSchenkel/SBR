@@ -117,12 +117,12 @@
 
     \vfill\vfill
 
-    \noindent\begin{flushleft}\fontsize{28}{30}\selectfont\sloppy\bfseries\MakeUppercase\othr@thesis@thesistype\par\end{flushleft}\vspace{.1em}
-    \noindent\begin{flushleft}\LARGE\@author\par\end{flushleft}
+    \noindent\begin{raggedsection}\fontsize{28}{30}\selectfont\bfseries\MakeUppercase\othr@thesis@thesistype\par\end{raggedsection}\vspace{.1em}
+    \noindent\begin{raggedsection}\LARGE\@author\par\end{raggedsection}
     \vfill\vfill
 
-    \noindent\begin{flushleft}\fontsize{20}{24}\selectfont\textbf\@title \par%
-    \ifdefempty{\@subtitle}{}{\vspace{1.5ex}\@subtitle\par}\end{flushleft}
+    \noindent\begin{raggedsection}\fontsize{20}{24}\selectfont\textbf\@title\par%
+    \ifdefempty{\@subtitle}{}{\vspace{1.5ex}\@subtitle\par}\end{raggedsection}
     \vfill\vfill\vfill\vfill\par
         \ifdefempty{\@date}{
                 \ifdefempty{\othr@thesis@version}{}{\noindent\large\othr@common@versionlabel: \othr@thesis@version}}%
@@ -131,7 +131,7 @@
 
     \vfill
 
-    \noindent\raggedright
+    \noindent\begin{raggedsection}
     \ifdefempty{\othr@thesis@useinfotable}{\ifdefempty{\othr@thesis@department}{\othr@thesis@studycourse}{\othr@common@departmentlabel{} \othr@thesis@department\ifdefempty{\othr@thesis@studycourse}{}{ $\cdot$ \othr@thesis@studycourse}}}
     {\fontsize{12}{15}\selectfont\begin{tabular}{@{}l@{\qquad}l@{}}
 	    \ifdefempty{\othr@thesis@department}{}{\othr@common@departmentlabel: & \othr@thesis@department\\}
@@ -140,7 +140,7 @@
 	    \ifdefempty{\othr@thesis@firstadvisor}{}{\othr@common@firstadvisorlabel: & \othr@thesis@firstadvisor\\}
 	    \ifdefempty{\othr@thesis@secondadvisor}{}{\othr@common@secondadvisorlabel: & \othr@thesis@secondadvisor\\}
 	    \ifdefempty{\othr@thesis@externaladvisor}{}{\othr@common@externaladvisorlabel: & \othr@thesis@externaladvisor\\}
-    \end{tabular}}
+    \end{tabular}}\end{raggedsection}
     \clearpage
   \end{titlepage}
 }%

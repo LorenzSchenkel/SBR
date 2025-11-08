@@ -23,14 +23,15 @@ Das Projekt nutzt ein l3build script und ermöglicht somit das Testen ohne notwe
 ```
 l3build doc
 ```
+zu erzeugen. Die Datei `INSTALL.md` enthält weitere Details und Infos zur möglichen lokalen Installation des Pakets.
 
-* `doc`: Enthält Dokumentation zu den Dokumentklassen und Stildateien
-  (soweit verfügbar)
-* `tex`: Enthält die TeX-Paketquellen
+Darüber hinaus enthält das Paket:
+
+* `tex`: Enthält die LaTeX-Paketquellen
 * `tests`: Testdokumente ohne nennenswerten Beispielcharakter
-* `examples`: Enthält komplette Beispieldokumente
+* `examples`: Enthält komplette Beispieldokumente mit Hinweisen zur Nutzung
 * `templates`: Enthält (weitgehend) leere Dokumente, die als Grundlage
-  zur Erstellung von eigenen Dokumenten dienen können
+  zur Erstellung von eigenen Dokumenten dienen könnteen
 
 ### Für Entwickler*innen
 

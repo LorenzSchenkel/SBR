@@ -23,7 +23,7 @@ After the process is finished you find the generated PDF-files at `build/doc/DEM
 
 [l3build](https://ctan.org/pkg/l3build) provides the functionality to unpack and install a package using a build script.
 By default this would use the `$TEXMFHOME` variable as the prefered location.
-In case you are using MikTeX this variable usually does not exist, see the [MikTeX speficic instructions](#installation-within-miktex).
+In case you are using MikTeX this variable usually does not exist, see the [MikTeX speficic instructions](#installation-within-miktex-not-recommended).
 
 To install the bundle for your own user run
 
@@ -34,8 +34,7 @@ l3build install
 within the repositories root directory.
 
 This unpack the bundle and copy all necessary files to be accessed by the LaTeX compiler to your users texmf tree.
-
-#TOOD check? You don't have to manually install any files. The bundle includes the logos and font files.
+You don't have to manually install any files. The bundle includes the logos and font files.
 
 After finishing the installation you should be able to typeset the `*.tex` files from the `examples` directory and create your own documents based on those.
 

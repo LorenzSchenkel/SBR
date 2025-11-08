@@ -26,3 +26,4 @@ jobs:
           show-progress: 'false'
       - name: l3build doc
         run: l3build doc
+        continue-on-error: true

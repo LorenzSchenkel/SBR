@@ -1,0 +1,33 @@
+name: bundler testing
+# Currently we run in two situations:
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: write
+
+jobs:
+  bundle:
+    runs-on: ubuntu-22.04
+    container:
+      image: registry.gitlab.com/islandoftex/images/texlive:latest
+    name: bundler
+    steps:
+      - run: apt-get update && apt-get install -y nodejs
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          show-progress: 'false'
+      - uses: TeXhackse/ptxtools-Demo-Wrapper@main
+        with:
+          module: OTHR-CI
+      - run: ls -lah build/overleaf-bundles
+      - name: Archive documentation
+        # temporary fork since actions/upload-artifact@v4 is not working it not on github
+				uses: https://code.forgejo.org/forgejo/upload-artifact@v4
+        # uses: github/upload-artifact@v4
+        with:
+          name: Bundles
+          path: "build/overleaf-bundles/*.zip"
+          retention-days: 21

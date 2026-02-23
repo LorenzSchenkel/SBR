@@ -1,4 +1,4 @@
-name: bundler testing
+name: Bundler
 # Currently we run in two situations:
 on:
   push:
@@ -23,7 +23,7 @@ jobs:
         with:
           module: OTHR-CI
       - run: ls -lah build/overleaf-bundles
-      - name: Archive documentation
+      - name: Archive bundles
         # temporary fork since actions/upload-artifact@v4 is not working it not on github
         uses: https://code.forgejo.org/forgejo/upload-artifact@v4
         # uses: github/upload-artifact@v4
@@ -31,3 +31,15 @@ jobs:
           name: Bundles
           path: "build/overleaf-bundles/*.zip"
           retention-days: 21
+      - move bundles
+        run: mkdir -p overleaf-bundles && mv build/overleaf-bundles/*.zip" overleaf-bundles/.
+      - uses: https://github.com/crazy-max/ghaction-github-pages@v4
+        # only publish pdf from main branch
+        if: github.ref == 'refs/heads/main'
+        with:
+          target_branch: overleaf-bundles
+          build_dir: overleaf-bundles
+          domain: codeberg.org
+          commit_message: Publish Output Bundles
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

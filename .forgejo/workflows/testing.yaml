@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        image: ["TL2023-historic", "TL2024-historic"]
+        image: ["TL2023-historic", "TL2024-historic", "latest"]
         # engine: [pdflatex, xelatex, lualatex]
     name: "Test Suite Linux (IoT) on ${{ matrix.image }}"
     container:
@@ -26,4 +26,25 @@ jobs:
           show-progress: 'false'
       - name: l3build doc
         run: l3build doc
+        continue-on-error: true
+
+  test-other-examples:
+    if: forgejo.ref != 'refs/heads/main'
+    # tests using full TeX Live images provided by Island of TeX: https://gitlab.com/islandoftex/images/texlive
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        image: ["TL2023-historic", "TL2024-historic", "latest"]
+    name: "Test Suite Linux (IoT) on ${{ matrix.image }}"
+    container:
+      image: registry.gitlab.com/islandoftex/images/texlive:${{ matrix.image }}
+    steps:
+      - name: install NodeJS
+        run: apt-get update && apt-get install -y nodejs
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          show-progress: 'false'
+      - name: test example
+        run: make examples
         continue-on-error: true

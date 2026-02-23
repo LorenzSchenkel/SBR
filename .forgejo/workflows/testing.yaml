@@ -35,7 +35,7 @@ jobs:
     strategy:
       matrix:
         image: ["TL2023-historic", "TL2024-historic", "latest"]
-    name: "Test Suite Linux (IoT) on ${{ matrix.image }}"
+    name: "Test other example documents on ${{ matrix.image }}"
     container:
       image: registry.gitlab.com/islandoftex/images/texlive:${{ matrix.image }}
     steps:
@@ -45,6 +45,8 @@ jobs:
         uses: actions/checkout@v4
         with:
           show-progress: 'false'
+      - name install the bundle
+        run: l3build install
       - name: test example
         run: make examples
         continue-on-error: true

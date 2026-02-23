@@ -32,7 +32,7 @@ jobs:
           path: "build/overleaf-bundles/*.zip"
           retention-days: 21
       - name: move bundles
-        run: mkdir -p overleaf-bundles && mv build/overleaf-bundles/*.zip" overleaf-bundles/.
+        run: mkdir -p overleaf-bundles && mv build/overleaf-bundles/*.zip overleaf-bundles/.
       - uses: https://github.com/crazy-max/ghaction-github-pages@v4
         # only publish pdf from main branch
         if: github.ref == 'refs/heads/main'

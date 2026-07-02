@@ -1,87 +1,146 @@
-% arara: pdflatex: { shell: yes } until !found('log', '\\(?(R|r)e\\)?run (to get|LaTeX)')
-\documentclass[fontsize=12pt,
-parskip=half,	% Abstände statt Einrückungen bei Absätzen
-department=FakM,  % Farbanpassungen
-logostyle=flat,
-twoside, % Spart Papier und erhöht die Lesbarkeit
-DIV=15,BCOR=10mm, % Seitenlayout wie bei Koma-Script
-]{OTHRreprt}
-\usepackage[english,ngerman]{babel} % German documents with some fragments of English
-%%\usepackage[ngerman,english]{babel} % Use instead for English documents
-%%\usepackage[svgnames, table]{xcolor} % Will work only using recent LaTeX cores
-\usepackage{acronym} % Abkürzungsverzeichnis
-\usepackage[bookmarks, raiselinks, pageanchor, hyperindex, colorlinks, hidelinks]{hyperref}
-
-\usepackage{amsmath}
-\usepackage{amssymb}
-\usepackage{pifont}
-\usepackage{graphicx}
-\usepackage{listings}
-\usepackage{longtable}
+% !TeX root = Abschlussarbeit.tex
+% !TeX program = lualatex
+%% Projektbericht - Self-Balancing Robot
+%% PTI Projektstudium - OTH Regensburg
+% !TeX TXS-program:bibliography = txs:///none
+\documentclass[12pt,ngerman,numbers=noenddot,abstracton,headsepline]{scrreprt}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\geometry{
+  left=3cm,
+  right=2.5cm,
+  top=2.5cm,
+  bottom=2.5cm
+}
+\pagestyle{plain}
+\setlength{\parskip}{\medskipamount}
+\setlength{\parindent}{0pt}
+\usepackage{color}
+\usepackage{babel}
 \usepackage{array}
+\usepackage{textcomp}
 \usepackage{multirow}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{setspace}
+\usepackage{nomencl}
 
+\usepackage[acronym,toc,nogroupskip,sort=use,nonumberlist]{glossaries}
+\makeglossaries
 
-\usepackage[format=hang,			% Einstellung fuer Bildunterschriften
-font={footnotesize},
-labelfont={bf},
-margin=1cm,
-aboveskip=5pt,
-position=bottom]{caption}
+% Abkürzungen
+\newacronym{sbr}{SBR}{Self-Balancing Robot}
+\newacronym{pid}{PID}{Proportional-Integral-Differential}
+\newacronym{imu}{IMU}{Inertial Measurement Unit}
+\newacronym{i2c}{I2C}{Inter-Integrated Circuit}
+\newacronym{pwm}{PWM}{Pulse Width Modulation}
+\newacronym{cad}{CAD}{Computer-Aided Design}
+\newacronym{ki}{KI}{Künstliche Intelligenz}
+\newacronym{ide}{IDE}{Integrated Development Environment}
+\newacronym{mcu}{MCU}{Microcontroller Unit}
+\newacronym{rtos}{RTOS}{Real-Time Operating System}
+\newacronym{ble}{BLE}{Bluetooth Low Energy}
 
-\usepackage{booktabs} % Hübschere Tabellen
-%\usepackage{tikz}								% Erstellen von Grafiken
-%\usetikzlibrary{positioning,arrows,plotmarks} 	% TikZ-Bibliotheken
-\usepackage[autostyle=true,german=quotes]{csquotes}	% Zur Nutzung von deutschen Anführungszeichen, innerhalb des Textes mit dem Befehl \enquote vorgehen
-\usepackage[bottom]{footmisc}
-\usepackage[gen]{eurosym}				% Eurozeichen einfügen
-%\usepackage{chngpage}
-%\usepackage{lscape}						% Nützlich, falls querformatierte 	Seiten gewünscht sind
-%\usepackage{pdflscape}					% Zum exportieren der Landscapes in PDF-Dateien
-\usepackage{lipsum}						% Dummy-Text generieren
+\providecommand{\printnomenclature}{\printglossary}
+\providecommand{\makenomenclature}{\makeglossary}
+\makenomenclature
+\setstretch{1.5}
+\makeatletter
+\providecommand{\tabularnewline}{\\}
 
-\usepackage[headsepline]{scrlayer-scrpage}
-\pagestyle{scrheadings}
-\automark[chapter]{chapter}
-\automark*[section]{}
+\usepackage{textcomp,units}
+\usepackage{caption}
+\captionsetup[table]{skip=10pt}
 
-\documenttype{Projektdokumentation}
-\title{Self-Balancing Robot -- Projektstudium Technische Informatik}
-\author{Felix Dauerer, Lorenz Schenkel, Niklas Stiegler}
-\studentid{12345678}
-\department{Musterfakultät}
-\studyprogramme{Bachelor Musterstudiengang}
-\startingdate{1.\,November 2088}
-\closingdate{11.\,Dezember 2089}
-\firstadvisor{Prof. Dr. Paula Strikt}
-\secondadvisor{Prof. Dr. Petra Hart}
-\externaladvisor{Dr. Klara Endlos, ACME Inc.}
+\makeatletter
+\renewcommand*{\chapterformat}{%
+   \begingroup
+     \setlength{\unitlength}{1mm}%
+     \begin{picture}(10,10)(0,5)
+       \setlength{\fboxsep}{0pt}
+       \put(10,15){\line(1,0){\dimexpr
+           \textwidth-20\unitlength\relax\@gobble}}%
+       \put(0,0){\makebox(10,20)[r]{%
+           \fontsize{28\unitlength}{28\unitlength}\selectfont\thechapter
+           \kern-.05em
+         }}%
+       \put(10,15){\makebox(\dimexpr
+           \textwidth-20\unitlength\relax\@gobble,\ht\strutbox\@gobble)[l]{%
+             \ \normalsize\color{black}\chapapp~\thechapter\autodot
+           }}%
+     \end{picture}
+   \endgroup
+}
 
-%\externallogo[height=1.5cm]{firmenlogo}
+\usepackage{
+            ellipsis, mparhack,
+            booktabs, longtable
+}
 
-% Hiermit trägt pdflatex die PDF-Metadaten des erzeugten Dokuments ein:
-\hypersetup{pdftitle={\csname @title\endcsname{}},%
-	pdfauthor={\csname @author\endcsname{}},%
-	%pdfsubject={Optionaler Untertitel / englischer Titel},%
-	%pdfkeywords={Optionale Schlüsselwörter}
-	}
+\renewenvironment{abstract}{
+    \@beginparpenalty\@lowpenalty
+      \begin{center}
+        \normalfont\sectfont\nobreak\abstractname
+        \@endparpenalty\@M
+      \end{center}
+}{
+    \par
+}
 
+\usepackage{microtype}
+\usepackage{ifpdf}
+\ifpdf
+\IfFileExists{lmodern.sty}{\usepackage{lmodern}}
+  {\usepackage[scaled=0.92]{helvet}
+    \usepackage{mathptmx}
+    \usepackage{courier} }
+\fi
 
+\pagenumbering{roman}
+\let\myTOC\tableofcontents
+\renewcommand\tableofcontents{
+   \myTOC
+   \clearpage
+   \pagenumbering{arabic}}
+
+\addto\captionsngerman{
+\renewcommand{\figurename}{Abb.}%
+\renewcommand{\tablename}{Tab.}%
+\renewcommand{\abstractname}{Kurzfassung}
+}
+
+\usepackage[colorlinks=true, bookmarks, bookmarksnumbered, bookmarksopen, bookmarksopenlevel=1,
+  linkcolor=black, citecolor=black, urlcolor=blue, filecolor=blue,
+  pdfpagelayout=OneColumn, pdfnewwindow=true,
+  pdfstartview=XYZ, plainpages=false, pdfpagelabels,
+  pdfauthor={Felix Dauerer, Lorenz Schenkel, Niklas Stiegler},
+  pdftitle={Self-Balancing Robot - Projektbericht},
+  pdfsubject={PTI Projektstudium Technische Informatik},
+  pdfkeywords={Self-Balancing Robot, PID-Regler, ESP32, Regelungstechnik}]{hyperref}
+
+\newcommand{\@ldtable}{}
+\let\@ldtable\table
+\renewcommand{\table}{%
+                 \setlength{\@tempdima}{\abovecaptionskip}%
+                 \setlength{\abovecaptionskip}{\belowcaptionskip}%
+                 \setlength{\belowcaptionskip}{\@tempdima}%
+                 \@ldtable}
+
+\renewcommand{\nomname}{Glossar}
+\definecolor{lightgray}{rgb}{0.8,0.8,0.8}
+\AtBeginDocument{
+  \def\labelitemiii{\(\circ\)}
+}
+\makeatother
+
+\usepackage{listings}
+\renewcommand{\lstlistingname}{Listing}
+
+% ============================================================
 \begin{document}
-	\maketitle
-	\cleardoublepage
-	\pagenumbering{roman}
-	\begin{abstract}
-	\section*{Kurzzusammenfassung}
-	\begin{quote}
-	\lipsum[1]
-	\end{quote}
-	\end{abstract}
-	\cleardoublepage
-	\tableofcontents
-	\cleardoublepage
-	\pagenumbering{arabic}
-
 % ============================================================
 
 % ----- TITELSEITE -------------------------------------------
@@ -89,7 +148,7 @@ position=bottom]{caption}
 
 \noindent \begin{center}
 \begin{tabular}{cc}
- %& \multirow{5}{*}{\includegraphics[height=3cm]{images/Logo_OTH_Regensburg}}\tabularnewline
+ & \multirow{5}{*}{\includegraphics[height=3cm]{images/Logo_OTH_Regensburg}}\tabularnewline
 {\large{}Fakultät Informatik / Mathematik}\hspace{2.5cm} & \tabularnewline
  & \tabularnewline
  & \tabularnewline
@@ -126,7 +185,7 @@ Hochschule:          & OTH Regensburg\tabularnewline
 \newpage{}
 
 % ----- INHALTSVERZEICHNIS -----------------------------------
-% \tableofcontents (entfernt für Integration){}
+\tableofcontents{}
 
 \newpage{}
 
@@ -134,14 +193,7 @@ Hochschule:          & OTH Regensburg\tabularnewline
 \pagenumbering{roman}
 \setcounter{page}{3}
 
-\addchap{Abkürzungsverzeichnis} % Erstellt ein unnummeriertes Kapitel im OTH-Stil
-\begin{acronym}[MPU6050] % Das längste Wort in den Klammern bestimmt die Spaltenbreite
-    \acro{OTH}{Ostbayerische Technische Hochschule}
-    \acro{I2C}{Inter-Integrated Circuit}
-    \acro{ESP32}{ESP32 Mikrocontroller}
-    \acro{PID}{Proportional-Integral-Derivative}
-    \acro{FREERTOS}{FreeRTOS}
-\end{acronym}
+\printglossary[type=\acronymtype,title=Abkürzungsverzeichnis]
 
 \newpage{}
 
@@ -152,7 +204,6 @@ Hochschule:          & OTH Regensburg\tabularnewline
 \section{Projektüberblick und Motivation}
 \label{sec:projektueberblick}
 
-testsetstst
 Im Rahmen des vorliegenden Projektstudiums wurde ein zweirädriger, selbstbalancierender Roboter entwickelt, der auf dem physikalischen Prinzip des invertierten Pendels basiert. Ein invertiertes Pendel bezeichnet ein instabiles mechanisches System, bei dem eine Masse oberhalb ihres Drehpunkts balanciert werden muss, ähnlich einem Besenstiel, der auf der Handfläche im Gleichgewicht gehalten wird. Ohne eine aktive, kontinuierliche Regelung fällt ein solches System unweigerlich um, weshalb die Realisierung eines derartigen Roboters sowohl auf mechanischer als auch auf regelungstechnischer und softwareseitiger Ebene eine anspruchsvolle Aufgabenstellung darstellt.
 
 Die Motivation für dieses Projektthema lag insbesondere im interdisziplinären Charakter der Aufgabenstellung: Sie vereint mechanische Konstruktion (Chassis, 3D-Druck), Elektrotechnik (Motortreiber, Sensorik, Spannungsversorgung), Regelungstechnik (PID-Regler, Simulation) sowie Embedded-Softwareentwicklung (Echtzeitfähigkeit, FreeRTOS) in einem einzigen, praxisnahen System.
@@ -1007,52 +1058,6 @@ Das im Rahmen dieses Projekts entwickelte System eines selbstbalancierenden, zwe
 
 Der eigentliche Wert des Projekts liegt dabei jedoch nicht ausschließlich im final erreichten funktionalen Ergebnis, sondern in gleichem Maße im technischen und methodischen Erkenntnisgewinn, der im Rahmen der zahlreichen, teils langwierigen Fehlersuchen erarbeitet wurde. Insbesondere die Erkenntnis, dass einzeln einwandfrei funktionierende Teilsysteme bei ihrer Zusammenführung neue, nicht triviale Wechselwirkungen zeigen können, wie exemplarisch am Zusammenspiel von Motoransteuerung und MPU6050-Sensorik demonstriert (vgl. Kapitel~6.3), stellt eine übertragbare Lektion für zukünftige mechatronische Projekte dar. Die verbleibende, in Kapitel~9.5 dokumentierte Einschränkung, dass sich der Roboter aus einer starken Auslenkung heraus noch nicht selbstständig aufrichtet, bietet zugleich einen klaren Ansatzpunkt für eine mögliche Weiterentwicklung des Systems über den Rahmen dieses Projekts hinaus.
 
-	% Literaturverzeichnis in das Inhaltsverzeichnis einfügen
-	\addcontentsline{toc}{chapter}{Literaturverzeichnis}
 
-	% Style für die Bibliothek festlegen
-  	\bibliographystyle{plain}
-
-  	% Einfügen des Literaturverzeichnisses in das Dokument
-	%\bibliography{Musterpfad/Zum/Literaturverzeichnis}
-
-	\newpage
-
-	\thispagestyle{empty}
-	\addcontentsline{toc}{chapter}{Abkürzungsverzeichnis}\label{Sec:Abkuerzungen}
-	\chapter*{Abkürzungsverzeichnis}
-	\begin{acronym}[OTH R]
-	 \acro{OTH R}{Ostbayerische Technische Hochschule Regensburg}
-	 \acro{OTH}{Ostbayerische Technische Hochschule}
-	 \acro{GCC}{Der Compiler namens gcc}
-	 \acro{I2C}[I²C]{Inter-Integrated Circuit}
-	 \acro{sbr}[SBR]{Self-Balancing Robot}
-	 \acro{pid}[PID]{Proportional-Integral-Differential}
-	 \acro{imu}[IMU]{Inertial Measurement Unit}
-	 \acro{pwm}[PWM]{Pulse Width Modulation}
-	 \acro{cad}[CAD]{Computer-Aided Design}
-	 \acro{ki}[KI]{Künstliche Intelligenz}
-	 \acro{ide}[IDE]{Integrated Development Environment}
-	 \acro{mcu}[MCU]{Microcontroller Unit}
-	 \acro{rtos}[RTOS]{Real-Time Operating System}
-	 \acro{ble}[BLE]{Bluetooth Low Energy}
-	\end{acronym}
-	% Anhang
-	\addcontentsline{toc}{chapter}{Abbildungsverzeichnis}
-	\listoffigures
-
-	\addcontentsline{toc}{chapter}{Tabellenverzeichnis}
-	\listoftables
-
-	%\addcontentsline{toc}{chapter}{Listingsverzeichnis} % für Quellcode
-	%\lstlistoflistings
-
-	%\addcontentsline{toc}{chapter}{Digitaler Anhang}	% für digitalen Anhang, falls nötig
-	%\include{anhang}
-	\cleardoublepage
-	\thispagestyle{empty}
-	\makedeclaration
-
-	\cleardoublepage
 
 \end{document}

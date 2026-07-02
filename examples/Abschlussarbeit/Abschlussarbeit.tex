@@ -1,3 +1,4 @@
+% !TeX program = lualatex
 % arara: pdflatex: { shell: yes } until !found('log', '\\(?(R|r)e\\)?run (to get|LaTeX)')
 \documentclass[fontsize=12pt,
 parskip=half,	% Abstände statt Einrückungen bei Absätzen
@@ -68,69 +69,29 @@ position=bottom]{caption}
 
 
 \begin{document}
-	\maketitle
-	\cleardoublepage
-	\pagenumbering{roman}
-	\begin{abstract}
-	\section*{Kurzzusammenfassung}
-	\begin{quote}
-	\lipsum[1]
-	\end{quote}
-	\end{abstract}
-	\cleardoublepage
-	\tableofcontents
-	\cleardoublepage
-	\pagenumbering{arabic}
 
-% ============================================================
+% 1. Automatische Titelseite generieren lassen (nutzt \title, \author, \department etc.)
+\maketitle
+\cleardoublepage
 
-% ----- TITELSEITE -------------------------------------------
-\noindent \titlepage
+% 2. Römische Seitennummerierung für die Verzeichnisse
+\pagenumbering{roman}
 
-\noindent \begin{center}
-\begin{tabular}{cc}
- %& \multirow{5}{*}{\includegraphics[height=3cm]{images/Logo_OTH_Regensburg}}\tabularnewline
-{\large{}Fakultät Informatik / Mathematik}\hspace{2.5cm} & \tabularnewline
- & \tabularnewline
- & \tabularnewline
- & \tabularnewline
-\end{tabular}
-\par\end{center}
 
-\noindent \vspace{2cm}
+% 4. Das funktionierende Inhaltsverzeichnis
+\tableofcontents
+\cleardoublepage
 
-\noindent \begin{flushleft}
-\textbf{\Large{Projektbericht}}
-\par\end{flushleft}{\Large \par}
-
-\noindent \begin{flushleft}
-{\large{Self-Balancing Robot -- Projektstudium Technische Informatik (PTI)}}
-\par\end{flushleft}{\large \par}
-
-\noindent \begin{flushleft}
-{\Large{}\vspace{1.5cm}
-}
-\par\end{flushleft}{\Large \par}
-
-\begin{tabular}{ll}
-Autoren:\hspace{1cm} & Felix Dauerer\tabularnewline
-                     & Lorenz Schenkel\tabularnewline
-                     & Niklas Stiegler\tabularnewline
-                     & \tabularnewline
-Studiengang:         & Technische Informatik (IT)\tabularnewline
-Hochschule:          & OTH Regensburg\tabularnewline
-                     & \tabularnewline
-\multicolumn{2}{l}{Regensburg, der \today}\tabularnewline
-\end{tabular}
-
-\newpage{}
-
-% ----- INHALTSVERZEICHNIS -----------------------------------
-% \tableofcontents (entfernt für Integration){}
-
-\newpage{}
-
-% ----- ABKÜRZUNGSVERZEICHNIS --------------------------------
+% 5. Abkürzungsverzeichnis (Unnummeriertes OTH-Kapitel)
+\addchap{Abkürzungsverzeichnis} 
+\begin{acronym}[MPU6050] % Das längste Wort bestimmt die Spaltenbreite
+    \acro{OTH}{Ostbayerische Technische Hochschule}
+    \acro{I2C}{Inter-Integrated Circuit}
+    \acro{ESP32}{ESP32 Mikrocontroller}
+    \acro{PID}{Proportional-Integral-Derivative}
+    \acro{FREERTOS}{FreeRTOS}
+\end{acronym}
+\cleardoublepage
 \pagenumbering{roman}
 \setcounter{page}{3}
 
@@ -169,7 +130,7 @@ Für den aktiven Ausgleich der Neigung wurden zwei bipolare Schrittmotoren einge
 \subsection{Teilziele}
 \label{subsec:teilziele}
 
-Zur strukturierten Steuerung des Projektfortschritts wurden zu Projektbeginn fünf aufeinander aufbauende Teilziele definiert, die in Tabelle~\ref{tab:teilziele} dargestellt sind.
+Zur strukturierten Steuerung des Projektfortschristts wurden zu Projektbeginn fünf aufeinander aufbauende Teilziele definiert, die in Tabelle~\ref{tab:teilziele} dargestellt sind.
 
 \begin{table}[h]
     \centering
@@ -904,7 +865,7 @@ Der Roboter zeigt zudem die Fähigkeit, leichte, von außen einwirkende Störung
         \hline
         \textbf{Kriterium} & \textbf{Ergebnis} \\
         \hline
-        Balancierdauer & $>$\,60\,s \\e
+        Balancierdauer & $>$\,60\,s \\
         \hline
         Positionsabweichung & $<$\,$\pm$20\,cm \\
         \hline

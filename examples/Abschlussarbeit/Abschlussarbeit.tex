@@ -105,94 +105,75 @@ position=bottom]{caption}
 \end{acronym}
 
 \newpage{}
-
 \pagenumbering{arabic}
 \chapter{Einleitung}
 \label{ch:einleitung}
 
-\section{Projektüberblick und Motivation}
+\section{Projektüberblick und Motivation (geschrieben Lorenz)}
 \label{sec:projektueberblick}
 
-testsetstst
-Im Rahmen des vorliegenden Projektstudiums wurde ein zweirädriger, selbstbalancierender Roboter entwickelt, der auf dem physikalischen Prinzip des invertierten Pendels basiert. Ein invertiertes Pendel bezeichnet ein instabiles mechanisches System, bei dem eine Masse oberhalb ihres Drehpunkts balanciert werden muss, ähnlich einem Besenstiel, der auf der Handfläche im Gleichgewicht gehalten wird. Ohne eine aktive, kontinuierliche Regelung fällt ein solches System unweigerlich um, weshalb die Realisierung eines derartigen Roboters sowohl auf mechanischer als auch auf regelungstechnischer und softwareseitiger Ebene eine anspruchsvolle Aufgabenstellung darstellt.
+Im Rahmen des Kurses Projektstudium Technische Informatik wurde ein zweirädriger, selbstbalancierender Roboter entwickelt. Die Motivation dahinter sind die Echtzeitanforderungen an das System. So müssen Mechanik, Regelung und die dazugehörige Software ineinandergreifen und schnell genug dafür sorgen, dass der Neigungswinkel ausgeglichen wird. Ziel war es auch, praktische Erfahrungen im Bereich der Robotik zu sammeln. Ein wesentlicher Aspekt des Projekts ist die Hardwarenähe, wobei das System zudem die Möglichkeit bot, das Verständnis der Regelungstechnik zu vertiefen.
 
-Die Motivation für dieses Projektthema lag insbesondere im interdisziplinären Charakter der Aufgabenstellung: Sie vereint mechanische Konstruktion (Chassis, 3D-Druck), Elektrotechnik (Motortreiber, Sensorik, Spannungsversorgung), Regelungstechnik (PID-Regler, Simulation) sowie Embedded-Softwareentwicklung (Echtzeitfähigkeit, FreeRTOS) in einem einzigen, praxisnahen System.
 
-\section{Zielsetzung}
+\section{Zielsetzung (geschrieben Lorenz)}
 \label{sec:zielsetzung}
+Das Gesamtziel des Projekts bestand in der Entwicklung, Konstruktion und Programmierung eines zweirädrigen, selbstbalancierenden Roboters. Dieser basiert auf dem Prinzip eines invertierten Pendels, welches mithilfe eines Echtzeitsystems realisiert wurde. Der Fokus liegt auf einer stabilen Balance im Stillstand über einen Zeitraum von mindestens 60 Sekunden (F10), wobei die Ausgleichsbewegungen so minimiert werden sollen, dass die Abweichung vom Startpunkt innerhalb von $\pm$20 cm bleibt (F30). Darüber hinaus muss das System robust gegenüber externen Einflüssen sein und mechanische Störungen, wie etwa leichte Stöße bis ca. 0,5 N, ausgleichen (F20). Zudem soll der Roboter über eine 2,4GHz Schnittstelle steuerbar sein (F50), um gezielte Vor- und Rückwärtsfahrten mit bis zu 0,1 m/s durchzuführen (F40). Sicherheitsfunktionen wie die Distanzerkennung und die automatische Sturzerkennung sollen dafür sorgen, dass der Roboter vor Hindernissen in einer Distanz von weniger als 20 cm selbstständig stoppt (F60) und die Motoren bei einem Sturz ab einem Neigungswinkel von 45° zum Schutz der Hardware sofort deaktiviert werden (F80).
 
-Das Gesamtziel des Projekts bestand in der Konstruktion und Programmierung eines zweirädrigen, selbstbalancierenden Roboters. Die mechanische Struktur wurde dabei als mehrstöckiges, 3D-gedrucktes Chassis realisiert (vgl. Kapitel~6.1), welches als modularer Träger für sämtliche elektronische Komponenten dient und es erlaubt, diese gezielt auf unterschiedlichen Ebenen zu positionieren, um Gewichtsverteilung und Systemverhalten während der Entwicklung gezielt zu beeinflussen.
+\section{Projektteam (geschrieben Lorenz)}
+\label{sec:projektteam}
 
-Für den aktiven Ausgleich der Neigung wurden zwei bipolare Schrittmotoren eingesetzt (vgl. Kapitel~4.2.3), welche in Kombination mit geeigneten Motortreibern eine hochpräzise Kontrolle von Radposition und Drehzahl ermöglichen, ohne dass externe Encoder benötigt werden. Die Erfassung der Neigung erfolgt über eine Inertialmesseinheit, die ein 3-Achsen-Gyroskop mit einem 3-Achsen-Beschleunigungssensor kombiniert (vgl. Kapitel~6.2.2). Als Kern der Regelung dient ein auf einem Mikrocontroller implementierter PID-Regelkreis (vgl. Kapitel~4.2.2 und~7.5), welcher die Sensordaten in Echtzeit verarbeitet, die Differenz zwischen Soll- und Ist-Neigungswinkel berechnet und daraus entsprechende Steuerbefehle an die Motortreiber ableitet.
+Das Projektteam bestand aus drei Studierenden, wobei Niklas Stiegler die Rolle des Projektleiters übernahm. Als weitere Teammitglieder arbeiteten Felix Dauerer und Lorenz Schenkel am Projekt mit. Die konkrete Aufgabenverteilung innerhalb der einzelnen Bereiche ist den jeweiligen Kapiteln der Projektdokumentation zu entnehmen.
 
-Über eine drahtlose Schnittstelle ist das System zusätzlich manövrierbar (vgl. Kapitel~7.6), wobei Sicherheitsfunktionen wie eine automatische Sturzerkennung (vgl. Kapitel~7.3.1) und eine Kollisionsvermeidung (vgl. Kapitel~7.4.3) die Betriebssicherheit gewährleisten sollen. Der Regelungsentwurf erfolgte dabei zunächst modellbasiert in Simulation (vgl. Kapitel~5), bevor die gewonnenen Erkenntnisse im realen Testbetrieb überprüft und die Parameter für eine stabile Balance manuell nachoptimiert wurden (vgl. Kapitel~7.5.3).
+\section{Projektmanagement (geschrieben Lorenz)}
+\label{sec:projektmanagement}
 
-\subsection{Teilziele}
-\label{subsec:teilziele}
+\subsection{Zeitplan und Meilensteine (geschrieben Lorenz)}
+\label{subsec:zeitplan_meilensteine}
 
-Zur strukturierten Steuerung des Projektfortschristts wurden zu Projektbeginn fünf aufeinander aufbauende Teilziele definiert, die in Tabelle~\ref{tab:teilziele} dargestellt sind.
+Zu Projektbeginn wurde ein Gantt-Diagramm mit den wesentlichen Projektphasen erstellt, das als grobe zeitliche Orientierung für den Projektverlauf diente. Zur Überprüfung und Steuerung des Projektfortschritts wurden acht aufeinander aufbauende Meilensteine definiert. Diese sind in der Tabelle~\ref{tab:meilensteine} aufgeführt.
 
 \begin{table}[h]
     \centering
-    \caption{Definierte Teilziele des Projekts}
-    \label{tab:teilziele}
-    \begin{tabular}{|l|l|}
+    \caption{Definierte Meilensteine des Projekts}
+    \label{tab:meilensteine}
+    \begin{tabular}{|l|}
         \hline
-        \textbf{Teilziel} & \textbf{Beschreibung} \\
+        \textbf{Meilenstein} \\
         \hline
-        TZ1 -- Hardware-Fertigstellung & Chassis gedruckt, Motoren drehen sich, Sensoren liefern Daten. \\
+        M0 Projektplanung \\
         \hline
-        TZ2 -- Selbständige Balance & Roboter steht erstmals mind. 5\,s eigenständig. \\
+        M1 Hardware-Setup  \\
         \hline
-        TZ3 -- Stabilität & Optimierung der Parameter für Stillstand (F30 erfüllt). \\
+        M2 Balance  \\
         \hline
-        TZ4 -- Implementierung Features & Fernsteuerung und Kollisionsschutz aktiv. \\
+        M3 Stabilität  \\
         \hline
-        TZ5 -- Abschluss & Dokumentation fertiggestellt. \\
+        M4 Fernsteuerung  \\
+        \hline
+        M5 Sicherheit \\
+        \hline
+        M6 Testabschluss \\
+        \hline
+        M7 Projektabschluss \\
         \hline
     \end{tabular}
 \end{table}
 
-Der tatsächliche Projektverlauf zeigte hierbei deutliche Abweichungen von der ursprünglichen zeitlichen Planung (vgl. Kapitel~10.1.2), da insbesondere TZ1 durch die in Kapitel~7.3 beschriebenen Hardwaredefekte erheblich mehr Zeit in Anspruch nahm als ursprünglich vorgesehen.
+Der tatsächliche Projektverlauf zeigte hierbei deutliche Abweichungen von der ursprünglichen zeitlichen Planung, da insbesondere die später beschriebenen Hardwaredefekte erheblich mehr Zeit in Anspruch nahmen als ursprünglich vorgesehen. Dies wird in Kapitel~10.1.2 ausführlich dargelegt.
 
-\section{Projektteam und Aufgabenverteilung}
-\label{sec:projektteam}
-
-Das Projektteam bestand aus drei Studierenden, wobei Niklas Stiegler die Rolle des Projektleiters übernahm. Als weitere Teammitglieder wirkten Felix Dauerer und Lorenz Schenkel am Projekt mit. Die konkrete Aufgabenverteilung innerhalb der einzelnen technischen Teilbereiche, etwa mechanische Konstruktion, Motoransteuerung, Sensorintegration oder PS4-Controller-Anbindung, ist den jeweiligen Fachkapiteln der vorliegenden Dokumentation zu entnehmen (vgl. insbesondere Kapitel~6 und~7).
-
-\section{Projektmanagement}
-\label{sec:projektmanagement}
-
-\subsection{Zeitplan und Meilensteine}
-\label{subsec:zeitplan_meilensteine}
-
-Zu Projektbeginn wurde ein Gantt-Diagramm mit den wesentlichen Projektphasen erstellt, das als grobe zeitliche Orientierung für den Projektverlauf diente. Die geplanten Hauptphasen umfassten die initiale Analyse und Projektplanung, den Entwurf sowie Hardwareaufbau, die Entwicklung von Basis-Software und Sensorik, die Implementierung von Regelung und Logik, die abschließende Validierung und Optimierung sowie den Projektabschluss mit Dokumentationserstellung.
-
-Wie in Kapitel~10.1.2 detailliert ausgeführt, kam es im tatsächlichen Projektverlauf insbesondere im Bereich Hardwareaufbau und Motoransteuerung zu erheblichen zeitlichen Abweichungen gegenüber dieser ursprünglichen Planung, was primär auf die in Kapitel~7.3 beschriebenen, mehrfach aufgetretenen Hardwaredefekte zurückzuführen ist.
-
-\subsection{Kommunikation und Zusammenarbeit}
+\subsection{Kommunikation und Zusammenarbeit(geschrieben Lorenz)}
 \label{subsec:kommunikation}
+Die Absprachen im Team liefen über regelmäßige persönliche Treffen und fortlaufend über WhatsApp. Die meiste Zeit wurde zu zweit oder zu dritt im Labor zusammengearbeitet. Das war besonders bei komplexen Problemen sehr gut, weil so jeder direkt neue Ideen und Vorschläge zur Fehlersuche einbringen konnte.
 
-% TODO: Konkrete Angaben ergänzen, z. B. feste wöchentliche Termine, genutzte Kommunikationskanäle (z. B. Team-Chat), sofern gewünscht.
-Die Projektkoordination innerhalb des Teams erfolgte über regelmäßige Abstimmungstermine sowie fortlaufende Absprachen während der gemeinsamen praktischen Arbeitsphasen im Labor.
-
-\subsection{Versionsverwaltung}
+\subsection{Versionsverwaltung(geschrieben Lorenz)}
 \label{subsec:versionsverwaltung}
+Um Änderungen im Code nachzuvollziehen zu können und eventuell alte Speicherstände wiederherstellen zu können, wurde ein GitLab Repository verwendet, welches von den Organisatoren bereitgestellt und von Anfang an des Projektstartes genutzt wurde. 
 
-Zur gemeinsamen Verwaltung des Quellcodes wurde ein GitLab-Repository verwendet, welches bereits zu Beginn des Projekts von der Organisation bereitgestellt und von allen Teammitgliedern von Projektstart an genutzt wurde (vgl. Kapitel~7.1.1).
 
-\section{Aufbau der Dokumentation}
+\section{Aufbau der Dokumentation(geschrieben Lorenz)}
 \label{sec:aufbau_dokumentation}
-
-Die vorliegende Dokumentation gliedert sich in zehn Hauptkapitel, die den Entwicklungsprozess des Self-Balancing-Robot-Systems chronologisch und thematisch abbilden. Nach dieser Einleitung werden in Kapitel~2 die funktionalen und nicht-funktionalen Anforderungen spezifiziert, welche die verbindliche Grundlage für alle nachfolgenden Entwicklungsschritte bilden. Kapitel~3 beschreibt das zugrundeliegende Systemkonzept, während Kapitel~4 die wesentlichen Designentscheidungen und deren Begründungen darlegt.
-
-Kapitel~5 dokumentiert den modellbasierten Regelungsentwurf mittels Matlab/Simulink. Die Kapitel~6 und~7 behandeln die Hardware- beziehungsweise Software-Entwicklung des Systems im Detail. Kapitel~8 beschreibt die Integration der Teilsysteme sowie die angewandte Fehlersuche-Methodik, Kapitel~9 dokumentiert die durchgeführten Tests und deren Ergebnisse. Abschließend reflektiert Kapitel~10 den Projektverlauf mit den gewonnenen technischen und organisatorischen Erkenntnissen und zieht ein Fazit.
-
-\chapter{Anforderungsspezifikation}
-\label{ch:anforderungen}
-
-Dieses Kapitel dokumentiert die verbindlichen Anforderungen an das Self-Balancing-Robot-System. Die hier definierten Anforderungen bilden die Grundlage für Design, Implementierung und Test des Systems.
-
+%TIÓDO: ANPASSEN WENN DOKU FERTIG ist
+Diese Dokumentation besteht aus zehn Kapiteln, die den Ablauf des Projekts zeigen. Nach dieser Einleitung werden in Kapitel 2 die Anforderungen an den Roboter festgelegt. In Kapitel 3 wird das Systemkonzept erklärt und Kapitel 4 zeigt die wichtigsten Designentscheidungen. Kapitel 5 befasst sich mit der Regelung in Matlab/Simulink. Danach folgen in den Kapiteln 6 und 7 die Details zur Hardware und Software. Die Integration der Teile und die Fehlersuche werden in Kapitel 8 beschrieben, während Kapitel 9 die Testergebnisse zeigt. Zum Schluss zieht Kapitel 10 ein Fazit und blickt auf den Projektverlauf zurück.
 \section{Funktionale Anforderungen}
 \label{sec:funktionale_anforderungen}
 
@@ -302,27 +283,27 @@ Zur Stabilisierung des invertierten Pendels wird ein kaskadierter Regelkreis ein
 
 Die Gesamtarchitektur des Systems gliedert sich in drei wesentliche Ebenen: die mechanische Ebene (Chassis, Motoren, Räder, vgl. Kapitel~6.1), die elektronische Ebene (Mikrocontroller, Sensorik, Motortreiber, Energieversorgung, vgl. Kapitel~6.2 und~6.3) sowie die Softwareebene (Regelung, Sensorverarbeitung, Kommunikation, vgl. Kapitel~7). Zentrales Verbindungselement zwischen diesen Ebenen ist der ESP32-Mikrocontroller, welcher sämtliche Sensordaten erfasst, die Regelung berechnet und die daraus resultierenden Steuerbefehle an die Motortreiber weiterleitet (vgl. Kapitel~4.2.1).
 
-\chapter{Designentscheidungen}
+\chapter{Designentscheidungen (geschrieben Lorenz)}
 \label{ch:designentscheidungen}
 
 Dieses Kapitel begründet die zentralen technischen Entscheidungen, die im Vorfeld der eigentlichen Implementierung getroffen wurden.
 
-\section{Auswahl der Steuereinheit}
+\section{Auswahl der Steuereinheit(geschrieben Lorenz)}
 \label{sec:auswahl_steuereinheit}
 
-\subsection{ESP32 als zentrale Steuereinheit}
+\subsection{ESP32 als zentrale Steuereinheit(geschrieben Lorenz)}
 \label{subsec:esp32_designentscheidung}
 
 Als zentrale Steuereinheit des Systems wurde ein ESP-WROOM-32-Entwicklungsboard des Herstellers Freenove gewählt. Ausschlaggebend für diese Entscheidung war zum einen, dass das Board bereits aus einem vorangegangenen Projekt im Team vorhanden war und somit im Einklang mit der in Kapitel~2.3 beschriebenen Randbedingung, primär vorhandene Laborkomponenten zu nutzen, kostenneutral eingesetzt werden konnte. Zum anderen bietet der ESP32 mit seiner Dual-Core-Architektur die technische Voraussetzung für die in Kapitel~7.2.2 beschriebene, echtzeitfähige Aufteilung der Software auf mehrere parallele FreeRTOS-Tasks, was für die Einhaltung der präzisen Regelabtastrate essenziell ist. Zusätzlich verfügt der ESP32 über eine integrierte Bluetooth-Schnittstelle, die für die in Kapitel~7.6 beschriebene PS4-Controller-Anbindung ohne zusätzliche externe Hardware genutzt werden konnte.
 
 % TODO: Falls im Vorfeld konkret Alternativen wie Arduino Uno/Mega oder Raspberry Pi diskutiert wurden, hier ergänzen und gegenüberstellen.
 
-\section{Regelungsverfahren: PID-Regelung}
+\section{Regelungsverfahren: PID-Regelung (geschrieben Lorenz)}
 \label{sec:pid_designentscheidung}
 
 Als Regelungsverfahren zur Stabilisierung des invertierten Pendels wurde ein klassischer PID-Regler (Proportional-Integral-Differential-Regler) gewählt. Gegenüber komplexeren, modernen Regelungsverfahren wie beispielsweise einer Zustandsraumregelung mittels Kalman-Filter und LQR (Linear-Quadratic Regulator) bietet der PID-Regler den Vorteil einer deutlich einfacheren Implementierung sowie eines intuitiv nachvollziehbaren Parametrisierungsprozesses, was angesichts der begrenzten zeitlichen Ressourcen des Projekts sowie der im Team zu Projektbeginn noch begrenzten regelungstechnischen Vorerfahrung als entscheidender Vorteil bewertet wurde. Die konkrete Umsetzung der PID-Regelung, einschließlich des gewählten Kaskadenansatzes aus Neigungs- und Positionsregelung, wird in Kapitel~7.5 detailliert beschrieben.
 
-\section{Motorwahl: Schrittmotoren vs. DC-Motoren}
+\section{Motorwahl: Schrittmotoren vs. DC-Motoren (geschrieben Lorenz)}
 \label{subsec:motorwahl_designentscheidung}
 
 Für den Antrieb des Roboters wurden bipolare Schrittmotoren gegenüber klassischen DC-Motoren bevorzugt. Ausschlaggebend hierfür war insbesondere, dass Schrittmotoren eine hochpräzise, positionsgenaue Ansteuerung der Radbewegung ermöglichen, ohne dass hierfür zusätzliche externe Drehgeber (Encoder) benötigt werden, wie dies bei einer vergleichbar präzisen Regelung mit DC-Motoren erforderlich gewesen wäre. Da für die im PID-Regelkreis benötigte präzise Umsetzung der Stellgröße in eine exakte Motorbewegung eine feingranulare, zuverlässig reproduzierbare Ansteuerung notwendig ist, stellte der Verzicht auf zusätzliche Sensorik durch den Einsatz von Schrittmotoren einen wesentlichen konstruktiven Vorteil dar. Die konkret eingesetzten Motoren vom Typ Pololu NEMA17 sowie deren Ansteuerung über die Motortreiber A4988 und TMC2209 werden in Kapitel~6.2.4 beschrieben.

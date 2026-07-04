@@ -14,7 +14,7 @@ DIV=15,BCOR=10mm, % Seitenlayout wie bei Koma-Script
 \usepackage[bookmarks, raiselinks, pageanchor, hyperindex, colorlinks, hidelinks]{hyperref}
 
 \usepackage{amsmath}
-\usepackage{amssymb}
+%\usepackage{amssymb}
 \usepackage{pifont}
 \usepackage{graphicx}
 \usepackage{listings}
@@ -67,7 +67,6 @@ position=bottom]{caption}
 	%pdfkeywords={Optionale Schlüsselwörter}
 	}
 
-
 \begin{document}
 
 % 1. Automatische Titelseite generieren lassen (nutzt \title, \author, \department etc.)
@@ -105,6 +104,9 @@ position=bottom]{caption}
 \end{acronym}
 
 \newpage{}
+
+
+
 \pagenumbering{arabic}
 \chapter{Einleitung}
 \label{ch:einleitung}
@@ -161,19 +163,28 @@ Zu Projektbeginn wurde ein Gantt-Diagramm mit den wesentlichen Projektphasen ers
 
 Der tatsächliche Projektverlauf zeigte hierbei deutliche Abweichungen von der ursprünglichen zeitlichen Planung, da insbesondere die später beschriebenen Hardwaredefekte erheblich mehr Zeit in Anspruch nahmen als ursprünglich vorgesehen. Dies wird in Kapitel~10.1.2 ausführlich dargelegt.
 
-\subsection{Kommunikation und Zusammenarbeit(geschrieben Lorenz)}
+\subsection{Kommunikation und Zusammenarbeit (geschrieben Lorenz)}
 \label{subsec:kommunikation}
 Die Absprachen im Team liefen über regelmäßige persönliche Treffen und fortlaufend über WhatsApp. Die meiste Zeit wurde zu zweit oder zu dritt im Labor zusammengearbeitet. Das war besonders bei komplexen Problemen sehr gut, weil so jeder direkt neue Ideen und Vorschläge zur Fehlersuche einbringen konnte.
 
-\subsection{Versionsverwaltung(geschrieben Lorenz)}
+\subsection{Versionsverwaltung (geschrieben Lorenz)}
 \label{subsec:versionsverwaltung}
 Um Änderungen im Code nachzuvollziehen zu können und eventuell alte Speicherstände wiederherstellen zu können, wurde ein GitLab Repository verwendet, welches von den Organisatoren bereitgestellt und von Anfang an des Projektstartes genutzt wurde. 
 
 
-\section{Aufbau der Dokumentation(geschrieben Lorenz)}
+\section{Aufbau der Dokumentation (geschrieben Lorenz/ noch nicht fertig )}
 \label{sec:aufbau_dokumentation}
 %TIÓDO: ANPASSEN WENN DOKU FERTIG ist
 Diese Dokumentation besteht aus zehn Kapiteln, die den Ablauf des Projekts zeigen. Nach dieser Einleitung werden in Kapitel 2 die Anforderungen an den Roboter festgelegt. In Kapitel 3 wird das Systemkonzept erklärt und Kapitel 4 zeigt die wichtigsten Designentscheidungen. Kapitel 5 befasst sich mit der Regelung in Matlab/Simulink. Danach folgen in den Kapiteln 6 und 7 die Details zur Hardware und Software. Die Integration der Teile und die Fehlersuche werden in Kapitel 8 beschrieben, während Kapitel 9 die Testergebnisse zeigt. Zum Schluss zieht Kapitel 10 ein Fazit und blickt auf den Projektverlauf zurück.
+
+
+
+
+\chapter{Anforderungsspezifikation}
+\label{ch:anforderungen}
+
+Dieses Kapitel dokumentiert die verbindlichen Anforderungen an das Self-Balancing-Robot-System. Die hier definierten Anforderungen bilden die Grundlage für Design, Implementierung und Test des Systems.
+
 \section{Funktionale Anforderungen}
 \label{sec:funktionale_anforderungen}
 
@@ -286,27 +297,23 @@ Die Gesamtarchitektur des Systems gliedert sich in drei wesentliche Ebenen: die 
 \chapter{Designentscheidungen (geschrieben Lorenz)}
 \label{ch:designentscheidungen}
 
-Dieses Kapitel begründet die zentralen technischen Entscheidungen, die im Vorfeld der eigentlichen Implementierung getroffen wurden.
+Dieses Kapitel begründet die zentralen technischen Entscheidungen, die im Vorfeld getroffen wurden.
 
-\section{Auswahl der Steuereinheit(geschrieben Lorenz)}
-\label{sec:auswahl_steuereinheit}
-
-\subsection{ESP32 als zentrale Steuereinheit(geschrieben Lorenz)}
+\section{Mikrocontroller(geschrieben Lorenz)}
 \label{subsec:esp32_designentscheidung}
+Ausschlaggebend für die Wahl des Prozessors war das gute Preis-Leistungs-Verhältnis. Im weiteren Projektverlauf stellte es sich außerdem als großer Vorteil heraus, dass dieser über eine Dual-Core-Architektur verfügt. Durch die hohe Prozessortaktung eignet er sich ideal für die Echtzeitaufgaben. Die integrierte Bluetooth-Funktion war ein weiterer Pluspunkt, über den die Fernsteuerung implementiert wurde. Ein Nachteil war jedoch, dass das genutzte CNC-Shield für einen Arduino Uno ausgelegt war und sich nicht so einfach verbinden ließ.
 
-Als zentrale Steuereinheit des Systems wurde ein ESP-WROOM-32-Entwicklungsboard des Herstellers Freenove gewählt. Ausschlaggebend für diese Entscheidung war zum einen, dass das Board bereits aus einem vorangegangenen Projekt im Team vorhanden war und somit im Einklang mit der in Kapitel~2.3 beschriebenen Randbedingung, primär vorhandene Laborkomponenten zu nutzen, kostenneutral eingesetzt werden konnte. Zum anderen bietet der ESP32 mit seiner Dual-Core-Architektur die technische Voraussetzung für die in Kapitel~7.2.2 beschriebene, echtzeitfähige Aufteilung der Software auf mehrere parallele FreeRTOS-Tasks, was für die Einhaltung der präzisen Regelabtastrate essenziell ist. Zusätzlich verfügt der ESP32 über eine integrierte Bluetooth-Schnittstelle, die für die in Kapitel~7.6 beschriebene PS4-Controller-Anbindung ohne zusätzliche externe Hardware genutzt werden konnte.
-
-% TODO: Falls im Vorfeld konkret Alternativen wie Arduino Uno/Mega oder Raspberry Pi diskutiert wurden, hier ergänzen und gegenüberstellen.
 
 \section{Regelungsverfahren: PID-Regelung (geschrieben Lorenz)}
 \label{sec:pid_designentscheidung}
 
-Als Regelungsverfahren zur Stabilisierung des invertierten Pendels wurde ein klassischer PID-Regler (Proportional-Integral-Differential-Regler) gewählt. Gegenüber komplexeren, modernen Regelungsverfahren wie beispielsweise einer Zustandsraumregelung mittels Kalman-Filter und LQR (Linear-Quadratic Regulator) bietet der PID-Regler den Vorteil einer deutlich einfacheren Implementierung sowie eines intuitiv nachvollziehbaren Parametrisierungsprozesses, was angesichts der begrenzten zeitlichen Ressourcen des Projekts sowie der im Team zu Projektbeginn noch begrenzten regelungstechnischen Vorerfahrung als entscheidender Vorteil bewertet wurde. Die konkrete Umsetzung der PID-Regelung, einschließlich des gewählten Kaskadenansatzes aus Neigungs- und Positionsregelung, wird in Kapitel~7.5 detailliert beschrieben.
+Als Regelungsverfahren zur Balancierung des invertierten Pendels wurde ein klassischer PID-Regler gewählt. Ausschlaggebend für diese Wahl war die Einfachheit des Reglers. Im Gegensatz zu komplexeren Regelungen bietet der PID-Ansatz den Vorteil, dass seine Parameter nachvollziehbar, bereits bekannt und intuitiv verständlich sind. Für die Aufgabenstellung ist dieses bewährte Verfahren vollkommen ausreichend. Die Umsetzung der PID-Regelung mit der Kombination aus Neigungs- und Positionsregelung wird in Kapitel~7.5 detailliert beschrieben.
+
+
 
 \section{Motorwahl: Schrittmotoren vs. DC-Motoren (geschrieben Lorenz)}
 \label{subsec:motorwahl_designentscheidung}
-
-Für den Antrieb des Roboters wurden bipolare Schrittmotoren gegenüber klassischen DC-Motoren bevorzugt. Ausschlaggebend hierfür war insbesondere, dass Schrittmotoren eine hochpräzise, positionsgenaue Ansteuerung der Radbewegung ermöglichen, ohne dass hierfür zusätzliche externe Drehgeber (Encoder) benötigt werden, wie dies bei einer vergleichbar präzisen Regelung mit DC-Motoren erforderlich gewesen wäre. Da für die im PID-Regelkreis benötigte präzise Umsetzung der Stellgröße in eine exakte Motorbewegung eine feingranulare, zuverlässig reproduzierbare Ansteuerung notwendig ist, stellte der Verzicht auf zusätzliche Sensorik durch den Einsatz von Schrittmotoren einen wesentlichen konstruktiven Vorteil dar. Die konkret eingesetzten Motoren vom Typ Pololu NEMA17 sowie deren Ansteuerung über die Motortreiber A4988 und TMC2209 werden in Kapitel~6.2.4 beschrieben.
+Dadurch, dass der Roboter möglichst gut balancieren soll, war es naheliegend, hochgenaue Motoren zu wählen, um präzise Ausgleichsbewegungen zu ermöglichen. Aus diesem Grund wurden bipolare Schrittmotoren gegenüber klassischen DC-Motoren bevorzugt. Die Wahl fiel auf Schrittmotoren, darüber hinaus bieten diese in Kombination mit den Treibern die Möglichkeit die Auflösung mithilfe von Mikroschritten (Microsteps) flexibel anzupassen. Zudem war keine zusätzliche Hardware wie ein externer Encoder nötig, welcher in der Konstruktion hätte berücksichtigt werden müssen. Die konkret eingesetzten Motoren vom Typ Pololu NEMA17 sowie deren Ansteuerung über die Motortreiber A4988 und TMC2209 werden in Kapitel~6.2.4 detailliert beschrieben.
 
 \chapter{Simulation und Modellierung}
 \label{ch:simulation}
@@ -416,16 +423,19 @@ Es zeigte sich im weiteren Projektverlauf jedoch deutlich, dass die aus der star
 \section{Mechanische Konstruktion}
 \label{sec:mechanische_konstruktion}
 
-\subsection{CAD-Konstruktion und Iterationen}
+\subsection{CAD-Konstruktion und Iterationen (geschrieben Lorenz)}
 \label{subsec:cad_iterationen}
 
-Für die mechanische Struktur des Roboters wurde ein dreistöckiger Aufbau im Stil eines Regals gewählt, der als modularer Träger für alle elektronischen Komponenten dient und es ermöglicht, diese gezielt auf unterschiedlichen Ebenen zu positionieren, um die Gewichtsverteilung und das Systemverhalten gezielt zu beeinflussen (vgl. Kapitel~1). Vor Beginn der eigentlichen Konstruktion wurde eine informelle Internetrecherche zu bestehenden Konzepten selbstbalancierender Roboter durchgeführt (vgl. Kapitel~3.2), aus der grundlegende Gestaltungsprinzipien für den eigenen Entwurf abgeleitet wurden.
+Vor dem eigentlichen Bau wurde eine Konkurrenzanalyse durchgeführt, um bestehende Konzepte selbstbalancierender Roboter zu analysieren. Daraus resultierend wurde ein eigener Entwurf realisiert, der die Kriterien Leichtbau, Kosteneffizienz und strukturelle Stabilität erfüllt.
 
-Insgesamt wurden bis zum finalen Design fünf iterative CAD-Entwürfe erstellt. In den ersten Iterationen wurden die Abmessungen der Chassis-Ebenen schrittweise bis zum Maximum des verfügbaren Druckbettes bei flacher Bauteillage vergrößert, um eine möglichst stabile und großflächige Trägerstruktur zu erhalten. Zudem wurde die Anzahl der Regalbretter im Zuge der Iterationen von ursprünglich zwei auf drei erhöht, um zusätzlichen Bauraum für die wachsende Anzahl elektronischer Komponenten zu schaffen. Die Konstruktion sah dabei passgenaue Aussparungen für die beiden Schrittmotoren sowie eine mechanische Steckverbindung zwischen den Regalbrettern und den tragenden Pfosten vor, die über M3-Gewindestangen realisiert wurde und zugleich die beiden Motoren fest miteinander verbindet.
+Für das Gehäuse wurde ein dreistöckiger Aufbau im Stile eines Regals gewählt. Als modulares System ermöglicht es, elektronische Komponenten auf verschiedenen Ebenen zu platzieren und so die Gewichtsverteilung sowie das Systemverhalten gezielt zu verändern. Bis zum finalen Design wurden fünf iterative Entwürfe erstellt. Hierbei wurden die Abmessungen der Plattformen schrittweise bis zum Maximum des verfügbaren Druckbettes bei flacher Bauteillage vergrößert und die Anzahl der Etagen von zwei auf drei erhöht, um den Schwerpunkt weiter nach oben zu verlagern und mehr Platz für die Bauteile zu schaffen. Die Konstruktion beinhaltet passgenaue Aussparungen für die Schrittmotoren sowie eine Steckverbindung zwischen den Plattformen und den tragenden Pfosten.
 
-Ein wesentlicher Teil der späteren Iterationen war durch den in Kapitel~7.3.3 beschriebenen Kurzschluss-Vorfall bedingt, der einen mechanischen Neuaufbau erforderlich machte. Im Zuge dieses Neuaufbaus mussten neue Chassis-Ebenen konstruiert werden, die zusätzliche Halterungen für das CNC-Shield, die MPU6050, den Akku, die Ultraschallsensoren sowie den Step-Down-Konverter integrierten. Die kontinuierliche Anpassung und Weiterentwicklung der Regalbretter über alle fünf Iterationen hinweg wurde von Felix Dauerer durchgeführt.
+Die Plattformen wurden explizit auf die genutzten Komponenten angepasst, sodass es passgenaue Montagelöcher und Steckhalterungen gibt. So können die Ultraschallsensoren gesteckt sowie der ESP32, das CNC-Shield, der Buck-Converter und die MPU mit Schrauben montiert werden. Der Akku besitzt ein Einschubfach mit Halterungen für Gummibänder, die den Akku gegen die Plattform pressen. Der Schalter wurde nachträglich hinzugefügt, wofür eine entsprechende Bohrung vorgenommen wurde. Als Material für den 3D-Druck kam PLA-Filament zum Einsatz. Die M3-Gewindestangen dienen dazu, die beiden Motoren fest miteinander zu verbinden.
 
-% [Abbildung einfügen: CAD-Modell des finalen Chassis]
+Ein wesentlicher Teil der späteren Iterationen wurde durch den in Kapitel~7.3.3 beschriebenen Kurzschluss-Vorfall verursacht, der einen mechanischen Neuaufbau erforderlich machte. Im Zuge dieses Neuaufbaus wurde zeitgleich eine Anpassung der Gehäusehöhe vorgenommen.
+
+% TODO: [Abbildung einfügen: CAD-Modell des finalen Chassis]
+
 \begin{figure}[h]
     \centering
     % \includegraphics[width=0.7\textwidth]{CAD_Chassis_final.png}
@@ -433,53 +443,64 @@ Ein wesentlicher Teil der späteren Iterationen war durch den in Kapitel~7.3.3 b
     \label{fig:cad_chassis}
 \end{figure}
 
-\subsection{3D-Druck und Materialwahl}
+\subsection{3D-Druck und Materialwahl (geschrieben Lorenz)}
 \label{subsec:3ddruck}
+[% TODO quelle pla druck quelle
+Es wurden 3D-Drucker der Typen Prusa und Ultimaker für den Druck der Teile genutzt. Als Material kam durchgehend PLA-Filament zum Einsatz, welches neben der unkomplizierten Verarbeitung alle mechanischen Anforderungen an die Steifigkeit und Formstabilität des Roboters erfüllt. Im Projektverlauf mussten einzelne Druckteile nach dem Auftreten von Passungenauigkeiten wiederholt angepasst und neu gedruckt werden. Die benötigten Halterungen für die Ultraschallsensoren und den Buck-Converter erforderten mehrere Druckiterationen, bis eine zufriedenstellende mechanische Passung erreicht war. Um hierbei Material und Zeit zu sparen, wurden vorab kleine Testdrucke durchgeführt. Dabei wurden gezielt nur die wichtigen Bereiche gedruckt, um die Passform zu überprüfen, bevor das komplette Bauteil gefertigt wurde.
 
-Als Material für den 3D-Druck aller Chassis-Komponenten kam PLA-Filament zum Einsatz. Die Wahl dieses Materials war durch dessen günstige Verfügbarkeit sowie die für die vorliegende Konstruktion ausreichende mechanische Steifigkeit begründet. Zu den gedruckten Bauteilen zählten neben den drei Chassis-Ebenen selbst auch sämtliche Halterungen für die verbaute Elektronik.
-
-Im Projektverlauf mussten einzelne Druckteile nach dem Auftreten von Passgenauigkeitsproblemen wiederholt angepasst und neu gedruckt werden. Besonders die im Zuge des Hardware-Neuaufbaus zusätzlich benötigten Halterungen für die Ultraschallsensoren und den Step-Down-Konverter erforderten mehrere Druckiterationen, bis eine zufriedenstellende mechanische Passung erreicht war. Der Druck und die Montage dieser zusätzlichen Halterungen wurden von Felix Dauerer übernommen.
-
-\subsection{Montage und Aufbau}
+\subsection{Montage und Aufbau (geschrieben Lorenz)}
 \label{subsec:montage_aufbau}
 
-Der ursprüngliche Aufbau des Systems erfolgte zunächst als fliegender Verdrahtungsaufbau, bei dem einzelne Komponenten provisorisch mit Kabelbindern fixiert wurden, um einen schnellen, funktionsfähigen Prototyp für erste Tests zu erhalten. Nach dem in Kapitel~7.3.3 beschriebenen Kurzschluss wurde im Rahmen des notwendigen Neuaufbaus eine deutlich sauberere und dauerhaftere Verkabelung realisiert. Dabei kamen unter anderem Aderendhülsen für die Anschlüsse nach dem Spannungswandler zum Einsatz, um eine zuverlässige und mechanisch stabile Kontaktierung sicherzustellen.
+Der ursprüngliche Aufbau des Systems erfolgte zunächst als Provisorium, bei dem einzelne Komponenten mit Kabelbindern fixiert wurden, um einen schnellen, funktionsfähigen Prototyp für erste Tests zu erhalten. Die Montage des Roboters brachte einen erheblichen Zeitaufwand mit sich. Aufgrund eines Defekts an einem der Schrittmotoren musste der gesamte Aufbau zweimal komplett von Grund auf durchgeführt werden. Die Schrittmotoren waren über vier parallele M3-Gewindestangen zur Erhöhung der Gesamtsteifigkeit des Systems verbunden. Zwischen den Motoren wurden zahlreiche Muttern platziert, um diese kontern zu können und ein Lösen durch Vibrationen, der Schittmotoren, zu verhindern. Mithilfe eines Akkuschraubers wurde dieser zeitintensive Montageprozess beschleunigt. Da sich das Gewinde durch das Kürzen mit einer Kappzange verformt hatte, mussten die M3-Gewindestangen einseitig nachgeschnitten und die Kanten anschließend gefeilt werden. Die Reifen wurden mittels Sekundenkleber fixiert und über eine feste Kupplung direkt mit den Motorwellen verschraubt, um einen spielfreien Direktantrieb zu ermöglichen.
 
-Bei der Verlegung der Steuerleitungen wurde besonders darauf geachtet, die STEP- und DIR-Signalleitungen der beiden Motoren nicht parallel zueinander zu verlegen, um elektromagnetische Interferenzen zwischen den Leitungen zu vermeiden. Zur Verbesserung der Stromversorgungsstabilität des ESP32 wurde zudem im Projektverlauf von einer ursprünglichen Versorgung über Micro-USB auf einen stabileren Hohlstecker-Rundanschluss gewechselt.
-
-Zur thermischen Überwachung des Systems unter Last wurden die Temperaturen der Motortreiber mithilfe einer Wärmebildkamera gemessen. Dabei konnte ein maximaler Temperaturwert von etwa 40\,°C an den Treibern festgestellt werden, was als unkritisch für den Dauerbetrieb eingeschätzt wurde.
+Zwischen den Reifen und den Motoren wurde das 3D-gedruckte Gehäuse mithilfe von Muttern an den Gewindestangen fixiert. Die Plattformen wurden zwischen die beiden Pfosten gesteckt und im finalen Aufbau ebenfalls mit Sekundenkleber fixiert. Um im oberen Bereich des Roboters eine höhere strukturelle Stabilität zu erreichen, wurden zusätzliche Querstreben zur Versteifung verklebt.
 
 \section{Elektronische Komponenten}
 \label{sec:elektronische_komponenten}
 
-\subsection{Mikrocontroller-Auswahl (ESP32)}
+\subsection{Mikrocontroller und Entwicklungsboard (geschrieben Lorenz)}
 \label{subsec:esp32_komponente}
+%quelle freenova datenblatt
+Zu Beginn des Projekts wurde ein ESP32-Entwicklungsboard genutzt, das bereits aus einem vorherigen Projekt im Team vorhanden war. Dieses Board konnte jedoch nicht direkt über seine vorhandenen Buchsen mit Strom versorgt werden, da diese die benötigten Spannungen von 5,V bzw. 3,3,V nicht an den Mikrocontroller weiterleiteten. Aus diesem Grund wurde der Mikrocontroller initial über ein USB-Kabel und im späteren Verlauf über einen Spannungswandler mit 5,V direkt am VIN Pin versorgt.
 
-Als zentrale Steuereinheit des Systems kam ein ESP-WROOM-32-Entwicklungsboard des Herstellers Freenove zum Einsatz, das bereits aus einem vorherigen Projekt im Team vorhanden war (vgl. Kapitel~3.2 und~4.2.1). Die grundlegende technische Begründung für die Wahl des ESP32 wurde bereits im Rahmen der Designentscheidungen in Kapitel~4.2.1 ausführlich dargelegt.
+Um Fehler in diesem Spezifischen Entwicklungsboard auszuschließen wurde auf ein anderes Entwicklungsboard des Herstellers Freenove gewechselt. Dieses sollte über einen 9,V-Hohlstecker versorgt werden. Nach der vollständigen Verkabelung, jedoch noch vor dem eigentlichen Aufstecken des ESP32, wurde die Stromversorgung vorsorglich überprüft. Hierbei stellte sich heraus, dass das Board defekt war, da es die anliegenden 9,V direkt an den ESP32 weitergegeben hätte, was zur Zerstörung des Mikrocontrollers geführt hätte. Deswegen wurde die Stromversorgung erneut angepasst und der Mikrocontroller wieder direkt über den Micro-USB-Port versorgt. Dabei wurde festgestellt, dass die I2C-Kommunikation zur MPU6050 regelmäßig abriss. Eine Überprüfung des Datenblatts bezüglich der On-Board-LEDs des Entwicklungsboards zeigte jedoch, dass diese über eine Pufferschaltung verfügen, welche den GPIO-Zustand nicht beeinflusst. Durch einen Tausch mit einem zweiten MPU6050-Sensor konnte der Fehler letztlich auf einen Wackelkontakt der Steckverbindung am Board zurückgeführt werden, da diese ziemlich locker saßen.
 
-Im Projektverlauf zeigte sich ein spezifisches Problem im Zusammenhang mit dem verwendeten Freenove-Entwicklungsboard: Obwohl laut Herstellerdokumentation die auf dem Board integrierten Status-LEDs keinen Einfluss auf die I2C-Kommunikation haben sollen, da eine Pufferschaltung zur Isolierung des ursprünglichen GPIO-Zustands vorgesehen ist, wurde im praktischen Betrieb festgestellt, dass die Steckverbindungen der Pins auf dem Board vermutlich zu locker gefertigt waren. Dies führte dazu, dass die Signalverbindung zwischen ESP32 und MPU6050 wiederholt kurzzeitig abriss (vgl. Kapitel~7.4.2), was in der Fehlersuche zunächst fälschlicherweise auf softwareseitige oder spannungsbedingte Ursachen zurückgeführt wurde, bevor die mechanische Ursache identifiziert werden konnte.
+Um eine dauerhafte Lösung zu schaffen, wurde eine Lochrasterplatine genutzt, auf welcher der ESP32 sowie alle Leitungen fest verlötet wurden. Im Verlauf des Betriebs erlitt dieser ESP32 jedoch einen Defekt. Da angeschlossene Sensoren zwar nicht mit der 5,V-Spannungsversorgung verbunden waren, aber über die verbleibenden Signalpins angeschlossen blieben, zogen sie ihren Strom vermutlich über die GPIO-Pins. Dies führte zu einer Überschreitung der maximal zulässigen Ausgangsleistung des Mikrocontrollers. Um den aufwendigen Prozess des Entlötens bei einem erneuten Defekt zu vermeiden, wurde beim nachfolgenden Aufbau eine weibliche Buchsenleiste auf die Platine gelötet. Der ESP32 ist dadurch steckbar ausgeführt und kann bei Bedarf schnell und unkompliziert ausgetauscht werden. 
 
-Nachdem ein zunächst fest verlöteter ESP32 im Projektverlauf einen elektrischen Defekt erlitten hatte (vgl. Kapitel~7.3.2), wurde der Mikrocontroller im Zuge des Neuaufbaus auf weiblichen Buchsenleisten auf einer Lochrasterplatine montiert. Diese steckbare Lösung ermöglicht einen schnellen und unkomplizierten Austausch des Boards im Falle eines erneuten Defekts, ohne dass eine erneute Lötarbeit an der übrigen Schaltung erforderlich wird.
+
 
 \subsection{Sensorik (MPU6050, HC-SR04)}
 \label{subsec:sensorik_komponente}
+
+- 2 unterschiedlicceh mpus mit unterschiedlichester kombination von kondensatoren- - mpu kabel verlöten 
+
 
 Zur Erfassung der Neigung des Systems wurde eine MPU6050-Inertialmesseinheit in Form des Moduls GY-521 verbaut. Dieses kombiniert ein 3-Achsen-Gyroskop zur Messung der Winkelgeschwindigkeit mit einem 3-Achsen-Beschleunigungssensor und kommuniziert über den I2C-Bus (SDA/SCL) mit dem ESP32 (vgl. Kapitel~7.4.1). Die Sensorplatine wurde bewusst in der obersten Ebene des dreistöckigen Chassis-Aufbaus platziert, da die Neigungsmessung an dieser Position physikalisch am aussagekräftigsten erfolgt, da hier die größten Auslenkungen relativ zur Vertikalen auftreten.
 
 Zur Abstandsmessung und Hindernisvermeidung (F60, vgl. Kapitel~2.1.1) wurden zwei Ultraschallsensoren vom Typ HC-SR04 integriert, die nach dem Trigger-Echo-Prinzip arbeiten und den gemessenen Abstand in Zentimetern ausgeben. Die genaue softwareseitige Auswertung dieser Sensoren wird in Kapitel~7.4.3 beschrieben.
 
-\subsection{Motorwahl und Treiber}
+\subsection{Motorwahl und Treiber (geschrieben Lorenz)}
 \label{subsec:motorwahl_treiber}
+%todo: kapittel richten
 
-Für den Antrieb des Roboters wurden zwei bipolare Schrittmotoren des Typs Pololu NEMA17 mit einem Nenndrehmoment von 0,55\,Nm und 200 Schritten pro Umdrehung verwendet, deren grundsätzliche Auswahlbegründung gegenüber DC-Motoren bereits in Kapitel~4.2.3 dargelegt wurde. Die Motoren wurden über Räder mit einem in der Simulation ermittelten Durchmesser von 6,5\,cm (vgl. Kapitel~5.1.3) mit dem Untergrund verbunden.
+Eine der kritischsten Komponenten für die Stabilität des selbstbalancierenden Roboters sind die Motoren. Die Bezeichnung „NEMA 17“ spezifiziert dabei lediglich die Dimensionierung der vorderen Platte ($42,3 \text{ mm} \times 42,3 \text{ mm}$), sagt jedoch nichts über die Baulänge oder das erreichbare Drehmoment aus. Für dieses Projekt wurde das Modell 17HS15-1504S1 von Stepperonline ausgewählt, das mit 0,45 NM ein überdurchschnittliches Haltemoment besitzt. Dadurch sind die Motoren länger ($39\text{ mm}$ Gehäuselänge), da sie mehr Magnetringe im Inneren besitzen, wodurch Schrittverluste minimiert werden und der Zuwachs an Kraft deutlich größer ist als der Zuwachs an Gewicht. Warum Schrittmotoren im Vergleich zu DC-Motoren bevorzugt werden, wurde bereits in Kapitel~4.2.3 dargelegt. Dieses hohe Drehmoment ist essenziell, um die abrupten Beschleunigungs- und Bremsbefehle des PID-Reglers präzise umzusetzen und Schrittverluste zu vermeiden.
 
-Die Ansteuerung der Motoren erfolgte über ein zum Arduino Uno kompatibles CNC-Shield, welches über Jumper-Kabel mit dem ESP32 verbunden wurde. Im Laufe des Projekts kamen aufgrund technischer Probleme nacheinander zwei CNC-Shields zum Einsatz, wobei ein drittes Shield ausschließlich für Testzwecke herangezogen wurde. Als Motortreiber wurden zunächst A4988-Treiber eingesetzt, die im späteren Projektverlauf infolge eines Kurzschlusses (vgl. Kapitel~7.3.3) gegen die moderneren TMC2209-Treiber ausgetauscht wurden, welche eine präzisere und leisere Ansteuerung ermöglichen (vgl. Kapitel~7.3.4).
+Die Ansteuerung wurde über ein Arduino Uno kompatibles, vorhandenes, CNC-Shield umgesetzt. Dies war bereits mit passenden Steckplätzen, Kondensatoren, Enable-Pins für die Treiber und möglichen Steckplätzen für Mikrosteps und für Step und Dir mitgeliefert. Um technische Probleme des CNC-Shields, vor allem der Kondensatoren, auszuschließen wurde dies einmal ausgetauscht.
+
+Als Treiber wurden am Anfang A4988-Treiber eingesetzt und am Ende dann gegen die moderneren TMC2209-Treiber getauscht, da diese mit ihrer PWM-Steuerung (StealthChop) deutlich leiser und präziser waren. Doch während des Projektes wurde oft getauscht oder getestet, einmal um Unterschiede festzustellen oder um die teureren Treiber vor eventuellen Schäden  zu schützen.
+
+\newpage
+\newpage
 
 \section{Energieversorgung}
 \label{sec:energieversorgung}
 
 \subsection{Anforderungen und Ausgangsproblem}
 \label{subsec:energie_anforderungen}
+- scahlter hinzufügen
+- sicherung hinzufügen
+- für die meiste zeit funktioneiernden kabel zum spannungsversorung nochmach wechseln müssen - adernendhülsen
+
 
 Die Energieversorgung des Systems musste sowohl die Anforderung F70 (autarker Betrieb ohne Kabelverbindung mit einer Mindestlaufzeit von 10\,Minuten) als auch eine ausreichende Spannungs- und Stromversorgung für zwei gleichzeitig betriebene Schrittmotoren sowie die empfindliche Sensorik erfüllen. Im ursprünglichen Aufbau wurden sämtliche elektronischen Komponenten, sowohl der Mikrocontroller mit angeschlossener Sensorik als auch die Motortreiber, über eine gemeinsame Spannungsquelle versorgt. Dieser gemeinsame Versorgungsansatz erwies sich im weiteren Projektverlauf als Ursprung eines der zentralen technischen Probleme des Projekts.
 
@@ -541,19 +562,10 @@ Der vollständige elektrische Schaltplan des Gesamtsystems, welcher sowohl den g
 \section{Entwicklungsumgebung}
 \label{sec:entwicklungsumgebung}
 
-\subsection{PlatformIO-Einrichtung}
+\subsection{PlatformIO-Einrichtung (geschrieben von Lorenz)}
 \label{subsec:platformio_einrichtung}
-
-Als Entwicklungsumgebung für die Programmierung des ESP32 wurde PlatformIO in Kombination mit Visual Studio Code gewählt. Die Wahl fiel erneut auf dieses Setup, da Lorenz Schenkel PlatformIO bereits in einer vorangegangenen Arbeit erfolgreich eingesetzt hatte und die damit gesammelten Erfahrungen direkt in das vorliegende Projekt einfließen konnten. Gegenüber der klassischen Arduino IDE bietet PlatformIO Vorteile im Bereich des Dependency-Managements, der Projektstruktur sowie der Integrationsmöglichkeiten mit gängigen Versionsverwaltungssystemen.
-
-Zur gemeinsamen Verwaltung des Quellcodes wurde ein GitLab-Repository eingerichtet, welches bereits im Vorfeld durch die Organisation zur Verfügung gestellt worden war. Dieses Repository wurde von Beginn der Softwareentwicklung an initial genutzt, sodass alle Teammitglieder von Projektstart an auf einer gemeinsamen Codebasis arbeiten konnten (vgl. Kapitel~1.4.3).
-
-\subsection{ESP32-Konfiguration}
-\label{subsec:esp32_konfiguration}
-
-Innerhalb von PlatformIO wurde ein neues Projekt auf Basis des Arduino-Frameworks für die Zielplattform ESP-WROOM-32 initialisiert. Die grundlegende Konfiguration in der zugehörigen \texttt{platformio.ini}-Datei umfasste dabei im Wesentlichen die Auswahl des korrekten Boards, des Arduino-Frameworks sowie die Festlegung der seriellen Baudrate auf 115200, welche für das spätere Debugging und die Ausgabe von PID-Live-Werten über die serielle Konsole verwendet wurde. Über diese Standardkonfiguration hinaus waren keine weiteren projektspezifischen Anpassungen, etwa am Partition-Scheme oder an der Upload-Geschwindigkeit, notwendig, da die Standardeinstellungen des ESP-WROOM-32-Boards für den vorliegenden Anwendungsfall ausreichend waren.
-
-Vor der eigentlichen Anwendungsentwicklung wurden zunächst Flash-Tests durchgeführt, um die grundsätzliche Funktionsfähigkeit der Entwicklungsumgebung sowie die korrekte Kommunikation mit dem ESP32 zu verifizieren (vgl. Kapitel~1.4.1). Dabei stellte sich heraus, dass das ursprünglich verwendete Micro-USB-Kabel ein reines Ladekabel ohne Datenleitungen war, wodurch zunächst keine Flash-Verbindung zum Board hergestellt werden konnte. Nach dem Austausch gegen ein geeignetes Datenkabel funktionierte der Flash-Vorgang erwartungsgemäß.
+Da bereits persönliche Vorerfahrungen mit PlatformIO aus früheren Projekten vorhanden waren und die Umgebung dort erfolgreich genutzt wurde, fiel die Wahl für dieses Projekt erneut auf diese Entwicklungsumgebung. In Visual Studio Code wurde das entsprechende PlatformIO-Plugin installiert und eingerichtet. Als Hardware-Plattform wurde der Mikrocontroller ESP-WROOM-32 ausgewählt.
+Bei den anschließenden beschreiben trat jedoch initial das Problem auf, dass der Mikrocontroller nicht erkannt wurde. Die Fehlersuche ergab, dass es sich bei dem verwendeten Micro-USB-Kabel um ein reines Stromkabel und kein Datenkabel handelte. Nach dem Austausch des Kabels konnten die Flash-Tests erfolgreich durchgeführt werden. Im Anschluss wurde ein neues Projekt innerhalb der Umgebung für dieses Board initialisiert. Die Projekterstellung erforderte die Konfiguration der grundlegenden Projektstruktur sowie die Definition der spezifischen Parameter, wie beispielsweise der seriellen Baudrate, in der platformio.ini Datei. Dieses Projekt wurde dann auf GitLab den anderen Teammitgliedern zur Verfügung gestellt, wobei für die Zusammenarbeit eine Git-Struktur mit verschiedenen Branches aufgesetzt wurde.
 
 \section{Code-Architektur}
 \label{sec:code_architektur}
@@ -722,61 +734,58 @@ Da die von der MPU6050 gelieferten Rohmesswerte durch die im Betrieb auftretende
 
 Im weiteren Projektverlauf wurde der Median-Filter zugunsten eines gewichteten, exponentiell geglätteten Filteransatzes wieder verworfen: Der aktuelle Neigungswert wird seither zu 70\,\% aus dem aktuell gemessenen Wert und zu 30\,\% aus dem zuletzt verwendeten, bereits gefilterten Wert gebildet (gewichteter Mittelwert mit den Faktoren 0,7 beziehungsweise 0,3). Dieser Ansatz reduziert im Vergleich zum ursprünglichen Median-Filter die Latenz der Filterung, da nicht auf das vollständige Vorliegen eines Messfensters gewartet werden muss, und lieferte im praktischen Test ein für die Regelung besser geeignetes Glättungsverhalten. Der resultierende, geglättete Neigungswert dient weiterhin als Eingangsgröße für den in Kapitel~7.5.1 beschriebenen Neigungs-PID-Regler.
 
-\section{PS4-Controller-Integration}
+\section{PS4-Controller-Integration (geschrieben von Lorenz)}
 \label{sec:ps4_integration}
 
-\subsection{Bluetooth-Verbindungsaufbau}
+\subsection{Bluetooth-Verbindungsaufbau  (geschrieben von Lorenz)}
 \label{subsec:ps4_bluetooth}
 
-Für die drahtlose Fahrsteuerung des Roboters wurde ein PlayStation-4-Controller gewählt, der über die native Bluetooth-Schnittstelle des ESP32 angebunden wird, ohne dass hierfür zusätzliche externe Bluetooth-Module benötigt werden. Auf Softwareseite kommt die für das Arduino-Framework verfügbare PS4Controller-Bibliothek zum Einsatz.
+Für die drahtlose Fahrsteuerung des Roboters wurde ein PlayStation 4 Controller gewählt, welcher über die vorhandene Bluetooth-Schnittstelle des ESP32 ohne zusätzliche externe Hardware kommunizieren soll. Der Controller sucht aktiv nach einem Bluetooth-Gerät mit der MAC-Adresse, die in seinem Speicher steht.
 
-Im Vorfeld der eigentlichen Implementierung wurden mehrere unterschiedliche Bibliotheken zur PS4-Controller-Anbindung getestet. Die Auswahl gestaltete sich zunächst schwierig, da es keinen eindeutig etablierten Standard gab und mehrere verfügbare Bibliotheken in Kombination mit dem jeweiligen Beispielcode nicht wie erwartet funktionierten. Erst auf Empfehlung eines Video-Tutorials konnte eine funktionierende Bibliothek identifiziert und erfolgreich in Betrieb genommen werden.
+Um die Implementierung umzusetzen, wurden im Vorfeld verschiedene Bibliotheken getestet. Die Auswahl gestaltete sich zunächst undurchsichtig, da es keinen klar weit verbreiteten Favoriten gab und mehrere verfügbare Bibliotheken in Kombination mit dem jeweiligen Beispielcode nicht wie erwartet funktionierten. Nach mehreren erfolglosen Versuchen mit unterschiedlichen Bibliotheken und deren Standardcode wurde auf Basis eines Video-Tutorials die für das Arduino-Framework verfügbare PS4Controller-Bibliothek als funktionierende Bibliothek ausgewählt.
 
-Der grundlegende Verbindungsaufbau basiert auf dem herstellerseitigen Kopplungsverhalten des PS4-Controllers, welcher nach dem Einschalten aktiv nach einem Bluetooth-Gerät mit einer im internen Speicher hinterlegten Ziel-MAC-Adresse sucht. Aus Sicherheitsgründen wurde die Software so ausgelegt, dass bei fehlender oder unterbrochener Verbindung zum Controller grundsätzlich der Wert 0 für sämtliche Steuergrößen zurückgegeben wird, um ein unkontrolliertes Anfahren des Roboters im Stillstand zuverlässig zu verhindern.
+Als Erstes wurde in Betracht gezogen, die MAC-Adresse des ESP32 dauerhaft im Code manuell zu überschreiben, damit sich der PS4-Controller mit diesem verbindet, nach dem er sucht. Diese Idee wurde aber verworfen, weil die Versuche mit verschiedenen Bibliotheken erfolglos blieben. Deswegen wurde die umgekehrte Methode gewählt. Die MAC-Adresse, nach der der Controller sucht, wurde identifiziert, und die Standard-MAC-Adresse des ESP32 wurde mit genau dieser gesuchten Adresse überschrieben, um die Verbindung erfolgreich herzustellen.
 
-\subsection{MAC-Adress-Manipulation (SixaxisPairTool)}
+Aus Sicherheitsgründen wurde die Software zudem so geschrieben, dass bei einer fehlenden oder unterbrochenen Verbindung zum Controller grundsätzlich der Wert 0 für den Zielwinkel zurückgeliefert wird.
+
+\subsection{MAC-Adress-Manipulation (SixaxisPairTool)  (geschrieben von Lorenz)}
 \label{subsec:mac_manipulation}
+Für das Beschreiben der Zieladresse im Controller kam das Programm SixaxisPairTool zum Einsatz. Da dieses Programm teilweise über inoffizielle, unseriöse Quellen verbreitet wird, wurde der Download aus Sicherheitsgründen zunächst innerhalb einer virtuellen Maschine durchgeführt, um ein mögliches Malware-Risiko auszuschließen. Für die eigentliche Kopplung des Controllers wurde zunächst versucht, das Bluetooth-Signal des Controllers direkt an die virtuelle Maschine durchzureichen, wofür zusätzlich das VirtualBox Extension Pack installiert werden musste, da der eingebaute Bluetooth-Chip des Host-Systems standardmäßig vom Host belegt wird und erst durch eine gezielte Freigabe für die virtuelle Maschine nutzbar gemacht werden konnte.
 
-Um eine Kopplung zwischen PS4-Controller und ESP32 zu ermöglichen, wurden zwei grundsätzliche Lösungsansätze in Betracht gezogen: Entweder die MAC-Adresse des ESP32 auf die vom Controller erwartete Zieladresse zu ändern, oder umgekehrt die im Controller hinterlegte Ziel-MAC-Adresse auf die tatsächliche, aktuelle MAC-Adresse des ESP32 umzuschreiben. Die erste Variante wurde verworfen, da eine Änderung der ESP32-MAC-Adresse nach jedem Neustart des Mikrocontrollers erneut hätte durchgeführt werden müssen. Stattdessen wurde die zweite Variante gewählt: Die aktuelle Bluetooth-MAC-Adresse des ESP32 wurde zunächst über die serielle Konsole ausgelesen und anschließend als neue Zieladresse in den Controller geschrieben.
+Nachdem diese Bluetooth-Weiterleitung nach einigem Aufwand erfolgreich eingerichtet worden war, stellte sich im weiteren Verlauf heraus, dass für das eigentliche Beschreiben und Auslesen der Ziel-MAC-Adresse über SixaxisPairTool lediglich eine USB-Verbindung zum Controller notwendig ist. Die gesamte, aufwendig eingerichtete Bluetooth-Durchreichung an die virtuelle Maschine , wäre für diesen Zweck nicht erforderlich gewesen. Mit der USB-Verbindung konnte die Ziel-MAC-Adresse des Controllers erfolgreich auf die Adresse des ESP32 umgeschrieben werden. Dieser Vorgang musste im späteren Projektverlauf ein zweites Mal wiederholt werden, nachdem einer der beiden im Projekt eingesetzten ESP32 einen Defekt erlitten hatte und durch ein neues Board mit einer abweichenden MAC-Adresse ersetzt wurde
 
-Für das Beschreiben der Zieladresse im Controller kam das Programm SixaxisPairTool zum Einsatz. Da dieses Programm ausschließlich über inoffizielle, teils unseriöse Quellen verbreitet wird, wurde der Download aus Sicherheitsgründen zunächst innerhalb einer virtuellen Maschine (VM) durchgeführt, um ein mögliches Malware-Risiko für das Hauptsystem auszuschließen. Für die eigentliche Kopplung des Controllers wurde zunächst versucht, das Bluetooth-Signal des Controllers direkt an die virtuelle Maschine durchzureichen, wofür zusätzlich das VirtualBox Extension Pack installiert werden musste, da der eingebaute Bluetooth-Chip des Host-Systems standardmäßig fest vom Host-Betriebssystem belegt wird und erst durch eine gezielte Freigabe für die virtuelle Maschine nutzbar gemacht werden konnte.
-
-Nachdem diese Bluetooth-Weiterleitung nach einigem Aufwand erfolgreich eingerichtet worden war, stellte sich im weiteren Verlauf heraus, dass für das eigentliche Beschreiben und Auslesen der Ziel-MAC-Adresse über SixaxisPairTool lediglich eine reguläre USB-Verbindung zum Controller notwendig ist und die gesamte, aufwendig eingerichtete Bluetooth-Durchreichung an die virtuelle Maschine für diesen Zweck gar nicht erforderlich gewesen wäre. Mit der USB-Verbindung konnte die Ziel-MAC-Adresse des Controllers erfolgreich auf die Adresse des ESP32 umgeschrieben werden. Dieser Vorgang musste im späteren Projektverlauf ein zweites Mal wiederholt werden, nachdem einer der beiden im Projekt eingesetzten ESP32 einen Defekt erlitten hatte (vgl. Kapitel~7.3.2) und durch ein neues Board mit einer abweichenden MAC-Adresse ersetzt wurde.
-
-\subsection{Werteverarbeitung und Sollwert-Manipulation}
+\subsection{Werteverarbeitung und Sollwert-Manipulation  (geschrieben von Lorenz) }
 \label{subsec:ps4_werteverarbeitung}
 
-Die vom PS4-Controller empfangenen Rohwerte einer einzelnen Joystick-Achse liegen als 8-Bit-Signed-Wert im Bereich von $-128$ bis $+127$ vor. Da der Joystick in der Ruhelage teils minimale, nicht vollständig auf 0 kalibrierte Abweichungen liefert, wurde eine softwareseitige Deadzone implementiert, innerhalb derer geringe Auslenkungen um den Nullpunkt ignoriert werden. Ohne diese Deadzone hätte der Roboter im Stillstand des Controllers bereits auf minimale Fehlwerte reagiert und wäre unkontrolliert leicht losgefahren.
+Die vom Controller empfangenen Werte einer einzelnen Joystick-Achse liegen in einem Bereich von -128 bis +127. Solange keine Verbindung zum Controller besteht, gibt die Funktion, die den Winkel liefert, eine Null zurück. Da der Joystick in der Ruhelage teils minimale, nicht vollständig auf 0 kalibrierte Abweichungen liefert, wurde eine softwareseitige Deadzone eingerichtet.
 
-Die außerhalb der Deadzone liegenden, gefilterten Joystick-Werte werden anschließend über eine lineare Skalierungsfunktion (\texttt{rescaleValue}) auf den maximal zulässigen Zielwert umgerechnet. Für die Neigungssteuerung wird der resultierende Wert linear auf den maximal zulässigen Neigungswinkel-Offset abgebildet, welcher direkt dem Sollwert des inneren Neigungs-PID-Reglers hinzugefügt wird (vgl. Kapitel~7.5.1); dieser maximale Winkel wurde empirisch durch praktische Fahrtests ermittelt. Für die Lenksteuerung wird der entsprechend skalierte Wert auf 90\,\% der maximalen Motordrehzahl bezogen. Das Ergebnis der Skalierung wird abschließend auf eine Genauigkeit von einer Nachkommastelle gerundet, um unnötig feingranulare, für die Regelung nicht relevante Wertänderungen zu vermeiden.
+Die außerhalb der Deadzone liegenden, gefilterten Wertebereiche des Joysticks werden anschließend über eine lineare Skalierungsfunktion auf den maximalen Neigungswinkel skaliert, den man per Fernsteuerung vorgeben darf. Dieser Maximalwert wurde durch Tests ermittelt, um herauszufinden, was für den Roboter mechanisch möglich ist. Die skalierten Daten werden so direkt auf die Zielfunktionen gemappt und geben den Zielwinkel für die Bewegung vor. Da der integrierte PID-Regler des Roboters auf einen Zielwinkel von 0 Grad (Balancierpunkt) regelt, lässt sich über diese direkte Manipulation des Sollwerts eine intuitive Fahrsteuerung realisieren.
 
-Da der integrierte PID-Regler des Roboters stets auf einen Zielwinkel von 0\,Grad regelt, lässt sich über die beschriebene Manipulation des Sollwerts eine direkte, intuitive Fahrsteuerung realisieren, ohne dass ein separater Regelkreis für die Fahrbewegung implementiert werden musste.
 
-\section{Logger-System}
+\section{Logger-System (geschrieben Lorenz)}
 \label{sec:logger_system}
 
-\subsection{FreeRTOS-Queue-Architektur}
+\subsection{FreeRTOS-Queue-Architektur (geschrieben Lorenz)}
 \label{subsec:logger_queue}
 
-Da das eingesetzte Echtzeitbetriebssystem ESP-IDF FreeRTOS keine harten Speichergrenzen zwischen den einzelnen Tasks erzwingt, teilen sich sämtliche Tasks des Systems standardmäßig denselben globalen Arbeitsspeicher. Im Gegensatz zu Prozessen unter klassischen Desktop-Betriebssystemen, die üblicherweise durch virtuellen Speicher voneinander isoliert sind, könnten FreeRTOS-Tasks daher grundsätzlich unkontrolliert auf gemeinsame Variablen zugreifen. Um hieraus resultierende Race Conditions sowie Dateninkonsistenzen beim gleichzeitigen Zugriff zuverlässig zu vermeiden, wurde für das Logging eine threadsichere Kommunikation über eine FreeRTOS-Queue realisiert.
+Da das eingesetzte Echtzeitbetriebssystem FreeRTOS keine harten Speichergrenzen zwischen den einzelnen Tasks erzwingt, teilen sich alle Tasks des Systems standardmäßig denselben globalen Arbeitsspeicher. Im Gegensatz zu Prozessen unter klassischen Desktop-Betriebssystemen, dienormalerweise über einen virtuellen Speicher voneinander getrennt sind, könnten FreeRTOS-Tasks daher grundsätzlich ohne Eingschränkung auf gemeinsame Variablen zugreifen. Um jedoch kritische Race Conditions sowie Dateninkonsistenzen beim gleichzeitigen Zugriff zu verhindern, wurde eine sichere , threadsichere Kommunikation über eine FreeRTOS-Queue realisiert.
 
-Der Auslöser für die Entwicklung dieses Logger-Systems war die Befürchtung, dass direkte Aufrufe von \texttt{Serial.print()} innerhalb zeitkritischer Tasks zu spürbaren Verzögerungen im PID-Regelkreis führen könnten, da die serielle Datenübertragung im Vergleich zur eigentlichen Regelberechnung eine relativ langsame Operation darstellt. Da ein blockierungsfreier Betrieb des Reglers oberste Priorität hatte (vgl. Kapitel~7.2.1), wurde diese potenzielle Fehlerquelle präventiv durch einen asynchronen, nicht-blockierenden Logging-Ansatz umgangen.
+Während der Entwicklungsphase wurde vermutet, dass die Aufrufe von Serial.print() innerhalb der Tasks zu zeitlichen Verzögerungen im Regelkreis führen könnten, da die serielle Übertragung verhältnismäßig langsam ist und im Vergleich zur eigentlichen Regelberechnung viel Zeit benötigt. Da ein blockierungsfreier Betrieb des zeitkritischen PID-Reglers jedoch oberste Priorität hat, wurde diese mögliche Fehlerquelle durch einen asynchronen, non-blocking Ansatz umgangen.
 
-Die konkrete Umsetzung kapselt sämtliche relevanten Metadaten einer Log-Nachricht, namentlich einen Zeitstempel, den Namen des protokollierenden Tasks sowie den eigentlichen Nachrichtentext, in einer gemeinsamen Datenstruktur. Die Funktion \texttt{logMessage()} übernimmt dabei das Befüllen dieser Struktur und schiebt sie anschließend in die FreeRTOS-Queue, während eine ergänzende Wrapper-Funktion \texttt{log()} eine an \texttt{printf} angelehnte, formatierte Übergabe variabler Argumente ermöglicht. Die verwendete Queue verfügt über eine Kapazität von 100 Nachrichten; der jeweils schreibende Task kopiert seine Log-Nachricht atomar in die Queue und setzt seine Ausführung anschließend ohne Wartezeit fort.
+Die Umsetzung fasst alle wichtigen Daten einer Log-Nachricht, also einen Zeitstempel, den Namen des jeweiligen Tasks und den eigentlichen Nachrichtentext, in einer gemeinsamen Struktur zusammen. Die Funktionen befüllt diese Struktur und schiebt sie in die FreeRTOS-Queue. Eine zusätzliche Wrapper-Funktion sorgt dafür, dass man Variablen ähnlich wie bei printf formatiert übergeben kann. Die Queue kann bis zu 100 Nachrichten aufnehmen. Der schreibende Task kopiert seine Daten hierbei in die Queue und setzt seine Ausführung ohne jegliche Wartezeit fort.
 
-Es wurde bewusst auf einen zusätzlichen Sicherheitsmechanismus verzichtet, der ein vollständiges Auffüllen beziehungsweise ein gegenseitiges Überschreiben der Queue verhindert. Der einzige verfügbare Anhaltspunkt für einen potenziellen, unbemerkten Datenverlust ist der in jeder Nachricht mitgeführte Zeitstempel, anhand dessen sich im Nachhinein Lücken in der chronologischen Abfolge der Log-Ausgaben identifizieren ließen. Da im praktischen Testbetrieb jedoch zu keinem Zeitpunkt ein auffälliger Datenverlust festgestellt wurde, wurde dieser potenzielle Schwachpunkt zugunsten der Bearbeitung vorrangiger Projektthemen bewusst im System belassen. Diese Einschränkung wird in Kapitel~10.1.2 im Rahmen der softwareseitigen Lessons Learned nochmals kritisch reflektiert.
+Es wurde bewusst auf einen Sicherheitsmechanismus verzichtet, der ein Volllaufen oder Überschreiben der Queue verhindert. Der einzige Anhaltspunkt für einen potenziellen Datenverlust ist die mitgegebene Systemzeit in den Ausgaben, anhand derer Lücken in der Chronologie identifiziert werden könnten. Da im Testbetrieb jedoch keine Kapazitätsprobleme oder Datenverluste auftraten, wurde dieser Zustand zugunsten wichtigerer Projektthemen vorerst im System belassen. Diese Einschränkung wird in Kapitel~10.1.2 bei den softwareseitigen Lessons Learned noch einmal kritisch reflektiert.
 
-\subsection{Non-Blocking Serial.print()}
+
+\subsection{Non-Blocking Serial.print() (geschrieben Lorenz)}
 \label{subsec:nonblocking_serial}
 
-Da direkte Aufrufe von \texttt{Serial.print()} innerhalb eines zeitkritischen Tasks dessen Ausführung unmittelbar verzögern würden, wurde das gesamte serielle Logging konsequent in einen separaten \texttt{LoggerTask} ausgelagert (vgl. Kapitel~7.2.2). Der eigentliche, PID-Berechnungen durchführende \texttt{ControlTask} schreibt dabei ausschließlich atomar in die in Kapitel~7.7.1 beschriebene FreeRTOS-Queue und wartet zu keinem Zeitpunkt auf den Abschluss der vergleichsweise trägen seriellen Übertragung. Auf diese Weise ist die Ausführungsgeschwindigkeit des Regelkreises vollständig unabhängig von der Geschwindigkeit der seriellen Schnittstelle.
+Da direkte Aufrufe von Serial.print() innerhalb eines zeitkritischen Tasks dessen Ausführung unmittelbar verzögern würden, wurde das gesamte serielle Logging konsequent in einen separaten LoggerTask ausgelagert (vgl. Kapitel~7.2.2). Der eigentliche, PID-Berechnungen durchführende ControlTask schreibt dabei ausschließlich in die in FreeRTOS-Queue und wartet zu keinem Zeitpunkt auf den Abschluss der vergleichsweise trägen seriellen Übertragung. Auf diese Weise ist die Ausführungsgeschwindigkeit des Regelkreises vollständig unabhängig von der Geschwindigkeit der seriellen Schnittstelle.
 
-\subsection{Task-Scheduling}
+\subsection{Task-Scheduling (geschrieben Lorenz)}
 \label{subsec:logger_scheduling}
 
-Der \texttt{LoggerTask} wurde, wie in Tabelle~\ref{tab:freertos_tasks} dargestellt, mit einer niedrigeren Priorität als der \texttt{ControlTask} auf Core~0 eingeplant. Dadurch kommt der \texttt{LoggerTask} gezielt in den kurzen Ruhephasen zur Ausführung, die der \texttt{ControlTask} durch sein festes Abtastintervall von rund 10\,ms zwischen zwei aufeinanderfolgenden Regelzyklen aufweist. Auf diese Weise wird die andernfalls ungenutzte Prozessorzeit während dieser Wartephasen effizient für die serielle Ausgabe genutzt, ohne die Abtastrate des Regelkreises zu beeinträchtigen.
-
-Gemeinsam mit der in Kapitel~7.2.2 beschriebenen Auslagerung der zeitkritischen Motoransteuerung in den separaten \texttt{MotorUpdateTask} auf Core~1 mit höchster Priorität ergibt sich durch dieses Zusammenspiel aus Kernaufteilung und Prioritätsvergabe eine insgesamt echtzeitfähige Softwarearchitektur, innerhalb derer weder das Logging noch gelegentliche Verzögerungen im \texttt{ControlTask} (vgl. Kapitel~7.4.2) die kontinuierliche Motoransteuerung gefährden.
+Der LoggerTask wurde, wie in Tabelle~\ref{tab:freertos_tasks} dargestellt, mit einer niedrigeren Priorität als der ControlTask auf Core~0 eingeplant. Dadurch kommt der LoggerTask gezielt in den kurzen Ruhephasen zur Ausführung, die der ControlTask durch sein festes Abtastintervall von rund 10\,ms zwischen zwei aufeinanderfolgenden Regelzyklen aufweist. Auf diese Weise wird die andernfalls ungenutzte Prozessorzeit während dieser Wartephasen effizient für die serielle Ausgabe genutzt, ohne die Abtastrate des Regelkreises zu beeinträchtigen.
 
 \chapter{Integration und Systemtest}
 \label{ch:integration}
@@ -862,7 +871,7 @@ Eine wesentliche, im Rahmen der Tests festgestellte Einschränkung besteht darin
 \section{Fahrsteuerung über PS4-Controller}
 \label{sec:test_fahrsteuerung}
 
-Die über den PS4-Controller realisierte Fahrsteuerung des Roboters (vgl. Kapitel~7.6.3) wurde erfolgreich getestet: Sowohl das Vorwärts- als auch das Rückwärtsfahren über die entsprechenden Joystick-Eingaben funktioniert wie beabsichtigt, wobei der über die Sollwertmanipulation realisierte Steuerungsansatz eine intuitive, direkte Kontrolle über die Fahrtrichtung ermöglicht. Damit wird die zugrundeliegende funktionale Anforderung an die Fernsteuerbarkeit des Systems erfüllt.
+Die über den PS4-Controller realisierte Fahrsteuerung des Roboters (vgl. Kapitel~7.6.3) wurde erfolgreich getestet. Sowohl das Vorwärts- als auch das Rückwärtsfahren über die entsprechenden Joystick-Eingaben funktioniert wie beabsichtigt, wobei der sich die Sollwertmanipulation also guter Ansatz herausstellte. Damit wird die zugrundeliegende funktionale Anforderung an die Fernsteuerbarkeit des Systems erfüllt.
 
 Im Zusammenspiel mit dem in Kapitel~9.2 beschriebenen Balancierverhalten zeigte sich jedoch, dass die Fahrsteuerung insbesondere bei stärkeren Lenk- beziehungsweise Geschwindigkeitseingaben die grundsätzliche Fallanfälligkeit des Systems nicht kompensieren kann, sofern die dadurch resultierende Auslenkung den Bereich übersteigt, innerhalb dessen sich der Roboter selbstständig wieder fängt.
 

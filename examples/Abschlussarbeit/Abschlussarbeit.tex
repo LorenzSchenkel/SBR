@@ -915,43 +915,45 @@ Zum aktuellen Zeitpunkt der Dokumentation sind einzelne, für die vollständige 
 \section{Technische Erkenntnisse}
 \label{sec:technische_erkenntnisse}
 
-\subsection{Umgang mit Multimeter und Oszilloskop}
+\subsection{Umgang mit Messgeräten (Niklas)}
 \label{subsec:lessons_messtechnik}
 
-Eine der grundlegendsten, aber zugleich wichtigsten Erkenntnisse des Projekts betrifft den souveränen Umgang mit elementaren Messgeräten wie Multimeter und Oszilloskop. Zu Projektbeginn war die Erfahrung im Team mit diesen Werkzeugen noch begrenzt, was insbesondere in den ersten Fehlersuchen, etwa bei der Diagnose des defekten ESP32-Boards (vgl. Kapitel~7.3.2), zunächst zu einem vergleichsweise hohen Zeitaufwand führte. Im Projektverlauf entwickelte sich der routinierte Einsatz dieser Messgeräte zu einem zentralen Bestandteil nahezu jeder Fehlersuche (vgl. Kapitel~8.2) und erwies sich rückblickend als eine der wertvollsten praktischen Fähigkeiten, die im Rahmen des Projekts erlernt wurden. Insbesondere die Fähigkeit, gezielt einzelne Signalpegel oder Spannungsverläufe zu isolieren, anstatt eine Fehlerursache ausschließlich durch Codeänderungen einzugrenzen, verkürzte spätere Fehlersuchen erheblich.
+Eine der wichtigsten praktischen Erkenntnisse des Projekts war der Umgang mit elementaren Messgeräten wie Multimeter und Oszilloskop. Zu Projektbeginn war die Erfahrung im Team mit diesen Werkzeugen noch begrenzt, was insbesondere in den ersten Fehlersuchen, etwa bei der Diagnose des defekten ESP32-Boards (vgl. Kapitel~7.3.2), zunächst zu einem vergleichsweise hohen Zeitaufwand führte. Im Projektverlauf entwickelte sich der Einsatz der Messgeräte zu einem Bestandteil jeder Fehlersuche (vgl. Kapitel~8.2) und erwies sich rückblickend als eine der wertvollsten praktischen Fähigkeiten, die im Rahmen des Projekts erlernt wurden.
 
-\subsection{Trennung von Logik- und Leistungsspannung}
+\subsection{Trennung von Logik- und Leistungsspannung (Niklas)}
 \label{subsec:lessons_spannungstrennung}
 
-Die wohl zentralste technische Erkenntnis des gesamten Projekts betrifft die Notwendigkeit einer strikten galvanischen Trennung zwischen der Logikspannung empfindlicher Sensorik und der Leistungsspannung stromintensiver Verbraucher wie Schrittmotoren. Wie in Kapitel~6.3.2 bis~6.3.5 ausführlich beschrieben, führte die ursprünglich gemeinsame Spannungsversorgung von ESP32, MPU6050 und Motoren zu einem der langwierigsten und zugleich lehrreichsten Probleme des gesamten Projekts, obwohl beide Teilsysteme bei isolierter Betrachtung jeweils einwandfrei funktionierten. Erst die konsequente Trennung in zwei unabhängige Spannungskreise stellte den entscheidenden Durchbruch dar (vgl. Kapitel~6.3.5) und sollte als grundsätzliches Entwurfsprinzip bereits in zukünftigen Projekten von Beginn an berücksichtigt werden, anstatt es erst im Nachhinein als Lösung eines bereits aufgetretenen Problems zu identifizieren.
+Die größte technische Erkenntnis des Projekts ist, wie wichtig die Trennung von Logik- und Leistungsspannung ist. Wie in den Kapiteln~\ref{subsec:spannungseinbruch} bis~\ref{subsec:galvanische_trennung} beschrieben, wurden ESP32, Sensorik und Schrittmotoren anfangs über dieselbe Spannungsquelle versorgt. Getrennt funktionierten alle Komponenten problemlos. Zusammen führte das aber zu einem langanhaltenden Fehler im gesamten Projekt. Erst die Aufteilung in zwei getrennte Spannungskreise löste das Problem.
 
-\subsection{Neue Bauteile statt ungeprüfter Bestandsteile}
+\subsection{Neue Bauteile statt ungeprüfter Bestandsteile (Niklas)}
 \label{subsec:lessons_bauteile}
 
-Im Projektverlauf zeigte sich wiederholt, dass der Einsatz von bereits vorhandenen, aber in ihrem Funktionszustand nicht zweifelsfrei verifizierten Bestandsbauteilen, etwa Kabeln, Steckverbindern oder älteren Modulen, ein wiederkehrendes Risiko für zusätzliche, schwer zu lokalisierende Fehlerquellen darstellte. Ein Beispiel hierfür ist das anfänglich mitgelieferte USB-Kabel, das sich als reines Ladekabel ohne Datenleitungen herausstellte (vgl. Kapitel~7.1.2), sowie die wiederholt vertauschten Motorkabel (vgl. Kapitel~7.3.2 und~7.3.4). Als Lektion lässt sich daraus ableiten, dass es bei kritischen Verbindungen, insbesondere bei Kabeln und Steckverbindungen, häufig sinnvoller ist, in neue, nachweislich funktionierende Bauteile zu investieren, als Zeit in die Fehlersuche an Bestandsteilen zu investieren, deren einwandfreie Funktion nicht von vornherein sichergestellt ist.
+Im Projektverlauf zeigte sich wiederholt, dass der Einsatz von bereits vorhandenen Bauteilen aus dem Bestand ein hohes Risiko für Fehler sind. Ein Beispiel hierfür ist der Kurzschluss, ausgelöst durch A4988 Motortreiber aus dem Bestand (vgl. Kapitel~\ref{subsec:motor_kurzschluss})
 
-\subsection{Systematische Debugging-Ansätze}
+\subsection{Systematisches Debugging (Niklas)}
 \label{subsec:lessons_debugging}
 
-Über den gesamten Projektverlauf hinweg erwies sich ein systematisches, schrittweises Vorgehen bei der Fehlersuche als deutlich effizienter als ein unstrukturiertes Ausprobieren einzelner Lösungsansätze. Das wiederkehrende Muster aus Eingrenzung des betroffenen Teilsystems, gezielter Messung mit geeigneten Werkzeugen sowie schrittweisem Austausch einzelner Komponenten, wie es etwa bei der Fehlersuche zur Zwei-Motoren-Problematik (vgl. Kapitel~7.3.2) oder beim Kondensator-Tuning an der MPU6050 (vgl. Kapitel~6.3.3 und~6.3.4) angewendet wurde, konnte im Projektverlauf zunehmend verfeinert und routinierter eingesetzt werden. Diese methodische Herangehensweise stellte sich insbesondere bei den komplexeren, mehrstufigen Fehlerketten des Projekts als unverzichtbar heraus.
+Ein strukturiertes Vorgehen bei der Fehlersuche war deutlich effizienter als reines Ausprobieren. Das Teilsystem eingrenzen, gezielt messen und der schrittweise Austausch von Komponenten waren besonders bei komplexen Problemen essenziell. Besonders bei der Fehlersuche an den Motoren (vgl. Kapitel~\ref{sec:motorsteuerung}) und bei Flash-Prolemen des ESP32 (vgl. Kapitel~\ref{subsec:esp32_bespielbar}) war diese Methode notwendig.
 
-\subsection{Elektronische Probleme: Hohe Relevanz, geringe Trivialität}
+\subsection{Elektronische Probleme (Niklas)}
 \label{subsec:lessons_elektronik_relevanz}
 
-Eine übergreifende Erkenntnis des Projekts ist, dass elektronische Probleme, obwohl sie auf den ersten Blick oft klein oder nebensächlich erscheinen mögen, in ihrer tatsächlichen Auswirkung auf das Gesamtsystem eine erhebliche Relevanz besitzen können, ohne dass ihre Lösung dabei trivial wäre. Das durchgängige Beispiel hierfür ist der beschriebene Spannungseinbruch an der MPU6050 (vgl. Kapitel~6.3.2), der zunächst als vermeintliche Kleinigkeit erschien, in seiner Konsequenz jedoch die Funktionsfähigkeit des gesamten Regelkreises maßgeblich beeinträchtigte und mehrere Wochen intensiver Fehlersuche erforderte, bis die eigentliche Ursache vollständig verstanden und behoben werden konnte. Diese Erfahrung verdeutlicht, dass elektronische Randbedingungen im Entwurf mechatronischer Systeme nicht unterschätzt werden dürfen, selbst wenn der primäre Projektfokus auf der Software- beziehungsweise Regelungsseite liegt.
+Selbst kleine elektronische Probleme können große Auswirkungen auf das gesamte System haben. Ein Spannungseinbruch an einem Sensor(vgl. Kapitel~\ref{subsec:spannungseinbruch}) wirkt anfangs trivial, kann aber wochenlang den gesamten Regelkreis blockieren. Auch wenn der Fokus eigentlich auf der Software liegt, unterschätzt man schnell Elektronik-Probleme beim Bau eines Roboters.
 
-\section{Organisatorische Erkenntnisse}
+\section{Organisatorische Erkenntnisse (Niklas)}
 \label{sec:organisatorische_erkenntnisse}
 
-\subsection{Teamarbeit}
+\subsection{Teamarbeit (Niklas)}
 \label{subsec:lessons_teamarbeit}
 
-Die Aufteilung der Verantwortlichkeiten auf die drei Teammitglieder, etwa die mechanische Konstruktion durch Felix Dauerer, die PS4-Integration durch Lorenz Schenkel oder die verteilte Fehlersuche an der Motoransteuerung (vgl. Kapitel~7.3), ermöglichte es, mehrere technische Problemstellungen parallel zu bearbeiten und dadurch den Gesamtfortschritt des Projekts zu beschleunigen. Insbesondere bei komplexen, mehrstufigen Fehlerketten wie der MPU6050-Spannungsproblematik zeigte sich zudem der Wert unterschiedlicher Lösungshypothesen innerhalb des Teams: Während zunächst unterschiedliche Vermutungen zur Fehlerursache bestanden, elektrischer Spannungseinbruch versus mechanische Vibration, ermöglichte erst der gemeinsame fachliche Austausch die vollständige Aufklärung des tatsächlich zugrundeliegenden Zusammenspiels beider Effekte (vgl. Kapitel~6.3.2).
+Die Aufteilung der Verantwortlichkeiten auf die drei Teammitglieder, etwa die mechanische Konstruktion und einfache Ansteuerung der Sensoren, ermöglichte es, mehrere Aufgaben parallel zu bearbeiten und dadurch den Gesamtfortschritt zu beschleunigen. Bei komplexen Fehlerketten wie der MPU6050-Spannungsproblematik zeigte sich zudem, wie wichtig es ist, unterschiedliche Lösungsvorschläge innerhalb des Teams zusammenzuführen.
 
-\subsection{Zeitplanung}
+Während zunächst verschiedene Vermutungen zur Fehlerursache, wie mechanische Vibrationen oder elektronische Störungen bestanden, führte erst das schrittweise, gemeinsame Vorgehen zur Lösung. Auf den Vorschlag hin, die Messwerte der MPU während des Motorbetriebs live zu überwachen, konnte man stark fehlerhafte Sensordaten beobachten. Die Idee, die Stromversorgung zeitgleich mit einem Oszilloskop zu überprüfen, brachte schließlich die Gewissheit. Ein Spannungseinbruch beim Anlaufen der Motoren war der wirkliche Hauptgrund für die Störungen. Durch die Verkettung von Teilschritten konnte die Ursache identifiziert und durch den Einbau eines Kondensators behoben werden.
+
+\subsection{Zeitplanung (Niklas)}
 \label{subsec:lessons_zeitplanung}
 
-Eine zentrale organisatorische Erkenntnis des Projekts betrifft den Umgang mit der ursprünglichen Zeitplanung. Insbesondere die mehrfachen, teils tiefgreifenden Hardwaredefekte (vgl. Kapitel~8.3) sowie die langwierige Fehlersuche rund um die Spannungsversorgung der MPU6050 (vgl. Kapitel~6.3) führten wiederholt zu erheblichen, im ursprünglichen Zeitplan nicht vorgesehenen Verzögerungen. Es zeigte sich, dass ein zu starres Vertrauen auf eine anfänglich erstellte Zeitplanung, ohne ausreichende zeitliche Puffer für unvorhergesehene technische Probleme, im Rahmen eines Hardware-nahen, mechatronischen Projekts wie dem vorliegenden nur eingeschränkt praktikabel ist. Als Lektion für zukünftige Projekte lässt sich daraus ableiten, dass bei der Zeitplanung von Hardware-Projekten von vornherein deutlich großzügigere Zeitpuffer für Fehlersuche und unerwartete Komponentendefekte eingeplant werden sollten, anstatt von einem weitgehend störungsfreien Projektverlauf auszugehen. Der tatsächliche Gesamtaufwand von rund 161 Arbeitsstunden (vgl. Kapitel~6.4) verteilte sich dementsprechend deutlich anders auf die einzelnen Projektphasen, als dies in der ursprünglichen Planung vorgesehen war.
+Ein starrer Zeitplan erweist sich bei einem Hardware-Projekt oft als wenig praktisch. Unvorhergesehene Hardwaredefekte (vgl. Kapitel~\ref{subsec:motor_kurzschluss} und die aufwendige Fehlersuche bei der Stromversorgung der MPU6050 (vgl. Kapitel~\ref{subsec:spannungseinbruch}) führten wiederholt zu Verzögerungen. Es zeigte sich, dass bei mechatronischen Systemen von Anfang an Puffer für die Fehlersuche und den Austausch defekter Bauteile eingeplant werden muss. Ein störungsfreier Ablauf ist schwer realisierbar. Der Gesamtaufwand verteilte sich dementsprechend am Ende anders auf die einzelnen Projektphasen, als in der ursprünglichen Planung vorgesehen war.
 
 \section{Fazit}
 \label{sec:fazit}

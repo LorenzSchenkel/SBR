@@ -517,10 +517,10 @@ Der eigentliche Durchbruch bei der Fehlersuche gelang erst, als der Roboter wied
 \label{subsec:kondensator_loesung}
 Als erste Abhilfe wurde ein großer  $100\ \mu\text{F}$ Elektrolytkondensator nahe an der MPU6050 platziert, um die Logikspannung zu stützen. Diese Maßnahme erfüllte ihren Zweck und behob das Sensorproblem sowie die damit verbundenen Signalstörungen während der schnellen Motorzugriffe vollständig.
 
-\subsection{Nebenwirkung: ESP32 nicht mehr bespielbar}
+\subsection{ESP32 nicht programmierbar (Niklas)}
 \label{subsec:esp32_bespielbar}
 
-Die gewählte Kapazität führte jedoch unmittelbar zu einem neuen Fehler. Der ESP32 meldete beim Starten einen \textit{invalid head}-Fehler und ließ sich nicht mehr programmieren, da der Kondensator beim Einschalten oder Flashen vermutlich zu viel Strom zog. Da zu diesem Zeitpunkt bereits alle Komponenten fest miteinander verlötet waren, wurde als temporäre Lösung ein mechanischer Kippschalter eingebaut. Mit diesem konnte die MPU6050 mitsamt dem Kondensator für den Programmiervorgang manuell "abgesteckt" werden, wodurch der ESP32 wieder bespielbar war.
+Die gewählte Kapazität führte jedoch zu einem neuen Fehler. Der ESP32 gab im Serial Monitor beim Starten einen 'invalid-head'-Fehler und ließ sich nicht mehr programmieren, da der Kondensator beim Einschalten bzw. Flashen vermutlich zu viel Strom zog. Da zu diesem Zeitpunkt bereits alle Komponenten fest miteinander verlötet waren, wurde als temporäre Lösung ein mechanischer Kippschalter eingebaut. Mit diesem konnte die MPU6050 inklusive des Kondensators für den Programmiervorgang und den Startvorgang manuell abgeschaltet werden, wodurch der ESP32 wieder bespielbar war und sich starten lies. Sobald der ESP32 fertig initialisiert war, wurde die MPU-Einheit manuell zugeschaltet.
 
 \subsection{Dimensionierung des Kondensators (Verkleinerung) (geschrieben Lorenz)}
 \label{subsec:kondensator_verkleinerung}
@@ -534,14 +534,15 @@ Obwohl die verkleinerte Kondensatorkombination die Symptome deutlich reduzierte,
 
 Der Leistungskreis, welcher die beiden Schrittmotoren über die TMC2209-Treiber versorgt, wird über einen 4S-LiPo-Akku mit 14,8\,V und 1300\,mAh Kapazität betrieben, wobei die Verbindung über einen XT60-Steckverbinder erfolgt und der Kreis durch eine 2\,A-Sicherung abgesichert ist. Der Logikkreis, bestehend aus dem ESP32, den Ultraschallsensor, das CNC shild, sowie der MPU6050, wird hingegen über eine separate, unabhängige Powerbank versorgt. Diese Trennung stellt sicher, dass die beim Motoranlauf auftretenden Stromspitzen keinen Einfluss mehr auf die Versorgungsspannung der Sensorik ausüben können. 
 
-\subsection{Kippschalter-Problematik}
+\subsection{Kippschalter (Niklas)}
 \label{subsec:kippschalter}
 
-Um beim Einstecken des Akkus Funkenbildung zu verhindern und eine praktische Bedienung zu ermöglichen, wurde ein mechanischer Kippschalter eingebaut. Dessen Auswahl erforderte im Projektverlauf mehrere Iterationen. Das erste eingesetzte Modell vom Typ E-TEN1021 (15,A bei 250,VAC) erwies sich nach einiger Betriebszeit als fehlerhaft. Zur Verwunderung des Teams leitete der Schalter die anliegende Spannung nicht mehr vollständig an das nachgeschaltete System weiter. Da zunächst ein defekter Motortreiber vermutet wurde, welcher die Versorgungsspannung einbrechen ließ, wurden alle nachfolgenden Komponenten testweise abgesteckt. Eine anschließende Spannungsmessung direkt am Ausgang des Schalters bestätigte jedoch den internen Defekt. Statt der vom Labornetzteil bereitgestellten 16,V passierten lediglich 3,V den Schalter.
+Um beim Einstecken des Akkus Funken zu verhindern und die Bedienung komfortabler zu machen, wurde ein Kippschalter eingebaut. Das erste Modell (E-TEN1021) (ausgelegt für 15 A bei 250 VAC) fiel jedoch nach längerer Betriebszeit aus. Der Schalter leitete die anliegende Spannung nicht mehr vollständig weiter. Zuerst war die Vermutung ein defekter Motortreiber, der die Versorgungsspannung einbrechen ließ. Die Eingrenzung duch betreiben ohne Motortreiber hat dies nicht bestätigt. Eine Spannungsmessung direkt am Schalterausgang zeigte jedoch den internen Defekt. Statt der 16 V aus dem Labornetzteil kamen am Ausgang nur noch ca. 3 V an. Die Durchgangsprüfung hat gezeigt, dass keine leitende Verbindung zwischen den Pins im eingeschalteten Zustand besteht.
 
-Ein zweites Modell, das über eine integrierte Status-LED verfügte, jedoch keine exakte Typbezeichnung aufwies, wurde als Ersatz getestet. Bei diesem Schalter brannte die integrierte LED jedoch unmittelbar bei der ersten Inbetriebnahme durch. Dies lässt auf einen für die anliegende Akkuspannung unterdimensionierten LED-Vorwiderstand schließen.
+Als Ersatz diente ein zweites Modell mit integrierter LED. Bei diesem Schalter brannte die LED direkt bei der ersten Inbetriebnahme durch, was auf einen für die Akkuspannung unterdimensionierten Vorwiderstand hindeutet. Der Schalter war danach ebenfalls nicht mehr funktionsfähig.
 
-Erst mit einem dritten Modell vom Typ R13-28F (15,A bei 125,VAC beziehungsweise 10,A bei 250,VAC) konnte eine zuverlässige Netztrennung realisiert werden. Die zuvor aufgetretenen Probleme sowie der Defekt des ersten Schalters lassen sich rückblickend nicht abschließend erklären. Zur Fehlerdiagnose wurden bei allen drei Schaltermodellen systematisch Durchgangsprüfungen sowie Spannungsmessungen unter Last und im Leerlauf durchgeführt.
+Erst das dritte Modell, ein R13-28F (15 A bei 125 VAC bzw. 10 A bei 250 VAC), sorgte schließlich für eine zuverlässige Netztrennung. Warum genau das erste Modell versagte, lässt sich rückblickend nicht erklären. Zur Fehlerdiagnose wurde bei allen drei Modellen systematische Durchgangsprüfungen sowie Spannungsmessungen unter Last durchgeführt.
+
 \section{Schaltplan (geschrieben von Lorenz)}
 \label{sec:schaltplan}
 Für die Erstellung des Schaltplans wurde die Software KiCad gewählt. Entscheidend dafür war zum einen, dass das Programm kostenlos und quelloffen zur Verfügung steht. Zum anderen konnten so bereits vorhandene Grundkenntnisse genutzt werden, da die Software kurz im Modul Grundlagen der Elektronik zum Einsatz kam.

@@ -23,14 +23,14 @@ DIV=15,BCOR=10mm, % Seitenlayout wie bei Koma-Script
 \usepackage{multirow}
 
 
-\usepackage[format=hang,			% Einstellung fuer Bildunterschriften
+\usepackage[format=hang,
 font={footnotesize},
 labelfont={bf},
 margin=1cm,
 aboveskip=5pt,
 position=bottom]{caption}
 
-\usepackage{booktabs} % Hübschere Tabellen
+\usepackage{booktabs}
 %\usepackage{tikz}								% Erstellen von Grafiken
 %\usetikzlibrary{positioning,arrows,plotmarks} 	% TikZ-Bibliotheken
 \usepackage[autostyle=true,german=quotes]{csquotes}	% Zur Nutzung von deutschen Anführungszeichen, innerhalb des Textes mit dem Befehl \enquote vorgehen
@@ -468,16 +468,14 @@ Um Fehler in diesem Spezifischen Entwicklungsboard auszuschließen wurde auf ein
 Um eine dauerhafte Lösung zu schaffen, wurde eine Lochrasterplatine genutzt, auf welcher der ESP32 sowie alle Leitungen fest verlötet wurden. Im Verlauf des Betriebs erlitt dieser ESP32 jedoch einen Defekt. Da angeschlossene Sensoren zwar nicht mit der 5,V-Spannungsversorgung verbunden waren, aber über die verbleibenden Signalpins angeschlossen blieben, zogen sie ihren Strom vermutlich über die GPIO-Pins. Dies führte zu einer Überschreitung der maximal zulässigen Ausgangsleistung des Mikrocontrollers. Um den aufwendigen Prozess des Entlötens bei einem erneuten Defekt zu vermeiden, wurde beim nachfolgenden Aufbau eine weibliche Buchsenleiste auf die Platine gelötet. Der ESP32 ist dadurch steckbar ausgeführt und kann bei Bedarf schnell und unkompliziert ausgetauscht werden. 
 
 
+\subsection{Sensorik (MPU6050, HC-SR04) (Niklas)TODO Datenblatt HCSR04 und MPU Hcsr04 Bild}
+\label{subsec:sensorik_hardware}
 
-\subsection{Sensorik (MPU6050, HC-SR04)}
-\label{subsec:sensorik_komponente}
+Für das Messen der Neigung des Roboters wurde das GY-521-Board mit dem MPU6050-Modul verwendet. Es besteht aus einem 3-Achsen-Gyroskop in Verbindung mit einem 3-Achsen-Beschleunigungssensor und ist über den I2C-Bus mit dem ESP32 verbunden (zur softwareseitigen Auswertung siehe Kapitel~\ref{sec:sensorintegration}). Der Sensor wurde bewusst auf der obersten Ebene des dreistöckigen Chassis montiert. Da die Auslenkungen dort oben am stärksten sind, liefert die MPU an dieser Position die deutlichsten Messwerte für die spätere Regelung \cite{az-deliveryGY521}.
 
-- 2 unterschiedlicceh mpus mit unterschiedlichester kombination von kondensatoren- - mpu kabel verlöten 
+Während der Hardware-Tests kam es jedoch immer wieder zu Messausfällen und Problemen mit der Spannungsversorgung. Auf der Suche nach der genauen Fehlerquelle wurden nacheinander zwei verschiedene MPU-Module in Verbindung mit unterschiedlichsten Kondensator-Kombinationen ausprobiert. Dabei fielen auch, als mögliche Ursache, unzuverlässige Steckverbindungen auf. Um Wackelkontakte auszuschließen, wurden die Kabel letztendlich fest an die Kontakte der MPU gelötet (siehe Abbildung~\ref{fig:sensoren}).
 
-
-Zur Erfassung der Neigung des Systems wurde eine MPU6050-Inertialmesseinheit in Form des Moduls GY-521 verbaut. Dieses kombiniert ein 3-Achsen-Gyroskop zur Messung der Winkelgeschwindigkeit mit einem 3-Achsen-Beschleunigungssensor und kommuniziert über den I2C-Bus (SDA/SCL) mit dem ESP32 (vgl. Kapitel~7.4.1). Die Sensorplatine wurde bewusst in der obersten Ebene des dreistöckigen Chassis-Aufbaus platziert, da die Neigungsmessung an dieser Position physikalisch am aussagekräftigsten erfolgt, da hier die größten Auslenkungen relativ zur Vertikalen auftreten.
-
-Zur Abstandsmessung und Hindernisvermeidung (F60, vgl. Kapitel~2.1.1) wurden zwei Ultraschallsensoren vom Typ HC-SR04 integriert, die nach dem Trigger-Echo-Prinzip arbeiten und den gemessenen Abstand in Zentimetern ausgeben. Die genaue softwareseitige Auswertung dieser Sensoren wird in Kapitel~7.4.3 beschrieben.
+Zur Vermeidung von Kollisionen wurden zwei HC-SR04 Ultraschallsensoren integriert. Die Wahl fiel auf dieses Modell, da es bereits vorhanden war, leicht anzusteuern und für diesen Einsatzzweck präzise genug ist. Der HC-SR04 hat eine maximale Reichweite von etwa 400\,cm und eine theoretische Messgenauigkeit von bis zu 3\,mm. Da der Roboter in beide Richtungen fahren kann, wurde ein Sensor vorne und einer hinten angebracht. Sie arbeiten nach dem Trigger-Echo-Prinzip und berechnen den genauen Abstand zum Hindernis anhand der Laufzeit des ausgesendeten Ultraschallimpulses. Die Sensoren werden mit 5V Betriebsspannung betrieben \cite{reicheltHCSR04_Datasheet}.
 
 \subsection{Motorwahl und Treiber (geschrieben Lorenz)}
 \label{subsec:motorwahl_treiber}

@@ -567,22 +567,22 @@ Der vollständige elektrische Schaltplan des Gesamtsystems ist in Anhang~B beige
 Da bereits persönliche Vorerfahrungen mit PlatformIO aus früheren Projekten vorhanden waren und die Umgebung dort erfolgreich genutzt wurde, fiel die Wahl für dieses Projekt erneut auf diese Entwicklungsumgebung. In Visual Studio Code wurde das entsprechende PlatformIO-Plugin installiert und eingerichtet. Als Hardware-Plattform wurde der Mikrocontroller ESP-WROOM-32 ausgewählt.
 Bei den anschließenden beschreiben trat jedoch initial das Problem auf, dass der Mikrocontroller nicht erkannt wurde. Die Fehlersuche ergab, dass es sich bei dem verwendeten Micro-USB-Kabel um ein reines Stromkabel und kein Datenkabel handelte. Nach dem Austausch des Kabels konnten die Flash-Tests erfolgreich durchgeführt werden. Im Anschluss wurde ein neues Projekt innerhalb der Umgebung für dieses Board initialisiert. Die Projekterstellung erforderte die Konfiguration der grundlegenden Projektstruktur sowie die Definition der spezifischen Parameter, wie beispielsweise der seriellen Baudrate, in der platformio.ini Datei. Dieses Projekt wurde dann auf GitLab den anderen Teammitgliedern zur Verfügung gestellt, wobei für die Zusammenarbeit eine Git-Struktur mit verschiedenen Branches aufgesetzt wurde.
 
-\section{Code-Architektur}
+\section{Code-Architektur (Niklas)}
 \label{sec:code_architektur}
 
-\subsection{Nicht-blockierendes Design}
+\subsection{Nicht-blockierendes Design (Niklas) Todo Abtastintervall anpassen}
 \label{subsec:nicht_blockierend}
 
-Ein zentrales Grundprinzip der gesamten Softwarearchitektur ist der vollständige Verzicht auf die Funktion \texttt{delay()} im gesamten Programmcode. Diese Regel wurde nicht von Beginn des Projekts an als feste Vorgabe festgelegt, sondern entwickelte sich im Projektverlauf aus einer begründeten Vermutung des Teams: Da der PID-Regelkreis auf eine feste, präzise Abtastrate angewiesen ist, wurde befürchtet, dass blockierende Wartezeiten durch \texttt{delay()}-Aufrufe innerhalb einzelner Programmteile zu unkontrollierten zeitlichen Verzögerungen im Regelkreis führen könnten. Auf Basis dieser Vermutung wurde der Verzicht auf \texttt{delay()} im weiteren Projektverlauf als verbindliche Team-Regel eingeführt und konsequent umgesetzt.
+Ein Hauptmerkmal der gesamten Softwarearchitektur ist der vollständige Verzicht auf die Funktion \texttt{delay()} in zeitkritischen Bereichen. Diese Regel wurde nicht von Beginn des Projekts an als feste Vorgabe festgelegt, sondern entwickelte sich im Projektverlauf aus einer Vermutung des Teams. Da der PID-Regelkreis inkl. der Motorsteuerung auf feste Intervalle angewiesen ist, wurde befürchtet, dass blockierende Wartezeiten durch \texttt{delay()}-Aufrufe innerhalb einzelner Programmteile zu unkontrollierten Verzögerungen im Regelkreis führen könnten. Deshalb wurde der Verzicht auf \texttt{delay()} im weiteren Projektverlauf als verbindliche Team-Regel eingeführt und konsequent in den wichtigsten Bereichen (z.B. Intervallberechnung der Schrittmotoransteuerung) umgesetzt.
 
-Anstelle von \texttt{delay()} erfolgt die Zeitsteuerung im Code durchgängig über einen Vergleich der Systemzeit mittels \texttt{millis()} beziehungsweise \texttt{micros()}, wodurch einzelne Programmteile innerhalb eines Tasks zeitgesteuert ausgeführt werden können, ohne die Ausführung anderer Aufgaben zu blockieren. Für den PID-Regler wurde auf diese Weise ein exaktes Abtastintervall von 10\,ms, entsprechend einer Regelfrequenz von 100\,Hz, realisiert, ohne dass parallel laufende Aufgaben wie Motoransteuerung, Sensorabfrage, PS4-Controller-Kommunikation oder Logging dadurch blockiert werden.
+Anstelle von \texttt{delay()} findet die Zeitsteuerung im Code über einen Vergleich der Systemzeit mittels \texttt{millis()} beziehungsweise \texttt{micros()} statt, wodurch einzelne Programmteile innerhalb eines Tasks zeitgesteuert ausgeführt werden können, ohne die Ausführung anderer Aufgaben zu blockieren. Für den PID-Regler wurde auf diese Weise ein exaktes Abtastintervall von 10\,ms, entsprechend einer Regelfrequenz von 100\,Hz, realisiert, ohne dass parallel laufende Aufgaben wie Motoransteuerung, Sensorabfrage, PS4-Controller-Kommunikation oder Logging dadurch blockiert werden.
 
-\subsection{FreeRTOS Multicore-Ansatz}
+\subsection{FreeRTOS Multicore-Ansatz (Niklas)}
 \label{subsec:freertos_multicore}
 
-Zur Umsetzung des nicht-blockierenden, echtzeitfähigen Systemverhaltens wurde die Softwarearchitektur auf Basis von FreeRTOS unter Ausnutzung der Dual-Core-Architektur des ESP32 konzipiert. Anstatt sämtliche Funktionalität in einer einzelnen Ausführungsschleife (Loop) zu bündeln, wurde die Anwendung in mehrere unabhängige FreeRTOS-Tasks aufgeteilt, die gezielt auf die beiden verfügbaren Prozessorkerne verteilt wurden.
+Um das echtzeitfähige Systemverhaltens umzusetzen wurde beide Kerne des ESP32 in Verbindung mit FReeRTOS verwendet. Anstatt alle Funktionalität in einer einzelnen Ausführungsschleife (Loop) zu bündeln, wurde die Anwendung in mehrere unabhängige FreeRTOS-Tasks aufgeteilt, die gezielt auf die beiden verfügbaren Prozessorkerne verteilt wurden.
 
-Tabelle~\ref{tab:freertos_tasks} gibt einen Überblick über die konkrete Task-Konfiguration des Systems.
+Tabelle~\ref{tab:freertos_tasks} zeigt die konkrete Task-Konfiguration des Systems.
 
 \begin{table}[h]
     \centering
@@ -592,7 +592,7 @@ Tabelle~\ref{tab:freertos_tasks} gibt einen Überblick über die konkrete Task-K
         \hline
         \textbf{Task} & \textbf{Core} & \textbf{Priorität} & \textbf{Aufgabe} \\
         \hline
-        ControlTask & 0 & 2 & PID-Berechnung, Sensorabfrage, PS4-Verarbeitung \\
+        ControlTask & 0 & 2 & PID-Berechnung, Sensorabfrage, PS4-Controller \\
         \hline
         LoggerTask & 0 & 1 & Asynchrones Logging über Serial \\
         \hline
@@ -601,14 +601,15 @@ Tabelle~\ref{tab:freertos_tasks} gibt einen Überblick über die konkrete Task-K
     \end{tabular}
 \end{table}
 
-Der \texttt{MotorUpdateTask} läuft dabei isoliert auf Core~1 mit einer im Vergleich zum \texttt{LoggerTask} höheren Priorität, da eine unterbrechungsfreie Ansteuerung der Motoren unter keinen Umständen verzögert werden darf. Auf Core~0 laufen der \texttt{ControlTask}, welcher die eigentliche Regelungslogik inklusive PID-Berechnung, Sensorauswertung und Verarbeitung der PS4-Controller-Eingaben übernimmt, sowie der \texttt{LoggerTask} mit niedrigerer Priorität. Durch diese Priorisierung wird sichergestellt, dass der \texttt{LoggerTask} ausschließlich dann zur Ausführung kommt, wenn der \texttt{ControlTask} sich in einer Wartephase befindet, wodurch das Logging die zeitkritische Regelung nicht negativ beeinflusst (vgl. Kapitel~7.7.3). Die physische Trennung der Motoransteuerung auf einen eigenen Kern stellt zusätzlich sicher, dass selbst eine kurzfristige Verzögerung innerhalb des \texttt{ControlTask}, etwa durch einen I2C-Timeout (vgl. Kapitel~7.4.2), keinen unmittelbaren Einfluss auf die laufende Motoransteuerung hat.
+Der \texttt{MotorUpdateTask} läuft dabei isoliert auf Core 1, da eine unterbrechungsfreie Ansteuerung der Motoren wichtig ist. Auf Core 0 laufen der \texttt{ControlTask}, welcher die eigentliche Regelungslogik inklusive PID-Berechnung, Sensorauswertung und Verarbeitung der PS4-Controller-Eingaben übernimmt, sowie der \texttt{LoggerTask} mit niedrigerer Priorität. Durch diese Priorisierung wird sichergestellt, dass der \texttt{LoggerTask} nur dann zur Ausführung kommt, wenn der \texttt{ControlTask} sich in einer Wartephase befindet, wodurch das Logging die zeitkritische Regelung nicht beeinflusst (vgl. Kapitel~\ref{subsec:nonblocking_serial}). Die physische Trennung der Motoransteuerung auf einen eigenen Kern stellt zusätzlich sicher, dass selbst eine kurzfristige Verzögerung innerhalb des \texttt{ControlTask}, etwa durch einen I2C-Timeout (vgl. Kapitel~\ref{subsec:i2c_errorhandling}), keinen unmittelbaren Einfluss auf die laufende Motoransteuerung hat.
 
-\subsection{Modulare Struktur (config.h)}
+
+\subsection{Modulare Code Struktur (Niklas)}
 \label{subsec:modulare_struktur}
 
-Um die Wartbarkeit und Übersichtlichkeit des Quellcodes zu gewährleisten, wurde eine modulare Softwarearchitektur umgesetzt, bei der für jede logische Komponente des Systems eine eigene Quellcode- und zugehörige Header-Datei angelegt wurde, mit Ausnahme der zentralen \texttt{main.cpp}, welche keine eigene Header-Datei besitzt. Auf diese Weise existieren unter anderem separate Dateipaare für die Motorsteuerung, die PID-Regelung, die Anbindung der MPU6050, die Auswertung der Ultraschallsensoren sowie die PS4-Controller-Kommunikation.
+Um die Wartbarkeit und Übersichtlichkeit des Quellcodes zu verbessern, wurde eine modulare Softwarearchitektur umgesetzt, bei der für jede Komponente des Systems eine eigene Quellcode- und zugehörige Header-Datei angelegt wurde.
 
-Zentrale, projektweit gültige Konfigurationswerte wie Pin-Belegungen, PID-Parameter sowie verschiedene Schwellenwerte wurden in einer eigenen \texttt{config.h}-Datei als Defines zentral gebündelt. Dies ermöglicht es, beispielsweise für das PID-Tuning (vgl. Kapitel~7.5.3) oder bei Anpassungen der Pin-Belegung, gezielt und ohne aufwendige Suche im Code auf die relevanten Parameter zuzugreifen. Die beiden Haupt-Tasks der Anwendung, aufgeteilt auf Core~0 und Core~1 (vgl. Kapitel~7.2.2), werden zentral in der \texttt{main.cpp} initialisiert und gestartet.
+Wichtige Konfigurationswerte wie Pin-Belegungen und PID-Parameter wurden in einer \texttt{config.h}-Datei als Defines zentral verwaltet. Dies ermöglicht es, beispielsweise für das PID-Tuning (vgl. Kapitel~\ref{sec:pid_regelung}) oder bei Anpassungen der Pin-Belegung, gezielt die relevanten Parameter zuzugreifen.
 
 \section{Motorsteuerung}
 \label{sec:motorsteuerung}

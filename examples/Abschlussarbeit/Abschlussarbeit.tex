@@ -475,7 +475,9 @@ Für das Messen der Neigung des Roboters wurde das GY-521-Board mit dem MPU6050-
 
 Während der Hardware-Tests kam es jedoch immer wieder zu Messausfällen und Problemen mit der Spannungsversorgung. Auf der Suche nach der genauen Fehlerquelle wurden nacheinander zwei verschiedene MPU-Module in Verbindung mit unterschiedlichsten Kondensator-Kombinationen ausprobiert. Dabei fielen auch, als mögliche Ursache, unzuverlässige Steckverbindungen auf. Um Wackelkontakte auszuschließen, wurden die Kabel letztendlich fest an die Kontakte der MPU gelötet (siehe Abbildung~\ref{fig:sensoren}).
 
-Zur Vermeidung von Kollisionen wurden zwei HC-SR04 Ultraschallsensoren integriert. Die Wahl fiel auf dieses Modell, da es bereits vorhanden war, leicht anzusteuern und für diesen Einsatzzweck präzise genug ist. Der HC-SR04 hat eine maximale Reichweite von etwa 400\,cm und eine theoretische Messgenauigkeit von bis zu 3\,mm. Da der Roboter in beide Richtungen fahren kann, wurde ein Sensor vorne und einer hinten angebracht. Sie arbeiten nach dem Trigger-Echo-Prinzip und berechnen den genauen Abstand zum Hindernis anhand der Laufzeit des ausgesendeten Ultraschallimpulses. Die Sensoren werden mit 5V Betriebsspannung betrieben \cite{reicheltHCSR04_Datasheet}.
+Zur Vermeidung von Kollisionen wurden zwei HC-SR04 Ultraschallsensoren integriert. Die Wahl fiel auf dieses Modell, da es bereits vorhanden war, leicht anzusteuern und für diesen Einsatzzweck präzise genug ist. Der HC-SR04 hat eine maximale Reichweite von etwa 400\,cm und eine theoretische Messgenauigkeit von bis zu 3\,mm. Da der Roboter in beide Richtungen fahren kann, wurde ein Sensor vorne und einer hinten angebracht. Sie arbeiten nach dem Trigger-Echo-Prinzip und berechnen den genauen Abstand zum Hindernis anhand der Laufzeit des ausgesendeten Ultraschallimpulses. 
+
+Alle Sensoren werden mit 5V Betriebsspannung betrieben \cite{az-deliveryGY521}, \cite{reicheltHCSR04_Datasheet}.
 
 \subsection{Motorwahl und Treiber (geschrieben Lorenz)}
 \label{subsec:motorwahl_treiber}
@@ -657,32 +659,33 @@ Ein weiteres, wiederkehrendes Problem bei der Verkabelung bestand darin, dass di
 
 Da der reine StealthChop-Modus zwar leise, jedoch für die Anforderungen des Systems in einigen Betriebspunkten zu schwach war, wurde ergänzend der SpreadCycle-Modus getestet, der ein höheres Drehmoment bei geringfügig höherer Lautstärke liefert. Sämtliche im Rahmen dieses Tunings vorgenommenen Anpassungen an Vref, Mikroschritt-Konfiguration und Betriebsmodus wurden von Felix Dauerer systematisch in einer Excel-Tabelle dokumentiert, wobei die jeweiligen Auswirkungen zusätzlich am Oszilloskop überprüft und die Treibertemperaturen mittels Wärmebildkamera kontrolliert wurden (vgl. Kapitel~8.2).
 
-\section{Sensorintegration}
+\section{Sensorintegration (Niklas)}
 \label{sec:sensorintegration}
 
-\subsection{MPU6050 (I2C-Kommunikation)}
+\subsection{MPU6050 Neigungssensor (Niklas) Todo abtastrate und intervall anpassen}
 \label{subsec:mpu6050_i2c}
 
-Die Kommunikation mit der MPU6050 erfolgt über den I2C-Bus (SDA/SCL) unter der für dieses Modul standardmäßig vorgesehenen Busadresse 0x68. Die Sensordaten werden dabei mit einer Abtastrate von 100\,Hz, entsprechend einem Abfrageintervall von 10\,ms, ausgelesen, was der Abtastrate des übergeordneten PID-Regelkreises entspricht (vgl. Kapitel~7.5.1).
+Die Kommunikation mit dem MPU6050 erfolgt über den I2C-Bus (SDA/SCL) mit der Standard-Adresse 0x68 \cite{az-deliveryGY521}. Die Sensordaten werden mit einer Abtastrate von 100\,Hz bzw. in einem Intervall von 10\,ms ausgelesen, also die Abtastrate des PID-Regelkreises.
 
-Die von der MPU6050 gelieferten Rohdaten des 3-Achsen-Gyroskops sowie des 3-Achsen-Beschleunigungssensors mussten zunächst in einen für die Regelung nutzbaren Neigungswinkel in Grad umgerechnet werden. Bei der initialen Implementierung dieser Umrechnung traten zunächst fehlerhafte Ergebnisse auf, die auf eine unzureichend berücksichtigte Kopplung zwischen den einzelnen Sensorachsen zurückzuführen waren: Die für die Balancierregelung relevante Achse wurde von den Messwerten der übrigen Achsen beeinflusst, ohne dass diese Kopplung in der ursprünglichen Berechnung korrekt kompensiert wurde. Die genaue Ursache dieser anfänglichen Achsenkopplungsfehler ließ sich retrospektiv nicht mehr vollständig rekonstruieren; durch iterative Anpassung der Umrechnungslogik sowie Vergleichsmessungen mit bekannten Referenzwinkeln konnte die Berechnung jedoch so weit korrigiert werden, dass die MPU6050 im weiteren Projektverlauf zuverlässige Neigungswerte lieferte.
+Die Rohdaten mussten zunächst in einen anschaulichen und für die Regelung nutzbaren Neigungswinkel in Grad umgerechnet werden. Bei der ersten Implementierung traten dabei fehlerhafte Ergebnisse auf, da die Messwerte der relevanten Achse durch die übrigen Achsen, sowie durch Beschleunigung beeinflusst wurden. Durch die Verwendung der Bibliothek \texttt{MPU6050\_light} und den Komplementärfilter, der die Werte des Gyroskops mit dem Beschleunigungssensor verrechnet, konnte das Problem behoben werden und zuverlässige Neigungswerte für die Balancierregelung zur Verfügung stehen \cite{rfetickMPU6050_light_library}.
 
-\subsection{I2C-Errorhandling und Timeout-Optimierung}
+\subsection{I2C-Errorhandling und Timeout-Optimierung (Niklas)}
 \label{subsec:i2c_errorhandling}
 
-Im praktischen Betrieb zeigte sich, dass die I2C-Kommunikation zwischen ESP32 und MPU6050 insbesondere während des Motorbetriebs sporadisch abbrach, wodurch der Roboter für kurze Zeitfenster keine aktuellen Neigungswerte erhielt und die Regelung entsprechend kurzzeitig aussetzte. Als eine der Ursachen dieses Verbindungsabbruchs wurde, neben den in Kapitel~6.2.1 beschriebenen mechanisch lockeren Pin-Steckverbindungen des Freenove-ESP32-Boards, auch die in Kapitel~6.3.2 beschriebene Spannungsproblematik identifiziert.
+Im praktischen Betrieb zeigte sich, dass die I2C-Kommunikation zwischen ESP32 und MPU6050 insbesondere während des Motorbetriebs sporadisch abbrach. Dadurch bekam der Regler kurzzeitig keine aktuellen Neigungswerte. Als Ursachen wurden neben den bereits beschriebenen Spannungsproblemen auch unzuverlässige Steckverbindungen identifiziert.
 
-Zur softwareseitigen Behandlung dieses Problems wurde zunächst eine Fehlerbehandlungsroutine implementiert, die bei einem erkannten Abbruch der I2C-Verbindung diese aktiv trennt und unmittelbar neu initialisiert, um den Kommunikationszustand schnellstmöglich wiederherzustellen. Zusätzlich wurde die im ESP-IDF-Treiber konfigurierbare I2C-Timeout-Zeit, also die Zeitspanne, die dem ESP32 zur Verfügung steht, um eine Antwort der MPU6050 abzuwarten, gezielt angepasst. Ein Timeout-Wert von 50\,ms erwies sich dabei weiterhin als problematisch und führte zu häufigen Timeout-Fehlern, während eine Erhöhung auf 100\,ms die Timeout-Fehler nahezu vollständig eliminierte und sich damit als abschließend gewählter Wert etablierte.
+Zur softwareseitigen Behandlung wurde eine Fehlerbehandlungsfunktion implementiert, die bei einem erkannten Abbruch die I2C-Verbindung trennt und direkt neu initialisiert. Zusätzlich wurde die eingestellte Timeout-Zeit für die Kommunikation zwischen MPU6050 und ESP erhöht. Ein Wert von 50\,ms war problematisch, während mit 100\,ms die Timeout-Fehler vollständig behoben werden konnten.
 
-Die durch einen einzelnen Timeout-Fall verursachte maximale Blockierdauer des \texttt{ControlTask} blieb dabei in einem für das Gesamtsystem vertretbaren Rahmen, da der zeitkritische \texttt{MotorUpdateTask} durch die in Kapitel~7.2.2 beschriebene physische Trennung auf Core~1 von dieser kurzzeitigen Verzögerung unbeeinflusst blieb. Ergänzend zur softwareseitigen Fehlerbehandlung wurden auch die Löt- und Kabelverbindungen im Bereich der MPU6050 mechanisch nachgebessert, um die Häufigkeit der Verbindungsabbrüche zusätzlich zu reduzieren.
+Ergänzend dazu wurden auch die Löt- und Kabelverbindungen an der MPU mechanisch verbessert, um die Häufigkeit der Verbindungsabbrüche zusätzlich zu minimieren.
 
-\subsection{HC-SR04 Ultraschallsensor}
+\subsection{HC-SR04 Ultraschallsensor (Niklas)}
 \label{subsec:hcsr04}
 
-Zur Erfüllung der Anforderung F60 (Kollisionsvermeidung, vgl. Kapitel~2.1.1) wurden zwei Ultraschallsensoren vom Typ HC-SR04 in die Software integriert. Die Distanzmessung erfolgt dabei nach dem Trigger-Echo-Prinzip: Über den Trigger-Pin wird ein kurzer Ultraschallimpuls ausgesendet, während über den Echo-Pin die Laufzeit bis zum Empfang des reflektierten Signals gemessen wird, aus der sich anschließend der Abstand in Zentimetern berechnen lässt.
+Zur Erfüllung der Kollisionsvermeidung wurden zwei Ultraschallsensoren vom Typ HC-SR04 in die Software integriert. Die Distanzmessung erfolgt nach dem Trigger-Echo-Prinzip: Über den Trigger-Pin wird ein Ultraschallimpuls ausgesendet und über den Echo-Pin die Laufzeit des reflektierten Signals gemessen \cite{reicheltHCSR04_Datasheet}.
 
-Im Rahmen der Integration wurde ein Frequenztest durchgeführt, um die maximal mögliche Messrate der Sensoren zu bestimmen, ohne dass sich aufeinanderfolgende Messungen gegenseitig durch noch nicht abgeklungene Echosignale stören. Der praktische Einsatz der Sensoren dient dabei primär der Realisierung eines softwareseitigen Nothalts bei Unterschreitung eines definierten Mindestabstands. Technisch bedingte Einschränkungen der Sensorik sind insbesondere ein Totbereich von weniger als 2\,cm, innerhalb dessen keine zuverlässige Messung möglich ist, sowie eine notwendige Mindestwartezeit zwischen zwei aufeinanderfolgenden Messungen.
+Da der Sensor laut Datenblatt eine maximale Reichweite von etwa 400\,cm besitzt, muss das Signal im Grenzfall einen Hin- und Rückweg von insgesamt 800\,cm zurücklegen \cite{reicheltHCSR04_Datasheet}. Bei Berechnung mit der Schallgeschwindigkeit ergibt sich daraus eine maximale Laufzeit von ca. 25\,ms. Dieser Wert liegt weit unter dem 100 ms Abfrageintervall unseres Roboters, welches aber ausreichend ist.
 
+Der praktische Einsatz der Sensoren dient der Erkennung von Hindernissen vor und hinter dem Roboter sowie der Auslösung eines softwareseitigen Nothalts bei Unterschreitung eines definierten Mindestabstands. Zu beachten ist dabei der im Datenblatt angegebene Totbereich von unter 2\,cm, in dem keine zuverlässige Messung mehr möglich ist \cite{reicheltHCSR04_Datasheet}.
 \section{PID-Regelung}
 \label{sec:pid_regelung}
 
@@ -800,10 +803,10 @@ Wie bereits in Kapitel~6.3.2 beschrieben, funktionierten Motoransteuerung und Ne
 
 Über den gesamten Projektverlauf hinweg wurde bei auftretenden Hardwareproblemen konsequent nach einem einheitlichen, systematischen Vorgehen gearbeitet. Zur Verifikation von Spannungspegeln und zum Aufspüren von Kurzschlüssen oder unterbrochenen Leitungen kam durchgehend ein Multimeter zum Einsatz, während ein Oszilloskop zur Analyse von Signalverläufen, insbesondere der STEP/DIR-Signale sowie der Versorgungsspannung unter Last, genutzt wurde. Zur thermischen Überwachung der Motortreiber unter Volllast wurde eine Wärmebildkamera eingesetzt, und zur Verifikation der tatsächlichen Kapazitätswerte eingesetzter Kondensatoren wurde ein LCR-Messgerät verwendet (vgl. Kapitel~6.3.4). Sämtliche im Rahmen des PID- und Treiber-Tunings vorgenommenen Parameteränderungen wurden zusätzlich systematisch in Excel-Tabellen dokumentiert (vgl. Kapitel~7.3.4 und~7.5.3), um Zusammenhänge zwischen einzelnen Anpassungen und dem beobachteten Systemverhalten auch im Nachhinein nachvollziehen zu können.
 
-\section{Hardware-Defekte im Überblick}
+\section{Hardware-Defekte im Überblick (Niklas)}
 \label{sec:hardware_defekte_ueberblick}
 
-Im Verlauf des Projekts traten mehrere voneinander unabhängige Hardwaredefekte auf, die in den vorangegangenen Kapiteln bereits im jeweiligen fachlichen Kontext ausführlich beschrieben wurden. Tabelle~\ref{tab:defekte_uebersicht} fasst diese Defekte im Sinne eines schnellen Überblicks zusammen und verweist auf die jeweilige Detailbeschreibung.
+Im Verlauf des Projekts traten mehrere teilweise unabhängige Hardwaredefekte auf, die in den vorangegangenen Kapiteln bereits im beschrieben wurden. Tabelle~\ref{tab:defekte_uebersicht} fasst diese Defekte zusammen.
 
 \begin{table}[h]
     \centering
@@ -815,20 +818,20 @@ Im Verlauf des Projekts traten mehrere voneinander unabhängige Hardwaredefekte 
         \hline
         ESP32 (1) & LOW-Pegel bei 2,3\,V statt 0\,V & Kapitel~7.3.2 \\
         \hline
+        ESP32 (2) & Kein Flashen möglich & Kapitel~7.3.2 \\
+        \hline
         A4988-Treiber & Durchgebrannt durch 22,2\,V (6S-LiPo) & Kapitel~7.3.3 \\
         \hline
         NEMA17-Motor & Wicklungsschaden durch Kurzschluss & Kapitel~7.3.3 \\
         \hline
-        TMC2209-Treiber (v1.3) & Durchgebrannt bei 24\,V am Motorausgang & Kapitel~7.3.4 \\
+        TMC2209-Treiber (v1.3) & Dauerhaft 24\,V am Motorausgang & Kapitel~7.3.4 \\
         \hline
-        Kippschalter (1., E-TEN1021) & Spannung nicht vollständig durchgeleitet & Kapitel~6.3.6 \\
+        Kippschalter (1., E-TEN1021) & keine Spannung am Ausgang & Kapitel~6.3.6 \\
         \hline
-        Kippschalter (2., mit LED) & LED durchgebrannt & Kapitel~6.3.6 \\
+        Kippschalter (2., mit LED) & Durchgangsprüfung fehlerhaft & Kapitel~6.3.6 \\
         \hline
     \end{tabular}
 \end{table}
-
-Diese tabellarische Zusammenfassung dient ausschließlich der schnellen Orientierung; auf eine erneute Wiederholung der bereits an anderer Stelle ausführlich dargestellten Fehlersuche und Lösungswege wird an dieser Stelle bewusst verzichtet. Bemerkenswert ist, dass das CNC-Shield trotz wiederholter Verdachtsmomente (vgl. Kapitel~7.3.4 und~8.1) über den gesamten Projektverlauf hinweg zu keinem Zeitpunkt tatsächlich selbst defekt war, sondern lediglich durch Pinkonflikte und blockierte UART-Leitungen indirekt zu Problemen beitrug.
 
 \chapter{Tests und Ergebnisse}
 \label{ch:tests}

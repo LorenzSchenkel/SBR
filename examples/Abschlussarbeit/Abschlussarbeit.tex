@@ -276,22 +276,71 @@ Für die Durchführung des Projekts galten mehrere verbindliche Randbedingungen:
 \chapter{Systemkonzept und Architektur}
 \label{ch:systemkonzept}
 
-Dieses Kapitel beschreibt das grundlegende regelungstechnische Konzept des Self-Balancing-Robot-Systems sowie den strukturellen Aufbau der Gesamtarchitektur.
+Dieses Kapitel beschreibt das grundlegende regelungstechnische Konzept des Self-Balancing Robots 
+sowie die Logik und den strukturellen Aufbau der Gesamtarchitektur.
 
-\section{Physikalisches Grundprinzip: Invertiertes Pendel}
+\section{Physikalisches Grundprinzip}
 \label{sec:invertiertes_pendel}
 
-Das dem Roboter zugrundeliegende physikalische Modell ist das eines invertierten Pendels auf einem beweglichen Wagen (\textit{cart-pole system}). Der Schwerpunkt des Roboterkörpers liegt dabei oberhalb der Radachse, wodurch das System ohne aktive Regelung instabil ist und bei der geringsten Auslenkung aus der vertikalen Gleichgewichtslage unweigerlich umfällt. Um das System dennoch in der Balance zu halten, muss die Radbasis kontinuierlich so bewegt werden, dass der Schwerpunkt stets über der Aufstandsfläche der Räder gehalten wird, analog zum Balancieren eines Stabes auf der Handfläche.
+Das dem Roboter zugrundeliegende physikalische Modell ist das eines invertierten Pendels 
+auf einem beweglichen Grund. Der Schwerpunkt des Roboterkörpers 
+liegt oberhalb der Radachse, wodurch das System ohne aktive Regelung instabil ist und bei der
+geringsten Auslenkung aus der Gleichgewichtslage umfällt.
+
+
+Um das System in der Balance zu halten, muss die Radbasis kontinuierlich 
+so bewegt werden, dass der Schwerpunkt stets über den Rädern gehalten wird, 
+bzw. die Achse direkt unter diesem Schwerpunkt bleibt.
+Das Prinzip ist vergleichbar mit dem Balancieren eines Stabes auf der Handfläche, wenn der 
+Stab nach links kippt, muss die Hand auch nach links nachgezogen werden, 
+um ihn wieder aufzurichten. Außerdem wirkt beim Fahren das Reaktionsmoment der Motoren. Das Drehen der Räder nach links erzeugt eine Gegenkraft, die zusätzlich hilft den Roboter wieder
+aufzurichten.
 
 \section{Regelungskonzept}
 \label{sec:regelungskonzept}
 
-Zur Stabilisierung des invertierten Pendels wird ein kaskadierter Regelkreis eingesetzt, bestehend aus einem inneren Neigungs-PID-Regler sowie einem äußeren Positions-PID-Regler (vgl. Kapitel~7.5.1 und~7.5.2). Der innere Regelkreis regelt dabei die eigentliche Balance des Systems auf Basis des über die MPU6050 gemessenen Neigungswinkels, während der äußere Regelkreis einer schleichenden Positionsdrift entgegenwirkt, indem er den Sollwert des inneren Reglers entsprechend anpasst. Dieses Kaskadenprinzip wurde bereits im Rahmen der Simulation konzipiert (vgl. Kapitel~5.2) und anschließend auf das reale System übertragen.
+Zur Stabilisierung des invertierten Pendels setzen wir einen kaskadierten Regelkreis ein, der aus einem 
+inneren Neigungs-PID-Regler und einem äußeren Positions-PID-Regler besteht. Der innere Regelkreis 
+ist für die eigentliche Balance des Systems zuständig und regelt auf Basis des gemessenen Neigungswinkels 
+die Motordrehzahl so, dass der Roboter sich nach dem Zielwinkel ausrichtet. Würde man nur diesen Regler
+verwenden, bliebe der Roboter zwar stabil, würde jedoch kontinuierlich von seiner Startposition wegdriften,
+da er sich zur Stabilisierung ständig minimal in eine Richtung neigen muss.
+
+Der äußere Regelkreis bekäpft dieses Problem, indem er die aktuelle Position des Roboters überwacht 
+und den Sollwinkel des inneren Reglers dynamisch anpasst. Die Ist-Position ist die zurückgelegte Strecke,
+die wir durch abzählen der Schritte bestimmen. 
+Weicht der Roboter beispielsweise nach links von seiner Zielposition ab, gibt der Positions-Regler 
+einen Soll-Neigungswinkel nach rechts vor, sodass sich der Roboter nach rechts lehnt und dadurch zur
+Zielposition zurückkehrt. Beide Regler arbeiten kontinuierlich zusammen, sodass der Roboter sowohl 
+in der Balance bleibt als auch seine Position hält.
+
+Dieses Kaskadenprinzip wurde im Rahmen der Simulation erarbeitet und validiert 
+(vgl. Kapitel~\ref{subsec:simulink_positions_pid}) und anschließend im realen System 
+umgesetzt (vgl. Kapitel~\ref{sec:pid_regelung}).
 
 \section{Systemarchitektur im Überblick}
 \label{sec:systemarchitektur_ueberblick}
 
-Die Gesamtarchitektur des Systems gliedert sich in drei wesentliche Ebenen: die mechanische Ebene (Chassis, Motoren, Räder, vgl. Kapitel~6.1), die elektronische Ebene (Mikrocontroller, Sensorik, Motortreiber, Energieversorgung, vgl. Kapitel~6.2 und~6.3) sowie die Softwareebene (Regelung, Sensorverarbeitung, Kommunikation, vgl. Kapitel~7). Zentrales Verbindungselement zwischen diesen Ebenen ist der ESP32-Mikrocontroller, welcher sämtliche Sensordaten erfasst, die Regelung berechnet und die daraus resultierenden Steuerbefehle an die Motortreiber weiterleitet (vgl. Kapitel~4.2.1).
+Das Gesamtsystem gliedert sich konzeptionell in drei Ebenen, die eng miteinander zusammenarbeiten.
+
+Die \textbf{mechanische Ebene} bildet das physische Grundgerüst des Roboters. Das Chassis trägt alle 
+Komponenten und bestimmt durch seinen Aufbau maßgeblich Schwerpunkt und Stabilität des Systems 
+(vgl. Kapitel~\ref{sec:mechanische_konstruktion}).
+
+Die \textbf{elektronische Ebene} verbindet Sensorik, Aktorik und Steuerung miteinander und 
+kümmert sich zudem um die Stromversorgung. Sensoren erfassen 
+kontinuierlich den Zustand des Roboters, der Mikrocontroller verarbeitet diese Informationen und berechnet 
+die erforderlichen Steuerbefehle, die die Motoren und Treiber dann in die tatsächliche Bewegung übersetzten
+(vgl. Kapitel~\ref{sec:elektronische_komponenten} und~\ref{sec:energieversorgung}).
+
+Die \textbf{Softwareebene} implementiert das Regelungskonzept und koordiniert alle Abläufe im System. 
+Sensorabfrage, Regelberechnung, Motoransteuerung und Kommunikation mit der Fernbedienung laufen parallel
+und müssen zeitlich präzise aufeinander abgestimmt sein, um die geforderte Reaktionsgeschwindigkeit 
+zu erreichen (vgl. Kapitel~\ref{sec:code_architektur} und~\ref{sec:pid_regelung}).
+
+Zentrales Verbindungselement zwischen diesen drei Ebenen ist der Mikrocontroller, der sämtliche Sensordaten 
+erfasst, die Regelung berechnet und die resultierenden Steuerbefehle an die nachgelagerten 
+Komponenten weiterleitet.
 
 \chapter{Designentscheidungen (geschrieben Lorenz)}
 \label{ch:designentscheidungen}
@@ -317,7 +366,9 @@ Dadurch, dass der Roboter möglichst gut balancieren soll, war es naheliegend, h
 \chapter{Simulation und Modellierung}
 \label{ch:simulation}
 
-Bevor die eigentliche Hardwarebeschaffung und der physische Aufbau des Roboters begannen, wurde in Übereinstimmung mit der nicht-funktionalen Anforderung N10 (vgl. Kapitel~2.2) ein modellbasierter Entwurf der Regelung in Matlab/Simulink durchgeführt. Ziel dieses Vorgehens war es, sowohl grundlegende Erkenntnisse zur Dimensionierung der Hardwarekomponenten als auch belastbare Startwerte für die späteren PID-Regler zu gewinnen, bevor diese am realen System aufwendig empirisch ermittelt werden müssten.
+Bevor die eigentliche Hardwarebeschaffung und der physische Aufbau des Roboters begannen, wollten wir einige Unklarheiten beseitigen, wie ob unsere MOteren stark genug sind, welche Reifengröße wir wählen sollten, wo wir den Schwerpunkt des Roboter legen sollten und ob ein PID Regler die richtige Wahl ist. Deshalb entschieden wir uns für eine Vorab-Simulation in Matlab/Simulink.
+
+Diese Simulation diente dazu, das Verhalten des Roboters unter verschiedenen Bedingungen zu analysieren und die Regelungsstrategie zu validieren. Sie ermöglichte es, die Auswirkungen unterschiedlicher PID-Werte, Reifengrößen und Schwerpunktlagen auf die Stabilität des Systems zu untersuchen.
 
 \section{Matlab/Simulink Grundmodell}
 \label{sec:simulink_grundmodell}
@@ -325,16 +376,35 @@ Bevor die eigentliche Hardwarebeschaffung und der physische Aufbau des Roboters 
 \subsection{Modellierung der Physik (Gravitation, Reifen, Achsen, Körper)}
 \label{subsec:simulink_physik}
 
-Für die Simulation wurde ein vereinfachtes physikalisches Modell des invertierten Pendels in Simulink aufgebaut. Das Modell berücksichtigt die auf das System wirkende Gravitationskraft, die Trägheit und Rotation der Reifen, die Achsen der Schrittmotoren sowie die Massenverteilung des zentralen Chassiskörpers. Als Startbedingung wurde dem Modell eine initiale Auslenkung von 10\,Grad Neigung vorgegeben, aus der heraus die simulierte Regelung den Roboter zurück in die aufrechte Gleichgewichtslage führen musste.
+Für die Simulation wurde ein physikalisches Modell des Roboters in Simulink aufgebaut. Der Körper des Roboters wurde durch einen BrickSolid mit einstellbarem Gewicht und Schwerpunkt abgebildet.
+Die beiden Reifen und Motoren simulierten wir mittels Revolute Joints, die Rotationen um ihre Achse ermöglichen, und wir beschränkten das Drehmoment der Motoren auf 0,55Nm (Stärke der Nema17 Steppermotoren).
+Die Gravitation übernahmen wir aus den Standard-Mechanik-Blöcken, die Simulink bei einem neuen Projekt automatisch bereitstellt.
 
-Um den Modellierungsaufwand in einem angemessenen Rahmen zu halten, wurden mehrere vereinfachende Annahmen getroffen: Das Chassis wurde als starrer Körper ohne Verformung angenommen, zwischen Reifen und Untergrund wurde kein Schlupf berücksichtigt, und eine Verformung der Reifen selbst wurde vernachlässigt. Diese Vereinfachungen ermöglichten eine deutlich schnellere Modellbildung, ohne die für die Hardwaredimensionierung und PID-Grundauslegung relevanten physikalischen Zusammenhänge wesentlich zu verfälschen.
+
+Um den Modellierungsaufwand anfangs überschaubar zu halten, starteten wir mit einem bewusst vereinfachten Modell. Zusätzliche Eigenschaften wie Reifendrift und Verformung, Luftwiderstand oder Sensorrauschen wurden erst in späteren Erweiterungen hinzugefügt, nachdem das Grundmodell funktionierte. Diese Erweiterungen werden in den kommenden Abschnitten beschrieben.
 
 \subsection{Neigungs-PID-Regler}
 \label{subsec:simulink_neigungs_pid}
+Um einen PID-Regelkreis in Simulink nachzubilden, begannen wir damit, den Neigungswinkel des Roboters als Rechengröße zu erfassen. Dies realisierten wir mittels eines Transform Sensor-Blocks, der zwischen dem World Frame und dem Ausgang des Brick Solid positioniert ist. Dieser Sensor lieferte die räumliche Orientierung des Roboters, die wir anschließend mit einem PS-Simulink Converter in numerische Werte umwandelten und in Grad umrechneten.
 
-Innerhalb des Simulink-Modells wurde ein Regelkreis nachgebildet, der den simulierten Ist-Neigungswinkel des Pendels erfasst, die Differenz zu einem Sollwert von 0\,Grad bildet und diese Regelabweichung über einen PID-Block in eine entsprechende Motorkraft umrechnet. Da die beiden Motoren im realen Aufbau spiegelbildlich zueinander orientiert sind, wurde im Modell zusätzlich ein Inverter für eine der beiden Motorachsen integriert, um eine korrekte, gegenläufige Kraftrichtung an beiden Rädern sicherzustellen.
+Um die Simulation performant zu halten und Abstürze durch zu hohe Rechenlast zu vermeiden, definierten wir eine feste Abtastrate für die Sensorabfrage. Der in Grad vorliegende Neigungswinkel wurde dann mit einem Comparer-Block gegen den Sollwert von 0 Grad verglichen. Die resultierende Regelabweichung wurde dann in einen PID-Regler Block geführt, dessen Ausgangsgröße das benötigte Drehmoment angiebt.
 
-Zur Analyse des Regelverhaltens wurden im Modell virtuelle Oszilloskope ergänzt, über die der Verlauf des Neigungswinkels, der Motorausgangsgröße sowie einer eventuellen Positionsdrift während der Simulation beobachtet werden konnten. Durch iteratives Anpassen der PID-Parameter innerhalb der Simulation konnten folgende Startwerte für den Neigungs-PID-Regler ermittelt werden:
+
+[Bild Simulinkaufbau]
+
+
+Da die beiden Motoren im realen Aufbau spiegelbildlich zueinander orientiert sind, invertierten wir das Signal für einen der beiden Räder mittels eines Skalier-Blocks (Faktor -1). Die Drehmomente wurden anschließend über Simulink-PS Converter zurück in physikalische Größen gewandelt und auf die Revolute Joints der beiden Reifen angewendet.
+
+
+Zur Analyse des Regelverhaltens integrierten wir virtuelle Oszilloskope, über die wir den Verlauf des Neigungswinkels, der Motorausgangsgröße sowie einer eventuellen Positionsdrift während der Simulation beobachten konnten. Durch iteratives Anpassen der PID-Parameter innerhalb der Simulation ermittelten wir folgende Startwerte für den Neigungs-PID-Regler [1]:
+
+
+[Bild NeigungsOszi]
+
+
+Die in der Simulation gewonnenen Werte dienten später als Ausgangsbasis für das reale PID-Tuning (vgl. Kapitel~7.5.3), mussten dort jedoch stark an die tatsächlichen physikalischen Eigenschaften des Systems angepasst werden.
+Die deutliche Abweichung zu den final verwendeten PID-Werten lässt sich neben Faktoren wie Reibung, tatsächlichem Schwerpunkt und Trägheit der Elektronik vor allem dadurch erklären, dass der PID-Regler in Simulink direkt ein Drehmoment in Nm liefert, während wir im realen System die Motoren über ihre Drehgeschwindigkeit in RPM ansteuern.
+
 
 \begin{table}[h]
     \centering
@@ -353,42 +423,99 @@ Zur Analyse des Regelverhaltens wurden im Modell virtuelle Oszilloskope ergänzt
     \end{tabular}
 \end{table}
 
-Diese in der Simulation gewonnenen Werte dienten in der späteren Hardware-Inbetriebnahme als Ausgangsbasis für das reale PID-Tuning (vgl. Kapitel~7.5.3) und mussten dort noch an die tatsächlichen mechanischen und elektrischen Eigenschaften des realen Systems angepasst werden.
 
-\subsection{Erkenntnisse zur Hardware-Dimensionierung}
+\subsection{Erste Erkenntnisse aus der Simulation}
 \label{subsec:simulink_dimensionierung}
 
-Ein zentraler Nutzen des Simulink-Modells lag darin, bereits vor der eigentlichen Hardwarebestellung fundierte Aussagen über die erforderliche Dimensionierung einzelner Komponenten treffen zu können. Aus der Simulation ging zunächst hervor, dass ein Systemschwerpunkt, der möglichst weit oben am Chassis liegt, die Regelbarkeit des invertierten Pendels begünstigt, da ein längeres Pendel bei gleicher Winkelgeschwindigkeit langsamer kippt und dem Regler dadurch mehr Reaktionszeit zur Verfügung steht.
+Ein zentraler Nutzen des Simulink-Modells lag darin, bereits vor der Hardwarebestellung kritische Designentscheidungen treffen zu können. Wir wollten insbesondere klären, ob die von uns ausgewählten Motoren ausreichend Drehmoment liefern, welche Reifengröße sich am besten eignet, wo der Schwerpunkt des Roboters liegen sollte und ob ein PID-Regler für die Stabilisierung grundsätzlich geeignet ist.
 
-Bezüglich der Raddimensionierung wurden im Modell drei unterschiedliche Raddurchmesser simulativ untersucht: 8\,cm, 10\,cm sowie 6,5\,cm. Die Varianten mit 8\,cm und 10\,cm Durchmesser wurden im Rahmen der Simulation verworfen, da sie im Vergleich zur kleineren Variante ein ungünstigeres Verhältnis von Trägheitsmoment zu erforderlicher Regelgeschwindigkeit aufwiesen und damit tendenziell zu einer schwerer beherrschbaren Regelstrecke führten. Auf Basis dieser Ergebnisse wurde ein Raddurchmesser von 6,5\,cm als optimaler Kompromiss zwischen Trägheitsmoment, Bodenkontakt und Regelbarkeit festgelegt.
+\textbf{Schwerpunktlage:} Aus der Simulation ging hervor, dass ein möglichst hoch liegender Schwerpunkt die Regelbarkeit des invertierten Pendels begünstigt, da ein längeres Pendel mit Gewicht am Rand sehr träge ist und deshalb langsamer kippt,was dem Regler mehr Reaktionszeit zum Gegensteuern gibt. Allerdings existiert hier auchein Trade-off. Ein höherer Schwerpunkt bedeutet auch einen längeren Hebelarm, wodurch die Motoren mehr Kraft aufbringen müssen, um den Roboter aufzurichten.
 
-Darüber hinaus konnte anhand der simulierten Lastanforderungen verifiziert werden, dass ein Schrittmotor mit einem Nenndrehmoment von 0,55\,Nm für die vorgesehene Chassismasse ausreichend dimensioniert ist, um die geforderte Stoßtoleranz (F20) und Positionsgenauigkeit (F30) zu erfüllen. Damit ermöglichte die Simulation eine fundierte, auf physikalischen Kennwerten basierende Komponentenauswahl, noch bevor die entsprechende Hardware im Rahmen der Bestellliste (vgl. Kapitel~3.2) beschafft wurde.
+Wir legten uns daher darauf fest, den Schwerpunkt zumindestens oberhalb der Hälfte der Gesamthöhe zu positionieren. Da die schweren Steppermotoren im realen Aufbau den Schwerpunkt ohnehin nach unten ziehen, platzierten wir die Batterie später bewusst an der höchsten Stelle des Chassis.
+
+\textbf{Reifengröße:} Aus alten Projekten hatten wir zwei verschiedene Reifengrößen. Eine kleinere Variante mit 6,5~cm Durchmesser und eine größere mit 10~cm. Für beide Konfigurationen passten wir die PID-Parameter an, um einen fairen Vergleich zu gewährleisten. Die kleinere Variante erwies sich bei den Tests (vgl. Kapitel~\ref{subsec:simulink_stoergroessen}) als die bessere Wahl, auch wenn der Unterschied nicht gravierend war. Wir entschieden uns daher für die kleineren Räder mit dem 6,5~cm Durchmesser.
+
+\textbf{Motordimensionierung:} Durch die Simulation konnten wir sicherstellen, dass die NEMA 17 Schrittmotoren mit einem Nenndrehmoment von 0,55~Nm für die geplante Masse des Systems ausreichend sind, um die geforderte Stoßtoleranz (F20) und Positionsgenauigkeit (F30) zu erfüllen.
+
+Insgesamt bestätigte die Simulation, dass unsere gewählte Hardware-Konfiguration grundsätzlich funktionieren würde und dass ein PID-basierter Ansatz zur Stabilisierung des Roboters geeignet ist. Die Simulation ermöglichte damit eine fundierte Komponentenauswahl, bevor wir in die kostenintensive Beschaffungsphase eintraten.
 
 \section{Erweiterte Simulink-Modellierung}
 \label{sec:simulink_erweitert}
 
 Nach Fertigstellung des Grundmodells wurde die Simulation in mehreren Schritten um zusätzliche, realitätsnähere Effekte erweitert, um die Aussagekraft der gewonnenen Erkenntnisse für den späteren realen Betrieb weiter zu erhöhen.
 
-\subsection{Luftwiderstand und Rauschen}
+\subsection{Störfaktoren: Luftwiderstand und Rauschen}
 \label{subsec:simulink_rauschen}
 
-In einem ersten Erweiterungsschritt wurde das Grundmodell um einen aerodynamischen Luftwiderstandsterm ergänzt, um die im realen Betrieb auftretenden Reibungseffekte genauer abzubilden. Zusätzlich wurde ein realistisches Rauschsignal in die simulierten Messwerte der Inertialmesseinheit eingespeist, um das Modell an die tatsächlich zu erwartende Signalqualität einer realen MPU6050 anzunähern.
+In einem ersten Erweiterungsschritt ergänzten wir das Grundmodell um zwei wesentliche Störgrößen, 
+um die Simulation realitätsnäher zu machen.
 
-Auf Basis dieser Erweiterung wurde untersucht, wie sich das eingespeiste Sensorrauschen auf den PID-Ausgang und die Gesamtstabilität der Regelung auswirkt. Dabei zeigte sich bereits in der Simulation, dass eine zusätzliche Filterung der Rohmesswerte notwendig ist, um ein durch das Rauschen verursachtes, unruhiges Regelverhalten zu vermeiden. Diese frühe Erkenntnis führte in der späteren Software-Implementierung direkt zur Einführung eines Median-Filters zur Glättung der Neigungswerte (vgl. Kapitel~7.5.4).
+Zum einen implementierten wir Luftwiderstand indem wir die aktuelle Geschwindigkeit quadrierten
+und mit dem Faktor -0,00625 multipliziert. Der Faktor ergab sich aus einer groben Abschätzung 
+der Form und das negative Vorzeichen ist dafür da den Widerstand als entgegengesetzte Kraft zu 
+implementieren. Den berechneten Wert lassen wir dann überen einen ExternalForce Block
+direkt auf den Brick Solid Körper des Roboters wirken.
 
-\subsection{Anstoßen und Störgrößen}
+
+Zumdem überlagerten wir den simulierten 
+Neigungswinkel mit einem Rauschsignal, das wir als normalverteilte 
+Zufallsgröße mit einem Erwartungswert von 0,05~Grad modellierten. Diesen Erwartungswert
+haben wir so aus dem Datenblatt der MPU-6050 übernommen.
+
+
+Der Einfluss des Luftwiderstands auf das Regelverhalten erwies sich als sehr gering und hatte kaum messbare Auswirkungen auf die Stabilität. Das Sensorrauschen hingegen führte zu einer spürbaren Instabilität des Roboters. Der Regler kam nie vollständig zur Ruhe, 
+sondern korrigierte permanent leichte Abweichungen vom Sollwert um die eingestellten 0,05~Grad, weshalb wir uns zunächst am echten System für einen
+Medianfilter der letzten 3 Sensorwerte entschieden.
+
+\subsection{Testen der Stabilität}
 \label{subsec:simulink_stoergroessen}
 
-Um die Robustheit der Regelung gegenüber externen Störeinflüssen zu überprüfen (vgl. F20, Kapitel~2.1.1), wurden im Modell gezielte, von außen einwirkende Kraftstöße mithilfe eines Pulse-Generator-Blocks sowie eines zusätzlichen External-Force-Blocks nachgebildet. Anhand dieser Störgrößen-Simulation wurde ermittelt, bis zu welcher Stoßintensität die simulierte Regelung ein Umkippen des Systems noch zuverlässig verhindern konnte.
+Um die Robustheit unserer PID-Regelung zu überprüfen und geeignete Regelparameter zu finden, 
+testeten wir das Simulink-Modell unter zwei verschiedenen Störszenarien. 
+Zum einen ließen wir den Roboter mit einer definierten Anfangsneigung starten, 
+indem wir über einen Transform-Block eine initiale Schieflage von bis zu 
+15 bis 20~Grad erzeugten, die der Regler beim Simulationsstart ausgleichen musste. 
+Zum anderen simulierten wir externe Kraftstöße während des Betriebs, 
+indem wir über einen Pulse-Generator-Block und einen zusätzlichen 
+External-Force-Block gezielte Impulse von bis zu 5~Nm auf das System einwirkten. 
+Als Angrifspunkt dafür wählten wir den obersten Punkt des Roboters
 
-Im Zuge dieser Untersuchung wurde zudem die Stabilität der Regelung in Abhängigkeit von der gewählten Abtastrate betrachtet. Dabei wurde für die Simulation eine Abtastzeit von 0,1\,s, entsprechend einer Abtastrate von 10\,Hz, als grobe Schätzung angenommen, bei der die Regelung in der Simulation noch ein stabiles Verhalten zeigte. Diese Abschätzung diente ausschließlich der internen Plausibilisierung des Simulationsmodells und wurde nicht als unmittelbare Vorgabe für die reale Systemauslegung übernommen; die tatsächlich am realen System eingesetzte Abtastrate von 100\,Hz (vgl. Kapitel~7.5.1) wurde unabhängig davon auf Basis der Anforderungen der realen Hardware festgelegt. Die im Rahmen dieser Störgrößenanalyse gewonnenen Erkenntnisse zur allgemeinen Robustheit der Kaskadenregelung flossen jedoch direkt in die anschließende Entwicklung der Positions-PID-Regelung ein.
+Beide Testszenarien dienten dazu, die Grenzen der Regelung zu testen, 
+ob die gewählten PID-Parameter in der Lage waren, den Roboter nach einer Störung 
+wieder aufzurichten.
+Durch iteratives Anpassen der Regelparameter gelang es uns, eine Konfiguration zu
+finden, mit der der Roboter sowohl die Anfangsneigung als auch die Kraftstöße 
+erfolgreich kompensieren konnte.
+
+Allerdings zeigte sich dabei das Problem, dass der Roboter, obwohl er
+nach einer Störung wieder schnell in die aufrechte Position zurückkehrte,
+nicht an seiner ursprünglichen Startposition stehen blieb, sondern an der Position 
+an der er nach dem Anstoßen seine angepeilten 0~Grad erreicht. 
+Diese Beobachtung machte deutlich, dass ein einzelner Neigungs-PID-Regler zwar die Orientierung 
+stabilisieren kann, jedoch keine Kontrolle über die absolute Position 
+des Roboters bietet. Dies führte uns zur Entwicklung 
+einer kaskadierten Regelstruktur mit einem zusätzlichen Positions-PID-Regler.
 
 \subsection{Positions-PID-Entwicklung}
 \label{subsec:simulink_positions_pid}
 
-Im weiteren Verlauf der Simulation zeigte sich, dass ein alleiniger Neigungs-PID-Regler zwar in der Lage ist, den Roboter stabil in der aufrechten Position zu halten, dabei jedoch zu einer kontinuierlichen, unkontrollierten Positionsdrift der Räder führt. Da die Erfüllung der Anforderung F30 (maximale Positionsabweichung von $\pm$20\,cm in 60\,s, vgl. Kapitel~2.1.1) eine begrenzte Positionsabweichung voraussetzt, wurde das Regelkonzept um einen zweiten, äußeren Positions-PID-Regler erweitert.
+Da wir festgestellt hatten, dass der Roboter trotz erfolgreicher Stabilisierung kontinuierlich von seiner 
+Startposition wegdriftete, erweiterten wir das Regelkonzept um einen kaskadierten Positions-PID-Regler.
+Die zentrale Idee dieser Kaskadenregelung besteht darin, dass der äußere Positions-PID-Regler den 
+Sollwert für den inneren Neigungs-PID-Regler vorgibt, anstatt diesen fest auf 0~Grad zu setzen.
 
-Diese Erweiterung wurde als Kaskadenregelung umgesetzt, bei der der äußere Positions-PID-Regler den Sollwert für den inneren Neigungs-PID-Regler vorgibt. Für den Positions-PID-Regler wurden in der Simulation folgende Parameter ermittelt:
+Die Positionsinformation gewannen wir aus den Revolute Joints der Räder, die einen Zähler für die 
+zurückgelegten Rotationen lieferten. Dieser Wert wurde dem Positions-PID-Regler als Ist-Position
+zugeführt, dessen Ausgabe dann als Soll-Neigungswinkel an den Neigungs-PID-Regler weitergegeben wurde. 
+Das Prinzip lässt sich anschaulich beschreiben: Fährt der Roboter beispielsweise nach links, 
+gibt der Positions-Regler einen Neigungswinkel nach rechts vor, sodass sich der Roboter dort hin lehnt 
+und dadurch wieder zur Startposition zurückkehrt. 
+Sobald die Zielposition erreicht ist, konvergiert der vorgegebene 
+Neigungswinkel wieder gegen 0~Grad und der Roboter bleibt auf der Stelle stehen.
+
+[Bild Neigungs-PID]
+
+Für den Positions-PID-Regler ermittelten wir in der Simulation folgende Parameter:
 
 \begin{table}[h]
     \centering
@@ -407,14 +534,31 @@ Diese Erweiterung wurde als Kaskadenregelung umgesetzt, bei der der äußere Pos
     \end{tabular}
 \end{table}
 
-Mit diesen Parametern konnte in der Simulation eine deutliche Reduktion der Positionsdrift gegenüber der alleinigen Neigungsregelung nachgewiesen werden. Auch diese Werte wurden anschließend als Startpunkt für das reale Hardware-Tuning der Positions-PID-Regelung übernommen (vgl. Kapitel~7.5.2).
-
+Mit dieser Konfiguration gelang es uns in der Simulation, 
+sowohl die kontinuierlichen Positionsdrift zu eliminieren und auch nach starken Kraftstößen 
+zuverlässig zur Startposition zurückzukehren. Diese Werte dienten später als Startpunkt für das reale 
+Hardwaretuning des Positions-PID-Reglers (vgl. Kapitel~\ref{subsec:positions_pid_integration}).
 \section{Übertragung der Erkenntnisse auf das reale System}
 \label{sec:simulink_transfer}
 
-Die im Rahmen der Simulation gewonnenen Erkenntnisse und Parameter bildeten die Grundlage für den Übergang von der reinen Modellbetrachtung zum realen Hardwareaufbau. Konkret wurden sowohl die für den Neigungs-PID-Regler als auch für den Positions-PID-Regler ermittelten Startwerte (Tabellen~\ref{tab:pid_neigung_sim} und~\ref{tab:pid_position_sim}) direkt in die Software-Implementierung auf dem ESP32 übernommen (vgl. Kapitel~7.5.1 und~7.5.2).
+Die Simulation lieferte uns fundierte Entscheidungsgrundlagen für die Hardwarebeschaffung, 
+insbesondere bezüglich Motordrehmoment, Reifengröße und Schwerpunktlage. Darüber hinaus half sie uns bei
+der Softwarearchitektur, indem sie die Notwendigkeit einer kaskadierten Regelstruktur aus Positions- 
+und Neigungs-PID frühzeitig aufzeigte. Die ermittelten PID-Parameter aus den Tabellen~\ref{tab:pid_neigung_sim} 
+und~\ref{tab:pid_position_sim} übernahmen wir als Startwerte in die tatsächliche Implementierung am ESP32
+(vgl. Kapitel~\ref{subsec:neigungs_pid_impl} und~\ref{subsec:positions_pid_integration}).
 
-Es zeigte sich im weiteren Projektverlauf jedoch deutlich, dass die aus der stark vereinfachten Simulation stammenden Parameter am realen System nicht unverändert übernommen werden konnten, sondern lediglich als sinnvoller Ausgangspunkt für ein systematisches, empirisches Nachjustieren dienten (vgl. Kapitel~7.5.3). Ursache hierfür waren unter anderem reale Effekte, die im vereinfachten Simulationsmodell nicht oder nur unzureichend abgebildet wurden, wie beispielsweise mechanisches Spiel in der Konstruktion, tatsächliches Sensorrauschen der verbauten MPU6050 unter Vibration (vgl. Kapitel~8.3.3) oder nichtlineare Effekte der TMC2209-Motortreiber im Microstepping-Betrieb (vgl. Kapitel~7.3.4). Dennoch erwies sich der modellbasierte Entwurf insgesamt als deutlicher Zeitvorteil, da grundlegende Fehlkonfigurationen von Hardware und Regelstruktur bereits im Vorfeld vermieden werden konnten und die reale Inbetriebnahme mit einer bereits grob funktionsfähigen Regelung begonnen werden konnte.
+Erwartungsgemäß mussten die Parameterwerte am realen System deutlich angepasst werden, da die Simulation 
+naturgemäß eine idealisierte Umgebung darstellt. Effekte wie mechanisches Spiel in der Konstruktion,
+Vibrationen der Schrittmotoren, Stromversorgungsschwankungen oder das tatsächliche Verhalten der 
+TMC2209-Treiber im Microstepping-Betrieb (vgl. Kapitel~\ref{subsec:tmc2209_integration}) lassen sich 
+in einem vereinfachten Simulink-Modell nicht vollständig abbilden. Die Werte aus der Simulation dienten uns daher
+als sinnvoller Ausgangspunkt für das anschließende praktische Tuning (vgl. Kapitel~\ref{subsec:pid_optimierung}).
+
+Insgesamt sparte uns die Vorab-Simulation erheblich Zeit. Wir konnten grundlegende Designfehler
+bereits vor der Hardwarebeschaffung vermeiden und mit einer funktionsfähigen 
+Regelstruktur in die Inbetriebnahme starten, anstatt bei Null anfangen zu müssen. 
+Der modellbasierte Ansatz erwies sich damit als wertvoller Baustein im weiteren Entwicklungsprozess.
 
 \chapter{Hardware-Entwicklung}
 \label{ch:hardware}
@@ -690,28 +834,76 @@ Der praktische Einsatz der Sensoren dient der Erkennung von Hindernissen vor und
 \section{PID-Regelung}
 \label{sec:pid_regelung}
 
-\subsection{Neigungs-PID-Implementierung}
-\label{subsec:neigungs_pid_impl}
+\subsection{Neigungs-PID-Regler}
+\label{subsec:neigung_pid_impl}
 
-Die Regelgröße des inneren Regelkreises ist der über die MPU6050 gemessene Ist-Neigungswinkel des Systems, während der Sollwert grundsätzlich 0\,Grad beträgt und über den PS4-Controller um einen zusätzlichen Offset verschoben werden kann (vgl. Kapitel~7.6.3). Die Berechnung des PID-Reglers erfolgt in diskreter Form im festen Regeltakt von 100\,Hz (10\,ms, vgl. Kapitel~7.4.1).
+Der Neigungs-PID-Regler bildet den inneren Regelkreis und ist für die eigentliche Balance des Roboters zuständig.
+Er liest im festen Regeltakt (alle 10-20\,ms) den aktuellen Neigungswinkel vom MPU6050 aus und berechnet 
+daraus, wie schnell sich die Motoren drehen sollen, um den Roboter aufrecht zu halten.
+Als Sollwert ist grundsätzlich 0\,Grad vorgegeben, 
+also vollkommen senkrecht. Über den PS4-Controller lässt sich dieser Sollwert um 
+einen kleinen Offset verschieben, sodass der Roboter kontrolliert vor- oder rückwärts fährt 
+(vgl. Kapitel~\ref{subsec:ps4_werteverarbeitung}).
 
-Um ein unkontrolliertes Aufsummieren des Integralanteils bei anhaltender Regelabweichung, beispielsweise während einer Sättigung der Stellgröße, zu verhindern, wurde eine Anti-Windup-Begrenzung des Integratoranteils implementiert. Als Startwerte für die Reglerparameter wurden zunächst die in der Simulink-Simulation ermittelten Werte übernommen (vgl. Kapitel~5.1.2), wobei zusätzlich zu berücksichtigen war, dass die Simulation den PID-Ausgang als Drehmoment in Newtonmeter modellierte, während die reale Motoransteuerung auf Basis einer Zieldrehzahl in Umdrehungen pro Minute erfolgt (vgl. Kapitel~7.3.1). Die hierfür notwendige Umrechnung zwischen den beiden physikalischen Größen wurde im Code umgesetzt, ist zum aktuellen Stand der Dokumentation jedoch noch nicht abschließend beschrieben. % TODO: Umrechnungsformel Nm -> RPM final ergänzen, sobald finalisiert
+Da die Simulation den PID-Ausgang als Drehmoment in Newtonmeter lieferte, wir die Motoren aber über eine 
+Zieldrehzahl in RPM ansteuern, mussten wir diese Größen ineinander umrechnen. Diese Umrechnung 
+haben wir im Code implementiert, sie wurde aber später weggelassen um dei Codestrucktur zu vereinfachen und 
+weil wir andere PID-Werte erhielten.
 
-Motorsteuerung und PID-Regler wurden gemäß der in Kapitel~7.2.3 beschriebenen modularen Architektur als separate Module ausgelagert, was die getrennte Weiterentwicklung und das spätere Tuning der Regelung erheblich vereinfachte.
-
+Als Startwerte für die PID-Parameter übernahmen wir die Werte aus der Simulation
+(vgl. Kapitel~\ref{subsec:simulink_neigungs_pid}). Im realen Betrieb mussten diese dann jedoch
+deutlich angepasst werden. 
+Motorsteuerung und PID-Regler wurden gemäß der modularen Code-Architektur als separate Module ausgelagert,
+was die getrennte Weiterentwicklung, Überschaubarkeit und das spätere Tuning der Regelung erheblich vereinfachte 
+(vgl. Kapitel~\ref{sec:code_architektur}).
 \subsection{Positions-PID-Integration}
 \label{subsec:positions_pid_integration}
 
-Wie bereits im Rahmen der Simulation festgestellt (vgl. Kapitel~5.2.3), führt ein alleiniger Neigungs-PID-Regler am realen System ebenfalls zu einer kontinuierlichen Positionsdrift des Roboters. Um dies zu verhindern, wurde die bereits simulativ entworfene Kaskadenregelung auf das reale System übertragen: Ein äußerer Positions-PID-Regler berechnet aus der aktuellen, über die akkumulierten Motorschritte ermittelten Position einen Sollneigungsoffset, welcher wiederum dem inneren Neigungs-PID-Regler als Sollwert vorgegeben wird.
+Wie bereits in der Simulation festgestellt (vgl. Kapitel~\ref{subsec:simulink_positions_pid}),
+führt ein alleiniger Neigungs-PID-Regler zu einer kontinuierlichen Positionsdrift des Roboters,
+oder der Roboter bleibt nach dem Ausgleichen eines Stoßes neben seiner Ausgangsposition stehen.
+Der Roboter muss sich zur Stabilisierung minimal neigen und fährt dadurch langsam in eine
+Richtung weg. Um dies zu verhindern, nutzen wir einen äußeren PID-Regler, der mit der
+Position als Eingabe einen anzupeilenden Winkel bestimmt.
 
-Über denselben Mechanismus, mit dem der Positions-PID-Regler den Sollwert des Neigungs-PID-Reglers beeinflusst, manipuliert auch der PS4-Controller direkt den Sollwert des inneren Regelkreises, um eine kontrollierte Fahr- und Lenkbewegung zu ermöglichen (vgl. Kapitel~7.6.3). Auch für den Positions-PID-Regler wurden zunächst die aus der Simulation stammenden Startwerte übernommen (vgl. Kapitel~5.2.3) und im weiteren Verlauf empirisch nachjustiert (vgl. Kapitel~7.5.3).
+Dieser Positions-PID-Regler ermittelt die aktuelle Position des
+Roboters über die akkumulierten Motorschritte und berechnet daraus eine Sollneigung,
+die er dem inneren Neigungs-PID-Regler als Zielwert vorgibt. Weicht der Roboter beispielsweise
+nach vorne ab, gibt der Positions-Regler vor, dass sich der Roboter leicht nach
+hinten neigen soll. Dadurch fährt der Roboter zur Ausgangsposition zurück, ohne
+dabei das Gleichgewicht zu verlieren.
+
+Über genau denselben Mechanismus funktioniert auch die Fahrtsteuerung per
+PS4-Controller: Der Joystick verschiebt den Sollwert des Neigungs-Reglers, sodass der
+Roboter gezielt vor- oder rückwärts fährt (vgl. Kapitel~\ref{subsec:ps4_werteverarbeitung}).
+Während wir mit dem PS4-Controller fahren, ist der Positions-PID deaktiviert,
+da sich beide Regler sonst gegenseitig behindern würden. Auch
+für den Positions-PID-Regler übernahmen wir zunächst die aus der Simulation stammenden
+Startwerte (vgl. Kapitel~\ref{subsec:simulink_positions_pid}) und justierten diese
+im realen Betrieb empirisch nach (vgl. Kapitel~\ref{subsec:pid_optimierung}). Außerdem muss
+nach der Fahrt mit dem PS4-Controller der Schrittezähler zurückgesetzt werden, damit der Roboter
+dann an der neuen Position stehen bleibt.
 
 \subsection{Systematische PID-Optimierung}
 \label{subsec:pid_optimierung}
 
-Das Nachjustieren der PID-Parameter am realen System erfolgte nach einem systematischen, iterativen Vorgehen: Zunächst wurde der proportionale Anteil ($K_p$) schrittweise erhöht, bis der Regelkreis eine erkennbare Oszillation um die Sollposition zeigte. Anschließend wurde der differentielle Anteil ($K_d$) gezielt eingesetzt, um dieses Überschwingen zu dämpfen, bevor abschließend der integrale Anteil ($K_i$) angepasst wurde, um eine verbleibende, stationäre Regelabweichung zu eliminieren.
+Das Nachjustieren der PID-Parameter am realen System erfolgte nach einem systematischen Vorgehen. 
+Zunächst erhöhten wir den P-Anteil ($K_p$) in großen Schritten, bis der Roboter erkennbar um die 
+Sollposition zu schwingen begann. Anschließend setzten wir den D-Anteil ($K_d$) gezielt ein,
+um dieses Überschwingen zu dämpfen. Den I-Anteil ($K_i$) liesen wir bewusst auf 0 und führten 
+ihn erst sehr spät in der Entwicklung ein.
 
-Sämtliche im Rahmen dieses Tuning-Prozesses vorgenommenen Parameteränderungen sowie deren beobachtete Auswirkungen wurden von Felix Dauerer systematisch in einer Excel-Tabelle dokumentiert. Eine wichtige Erkenntnis aus diesem Prozess war, dass ein beobachtetes Ruckeln der Motoren bei niedrigen Drehzahlen nicht ausschließlich durch die PID-Parameter selbst, sondern maßgeblich durch eine Erhöhung der Mikroschritt-Auflösung des TMC2209-Treibers behoben werden konnte (vgl. Kapitel~7.3.4). Generell zeigte sich im Projektverlauf, dass Motorparameter wie die Referenzspannung (Vref), die gewählte Mikroschrittzahl sowie etwaige Beschleunigungsrampen einen erheblichen Einfluss auf das beobachtbare Regelverhalten hatten und bei der PID-Optimierung stets mitberücksichtigt werden mussten.
+Parameteränderungen und deren beobachtete Auswirkungen dokumentierten wir 
+systematisch in einer Excel-Tabelle. Eine wichtige Erkenntnis aus diesem Prozess war, dass ein 
+beobachtetes Ruckeln der Motoren bei niedrigen Drehzahlen nicht primär durch die 
+PID-Parameter selbst, sondern maßgeblich durch eine Erhöhung der Mikroschritt-Auflösung 
+des TMC2209-Treibers behoben werden konnte (vgl. Kapitel~\ref{subsec:tmc2209_integration}). Der 
+größte Ausleser für das Ruckeln waren jedoch elektronische Probleme mit unserer MPU 
+(vgl. Kapitel~\ref{subsec:galvanische_trennung})
+Generell zeigte sich im Projektverlauf, dass Motorparameter wie die Referenzspannung (Vref),
+oder gewählte Mikroschrittzahl einen erheblichen Einfluss
+auf das Regelverhalten hatten und quasi als weitere Parameter der PID-Optimierung
+mitberücksichtigt werden mussten.
 
 % [Tabelle einfügen: Finale PID-Werte für Neigungs- und Positions-PID-Regler nach realem Tuning]
 \begin{table}[h]
@@ -729,13 +921,25 @@ Sämtliche im Rahmen dieses Tuning-Prozesses vorgenommenen Parameteränderungen 
     \end{tabular}
 \end{table}
 
-\subsection{Median-Filter für Glättung}
+\subsection{Filter für Glättung}
 \label{subsec:median_filter}
 
-Da die von der MPU6050 gelieferten Rohmesswerte durch die im Betrieb auftretenden Motorvibrationen vereinzelte, kurzzeitige Ausreißer enthielten, wurde zur Glättung der Neigungswerte zunächst ein Median-Filter implementiert. Dieser wertete ein gleitendes Fenster von drei aufeinanderfolgenden Messwerten aus und gab jeweils deren Medianwert als geglätteten Neigungswert an den PID-Regler weiter. Gegenüber einem einfachen gleitenden Mittelwert bietet der Median-Filter den Vorteil, gegenüber einzelnen, starken Ausreißern deutlich robuster zu sein, da diese nicht direkt in die Mittelwertbildung eingehen.
+Die unbearbeiteten Messwerte des MPU6050 enthielten durch Vibrationen 
+und generelles Sensorrauschen gelegentlich
+kurze Ausreißer, die den PID-Regler unnötig beeinflussen könnten. Um diese zu minimieren, 
+implementierten wir zunächst einen Median-Filter. Dieser pufferte die letzten drei Messwerte 
+und gab jeweils den mittleren Wert davon an den Regler weiter. Der Vorteil
+dieses Filters gegenüber einem einfachen Durchschnitts liegt darin, dass ein einzelner 
+starker Ausreißer den Median kaum beeinflusst.
 
-Im weiteren Projektverlauf wurde der Median-Filter zugunsten eines gewichteten, exponentiell geglätteten Filteransatzes wieder verworfen: Der aktuelle Neigungswert wird seither zu 70\,\% aus dem aktuell gemessenen Wert und zu 30\,\% aus dem zuletzt verwendeten, bereits gefilterten Wert gebildet (gewichteter Mittelwert mit den Faktoren 0,7 beziehungsweise 0,3). Dieser Ansatz reduziert im Vergleich zum ursprünglichen Median-Filter die Latenz der Filterung, da nicht auf das vollständige Vorliegen eines Messfensters gewartet werden muss, und lieferte im praktischen Test ein für die Regelung besser geeignetes Glättungsverhalten. Der resultierende, geglättete Neigungswert dient weiterhin als Eingangsgröße für den in Kapitel~7.5.1 beschriebenen Neigungs-PID-Regler.
-
+Im weiteren Verlauf ersetzten wir den Median-Filter durch einen gewichteten Mittelwert. 
+Der neue Winkelwert setzt sich zu 70\,\% aus dem aktuellen Messwert und zu 30\,\% aus 
+dem zuletzt gefilterten Wert zusammen. Dieser Ansatz hat den Vorteil, das der vom Sensor 
+erhaltene Winkel geglättet wird was die Bewegung des Roboters deutlich flüssiger machte. 
+In der Praxis lieferte dieser gewichtete Mittelwert ein besseres 
+Regelverhalten, weshalb wir uns für diesen entschieden haben. Der resultierende geglättete
+Wert dient als Eingangsgröße für den in Kapitel~\ref{subsec:neigung_pid_impl} 
+beschriebenen Neigungs-PID-Regler.
 \section{PS4-Controller-Integration (geschrieben von Lorenz)}
 \label{sec:ps4_integration}
 

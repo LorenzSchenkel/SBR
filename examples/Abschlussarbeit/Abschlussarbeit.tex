@@ -273,7 +273,7 @@ N10 wurde durch den in Kapitel~5 beschriebenen Matlab/Simulink-Regelungsentwurf 
 
 Für die Durchführung des Projekts galten mehrere verbindliche Randbedingungen: Zum einen war ein Hardwarebudget von 100\,€ einzuhalten (vgl. N20), zum anderen sollten, soweit möglich, im Labor bereits vorhandene Komponenten wie Mikrocontroller, 3D-Drucker und Motoren primär verwendet werden. Diese Randbedingung erklärt unter anderem die in Kapitel~4.2.1 dargelegte Wahl des ESP32 als zentrale Steuereinheit, da dieser bereits aus einem vorherigen Projekt im Team vorhanden war.
 
-\chapter{Systemkonzept und Architektur}
+\chapter{Systemkonzept und Architektur (geschrieben von Felix)}
 \label{ch:systemkonzept}
 
 Dieses Kapitel beschreibt das grundlegende regelungstechnische Konzept des Self-Balancing Robots 
@@ -363,7 +363,7 @@ Als Regelungsverfahren zur Balancierung des invertierten Pendels wurde ein klass
 \label{subsec:motorwahl_designentscheidung}
 Dadurch, dass der Roboter möglichst gut balancieren soll, war es naheliegend, hochgenaue Motoren zu wählen, um präzise Ausgleichsbewegungen zu ermöglichen. Aus diesem Grund wurden bipolare Schrittmotoren gegenüber klassischen DC-Motoren bevorzugt. Die Wahl fiel auf Schrittmotoren, darüber hinaus bieten diese in Kombination mit den Treibern die Möglichkeit die Auflösung mithilfe von Mikroschritten (Microsteps) flexibel anzupassen. Zudem war keine zusätzliche Hardware wie ein externer Encoder nötig, welcher in der Konstruktion hätte berücksichtigt werden müssen. Die konkret eingesetzten Motoren vom Typ Pololu NEMA17 sowie deren Ansteuerung über die Motortreiber A4988 und TMC2209 werden in Kapitel~6.2.4 detailliert beschrieben.
 
-\chapter{Simulation und Modellierung}
+\chapter{Simulation und Modellierung (geschrieben von Felix)}
 \label{ch:simulation}
 
 Bevor die eigentliche Hardwarebeschaffung und der physische Aufbau des Roboters begannen, wollten wir einige Unklarheiten beseitigen, wie ob unsere MOteren stark genug sind, welche Reifengröße wir wählen sollten, wo wir den Schwerpunkt des Roboter legen sollten und ob ein PID Regler die richtige Wahl ist. Deshalb entschieden wir uns für eine Vorab-Simulation in Matlab/Simulink.
@@ -831,7 +831,7 @@ Zur Erfüllung der Kollisionsvermeidung wurden zwei Ultraschallsensoren vom Typ 
 Da der Sensor laut Datenblatt eine maximale Reichweite von etwa 400\,cm besitzt, muss das Signal im Grenzfall einen Hin- und Rückweg von insgesamt 800\,cm zurücklegen \cite{reicheltHCSR04_Datasheet}. Bei Berechnung mit der Schallgeschwindigkeit ergibt sich daraus eine maximale Laufzeit von ca. 25\,ms. Dieser Wert liegt weit unter dem 100 ms Abfrageintervall unseres Roboters, welches aber ausreichend ist.
 
 Der praktische Einsatz der Sensoren dient der Erkennung von Hindernissen vor und hinter dem Roboter sowie der Auslösung eines softwareseitigen Nothalts bei Unterschreitung eines definierten Mindestabstands. Zu beachten ist dabei der im Datenblatt angegebene Totbereich von unter 2\,cm, in dem keine zuverlässige Messung mehr möglich ist \cite{reicheltHCSR04_Datasheet}.
-\section{PID-Regelung}
+\section{PID-Regelung (geschrieben von Felix)}
 \label{sec:pid_regelung}
 
 \subsection{Neigungs-PID-Regler}

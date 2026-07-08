@@ -179,7 +179,7 @@ Diese Dokumentation besteht aus zehn Kapiteln, die den Ablauf des Projekts zeige
 
 
 
-\chapter{Anforderungsspezifikation}
+\chapter{Anforderungsspezifikation (geschrieben von Felix)}
 \label{ch:anforderungen}
 
 Dieses Kapitel dokumentiert die verbindlichen Anforderungen an das Self-Balancing-Robot-System. Die hier definierten Anforderungen bilden die Grundlage für Design, Implementierung und Test des Systems.
@@ -216,7 +216,7 @@ Tabelle~\ref{tab:funktionale_anforderungen} listet die zentralen funktionalen An
     \end{tabular}
 \end{table}
 
-Die Umsetzung und Verifikation dieser Anforderungen wird in den entsprechenden Fachkapiteln im Detail behandelt: F10 und F30 in Kapitel~7.5 (PID-Regelung) und Kapitel~9.2 (Balancierverhalten), F40 und F50 in Kapitel~7.6 (PS4-Controller-Integration) und Kapitel~9.3, F60 in Kapitel~7.4.3 (HC-SR04), F70 in Kapitel~6.3 (Energieversorgung) und Kapitel~9.4, sowie F80 in Kapitel~7.3.1 (Sicherheitsabschaltung) und Kapitel~9.4.
+Die Umsetzung und Verifikation dieser Anforderungen wird in den entsprechenden Fachkapiteln behandelt: F10 und F30 (vgl. Kapitel~\ref{sec:pid_regelung} und~\ref{sec:balancierverhalten}), F40 und F50 (vgl. Kapitel~\ref{sec:ps4_integration} und~\ref{sec:test_fahrsteuerung}), F60 (vgl. Kapitel~\ref{subsec:hcsr04}), F70 (vgl. Kapitel~\ref{sec:energieversorgung} und~\ref{sec:test_energieversorgung}) sowie F80 (vgl. Kapitel~\ref{subsec:motor_grundansteuerung} und~\ref{sec:test_notaus}).
 
 \section{Optionale Anforderungen}
 \label{sec:optionale_anforderungen}
@@ -242,7 +242,7 @@ Zusätzlich zu den verbindlichen funktionalen Anforderungen wurden optionale, er
     \end{tabular}
 \end{table}
 
-Angesichts des in Kapitel~10.1.2 beschriebenen, deutlich höheren als ursprünglich geplanten Zeitaufwands für die Kernfunktionalität des Systems konnten die optionalen Anforderungen K10 bis K40 im Rahmen dieses Projekts nicht mehr umgesetzt werden. Sie stellen jedoch sinnvolle Ansatzpunkte für eine mögliche Weiterentwicklung des Systems dar (vgl. Kapitel~10.3).
+Angesichts des deutlich höheren als ursprünglich geplanten Zeitaufwands für die Kernfunktionalität des Systems (vgl. Kapitel~\ref{subsec:lessons_zeitplanung}) konnten die optionalen Anforderungen K10 bis K40 nicht mehr umgesetzt werden. Sie stellen jedoch sinnvolle Ansatzpunkte für eine mögliche Weiterentwicklung dar.
 
 \section{Nicht-funktionale Anforderungen}
 \label{sec:nichtfunktionale_anforderungen}
@@ -266,12 +266,7 @@ Tabelle~\ref{tab:nichtfunktionale_anforderungen} fasst die definierten nicht-fun
     \end{tabular}
 \end{table}
 
-N10 wurde durch den in Kapitel~5 beschriebenen Matlab/Simulink-Regelungsentwurf umgesetzt. % TODO: Einhaltung von N20 (Budget) ggf. mit finaler Stückliste/Gesamtkosten belegen, sobald verfügbar.
-
-\section{Randbedingungen}
-\label{sec:randbedingungen}
-
-Für die Durchführung des Projekts galten mehrere verbindliche Randbedingungen: Zum einen war ein Hardwarebudget von 100\,€ einzuhalten (vgl. N20), zum anderen sollten, soweit möglich, im Labor bereits vorhandene Komponenten wie Mikrocontroller, 3D-Drucker und Motoren primär verwendet werden. Diese Randbedingung erklärt unter anderem die in Kapitel~4.2.1 dargelegte Wahl des ESP32 als zentrale Steuereinheit, da dieser bereits aus einem vorherigen Projekt im Team vorhanden war.
+N10 wurde durch den Matlab/Simulink-Regelungsentwurf umgesetzt, in dem wir das Systemverhalten vorab simuliert und gewisse Erkenntnisse daraus mitgenommen haben (vgl. Kapitel~\ref{ch:simulation}). % TODO: Einhaltung von N20 (Budget) ggf. mit finaler Stückliste/Gesamtkosten belegen, sobald verfügbar.
 
 \chapter{Systemkonzept und Architektur (geschrieben von Felix)}
 \label{ch:systemkonzept}

@@ -755,54 +755,90 @@ Um die Wartbarkeit und Übersichtlichkeit des Quellcodes zu verbessern, wurde ei
 
 Wichtige Konfigurationswerte wie Pin-Belegungen und PID-Parameter wurden in einer \texttt{config.h}-Datei als Defines zentral verwaltet. Dies ermöglicht es, beispielsweise für das PID-Tuning (vgl. Kapitel~\ref{sec:pid_regelung}) oder bei Anpassungen der Pin-Belegung, gezielt die relevanten Parameter zuzugreifen.
 
-\section{Motorsteuerung}
+\section{Motorsteuerung (geschrieben von Felix)}
 \label{sec:motorsteuerung}
 
 \subsection{Grundlegende Ansteuerung}
 \label{subsec:motor_grundansteuerung}
 
-Die Ansteuerung der beiden Schrittmotoren erfolgt über die STEP- und DIR-Pins des jeweiligen Motortreibers, welche direkt vom ESP32 angesteuert werden. Eine Ansteuerung über PWM oder eine klassische H-Brücke, wie sie bei DC-Motoren üblich wäre, ist bei Schrittmotoren nicht erforderlich (vgl. Kapitel~4.2.3). Die verwendeten GPIO-Pins für STEP und DIR beider Motoren sind fest in der zentralen \texttt{config.h}-Datei definiert (vgl. Kapitel~7.2.3), wodurch eine spätere Anpassung der Pin-Belegung ohne Suche im übrigen Code möglich ist.
+Die Nema 17 Schrittmotoren werden über zwei Pins angesteuert. Der DIR-Pin legt die Drehrichtung fest,
+und jeder Impuls auf dem STEP-Pin dreht den Motor 
+um einen von den gewählten Mikrosteps definierten Winkel 
+weiter (vgl. Kapitel~\ref{subsec:tmc2209_integration}). 
+Eine Ansteuerung über PWM oder eine
+H-Brücke wie bei DC-Motoren ist dabei nicht nötig.
+Die Pin-Belegung für STEP und DIR beider Motoren haben wir zentral in der
+\texttt{config.h} Datei festgelegt (vgl. Kapitel~\ref{subsec:modulare_struktur}).
 
-Die einzelnen Schrittimpulse werden, entsprechend dem in Kapitel~7.2.1 beschriebenen nicht-blockierenden Grundprinzip, über eine präzise Zeitsteuerung mittels \texttt{micros()} erzeugt, sodass die Motoransteuerung nicht durch \texttt{delay()}-Aufrufe blockiert wird. Der vom PID-Regler ausgegebene Wert, welcher physikalisch einem Drehmoment in Newtonmeter entspricht, wird dazu in eine Zieldrehzahl in Umdrehungen pro Minute (RPM) und anschließend in eine entsprechende Anzahl von Schrittimpulsen pro Zeiteinheit umgerechnet.
+Die Schrittimpulse erzeugen wir nicht mit \texttt{delay()}, sondern indem wir bei jedem
+Durchlauf des Motor-Tasks mit \texttt{micros()} prüfen, ob seit dem letzten Schritt
+bereits genug Zeit vergangen ist. Das benötigte Zeitintervall zwischen zwei Schritten
+wird dabei indirekt von der vorgegebenen Drehzahl durch den
+ PID-Regler vorgegeben, der in einem separaten Task läuft und das Intervall
+bei jeder Regelberechnung neu setzt. Auf diese Weise blockiert die Motoransteuerung
+den Rest des Programms nicht, und PID-Berechnung sowie Schrittausgabe können unabhängig
+voneinander in deren jeweiligen Task und Core laufen.
 
-Als zusätzliche Sicherheitsmaßnahme wurde eine automatische Abschaltung der Motoren implementiert, die bei Überschreiten eines Grenzneigungswinkels von 45\,Grad auslöst. Dieser Schwellenwert entspricht exakt der in Kapitel~2.1.1 definierten Anforderung F80 (Not-Aus bei Sturz) und stellt sicher, dass die Motoren im Falle eines nicht mehr regelbaren Kippens des Systems nicht unkontrolliert weiterlaufen. Die Implementierung dieser Sicherheitsabschaltung wurde von Felix Dauerer übernommen.
 
-\subsection{Problemlösung: Zwei Motoren am CNC-Shield}
+Die Frage, wie der PID-Ausgabewert in eine konkrete Motorgeschwindigkeit übersetzt wird,
+hat sich im Projektverlauf verändert. Die Simulation in
+ Simulink berechnete einem Drehmomentwert in
+Newtonmeter, unsere Schrittmotoren werden aber nicht über Drehmoment,
+sondern über ihre Drehzahl in RPM angesteuert. Deshalb haben wir anfangs eine lineare
+Umrechnung implementiert, die den maximalen Drehmomentwert der maximalen RPM-Zahl zuordnet und den 
+Rest dazwischen linear skaliert. Im weiteren Verlauf haben
+wir diese Zwischenschicht wieder entfernt und stattdessen direkt neue PID-Parameter
+genutzt, deren Ausgabe direkt als RPM-Steuerwert interpretiert werden kann
+(vgl. Kapitel~\ref{subsec:simulink_neigungs_pid} und~\ref{subsec:pid_optimierung}).
+
+Als Sicherheitsfunktion schalten die Motoren automatisch ab, sobald der Neigungswinkel 
+so groß wird, dass sich der Roboter nicht mehr aufrichten kann. Das entspricht der Anforderung F80
+(vgl. Kapitel~\ref{sec:funktionale_anforderungen}) und verhindert, dass die Motoren beim
+Umkippen des Roboters unkontrolliert weiterlaufen.
+
+\subsection{Defekter ESP32 und vertauschte Spulenanschlüsse}
 \label{subsec:motor_problem_cncshield}
 
 Bei der ersten Inbetriebnahme der Motoransteuerung über das CNC-Shield trat das Problem auf, dass von den beiden angeschlossenen Motoren zunächst durchgehend nur einer angesteuert wurde, während der zweite entweder stillstand oder ein hörbares Fiepen ohne tatsächliche Rotation zeigte. Zur Fehlersuche wurden zunächst sämtliche Versorgungsspannungen, Steckverbindungen und die Pin-Beschaltung des A4988-Treibers mittels Multimeter durchgemessen, ohne dass hierbei eine Auffälligkeit festgestellt werden konnte.
 
-Eine anschließende Messung der STEP- und DIR-Signale direkt am Ausgang des CNC-Shields mit dem Oszilloskop zeigte auf den ersten Blick ein korrektes Signal. Erst eine gezielte Spannungsmessung am LOW-Pegel-Ausgang des ESP32 offenbarte die eigentliche Ursache: Anstelle der erwarteten 0\,V wurden dort etwa 2,3\,V gemessen, also kein klar definierter digitaler Low-Pegel. Diese Fehlfunktion wurde auf einen elektrischen Defekt des ESP32-Boards zurückgeführt. Nach dem Austausch des Boards konnten am entsprechenden Pin die erwarteten, klar definierten Pegel von 0\,V beziehungsweise 3,3\,V verifiziert werden.
+Eine anschließende Messung der STEP- und DIR-Signale direkt am Ausgang des CNC-Shields mit dem Oszilloskop sah auf den ersten Blick korrekt aus. Als wir dann aber den Low-Pegel am ESP32-Ausgang direkt mit dem Multimeter gemessen haben, stellten wir fest, dass dort statt der erwarteten 0\,V etwa 2,3\,V anlagen, also kein sauber definierter Low-Pegel. Diese Fehlfunktion wurde auf einen elektrischen Defekt des ESP32-Boards zurückgeführt. Nach dem Austausch des Boards konnten am entsprechenden Pin die erwarteten, klar definierten Pegel von 0\,V beziehungsweise 3,3\,V gemessen werden.
 
-Nach dem ESP32-Austausch drehten sich zwar beide Motoren, jedoch zeigte sich ein weiteres Symptom: Die Motoren drehten sich unkontrolliert abwechselnd vorwärts und rückwärts, anstatt der vorgegebenen Bewegungsrichtung zu folgen. Mithilfe eines Durchgangsprüfers wurde daraufhin systematisch ermittelt, welche physischen Anschlusspins welcher Motorspule zugeordnet waren. Dabei stellte sich heraus, dass das mitgelieferte Verbindungskabel zwischen Treiber und Motor die Spulenanschlüsse (1A, 1B, 2A, 2B) in einer gegenüber der Pinbelegung des CNC-Shields vertauschten Reihenfolge führte. Nach dem Korrigieren der Kabelbelegung entsprechend der korrekten Spulenzuordnung funktionierte die Ansteuerung beider Motoren wie erwartet.
+Nach dem ESP32-Austausch drehten sich zwar beide Motoren, liefen aber nicht sauber an und ruckelten unkontrolliert vor und zurück. Da ein Motor aus einem Altprojekt, den wir zum Vergleich angeschlossen haben, sich korrekt drehte, konnten wir den Fehler auf hinter dem Treiberausgang eingrenzen und haben mit dem Durchgangsprüfer am Kabel und den Motoren die Spulenzugehörigkeit der einzelnen Anschlüsse (1A, 1B, 2A, 2B) ermittelt. Dabei zeigte sich, dass das mitgelieferte Verbindungskabel die Spulenanschlüsse gegenüber der Pinbelegung des CNC-Shields vertauscht führte. Nach dem Korrigieren der Kabelbelegung passend zur korrekten Spulenzuordnung liefen die beiden Motoren wie erwartet.
 
-\subsection{Problemlösung: Kurzschluss und Treiberwechsel}
+\subsection{Kurzschluss und Treiberwechsel}
 \label{subsec:motor_kurzschluss}
 
-Im weiteren Projektverlauf wurde versuchsweise ein 6S-LiPo-Akku mit einer Nennspannung von 22,2\,V an den A4988-Treiber angeschlossen. Da der A4988 für eine deutlich geringere maximale Versorgungsspannung ausgelegt ist, führte dies zu einer Spannungsspitze im Treiber und infolgedessen zu einem Kurzschluss. Der A4988-Treiber wurde hierbei irreversibel beschädigt; eine erneute Beschädigung des A4988 nach diesem Vorfall trat nicht mehr auf, da der Treiber bereits vollständig defekt war und im weiteren Verlauf durch das TMC2209-Modell ersetzt wurde. Zusätzlich zum Treiber erlitt einer der beiden NEMA17-Motoren durch den Kurzschluss einen irreparablen Wicklungsschaden, welcher im Rahmen der anschließenden Fehlersuche durch eine Widerstandsmessung der einzelnen Motorwicklungen mit dem Multimeter identifiziert wurde: Eine der Wicklungen zeigte hierbei einen deutlich abweichenden, nicht mehr den Spezifikationen entsprechenden Widerstandswert.
+Im weiteren Projektverlauf haben wir für den Betrieb ohne das Labornetzteil einen 6S-LiPo mit 22,2\,V Nennspannung angeschlossen. Der damals genutzte A4988 Treiber ist zwar grundsätzlich für Spannungen in diesem Bereich ausgelegt, wir hatten jedoch einen gebrauchten Treiber aus einem Altprojekt verwendet, der wahrscheinlich schon vorgeschädigt war. Der Treiber ist beim Anschließen des Akkus durchgebrannt und hat einen Kurzschluss verursacht.
 
-Die Fehlersuche zu diesem Vorfall erfolgte nach demselben systematischen Vorgehen wie bei den vorangegangenen Motorproblemen: Austausch des defekten Treibers, erneute Durchgangsprüfung sämtlicher Verbindungen sowie Kontrolle der Signale mittels Oszilloskop. Der beschädigte Motor musste ersetzt werden, und der mechanische Neuaufbau infolge dieses Vorfalls wurde nach entsprechender Schadensaufnahme von Felix Dauerer durchgeführt (vgl. Kapitel~6.1.1). Als direkte Konsequenz aus diesem Vorfall wurde für den weiteren Projektverlauf konsequent auf einen 4S-LiPo-Akku mit einer Nennspannung von 14,8\,V umgestellt und der Treibertyp von A4988 auf TMC2209 gewechselt (vgl. Kapitel~6.3.1).
+Nach dem Vorfall haben wir systematisch gemessen, was genau beschädigt wurde. Wir haben alle Leitungen
+ mit dem Durchgangsprüfer auf Kurzschlüsse geprüft, die Versorgungsspannungen nachgemessen und mit dem
+  Oszilloskop die Signale an den Treibern und Motoren kontrolliert. Ein Motor konnte sich nach dem Kurzschluss
+   nicht mehr drehten, was uns vermuten ließ, dass er zerstört wurde. Die anschließende Widerstandsmessung 
+  an den Motorwicklungen hat das bestätigt, da beide Wicklungen einen deutlich abweichenden Widerstandswert zeigten.
+   Da der Motor weder lief noch korrekte Messwerte zeigte, musste er ausgetauscht werden.
+
+Da wir ohnehin einen neuen Treiber einsetzen mussten, haben wir uns entschieden, auf den TMC2209 umzusteigen, der in mehreren Punkten besser zu unseren Anforderungen passt (vgl. Kapitel~\ref{subsec:tmc2209_integration}).
 
 \subsection{TMC2209-Integration und Tuning}
 \label{subsec:tmc2209_integration}
 
-Nach dem Wechsel auf TMC2209-Motortreiber zeigten sich gegenüber dem zuvor verwendeten A4988 mehrere Vorteile: Der sogenannte StealthChop-Modus ermöglicht einen deutlich leiseren Motorlauf, zudem lässt sich der tatsächlich fließende Motorstrom über ein Potentiometer präzise auf den benötigten Wert einstellen, und durch den Einsatz von Microstepping mit 8 Mikroschritten pro Vollschritt konnte ein spürbar ruhigerer, gleichmäßigerer Motorlauf bei niedrigen Drehzahlen erreicht werden.
+Nach dem Wechsel auf den TMC2209 zeigte sich schnell, dass der neue Treiber dem A4988 in einem entscheidenden Punkt überlegen ist. Er arbeitet standardmäßig mit 8 Mikroschritten pro Vollschritt, ohne dass wir dafür etwas konfigurieren mussten (vgl. Kapitel~\ref{subsec:motorwahl_treiber}). Gerade bei niedrigen Geschwindigkeiten war der Unterschied deutlich spürbar, die Motorbewegung wurde insgesamt ruhiger und gleichmäßiger.
 
-Zur Einstellung des maximal zulässigen Motorstroms über das Referenzspannungs-Potentiometer (VREF) des TMC2209 wurde folgende, für dieses Treibermodell gängige Näherungsformel verwendet:
+Den maximal zulässigen Motorstrom stellten wir über das Potentiometer der Treiber (VREF) ein. Für den TMC2209 haben wir folgende Formel verwendet.
 \begin{equation}
     V_{REF} = I_{RMS} \times 1{,}41
 \end{equation}
-Für den angestrebten effektiven Motorstrom von $I_{RMS} = 1{,}2$\,A ergibt sich damit ein einzustellender Referenzwert von
+Für unseren NEMA17 Motor wollten wir einen effektiven Motorstrom von $I_{RMS} = 1{,}2\,\text{A}$ einstellen. Daraus ergibt sich
 \begin{equation}
-    V_{REF} = 1{,}2\,\text{A} \times 1{,}41 \approx 1{,}7\,\text{V}.
+    V_{REF} = 1{,}2\,\text{A} \times 1{,}41 \approx 1{,}7\,\text{V}
 \end{equation}
-Das Potentiometer wurde entsprechend auf eine Referenzspannung von 1,7\,V eingestellt.
+Wir stellten das Potentiometer auf ca 1{,}6\,V ein und überprüften anschließend mit einer Wärmebildkamera, ob die Treiber nach längerem Betrieb auffällig warm wurden. Die Temperatur blieb im sicheren Bereich, also behielten wir diesen Wert bei.
 
-Im Zuge der weiteren Inbetriebnahme trat ein zusätzlicher Hardwaredefekt auf: Ein TMC2209-Treiber der Version v1.3 brannte durch, nachdem an dessen Motorausgang dauerhaft eine Spannung von 24\,V anlag, was auf eine fehlerhafte Konfiguration beziehungsweise Verkabelung zurückzuführen war. Der betroffene Treiber musste ausgetauscht werden.
+Der TMC2209 bietet zwei Betriebsmodi, StealthChop und SpreadCycle. Wir haben beide getestet und die Motorbewegung dabei beobachtet. Durch den Wechsel auf den neuen Treiber wurde die Bewegung der Motoren in beiden Modi deutlich flüssiger als mit dem A4988 zuvor.
 
-Ein weiteres, wiederkehrendes Problem bei der Verkabelung bestand darin, dass die Adern des Verbindungskabels zwischen Treiber und Motor erneut in vertauschter Reihenfolge angeschlossen waren, analog zu dem bereits in Kapitel~7.3.2 beschriebenen Fehlerbild beim A4988-Treiber. Zusätzlich wurde festgestellt, dass das verwendete CNC-Shield die für die UART-Kommunikation des TMC2209 benötigten Pins blockierte, wodurch ein Pinkonflikt zwischen Shield und Treiberkonfiguration entstand. Dieser Konflikt wurde zunächst durch eine Deaktivierung der UART-Schnittstelle per Jumper und den Betrieb im sogenannten Standalone-Modus umgangen; die grundsätzliche Problematik des CNC-Shields im Zusammenspiel mit der übrigen Elektronik wird im Rahmen der Systemintegration in Kapitel~8.1 weiter vertieft.
+Der TMC2209 besitzt eine UART-Schnittstelle, über die er per Software konfiguriert werden kann. Wir haben geprüft, ob die dafür benötigten Pins auf unserem CNC-Shield belegt oder blockiert sind, das war aber nicht der Fall (vgl. Kapitel~\ref{subsec:motor_problem_cncshield}). Da wir UART im finalen Aufbau nicht benötigen, betreiben wir den Treiber im Standalone-Modus. Die nicht genutzten Pins des TMC2209 haben wir aus Sicherheitsgründen abisoliert.
 
-Da der reine StealthChop-Modus zwar leise, jedoch für die Anforderungen des Systems in einigen Betriebspunkten zu schwach war, wurde ergänzend der SpreadCycle-Modus getestet, der ein höheres Drehmoment bei geringfügig höherer Lautstärke liefert. Sämtliche im Rahmen dieses Tunings vorgenommenen Anpassungen an Vref, Mikroschritt-Konfiguration und Betriebsmodus wurden von Felix Dauerer systematisch in einer Excel-Tabelle dokumentiert, wobei die jeweiligen Auswirkungen zusätzlich am Oszilloskop überprüft und die Treibertemperaturen mittels Wärmebildkamera kontrolliert wurden (vgl. Kapitel~8.2).
+Später im Projekt während der optimierung der SW und PID-Parameter brannte außerdem ein TMC2209-Treiber der Version v1.3 durch, nachdem an dessen Motorausgang dauerhaft 24\,V anlagen (vgl. Kapitel~\ref{subsec:motor_kurzschluss}). Das war auf eine fehlerhafte Verkabelung zurückzuführen und der Treiber musste ausgetauscht werden. Ein weiteres, wiederkehrendes Problem war, dass die Adern des Verbindungskabels zwischen Treiber und Motor erneut in falscher Reihenfolge angeschlossen waren, analog zu dem in Kapitel~7.3.2 beschriebenen Fehlerbild beim A4988.
 
 \section{Sensorintegration (Niklas)}
 \label{sec:sensorintegration}
@@ -996,17 +1032,24 @@ Der LoggerTask wurde, wie in Tabelle~\ref{tab:freertos_tasks} dargestellt, mit e
 \chapter{Integration und Systemtest}
 \label{ch:integration}
 
-\section{Zusammenführung der Teilsysteme}
+\section{Zusammenführung der Teilsysteme (Felix)}
 \label{sec:zusammenfuehrung}
 
-Nachdem die einzelnen Teilsysteme, Motoransteuerung, PID-Regelung, MPU6050-Sensorik, PS4-Controller-Anbindung sowie das Logger-System, jeweils für sich isoliert erfolgreich getestet worden waren (vgl. Kapitel~7), erfolgte die Integration zu einem Gesamtsystem in genau dieser Reihenfolge: Zunächst wurde die Motoransteuerung mit dem PID-Regler zusammengeführt, anschließend wurde die MPU6050 als Regelgröße für den PID-Regler eingebunden, danach folgte die Integration des PS4-Controllers zur Sollwertvorgabe, und abschließend wurde das Logger-System in das Gesamtsystem eingebettet.
+Bevor wir die Teilsysteme zusammengeführt haben, haben wir jedes einzeln getestet und sichergestellt, dass es für sich funktioniert. Da das Balancieren die Kernfunktion des Roboters ist, lag der Fokus beim Zusammenführen zunächst ausschließlich auf MPU6050 und Motoransteuerung. Wir haben in dieser Phase bewusst nur den Neigungs-PID-Regler verwendet und den äußeren Positionsregler bewusst weggelassen, um das System so einfach wie möglich zu halten. PS4-Controller und Ultraschallsensoren haben wir zwischendurch immer wieder kurz geprüft, um sicherzugehen dass sie grundsätzlich noch funktionieren, aber sie waren in dieser Phase nicht der Schwerpunkt.
 
-Wie bereits in Kapitel~6.3.2 beschrieben, funktionierten Motoransteuerung und Neigungserfassung bei isolierter Betrachtung jeweils einwandfrei, während erst deren Zusammenführung zu den zuvor beschriebenen Spannungsproblemen an der MPU6050 führte. Im Rahmen der Fehlersuche zu diesem Integrationsproblem wurde das eingesetzte CNC-Shield zwischenzeitlich als mögliche Fehlerursache vermutet, da dieses bereits an anderer Stelle im Projekt für Probleme verantwortlich gewesen war (vgl. Kapitel~7.3.4). Das Shield wurde daraufhin testweise gegen ein baugleiches Ersatzmodell ausgetauscht, wobei sich diese Vermutung jedoch nicht bestätigte: Das Problem der Spannungseinbrüche an der MPU6050 trat nach dem Austausch unverändert weiter auf, sodass das CNC-Shield als Fehlerursache ausgeschlossen werden konnte und die weitere Fehlersuche stattdessen gezielt auf die gemeinsame Spannungsversorgung fokussiert wurde (vgl. Kapitel~6.3.2).
+Motoransteuerung und Neigungserfassung liefen für sich jeweils problemlos, doch sobald wir beides zusammen betrieben, traten die in Kapitel~\ref{subsec:spannungseinbruch} beschriebenen Spannungseinbrüche an der MPU6050 auf. Die zugehörige Fehlersuche war aufwendig und führte uns über mehrere Zwischenschritte, bis wir die Ursache in der gemeinsamen Versorgung der Logik und Motoren identifiziert hatten. Die finale Lösung dazu beschreiben wir in Kapitel~\ref{subsec:galvanische_trennung}.
 
-\section{Fehlersuche-Methodik}
+Das Logger-System haben wir nicht von Anfang an geplannt, sondern erst eingeführt, als wir auf den FreeRTOS-Multicore-Ansatz gewechselt haben.
+ Um den Motorloop auf Core 0 nicht zu stören, wurde dieser zusammen mit dem Logiktask auf Core 1 gesetzt, damit er die zeitkritische Regelung nicht verzögert (vgl. Kapitel~\ref{subsec:freertos_multicore}).
+
+\section{Fehlersuche-Methodik (Felix)}
 \label{sec:fehlersuche_methodik}
 
-Über den gesamten Projektverlauf hinweg wurde bei auftretenden Hardwareproblemen konsequent nach einem einheitlichen, systematischen Vorgehen gearbeitet. Zur Verifikation von Spannungspegeln und zum Aufspüren von Kurzschlüssen oder unterbrochenen Leitungen kam durchgehend ein Multimeter zum Einsatz, während ein Oszilloskop zur Analyse von Signalverläufen, insbesondere der STEP/DIR-Signale sowie der Versorgungsspannung unter Last, genutzt wurde. Zur thermischen Überwachung der Motortreiber unter Volllast wurde eine Wärmebildkamera eingesetzt, und zur Verifikation der tatsächlichen Kapazitätswerte eingesetzter Kondensatoren wurde ein LCR-Messgerät verwendet (vgl. Kapitel~6.3.4). Sämtliche im Rahmen des PID- und Treiber-Tunings vorgenommenen Parameteränderungen wurden zusätzlich systematisch in Excel-Tabellen dokumentiert (vgl. Kapitel~7.3.4 und~7.5.3), um Zusammenhänge zwischen einzelnen Anpassungen und dem beobachteten Systemverhalten auch im Nachhinein nachvollziehen zu können.
+Über den gesamten Projektverlauf hinweg wurde bei auftretenden Hardwareproblemen konsequent nach einem einheitlichen, systematischen Vorgehen gearbeitet. Zur Verifikation von Spannungspegeln und zum Erkennen von Kurzschlüssen oder unterbrochenen Leitungen nutzten wir die Durchgangsprüfung. Wenn ein Problem damit nicht eindeutig einzugrenzen war, nutzen wir das Oszilloskop, um die Versorgungsspannungen unter Last genauer zu betrachten oder die Ausgangssignale der Treiber direkt zu messen. Das Labornetzteil haben wir dabei stets mitgeführt, um Spannung und Stromstärke im Betrieb im Blick zu behalten und sicherzustellen, dass beides mit unseren erwarteten Werten übereinstimmt.
+
+Ein weiterer fester Bestandteil unserer Fehlersuche waren einfache Testcodes, also Code Standpunkte die funktioniert haben, und den wir konstant einsatzbereit gehalten haben. Dieser enthielt zum Beispiel eine Motorrampe, die die Drehzahl gleichmäßig von 0 auf 200\,RPM beschleunigt, um Treiber und Motoren isoliert vom restlichen Projektcode zu testen. So konnten wir bei auftretenden Problemen schnell prüfen, ob ein Bauteil tatsächlich defekt war oder ob der Fehler nur im Zusammenspiel mit dem restlichen System oder wegen neuen Codeänderungen auftrat.
+
+Alle Parameteränderungen beim PID- und Treiber-Tuning haben wir zusätzlich in Excel-Tabellen festgehalten (vgl. Kapitel~\ref{subsec:tmc2209_integration} und~\ref{subsec:pid_optimierung}), damit wir im Nachhinein noch nachvollziehen konnten, welche Anpassung welchen Effekt hatte.
 
 \section{Hardware-Defekte im Überblick (Niklas)}
 \label{sec:hardware_defekte_ueberblick}

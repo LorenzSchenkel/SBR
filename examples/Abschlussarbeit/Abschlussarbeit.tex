@@ -1081,20 +1081,28 @@ Im Verlauf des Projekts traten mehrere teilweise unabhängige Hardwaredefekte au
     \end{tabular}
 \end{table}
 
-\chapter{Tests und Ergebnisse}
+\chapter{Tests und Ergebnisse (geschrieben von Felix)}
 \label{ch:tests}
 
 \section{Testmethodik}
 \label{sec:testmethodik}
 
-Zur Bewertung der Funktionsfähigkeit des Gesamtsystems wurden die in Kapitel~2.1.1 definierten funktionalen Anforderungen sowie die in Kapitel~2.2 definierten nicht-funktionalen Anforderungen als Grundlage für die durchzuführenden Testfälle herangezogen. Die im Folgenden dargestellten Ergebnisse basieren auf den bis zum aktuellen Zeitpunkt durchgeführten Tests; einzelne, noch offene Messungen werden im Rahmen der finalen Ergebnisvorführung am 09.\,Juli abgeschlossen und an entsprechender Stelle nachgetragen.
+Um die Funktionalität des Gesamtsystems zu bewerten, wurden die in Kapitel~\ref{sec:funktionale_anforderungen} definierten funktionalen Anforderungen als Grundlage genutzt und die Tests entsprechend darauf ausgelegt.
+
+Unsere Hauptanforderung war das selbstständige Balancieren des Roboters, weshalb die meisten Tests darauf aufbauten (vgl. Kapitel~\ref{sec:balancierverhalten}). Dabei haben wir bewertet, ob sich die Motoren gleichmäßig drehen, wie stabil der Roboter steht und wie kräftig die Motoren arbeiten. Außerdem haben wir überprüft, ob der Roboter bei einem Neigungswechsel die Drehrichtung der Motoren sofort umdreht, also ob die Regelung schnell genug eingreift, um ein Umkippen zu verhindern.
+
+Sobald der Roboter stabil balancieren konnte, haben wir Stoßtests durchgeführt (vgl. Kapitel~\ref{sec:balancierverhalten}). Sprich wir haben den Roboter leicht angestoßen und beobachtet, ob er umfällt, überschwingt oder selbstständig zurück in die Balance findet und an seiner Ausgangsposition bleibt. Zusätzlich haben wir die Fernsteuerung per PS4-Controller getestet (vgl. Kapitel~\ref{sec:test_fahrsteuerung}), also ob die Verbindung stabil ist und ob der Roboter die vorgegebene Neigung und damit die gewünschte Fahrtrichtung zuverlässig anpeilt.
 
 \section{Balancierverhalten}
 \label{sec:balancierverhalten}
 
-Der zentrale Testfall des Projekts, das eigenständige Balancieren des Roboters im Stillstand, wurde erfolgreich verifiziert. Der Roboter ist in der Lage, über einen Zeitraum von mehr als 60\,Sekunden durchgehend im Gleichgewicht zu bleiben, wobei die dabei auftretende Positionsabweichung von der ursprünglichen Ausgangsposition weniger als $\pm$20\,cm beträgt. Dieses Ergebnis bestätigt die grundsätzliche Funktionsfähigkeit sowohl des Neigungs- als auch des Positions-PID-Reglers im Zusammenspiel (vgl. Kapitel~7.5.1 und~7.5.2).
+Der Roboter konnte erfolgreich über mehr als 60\,Sekunden selbstständig balancieren, ohne dabei mehr als $\pm$20\,cm von der Ausgangsposition abzuweichen. Das zeigt, dass Neigungs- und Positions-PID-Regler zusammen wie erwartet funktionieren (vgl. Kapitel~\ref{subsec:neigung_pid_impl} und~\ref{subsec:positions_pid_integration}). Unsere beste aufgezeichnete Fahrt lief über 2\,Minuten mit einer Positionsabweichung von nur ca. 10--15\,cm.
 
-Der Roboter zeigt zudem die Fähigkeit, leichte, von außen einwirkende Störungen, etwa einen kurzen, moderaten Anstoß, auszugleichen und selbstständig in die Gleichgewichtslage zurückzukehren, ohne dass die Regelung dabei die Stabilität verliert. Dieses Verhalten unterstreicht die Wirksamkeit der implementierten Kaskadenregelung aus Neigungs- und Positions-PID (vgl. Kapitel~7.5.2) auch unter praxisnahen, nicht ideal ruhigen Umgebungsbedingungen.
+Auch leichte Stöße von außen konnte der Roboter ausgleichen und selbstständig zur Gleichgewichtslage zurückfinden, ohne dabei umzufallen oder stark zu überschwingen.
+
+
+Bei starken Auslenkungen, zum Beispiel durch einen kräftigen Stoß, fängt sich der Roboter jedoch nicht mehr selbstständig und fällt um. Starkes Beschleunigen und dann abruptes Stehenbleiben mit dem PS4-Controller konnte der Roboter auch nicht mehr ausgleichen (vgl. Kapitel~\ref{sec:offene_testfaelle}). Mit mehr Zeit hätte man die PID-Parameter noch weiter optimieren können, vor allem den I-Anteil beider Regler und die Aggressivität des Positions-PIDs, um die Positionshaltung zu verbessern und den Roboter stabiler gegen stärkere Störungen zu machen.
+
 
 \begin{table}[h]
     \centering
@@ -1115,46 +1123,34 @@ Der Roboter zeigt zudem die Fähigkeit, leichte, von außen einwirkende Störung
     \end{tabular}
 \end{table}
 
-Eine wesentliche, im Rahmen der Tests festgestellte Einschränkung besteht darin, dass sich der Roboter aus einer starken Auslenkung heraus, wie sie beispielsweise nach einem gezielten, kräftigen Anstoßen des Systems auftreten kann, nicht mehr selbstständig fängt beziehungsweise in die Balance zurückfindet. Diese Einschränkung wird in Kapitel~9.5 im Kontext der offenen Testfälle sowie in Kapitel~10 im Rahmen der Lessons Learned weiter eingeordnet.
-
 \section{Fahrsteuerung über PS4-Controller}
 \label{sec:test_fahrsteuerung}
 
-Die über den PS4-Controller realisierte Fahrsteuerung des Roboters (vgl. Kapitel~7.6.3) wurde erfolgreich getestet. Sowohl das Vorwärts- als auch das Rückwärtsfahren über die entsprechenden Joystick-Eingaben funktioniert wie beabsichtigt, wobei der sich die Sollwertmanipulation also guter Ansatz herausstellte. Damit wird die zugrundeliegende funktionale Anforderung an die Fernsteuerbarkeit des Systems erfüllt.
+Die Fahrsteuerung per PS4-Controller (vgl. Kapitel~\ref{subsec:ps4_werteverarbeitung}) hat funktioniert. Vorwärts- und Rückwärtsfahren über den Joystick lief wie erwartet, und 
+die Idee den Sollwert des Neigungsreglers zu manipulieren erwies sich dabei als der richtige Ansatz.
 
-Im Zusammenspiel mit dem in Kapitel~9.2 beschriebenen Balancierverhalten zeigte sich jedoch, dass die Fahrsteuerung insbesondere bei stärkeren Lenk- beziehungsweise Geschwindigkeitseingaben die grundsätzliche Fallanfälligkeit des Systems nicht kompensieren kann, sofern die dadurch resultierende Auslenkung den Bereich übersteigt, innerhalb dessen sich der Roboter selbstständig wieder fängt.
+Im Zusammenspiel mit dem Balancierverhalten (vgl. Kapitel~\ref{sec:balancierverhalten}) zeigte sich jedoch, dass der Übergang von der Fahrt in den Stillstand fehleranfällig ist. Bremst der Roboter abrupt, hat er durch die Fahrt noch zu viel Schwung und kann sich nicht mehr selbstständig fangen. Weshalb wir den maximalen Sollwinkel, den der PS4-Controller vorgeben darf, auf recht kleine Werte begrenzt haben.
 
-\section{Energieversorgung und Not-Aus}
-\label{sec:test_energie_notaus}
+\section{Not-Aus}
+\label{sec:test_notaus}
 
-Die in Kapitel~6.3.5 beschriebene, galvanisch getrennte Energieversorgung aus Leistungs- und Logikkreis wurde im praktischen Testbetrieb erfolgreich verifiziert. Der Roboter konnte während sämtlicher Testdurchläufe zuverlässig autark, ohne Kabelverbindung zu einem externen Netzteil, betrieben werden, womit die Anforderung F70 (autarker Batteriebetrieb, vgl. Kapitel~2.1.1) als erfüllt gilt.
+Die softwareseitige Sicherheitsabschaltung (vgl. Kapitel~\ref{subsec:motor_grundansteuerung}) hat wie erwartet funktioniert. Sobald der Neigungswinkel 45\,Grad überschreitet, schalten die Motoren zuverlässig ab und der Roboter bleibt liegen, ohne dass die Motoren unkontrolliert weiterdrehen. Damit ist Anforderung F80 (Not-Aus bei Sturz, vgl. Kapitel~\ref{sec:funktionale_anforderungen}) erfüllt.
 
-Ebenfalls erfolgreich getestet wurde die in Kapitel~7.3.1 beschriebene softwareseitige Sicherheitsabschaltung bei Überschreiten des Grenzneigungswinkels von 45\,Grad. Bei Erreichen beziehungsweise Überschreiten dieses Schwellenwerts schalten die Motoren zuverlässig ab, wodurch die Anforderung F80 (Not-Aus bei Sturz, vgl. Kapitel~2.1.1) als erfüllt bestätigt werden konnte.
+\section{Energieversorgung}
+\label{sec:test_energieversorgung}
 
-\begin{table}[h]
-    \centering
-    \caption{Ergebnisse der Tests zu Energieversorgung und Not-Aus}
-    \label{tab:test_energie_notaus}
-    \begin{tabular}{|l|c|l|}
-        \hline
-        \textbf{Anforderung} & \textbf{Ergebnis} & \textbf{Referenz} \\
-        \hline
-        F70 -- Autarker Batteriebetrieb & erfüllt & Kapitel~6.3.5 \\
-        \hline
-        F80 -- Not-Aus bei Sturz (45\textdegree) & erfüllt & Kapitel~7.3.1 \\
-        \hline
-    \end{tabular}
-\end{table}
+Die galvanisch getrennte Energieversorgung aus Leistungs- und Logikkreis (vgl. Kapitel~\ref{subsec:galvanische_trennung}) hat im Testbetrieb funktioniert. Der Roboter lief zuverlässig ohne externes Netzteil, womit Anforderung F70 (autarker Batteriebetrieb, vgl. Kapitel~\ref{sec:funktionale_anforderungen}) erfüllt ist. Durch die Trennung der beiden Kreise traten auch keine Spannungseinbrüche mehr an der Sensorik mehr auf, was den stabilen Betrieb während den anderen Testdurchläufen erst möglich gemacht hat.
 
 \section{Offene Testfälle}
 \label{sec:offene_testfaelle}
 
-Zum aktuellen Zeitpunkt der Dokumentation sind einzelne, für die vollständige Bewertung des Systems relevante Testfälle noch nicht abschließend durchgeführt beziehungsweise quantitativ erfasst worden. Dazu zählen insbesondere eine exakte Messung der maximal möglichen, autarken Batterielaufzeit über die geforderte Mindestdauer von 10\,Minuten hinaus (vgl. Anforderung F70, Kapitel~2.1.1), eine genaue quantitative Bestimmung des maximalen Auslenkungswinkels, aus dem sich der Roboter noch selbstständig fängt, sowie eine systematische Erfassung der Kollisionsvermeidung mittels der HC-SR04-Ultraschallsensoren (vgl. Kapitel~7.4.3) unter realen Testbedingungen. Diese offenen Messungen sollen im Rahmen der finalen Ergebnisvorführung am 09.\,Juli abgeschlossen und in der vorliegenden Dokumentation entsprechend ergänzt werden.
+Einige Tests konnten wir im Projektzeitraum nicht mehr vollständig durchführen. Durch die zahlreichen Hardwareprobleme und Fehlersuchen wurde der Großteil unserer Zeit für die Kernfunktionen Balancieren und Fahren gebraucht, sodass wir uns auf diese Hauptfunktionen konzentriert haben und weniger priorisierte Features zurückgestellt bzw. aufgeschoben wurden.
 
 % TODO: Nach Ergebnisvorführung (09.07.) final ergänzen:
 % - Exakte Batterielaufzeit
 % - Max. Auslenkungswinkel für selbstständiges Aufrichten
 % - Quantitative HC-SR04 Kollisionsvermeidungs-Tests
+Konkret fehlen noch: ein genauer Test der Batterielaufzeit über die geforderten 10\,Minuten hinaus, eine Messung des maximalen Auslenkungswinkels, aus dem sich der Roboter noch selbstständig fängt, sowie ein Test der Kollisionsvermeidung mit den Ultraschallsensoren unter realen Bedingungen.
 
 \chapter{Lessons Learned und Fazit}
 \label{ch:lessons_learned}

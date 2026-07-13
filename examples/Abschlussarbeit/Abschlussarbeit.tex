@@ -606,14 +606,14 @@ Um Fehler in diesem Spezifischen Entwicklungsboard auszuschließen wurde auf ein
 Um eine dauerhafte Lösung zu schaffen, wurde eine Lochrasterplatine genutzt, auf welcher der ESP32 sowie alle Leitungen fest verlötet wurden. Im Verlauf des Betriebs erlitt dieser ESP32 jedoch einen Defekt. Da angeschlossene Sensoren zwar nicht mit der 5,V-Spannungsversorgung verbunden waren, aber über die verbleibenden Signalpins angeschlossen blieben, zogen sie ihren Strom vermutlich über die GPIO-Pins. Dies führte zu einer Überschreitung der maximal zulässigen Ausgangsleistung des Mikrocontrollers. Um den aufwendigen Prozess des Entlötens bei einem erneuten Defekt zu vermeiden, wurde beim nachfolgenden Aufbau eine weibliche Buchsenleiste auf die Platine gelötet. Der ESP32 ist dadurch steckbar ausgeführt und kann bei Bedarf schnell und unkompliziert ausgetauscht werden. 
 
 
-\subsection{Sensorik (MPU6050, HC-SR04) (Niklas)TODO Datenblatt HCSR04 und MPU Hcsr04 Bild}
+\subsection{Sensorik (MPU6050, HC-SR04) (Niklas)TODO MPU Hcsr04 Bild}
 \label{subsec:sensorik_hardware}
 
 Für das Messen der Neigung des Roboters wurde das GY-521-Board mit dem MPU6050-Modul verwendet. Es besteht aus einem 3-Achsen-Gyroskop in Verbindung mit einem 3-Achsen-Beschleunigungssensor und ist über den I2C-Bus mit dem ESP32 verbunden (zur softwareseitigen Auswertung siehe Kapitel~\ref{sec:sensorintegration}). Der Sensor wurde bewusst auf der obersten Ebene des dreistöckigen Chassis montiert. Da die Auslenkungen dort oben am stärksten sind, liefert die MPU an dieser Position die deutlichsten Messwerte für die spätere Regelung \cite{az-deliveryGY521}.
 
 Während der Hardware-Tests kam es jedoch immer wieder zu Messausfällen und Problemen mit der Spannungsversorgung. Auf der Suche nach der genauen Fehlerquelle wurden nacheinander zwei verschiedene MPU-Module in Verbindung mit unterschiedlichsten Kondensator-Kombinationen ausprobiert. Dabei fielen auch, als mögliche Ursache, unzuverlässige Steckverbindungen auf. Um Wackelkontakte auszuschließen, wurden die Kabel letztendlich fest an die Kontakte der MPU gelötet (siehe Abbildung~\ref{fig:sensoren}).
 
-Zur Vermeidung von Kollisionen wurden zwei HC-SR04 Ultraschallsensoren integriert. Die Wahl fiel auf dieses Modell, da es bereits vorhanden war, leicht anzusteuern und für diesen Einsatzzweck präzise genug ist. Der HC-SR04 hat eine maximale Reichweite von etwa 400\,cm und eine theoretische Messgenauigkeit von bis zu 3\,mm. Da der Roboter in beide Richtungen fahren kann, wurde ein Sensor vorne und einer hinten angebracht. Sie arbeiten nach dem Trigger-Echo-Prinzip und berechnen den genauen Abstand zum Hindernis anhand der Laufzeit des ausgesendeten Ultraschallimpulses. 
+Zur Vermeidung von Kollisionen wurden zwei HC-SR04 Ultraschallsensoren integriert. Die Wahl fiel auf dieses Modell, da es bereits vorhanden war, leicht anzusteuern und für diesen Einsatzzweck präzise genug ist. Der HC-SR04 hat eine maximale Reichweite von etwa 400\,cm und eine theoretische Messgenauigkeit von bis zu 3\,mm. Da der Roboter in beide Richtungen fahren kann, wurde ein Sensor vorne und einer hinten angebracht. Sie arbeiten nach dem Trigger-Echo-Prinzip und berechnen den genauen Abstand zum Hindernis anhand der Laufzeit des ausgesendeten Ultraschallimpulses \cite{reicheltHCSR04_Datasheet}. 
 
 Alle Sensoren werden mit 5V Betriebsspannung betrieben \cite{az-deliveryGY521}, \cite{reicheltHCSR04_Datasheet}.
 
@@ -680,7 +680,7 @@ Um beim Einstecken des Akkus Funken zu verhindern und die Bedienung komfortabler
 
 Als Ersatz diente ein zweites Modell mit integrierter LED. Bei diesem Schalter brannte die LED direkt bei der ersten Inbetriebnahme durch, was auf einen für die Akkuspannung unterdimensionierten Vorwiderstand hindeutet. Der Schalter war danach ebenfalls nicht mehr funktionsfähig.
 
-Erst das dritte Modell, ein R13-28F (15 A bei 125 VAC bzw. 10 A bei 250 VAC), sorgte schließlich für eine zuverlässige Netztrennung. Warum genau das erste Modell versagte, lässt sich rückblickend nicht erklären. Zur Fehlerdiagnose wurde bei allen drei Modellen systematische Durchgangsprüfungen sowie Spannungsmessungen unter Last durchgeführt.
+Erst das dritte Modell, ein R13-28F (15 A bei 125 VAC bzw. 10 A bei 250 VAC), sorgte für eine zuverlässige Trennung. Warum genau das erste Modell versagte, lässt sich rückblickend nicht erklären. Zur Fehlerdiagnose wurden bei allen drei Modellen Durchgangsprüfungen sowie Spannungsmessungen unter Last durchgeführt.
 
 \section{Schaltplan (geschrieben von Lorenz)}
 \label{sec:schaltplan}
@@ -709,12 +709,12 @@ Bei den anschließenden beschreiben trat jedoch initial das Problem auf, dass de
 \section{Code-Architektur (Niklas)}
 \label{sec:code_architektur}
 
-\subsection{Nicht-blockierendes Design (Niklas) Todo Abtastintervall anpassen}
+\subsection{Nicht-blockierendes Design (Niklas)}
 \label{subsec:nicht_blockierend}
 
 Ein Hauptmerkmal der gesamten Softwarearchitektur ist der vollständige Verzicht auf die Funktion \texttt{delay()} in zeitkritischen Bereichen. Diese Regel wurde nicht von Beginn des Projekts an als feste Vorgabe festgelegt, sondern entwickelte sich im Projektverlauf aus einer Vermutung des Teams. Da der PID-Regelkreis inkl. der Motorsteuerung auf feste Intervalle angewiesen ist, wurde befürchtet, dass blockierende Wartezeiten durch \texttt{delay()}-Aufrufe innerhalb einzelner Programmteile zu unkontrollierten Verzögerungen im Regelkreis führen könnten. Deshalb wurde der Verzicht auf \texttt{delay()} im weiteren Projektverlauf als verbindliche Team-Regel eingeführt und konsequent in den wichtigsten Bereichen (z.B. Intervallberechnung der Schrittmotoransteuerung) umgesetzt.
 
-Anstelle von \texttt{delay()} findet die Zeitsteuerung im Code über einen Vergleich der Systemzeit mittels \texttt{millis()} beziehungsweise \texttt{micros()} statt, wodurch einzelne Programmteile innerhalb eines Tasks zeitgesteuert ausgeführt werden können, ohne die Ausführung anderer Aufgaben zu blockieren. Für den PID-Regler wurde auf diese Weise ein exaktes Abtastintervall von 10\,ms, entsprechend einer Regelfrequenz von 100\,Hz, realisiert, ohne dass parallel laufende Aufgaben wie Motoransteuerung, Sensorabfrage, PS4-Controller-Kommunikation oder Logging dadurch blockiert werden.
+Anstelle von \texttt{delay()} findet die Zeitsteuerung im Code über einen Vergleich der Systemzeit mittels \texttt{millis()} beziehungsweise \texttt{micros()} statt, wodurch einzelne Programmteile innerhalb eines Tasks zeitgesteuert ausgeführt werden können, ohne die Ausführung anderer Aufgaben zu blockieren. Für den PID-Regler wurde auf diese Weise ein genaues Abtastintervall von 25\,ms, realisiert, ohne dass parallel laufende Aufgaben wie Motoransteuerung, Sensorabfrage, PS4-Controller-Kommunikation oder Logging dadurch blockiert werden.
 
 \subsection{FreeRTOS Multicore-Ansatz (Niklas)}
 \label{subsec:freertos_multicore}
@@ -740,7 +740,7 @@ Tabelle~\ref{tab:freertos_tasks} zeigt die konkrete Task-Konfiguration des Syste
     \end{tabular}
 \end{table}
 
-Der \texttt{MotorUpdateTask} läuft dabei isoliert auf Core 1, da eine unterbrechungsfreie Ansteuerung der Motoren wichtig ist. Auf Core 0 laufen der \texttt{ControlTask}, welcher die eigentliche Regelungslogik inklusive PID-Berechnung, Sensorauswertung und Verarbeitung der PS4-Controller-Eingaben übernimmt, sowie der \texttt{LoggerTask} mit niedrigerer Priorität. Durch diese Priorisierung wird sichergestellt, dass der \texttt{LoggerTask} nur dann zur Ausführung kommt, wenn der \texttt{ControlTask} sich in einer Wartephase befindet, wodurch das Logging die zeitkritische Regelung nicht beeinflusst \cite{marwedel2021} (vgl. Kapitel~\ref{subsec:nonblocking_serial}). Die physische Trennung der Motoransteuerung auf einen eigenen Kern stellt zusätzlich sicher, dass selbst eine kurzfristige Verzögerung innerhalb des \texttt{ControlTask}, etwa durch einen I2C-Timeout (vgl. Kapitel~\ref{subsec:i2c_errorhandling}), keinen unmittelbaren Einfluss auf die laufende Motoransteuerung hat.
+Der \texttt{MotorUpdateTask} läuft dabei isoliert auf Core 1, da eine unterbrechungsfreie Ansteuerung der Motoren wichtig ist. Auf Core 0 laufen der \texttt{ControlTask}, welcher die eigentliche Regelungslogik inklusive PID-Berechnung, Sensorauswertung und Verarbeitung der PS4-Controller-Eingaben übernimmt, sowie der \texttt{LoggerTask} mit niedrigerer Priorität. Durch diese Priorisierung wird sichergestellt, dass der \texttt{LoggerTask} nur dann zur Ausführung kommt, wenn der \texttt{ControlTask} sich in einer Wartephase befindet, wodurch das Logging die zeitkritische Regelung nicht beeinflusst \cite{marwedel2021} (vgl. Kapitel~\ref{subsec:nonblocking_serial}). Die Trennung der Motoransteuerung auf einen eigenen Kern stellt zusätzlich sicher, dass selbst eine kurzfristige Verzögerung innerhalb des \texttt{ControlTask}, etwa durch einen I2C-Timeout (vgl. Kapitel~\ref{subsec:i2c_errorhandling}), keinen unmittelbaren Einfluss auf die laufende Motoransteuerung hat.
 
 
 \subsection{Modulare Code Struktur (Niklas)}
@@ -838,10 +838,10 @@ Später im Projekt während der optimierung der SW und PID-Parameter brannte au�
 \section{Sensorintegration (Niklas)}
 \label{sec:sensorintegration}
 
-\subsection{MPU6050 Neigungssensor (Niklas) Todo abtastrate und intervall anpassen}
+\subsection{MPU6050 Neigungssensor (Niklas)}
 \label{subsec:mpu6050_i2c}
 
-Die Kommunikation mit dem MPU6050 erfolgt über den I2C-Bus (SDA/SCL) mit der Standard-Adresse 0x68 \cite{az-deliveryGY521}. Die Sensordaten werden mit einer Abtastrate von 100\,Hz bzw. in einem Intervall von 10\,ms ausgelesen, also die Abtastrate des PID-Regelkreises.
+Die Kommunikation mit dem MPU6050 erfolgt über den I2C-Bus (SDA/SCL) mit der Standard-Adresse 0x68 \cite{az-deliveryGY521}. Die Sensordaten werden mit einer Abtastrate von 40\,Hz bzw. in einem Intervall von 25\,ms ausgelesen, also die Abtastrate des PID-Regelkreises.
 
 Die Rohdaten mussten zunächst in einen anschaulichen und für die Regelung nutzbaren Neigungswinkel in Grad umgerechnet werden. Bei der ersten Implementierung traten dabei fehlerhafte Ergebnisse auf, da die Messwerte der relevanten Achse durch die übrigen Achsen, sowie durch Beschleunigung beeinflusst wurden. Durch die Verwendung der Bibliothek \texttt{MPU6050\_light} und den Komplementärfilter, der die Werte des Gyroskops mit dem Beschleunigungssensor verrechnet, konnte das Problem behoben werden und zuverlässige Neigungswerte für die Balancierregelung zur Verfügung stehen \cite{rfetickMPU6050_light_library}.
 
@@ -850,7 +850,7 @@ Die Rohdaten mussten zunächst in einen anschaulichen und für die Regelung nutz
 
 Im praktischen Betrieb zeigte sich, dass die I2C-Kommunikation zwischen ESP32 und MPU6050 insbesondere während des Motorbetriebs sporadisch abbrach. Dadurch bekam der Regler kurzzeitig keine aktuellen Neigungswerte. Als Ursachen wurden neben den bereits beschriebenen Spannungsproblemen auch unzuverlässige Steckverbindungen identifiziert.
 
-Zur softwareseitigen Behandlung wurde eine Fehlerbehandlungsfunktion implementiert, die bei einem erkannten Abbruch die I2C-Verbindung trennt und direkt neu initialisiert. Zusätzlich wurde die eingestellte Timeout-Zeit für die Kommunikation zwischen MPU6050 und ESP erhöht. Ein Wert von 50\,ms war problematisch, während mit 100\,ms die Timeout-Fehler vollständig behoben werden konnten.
+Zur softwareseitigen Behandlung wurde eine Fehlerbehandlungsfunktion implementiert, die bei einem erkannten Abbruch die I2C-Verbindung trennt und direkt neu initialisiert. Da die Ursache aber weiterhin nicht bekannt war, wurde zusätzlich die eingestellte Timeout-Zeit für die Kommunikation zwischen MPU6050 und ESP erhöht. Die Erhöhung der Timeout-Zeit gibt dem Sensor mehr Zeit, auf eine I2C-Anfrage zu reagieren, sodass kurze Verzögerungen nicht mehr fälschlich als Kommunikationsabbruch erkannt werden. Ein Wert von 50\,ms war problematisch, während mit 100\,ms die Timeout-Fehler vollständig behoben werden konnten.
 
 Ergänzend dazu wurden auch die Löt- und Kabelverbindungen an der MPU mechanisch verbessert, um die Häufigkeit der Verbindungsabbrüche zusätzlich zu minimieren.
 
@@ -1059,19 +1059,19 @@ Im Verlauf des Projekts traten mehrere teilweise unabhängige Hardwaredefekte au
         \hline
         \textbf{Komponente} & \textbf{Symptom} & \textbf{Detailbeschreibung} \\
         \hline
-        ESP32 (1) & LOW-Pegel bei 2,3\,V statt 0\,V & Kapitel~7.3.2 \\
+        ESP32 (1) & LOW-Pegel bei 2,3\,V statt 0\,V & Abschnitt~\ref{subsec:motor_problem_cncshield} \\
         \hline
-        ESP32 (2) & Kein Flashen möglich & Kapitel~7.3.2 \\
+        ESP32 (2) & Kein Flashen möglich & Abschnitt~\ref{subsec:esp32_bespielbar} \\
         \hline
-        A4988-Treiber & Durchgebrannt durch 22,2\,V (6S-LiPo) & Kapitel~7.3.3 \\
+        A4988-Treiber & Durchgebrannt durch 22,2\,V (6S-LiPo) & Abschnitt~\ref{subsec:motor_kurzschluss} \\
         \hline
-        NEMA17-Motor & Wicklungsschaden durch Kurzschluss & Kapitel~7.3.3 \\
+        NEMA17-Motor & Wicklungsschaden durch Kurzschluss & Abschnitt~\ref{subsec:motor_kurzschluss} \\
         \hline
-        TMC2209-Treiber (v1.3) & Dauerhaft 24\,V am Motorausgang & Kapitel~7.3.4 \\
+        TMC2209-Treiber (v1.3) & Dauerhaft 24\,V am Motorausgang & Abschnitt~\ref{subsec:tmc2209_integration} \\
         \hline
-        Kippschalter (1., E-TEN1021) & keine Spannung am Ausgang & Kapitel~6.3.6 \\
+        Kippschalter (1. E-TEN1021) & keine Spannung am Ausgang & Abschnitt~\ref{subsec:kippschalter} \\
         \hline
-        Kippschalter (2., mit LED) & Durchgangsprüfung fehlerhaft & Kapitel~6.3.6 \\
+        Kippschalter (2. LED) & Durchgangsprüfung fehlerhaft & Abschnitt~\ref{subsec:kippschalter} \\
         \hline
     \end{tabular}
 \end{table}
@@ -1156,7 +1156,7 @@ Konkret fehlen noch: ein genauer Test der Batterielaufzeit über die geforderten
 \subsection{Umgang mit Messgeräten (Niklas)}
 \label{subsec:lessons_messtechnik}
 
-Eine der wichtigsten praktischen Erkenntnisse des Projekts war der Umgang mit elementaren Messgeräten wie Multimeter und Oszilloskop. Zu Projektbeginn war die Erfahrung im Team mit diesen Werkzeugen noch begrenzt, was insbesondere in den ersten Fehlersuchen, etwa bei der Diagnose des defekten ESP32-Boards (vgl. Kapitel~7.3.2), zunächst zu einem vergleichsweise hohen Zeitaufwand führte. Im Projektverlauf entwickelte sich der Einsatz der Messgeräte zu einem Bestandteil jeder Fehlersuche (vgl. Kapitel~8.2) und erwies sich rückblickend als eine der wertvollsten praktischen Fähigkeiten, die im Rahmen des Projekts erlernt wurden.
+Eine der wichtigsten praktischen Erkenntnisse des Projekts war der Umgang mit elementaren Messgeräten wie Multimeter und Oszilloskop. Zu Projektbeginn war die Erfahrung im Team mit diesen Werkzeugen noch begrenzt, was insbesondere in den ersten Fehlersuchen, etwa bei der Diagnose des defekten ESP32-Boards (vgl. ~\ref{subsec:spannungseinbruch}), zunächst zu einem vergleichsweise hohen Zeitaufwand führte. Im Projektverlauf entwickelte sich der Einsatz der Messgeräte zu einem Bestandteil jeder Fehlersuche (vgl. Kapitel~8.2) und erwies sich rückblickend als eine der wertvollsten praktischen Fähigkeiten, die im Rahmen des Projekts erlernt wurden.
 
 \subsection{Trennung von Logik- und Leistungsspannung (Niklas)}
 \label{subsec:lessons_spannungstrennung}

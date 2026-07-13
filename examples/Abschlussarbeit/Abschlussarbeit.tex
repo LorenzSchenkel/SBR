@@ -344,7 +344,8 @@ Dieses Kapitel begründet die zentralen technischen Entscheidungen, die im Vorfe
 
 \section{Mikrocontroller(geschrieben Lorenz)}
 \label{subsec:esp32_designentscheidung}
-Ausschlaggebend für die Wahl des Prozessors war das gute Preis-Leistungs-Verhältnis. Im weiteren Projektverlauf stellte es sich außerdem als großer Vorteil heraus, dass dieser über eine Dual-Core-Architektur verfügt. Durch die hohe Prozessortaktung eignet er sich ideal für die Echtzeitaufgaben. Die integrierte Bluetooth-Funktion war ein weiterer Pluspunkt, über den die Fernsteuerung implementiert wurde. Ein Nachteil war jedoch, dass das genutzte CNC-Shield für einen Arduino Uno ausgelegt war und sich nicht so einfach verbinden ließ.
+Ausschlaggebend für die Wahl des Prozessors war das gute Preis-Leistungs-Verhältnis und die Dual-Core-Architektur. Durch die hohe Prozessortaktung eignet er sich ideal für die Echtzeitaufgaben \cite{esp32_wroom_32_datasheet}. 
+Die integrierte Bluetooth-Funktion war ein weiterer Pluspunkt, über den die Fernsteuerung implementiert wurde. Ein Nachteil war jedoch, dass das genutzte CNC-Shield für einen Arduino Uno ausgelegt war und sich nicht so einfach verbinden ließ.
 
 
 \section{Regelungsverfahren: PID-Regelung (geschrieben Lorenz)}

@@ -719,7 +719,7 @@ Anstelle von \texttt{delay()} findet die Zeitsteuerung im Code über einen Vergl
 \subsection{FreeRTOS Multicore-Ansatz (Niklas)}
 \label{subsec:freertos_multicore}
 
-Um das echtzeitfähige Systemverhaltens umzusetzen wurde beide Kerne des ESP32 in Verbindung mit FReeRTOS verwendet. Anstatt alle Funktionalität in einer einzelnen Ausführungsschleife (Loop) zu bündeln, wurde die Anwendung in mehrere unabhängige FreeRTOS-Tasks aufgeteilt, die gezielt auf die beiden verfügbaren Prozessorkerne verteilt wurden.
+Um das echtzeitfähige Systemverhaltens umzusetzen wurde beide Kerne des ESP32 in Verbindung mit FReeRTOS verwendet. Anstatt alle Funktionalität in einer einzelnen Ausführungsschleife (Loop) zu bündeln, wurde die Anwendung in mehrere unabhängige FreeRTOS-Tasks aufgeteilt, die gezielt auf die beiden verfügbaren Prozessorkerne verteilt wurden \cite{freertos_ug}.
 
 Tabelle~\ref{tab:freertos_tasks} zeigt die konkrete Task-Konfiguration des Systems.
 
@@ -740,7 +740,7 @@ Tabelle~\ref{tab:freertos_tasks} zeigt die konkrete Task-Konfiguration des Syste
     \end{tabular}
 \end{table}
 
-Der \texttt{MotorUpdateTask} läuft dabei isoliert auf Core 1, da eine unterbrechungsfreie Ansteuerung der Motoren wichtig ist. Auf Core 0 laufen der \texttt{ControlTask}, welcher die eigentliche Regelungslogik inklusive PID-Berechnung, Sensorauswertung und Verarbeitung der PS4-Controller-Eingaben übernimmt, sowie der \texttt{LoggerTask} mit niedrigerer Priorität. Durch diese Priorisierung wird sichergestellt, dass der \texttt{LoggerTask} nur dann zur Ausführung kommt, wenn der \texttt{ControlTask} sich in einer Wartephase befindet, wodurch das Logging die zeitkritische Regelung nicht beeinflusst (vgl. Kapitel~\ref{subsec:nonblocking_serial}). Die physische Trennung der Motoransteuerung auf einen eigenen Kern stellt zusätzlich sicher, dass selbst eine kurzfristige Verzögerung innerhalb des \texttt{ControlTask}, etwa durch einen I2C-Timeout (vgl. Kapitel~\ref{subsec:i2c_errorhandling}), keinen unmittelbaren Einfluss auf die laufende Motoransteuerung hat.
+Der \texttt{MotorUpdateTask} läuft dabei isoliert auf Core 1, da eine unterbrechungsfreie Ansteuerung der Motoren wichtig ist. Auf Core 0 laufen der \texttt{ControlTask}, welcher die eigentliche Regelungslogik inklusive PID-Berechnung, Sensorauswertung und Verarbeitung der PS4-Controller-Eingaben übernimmt, sowie der \texttt{LoggerTask} mit niedrigerer Priorität. Durch diese Priorisierung wird sichergestellt, dass der \texttt{LoggerTask} nur dann zur Ausführung kommt, wenn der \texttt{ControlTask} sich in einer Wartephase befindet, wodurch das Logging die zeitkritische Regelung nicht beeinflusst \cite{marwedel2021} (vgl. Kapitel~\ref{subsec:nonblocking_serial}). Die physische Trennung der Motoransteuerung auf einen eigenen Kern stellt zusätzlich sicher, dass selbst eine kurzfristige Verzögerung innerhalb des \texttt{ControlTask}, etwa durch einen I2C-Timeout (vgl. Kapitel~\ref{subsec:i2c_errorhandling}), keinen unmittelbaren Einfluss auf die laufende Motoransteuerung hat.
 
 
 \subsection{Modulare Code Struktur (Niklas)}

@@ -23,6 +23,7 @@ DIV=15,BCOR=10mm, % Seitenlayout wie bei Koma-Script
 \usepackage{multirow}
 
 
+
 \usepackage[format=hang,
 font={footnotesize},
 labelfont={bf},
@@ -40,6 +41,7 @@ position=bottom]{caption}
 %\usepackage{lscape}						% Nützlich, falls querformatierte 	Seiten gewünscht sind
 %\usepackage{pdflscape}					% Zum exportieren der Landscapes in PDF-Dateien
 \usepackage{lipsum}						% Dummy-Text generieren
+\usepackage{url}
 
 \usepackage[headsepline]{scrlayer-scrpage}
 \pagestyle{scrheadings}
@@ -49,14 +51,12 @@ position=bottom]{caption}
 \documenttype{Projektdokumentation}
 \title{Self-Balancing Robot -- Projektstudium Technische Informatik}
 \author{Felix Dauerer, Lorenz Schenkel, Niklas Stiegler}
-\studentid{12345678}
-\department{Musterfakultät}
-\studyprogramme{Bachelor Musterstudiengang}
+\department{Informatik und Mathematik}
+\studyprogramme{Technische Informatik}
 \startingdate{1.\,November 2088}
 \closingdate{11.\,Dezember 2089}
-\firstadvisor{Prof. Dr. Paula Strikt}
-\secondadvisor{Prof. Dr. Petra Hart}
-\externaladvisor{Dr. Klara Endlos, ACME Inc.}
+\firstadvisor{Prof. Dr. Alexander Metzner}
+\secondadvisor{M. Sc. Matthias Altmann}
 
 %\externallogo[height=1.5cm]{firmenlogo}
 
@@ -1204,10 +1204,10 @@ Der eigentliche Wert des Projekts liegt jedoch nicht ausschließlich im funktion
 	\addcontentsline{toc}{chapter}{Literaturverzeichnis}
 
 	% Style für die Bibliothek festlegen
-  	\bibliographystyle{plain}
+  	\bibliographystyle{unsrturl}
 
   	% Einfügen des Literaturverzeichnisses in das Dokument
-	%\bibliography{Musterpfad/Zum/Literaturverzeichnis}
+	\bibliography{literatur}
 
 	\newpage
 
@@ -1244,7 +1244,7 @@ Der eigentliche Wert des Projekts liegt jedoch nicht ausschließlich im funktion
 	%\include{anhang}
 	\cleardoublepage
 	\thispagestyle{empty}
-	\makedeclaration
+	%\makedeclaration
 
 	\cleardoublepage
 

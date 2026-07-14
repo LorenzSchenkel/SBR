@@ -942,18 +942,17 @@ oder gewählte Mikroschrittzahl einen erheblichen Einfluss
 auf das Regelverhalten hatten und quasi als weitere Parameter der PID-Optimierung
 mitberücksichtigt werden mussten.
 
-% [Tabelle einfügen: Finale PID-Werte für Neigungs- und Positions-PID-Regler nach realem Tuning]
 \begin{table}[h]
     \centering
-    \caption{Finale PID-Parameter nach realem Tuning (Platzhalter)}
+    \caption{Finale PID-Parameter nach realem Tuning}
     \label{tab:pid_final}
-    \begin{tabular}{|l|c|c|c|}
+    \begin{tabular}{|l|c|c|c|c|}
         \hline
-        \textbf{Regler} & \textbf{$K_p$} & \textbf{$K_i$} & \textbf{$K_d$} \\
+        \textbf{Regler} & \textbf{$K_p$} & \textbf{$K_i$} & \textbf{$K_d$} & \textbf{Begrenzung} \\
         \hline
-        Neigungs-PID & [TODO] & [TODO] & [TODO] \\
+        Neigungs-PID & 39{,}5 & 0{,}001 & 0{,}7 & max. 206\,RPM \\
         \hline
-        Positions-PID & [TODO] & [TODO] & [TODO] \\
+        Positions-PID & 0{,}0027 & 0{,}0 & 0{,}00007 & max. Sollwinkel $\pm$0{,}4\,° \\
         \hline
     \end{tabular}
 \end{table}

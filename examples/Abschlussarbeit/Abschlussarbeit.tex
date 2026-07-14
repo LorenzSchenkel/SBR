@@ -107,28 +107,28 @@ position=bottom]{caption}
 
 
 \pagenumbering{arabic}
-\chapter{Einleitung}
+\chapter{Einleitung }
 \label{ch:einleitung}
 
-\section{Projektüberblick und Motivation (geschrieben Lorenz)}
+\section{Projektüberblick und Motivation (Schenkel, Stiegler, Dauerer)}
 \label{sec:projektueberblick}
 
 Im Rahmen des Kurses Projektstudium Technische Informatik wurde ein zweirädriger, selbstbalancierender Roboter entwickelt. Die Motivation dahinter sind die Echtzeitanforderungen an das System. So müssen Mechanik, Regelung und die dazugehörige Software ineinandergreifen und schnell genug dafür sorgen, dass der Neigungswinkel ausgeglichen wird. Ziel war es auch, praktische Erfahrungen im Bereich der Robotik zu sammeln. Ein wesentlicher Aspekt des Projekts ist die Hardwarenähe, wobei das System zudem die Möglichkeit bot, das Verständnis der Regelungstechnik zu vertiefen.
 
 
-\section{Zielsetzung (geschrieben Lorenz)}
+\section{Zielsetzung (Schenkel, Stiegler, Dauerer)}
 \label{sec:zielsetzung}
 Das Gesamtziel des Projekts bestand in der Entwicklung, Konstruktion und Programmierung eines zweirädrigen, selbstbalancierenden Roboters. Dieser basiert auf dem Prinzip eines invertierten Pendels, welches mithilfe eines Echtzeitsystems realisiert wurde. Der Fokus liegt auf einer stabilen Balance im Stillstand über einen Zeitraum von mindestens 60 Sekunden (F10), wobei die Ausgleichsbewegungen so minimiert werden sollen, dass die Abweichung vom Startpunkt innerhalb von $\pm$20 cm bleibt (F30). Darüber hinaus muss das System robust gegenüber externen Einflüssen sein und mechanische Störungen, wie etwa leichte Stöße bis ca. 0,5 N, ausgleichen (F20). Zudem soll der Roboter über eine 2,4GHz Schnittstelle steuerbar sein (F50), um gezielte Vor- und Rückwärtsfahrten mit bis zu 0,1 m/s durchzuführen (F40). Sicherheitsfunktionen wie die Distanzerkennung und die automatische Sturzerkennung sollen dafür sorgen, dass der Roboter vor Hindernissen in einer Distanz von weniger als 20 cm selbstständig stoppt (F60) und die Motoren bei einem Sturz ab einem Neigungswinkel von 45° zum Schutz der Hardware sofort deaktiviert werden (F80).
 
-\section{Projektteam (geschrieben Lorenz)}
+\section{Projektteam (Schenkel, Stiegler, Dauerer)}
 \label{sec:projektteam}
 
 Das Projektteam bestand aus drei Studierenden, wobei Niklas Stiegler die Rolle des Projektleiters übernahm. Als weitere Teammitglieder arbeiteten Felix Dauerer und Lorenz Schenkel am Projekt mit. Die konkrete Aufgabenverteilung innerhalb der einzelnen Bereiche ist den jeweiligen Kapiteln der Projektdokumentation zu entnehmen.
 
-\section{Projektmanagement (geschrieben Lorenz)}
+\section{Projektmanagement (Schenkel, Stiegler, Dauerer)}
 \label{sec:projektmanagement}
 
-\subsection{Zeitplan und Meilensteine (geschrieben Lorenz)}
+\subsection{Zeitplan und Meilensteine (Schenkel, Stiegler, Dauerer)}
 \label{subsec:zeitplan_meilensteine}
 
 Zu Projektbeginn wurde ein Gantt-Diagramm mit den wesentlichen Projektphasen erstellt, das als grobe zeitliche Orientierung für den Projektverlauf diente. Zur Überprüfung und Steuerung des Projektfortschritts wurden acht aufeinander aufbauende Meilensteine definiert. Diese sind in der Tabelle~\ref{tab:meilensteine} aufgeführt.
@@ -160,23 +160,20 @@ Zu Projektbeginn wurde ein Gantt-Diagramm mit den wesentlichen Projektphasen ers
     \end{tabular}
 \end{table}
 
-Der tatsächliche Projektverlauf zeigte hierbei deutliche Abweichungen von der ursprünglichen zeitlichen Planung, da insbesondere die später beschriebenen Hardwaredefekte erheblich mehr Zeit in Anspruch nahmen als ursprünglich vorgesehen. Dies wird in Kapitel~10.1.2 ausführlich dargelegt.
+Der tatsächliche Projektverlauf zeigte hierbei deutliche Abweichungen von der ursprünglichen zeitlichen Planung, da insbesondere die später beschriebenen Hardwaredefekte erheblich mehr Zeit in Anspruch nahmen als ursprünglich vorgesehen. Dies wird in \ref{subsec:lessons_zeitplanung} ausführlich dargelegt.
 
-\subsection{Kommunikation und Zusammenarbeit (geschrieben Lorenz)}
+\subsection{Kommunikation und Zusammenarbeit (Schenkel, Stiegler, Dauerer)}
 \label{subsec:kommunikation}
 Die Absprachen im Team liefen über regelmäßige persönliche Treffen und fortlaufend über WhatsApp. Die meiste Zeit wurde zu zweit oder zu dritt im Labor zusammengearbeitet. Das war besonders bei komplexen Problemen sehr gut, weil so jeder direkt neue Ideen und Vorschläge zur Fehlersuche einbringen konnte.
 
-\subsection{Versionsverwaltung (geschrieben Lorenz)}
+\subsection{Versionsverwaltung (Schenkel)}
 \label{subsec:versionsverwaltung}
 Um Änderungen im Code nachzuvollziehen zu können und eventuell alte Speicherstände wiederherstellen zu können, wurde ein GitLab Repository verwendet, welches von den Organisatoren bereitgestellt und von Anfang an des Projektstartes genutzt wurde. 
 
 
-\section{Aufbau der Dokumentation (geschrieben Lorenz/ noch nicht fertig )}
+\section{Aufbau der Dokumentation (Schenkel)}
 \label{sec:aufbau_dokumentation}
-%TIÓDO: ANPASSEN WENN DOKU FERTIG ist
-Diese Dokumentation besteht aus zehn Kapiteln, die den Ablauf des Projekts zeigen. Nach dieser Einleitung werden in Kapitel 2 die Anforderungen an den Roboter festgelegt. In Kapitel 3 wird das Systemkonzept erklärt und Kapitel 4 zeigt die wichtigsten Designentscheidungen. Kapitel 5 befasst sich mit der Regelung in Matlab/Simulink. Danach folgen in den Kapiteln 6 und 7 die Details zur Hardware und Software. Die Integration der Teile und die Fehlersuche werden in Kapitel 8 beschrieben, während Kapitel 9 die Testergebnisse zeigt. Zum Schluss zieht Kapitel 10 ein Fazit und blickt auf den Projektverlauf zurück.
-
-
+Diese Dokumentation besteht aus neun Kapiteln, die den Ablauf des Projekts zeigen. Nach dieser Einleitung werden in Kapitel \ref{ch:anforderungen} die Anforderungen an den Roboter festgelegt. In Kapitel \ref{ch:systemkonzept} wird das Systemkonzept erklärt und Kapitel \ref{ch:designentscheidungen} zeigt die wichtigsten Designentscheidungen. Kapitel \ref{ch:simulation} befasst sich mit der Regelung in Matlab/Simulink. Danach folgen in den Kapiteln \ref{ch:hardware} und \ref{ch:integration} die Details zur Hardware und Integration. Die Fehlersuche wird in Kapitel \ref{sec:fehlersuche_methodik} beschrieben, während Kapitel \ref{ch:tests} die Testergebnisse zeigt. Zum Schluss zieht Kapitel \ref{sec:fazit} ein Fazit und blickt auf den Projektverlauf zurück.
 
 
 \chapter{Anforderungsspezifikation (geschrieben von Felix)}
@@ -242,7 +239,8 @@ Zusätzlich zu den verbindlichen funktionalen Anforderungen wurden optionale, er
     \end{tabular}
 \end{table}
 
-Angesichts des deutlich höheren als ursprünglich geplanten Zeitaufwands für die Kernfunktionalität des Systems (vgl. Kapitel~\ref{subsec:lessons_zeitplanung}) konnten die optionalen Anforderungen K10 bis K40 nicht mehr umgesetzt werden. Sie stellen jedoch sinnvolle Ansatzpunkte für eine mögliche Weiterentwicklung dar.
+Angesichts des deutlich höheren als ursprünglich geplanten Zeitaufwands für die Kernfunktionalität des Systems (vgl. Kapitel~\ref{subsec:lessons_zeitplanung}) konnten die optionalen Anforderungen K10 bis K40 nicht mehr umgesetzt werden. 
+Sie stellen jedoch sinnvolle Ansatzpunkte für eine mögliche Weiterentwicklung dar.
 
 \section{Nicht-funktionale Anforderungen}
 \label{sec:nichtfunktionale_anforderungen}
@@ -266,7 +264,9 @@ Tabelle~\ref{tab:nichtfunktionale_anforderungen} fasst die definierten nicht-fun
     \end{tabular}
 \end{table}
 
-N10 wurde durch den Matlab/Simulink-Regelungsentwurf umgesetzt, in dem wir das Systemverhalten vorab simuliert und gewisse Erkenntnisse daraus mitgenommen haben (vgl. Kapitel~\ref{ch:simulation}). % TODO: Einhaltung von N20 (Budget) ggf. mit finaler Stückliste/Gesamtkosten belegen, sobald verfügbar.
+N10 wurde durch den Matlab/Simulink-Regelungsentwurf umgesetzt, in dem wir das Systemverhalten vorab simuliert und gewisse Erkenntnisse daraus mitgenommen haben (vgl. Kapitel~\ref{ch:simulation}). 
+%  TODO: Budget genau aufschlüsseln
+Das Budget wurde nicht eingehalten, das lag daran, dass ein Akku, mehrer Motortreiber ein Esp kaputt gingen.
 
 \chapter{Systemkonzept und Architektur (geschrieben von Felix)}
 \label{ch:systemkonzept}
@@ -337,27 +337,31 @@ Zentrales Verbindungselement zwischen diesen drei Ebenen ist der Mikrocontroller
 erfasst, die Regelung berechnet und die resultierenden Steuerbefehle an die nachgelagerten 
 Komponenten weiterleitet.
 
-\chapter{Designentscheidungen (geschrieben Lorenz)}
+\chapter{Designentscheidungen (Schenkel, Stiegler, Dauerer)}
 \label{ch:designentscheidungen}
 
 Dieses Kapitel begründet die zentralen technischen Entscheidungen, die im Vorfeld getroffen wurden.
 
-\section{Mikrocontroller(geschrieben Lorenz)}
+\section{Mikrocontroller(Schenkel, Stiegler, Dauerer)}
 \label{subsec:esp32_designentscheidung}
-Ausschlaggebend für die Wahl des Prozessors war das gute Preis-Leistungs-Verhältnis und die Dual-Core-Architektur. Durch die hohe Prozessortaktung eignet er sich ideal für die Echtzeitaufgaben \cite{esp32_wroom_32_datasheet}. 
-Die integrierte Bluetooth-Funktion war ein weiterer Pluspunkt, über den die Fernsteuerung implementiert wurde. Ein Nachteil war jedoch, dass das genutzte CNC-Shield für einen Arduino Uno ausgelegt war und sich nicht so einfach verbinden ließ.
+Ausschlaggebend für die Wahl des Prozessors waren das gute Verhältnis von Preis und Leistung sowie die Dual-Core-Architektur. Durch die hohe Prozessortaktung eignet er sich ideal für die Echtzeitaufgaben. 
+Die integrierte Bluetooth-Funktion war ein weiterer Pluspunkt, über den die Fernsteuerung implementiert wurde \cite{esp32_wroom_32_datasheet}. Ein Nachteil war jedoch, dass das genutzte CNC-Shield für einen Arduino Uno ausgelegt war und sich nicht so einfach verbinden ließ.
 
 
-\section{Regelungsverfahren: PID-Regelung (geschrieben Lorenz)}
+\section{Regelungsverfahren: PID-Regelung (Schenkel, Stiegler, Dauerer)}
 \label{sec:pid_designentscheidung}
 
-Als Regelungsverfahren zur Balancierung des invertierten Pendels wurde ein klassischer PID-Regler gewählt. Ausschlaggebend für diese Wahl war die Einfachheit des Reglers. Im Gegensatz zu komplexeren Regelungen bietet der PID-Ansatz den Vorteil, dass seine Parameter nachvollziehbar, bereits bekannt und intuitiv verständlich sind. Für die Aufgabenstellung ist dieses bewährte Verfahren vollkommen ausreichend. Die Umsetzung der PID-Regelung mit der Kombination aus Neigungs- und Positionsregelung wird in Kapitel~7.5 detailliert beschrieben.
+Als Regelungsverfahren zur Balancierung des invertierten Pendels wurde ein klassischer PID-Regler gewählt. Ausschlaggebend für diese Wahl war die Einfachheit des Reglers. 
+Im Gegensatz zu komplexeren Regelungen bietet der PID-Ansatz den Vorteil, dass seine Parameter nachvollziehbar, bereits bekannt und intuitiv verständlich sind. Für die Aufgabenstellung ist dieses bewährte Verfahren vollkommen ausreichend. 
+Die Umsetzung der PID-Regelung mit der Kombination aus Neigungs- und Positionsregelung wird in Kapitel \ref{subsec:positions_pid_integration} detailliert beschrieben.
 
 
 
-\section{Motorwahl: Schrittmotoren vs. DC-Motoren (geschrieben Lorenz)}
+\section{Motorwahl: Schrittmotoren vs. DC-Motoren (Schenkel, Stiegler, Dauerer)}
 \label{subsec:motorwahl_designentscheidung}
-Dadurch, dass der Roboter möglichst gut balancieren soll, war es naheliegend, hochgenaue Motoren zu wählen, um präzise Ausgleichsbewegungen zu ermöglichen. Aus diesem Grund wurden bipolare Schrittmotoren gegenüber klassischen DC-Motoren bevorzugt. Die Wahl fiel auf Schrittmotoren, darüber hinaus bieten diese in Kombination mit den Treibern die Möglichkeit die Auflösung mithilfe von Mikroschritten (Microsteps) flexibel anzupassen. Zudem war keine zusätzliche Hardware wie ein externer Encoder nötig, welcher in der Konstruktion hätte berücksichtigt werden müssen. Die konkret eingesetzten Motoren vom Typ Pololu NEMA17 sowie deren Ansteuerung über die Motortreiber A4988 und TMC2209 werden in Kapitel~6.2.4 detailliert beschrieben.
+Dadurch, dass der Roboter möglichst gut balancieren soll, war es naheliegend, hochgenaue Motoren zu wählen, um präzise Ausgleichsbewegungen zu ermöglichen. 
+Aus diesem Grund wurden bipolare Schrittmotoren gegenüber klassischen DC-Motoren bevorzugt. Die Wahl fiel auf Schrittmotoren, darüber hinaus bieten diese in Kombination mit den Treibern die Möglichkeit die Auflösung mithilfe von Mikroschritten (Microsteps) flexibel anzupassen. 
+Zudem war keine zusätzliche Hardware wie ein externer Encoder nötig, welcher in der Konstruktion hätte berücksichtigt werden müssen. Die konkret eingesetzten Motoren vom Typ Pololu NEMA17 sowie deren Ansteuerung über die Motortreiber A4988 und TMC2209 werden in Kapitel \ref{subsec:motor_grundansteuerung} detailliert beschrieben.
 
 \chapter{Simulation und Modellierung (geschrieben von Felix)}
 \label{ch:simulation}
@@ -562,11 +566,13 @@ Der modellbasierte Ansatz erwies sich damit als wertvoller Baustein im weiteren 
 \section{Mechanische Konstruktion}
 \label{sec:mechanische_konstruktion}
 
-\subsection{CAD-Konstruktion und Iterationen (geschrieben Lorenz)}
+\subsection{CAD-Konstruktion und Iterationen (Schenkel, Dauerer)}
 \label{subsec:cad_iterationen}
 
-Vor dem eigentlichen Bau wurde eine Konkurrenzanalyse durchgeführt, um bestehende Konzepte selbstbalancierender Roboter zu analysieren. Daraus resultierend wurde ein eigener Entwurf realisiert, der die Kriterien Leichtbau, Kosteneffizienz und strukturelle Stabilität erfüllt.
-
+Vor dem eigentlichen Bau wurde eine Kon\-kur\-renz\-ana\-ly\-se durchgeführt, um 
+bestehende Konzepte selbst\-ba\-lan\-cie\-ren\-der Roboter zu analysieren. Daraus 
+resultierend wurde ein eigener Entwurf realisiert, der die Kriterien Leichtbau, 
+Kos\-ten\-ef\-fi\-zi\-enz und strukturelle Stabilität erfüllt.
 Für das Gehäuse wurde ein dreistöckiger Aufbau im Stile eines Regals gewählt. Als modulares System ermöglicht es, elektronische Komponenten auf verschiedenen Ebenen zu platzieren und so die Gewichtsverteilung sowie das Systemverhalten gezielt zu verändern. Bis zum finalen Design wurden fünf iterative Entwürfe erstellt. Hierbei wurden die Abmessungen der Plattformen schrittweise bis zum Maximum des verfügbaren Druckbettes bei flacher Bauteillage vergrößert und die Anzahl der Etagen von zwei auf drei erhöht, um den Schwerpunkt weiter nach oben zu verlagern und mehr Platz für die Bauteile zu schaffen. Die Konstruktion beinhaltet passgenaue Aussparungen für die Schrittmotoren sowie eine Steckverbindung zwischen den Plattformen und den tragenden Pfosten.
 
 Die Plattformen wurden explizit auf die genutzten Komponenten angepasst, sodass es passgenaue Montagelöcher und Steckhalterungen gibt. So können die Ultraschallsensoren gesteckt sowie der ESP32, das CNC-Shield, der Buck-Converter und die MPU mit Schrauben montiert werden. Der Akku besitzt ein Einschubfach mit Halterungen für Gummibänder, die den Akku gegen die Plattform pressen. Der Schalter wurde nachträglich hinzugefügt, wofür eine entsprechende Bohrung vorgenommen wurde. Als Material für den 3D-Druck kam PLA-Filament zum Einsatz. Die M3-Gewindestangen dienen dazu, die beiden Motoren fest miteinander zu verbinden.
@@ -582,28 +588,43 @@ Ein wesentlicher Teil der späteren Iterationen wurde durch den in Kapitel~7.3.3
     \label{fig:cad_chassis}
 \end{figure}
 
-\subsection{3D-Druck und Materialwahl (geschrieben Lorenz)}
+\subsection{3D-Druck und Materialwahl (Schenkel, Dauerer)}
 \label{subsec:3ddruck}
-[% TODO quelle pla druck quelle
-Es wurden 3D-Drucker der Typen Prusa und Ultimaker für den Druck der Teile genutzt. Als Material kam durchgehend PLA-Filament zum Einsatz, welches neben der unkomplizierten Verarbeitung alle mechanischen Anforderungen an die Steifigkeit und Formstabilität des Roboters erfüllt. Im Projektverlauf mussten einzelne Druckteile nach dem Auftreten von Passungenauigkeiten wiederholt angepasst und neu gedruckt werden. Die benötigten Halterungen für die Ultraschallsensoren und den Buck-Converter erforderten mehrere Druckiterationen, bis eine zufriedenstellende mechanische Passung erreicht war. Um hierbei Material und Zeit zu sparen, wurden vorab kleine Testdrucke durchgeführt. Dabei wurden gezielt nur die wichtigen Bereiche gedruckt, um die Passform zu überprüfen, bevor das komplette Bauteil gefertigt wurde.
+Für den Druck der Teile wurden Prusa- und Ultimaker-3D-Drucker eingesetzt. 
+Als Material kam durchgehend PLA-Filament zum Einsatz, welches neben der unkomplizierten Verarbeitung alle mechanischen Anforderungen an die Steifigkeit und Formstabilität des Roboters erfüllt \cite{gibson2021additive}. 
+Im Projektverlauf mussten einzelne Druckteile nach dem Auftreten von Passungenauigkeiten wiederholt angepasst und neu gedruckt werden. Die benötigten Halterungen für die Ultraschallsensoren und den Buck-Converter erforderten mehrere Druckiterationen, bis eine zufriedenstellende mechanische Passung erreicht war. 
+Um hierbei Material und Zeit zu sparen, wurden vorab kleine Testdrucke durchgeführt. Dabei wurden gezielt nur die wichtigen Bereiche gedruckt, um die Passform zu überprüfen, bevor das komplette Bauteil gefertigt wurde.
 
-\subsection{Montage und Aufbau (geschrieben Lorenz)}
+\subsection{Montage und Aufbau (Schenkel, Stiegler)}
 \label{subsec:montage_aufbau}
 
-Der ursprüngliche Aufbau des Systems erfolgte zunächst als Provisorium, bei dem einzelne Komponenten mit Kabelbindern fixiert wurden, um einen schnellen, funktionsfähigen Prototyp für erste Tests zu erhalten. Die Montage des Roboters brachte einen erheblichen Zeitaufwand mit sich. Aufgrund eines Defekts an einem der Schrittmotoren musste der gesamte Aufbau zweimal komplett von Grund auf durchgeführt werden. Die Schrittmotoren waren über vier parallele M3-Gewindestangen zur Erhöhung der Gesamtsteifigkeit des Systems verbunden. Zwischen den Motoren wurden zahlreiche Muttern platziert, um diese kontern zu können und ein Lösen durch Vibrationen, der Schittmotoren, zu verhindern. Mithilfe eines Akkuschraubers wurde dieser zeitintensive Montageprozess beschleunigt. Da sich das Gewinde durch das Kürzen mit einer Kappzange verformt hatte, mussten die M3-Gewindestangen einseitig nachgeschnitten und die Kanten anschließend gefeilt werden. Die Reifen wurden mittels Sekundenkleber fixiert und über eine feste Kupplung direkt mit den Motorwellen verschraubt, um einen spielfreien Direktantrieb zu ermöglichen.
+Der ursprüngliche Aufbau des Systems erfolgte zunächst als Provisorium, bei dem 
+einzelne Komponenten mit Kabelbindern fixiert wurden, um einen schnellen, 
+funk\-tions\-fä\-hi\-gen Pro\-to\-typ für erste Tests zu erhalten.
+Die Montage des Roboters brachte einen erheblichen Zeitaufwand mit sich. Aufgrund eines Defekts an einem der Schrittmotoren musste der gesamte Aufbau zweimal komplett von Grund auf durchgeführt werden. 
+Die Schrittmotoren waren über vier parallele M3-Gewindestangen zur Erhöhung der Gesamtsteifigkeit des Systems verbunden. Zwischen den Motoren wurden zahlreiche Muttern platziert, um diese kontern zu können und ein Lösen durch Vibrationen, der Schittmotoren, zu verhindern. 
+Mithilfe eines Akkuschraubers wurde dieser zeitintensive Montageprozess beschleunigt. Da sich das Gewinde durch das Kürzen mit einer Kappzange verformt hatte, mussten die M3-Gewindestangen einseitig nachgeschnitten und die Kanten anschließend gefeilt werden.
+Die Reifen wurden mittels Sekundenkleber fixiert und über eine feste Kupplung direkt mit den Motorwellen verschraubt, um einen spielfreien Direktantrieb zu ermöglichen.
 
 Zwischen den Reifen und den Motoren wurde das 3D-gedruckte Gehäuse mithilfe von Muttern an den Gewindestangen fixiert. Die Plattformen wurden zwischen die beiden Pfosten gesteckt und im finalen Aufbau ebenfalls mit Sekundenkleber fixiert. Um im oberen Bereich des Roboters eine höhere strukturelle Stabilität zu erreichen, wurden zusätzliche Querstreben zur Versteifung verklebt.
 
 \section{Elektronische Komponenten}
 \label{sec:elektronische_komponenten}
 
-\subsection{Mikrocontroller und Entwicklungsboard (geschrieben Lorenz)}
+\subsection{Mikrocontroller und Entwicklungsboard (Schenkel, Stiegler, Dauerer)}
 \label{subsec:esp32_komponente}
-%quelle freenova datenblatt
-Zu Beginn des Projekts wurde ein ESP32-Entwicklungsboard genutzt, das bereits aus einem vorherigen Projekt im Team vorhanden war. Dieses Board konnte jedoch nicht direkt über seine vorhandenen Buchsen mit Strom versorgt werden, da diese die benötigten Spannungen von 5,V bzw. 3,3,V nicht an den Mikrocontroller weiterleiteten. Aus diesem Grund wurde der Mikrocontroller initial über ein USB-Kabel und im späteren Verlauf über einen Spannungswandler mit 5,V direkt am VIN Pin versorgt.
 
-Um Fehler in diesem Spezifischen Entwicklungsboard auszuschließen wurde auf ein anderes Entwicklungsboard des Herstellers Freenove gewechselt. Dieses sollte über einen 9,V-Hohlstecker versorgt werden. Nach der vollständigen Verkabelung, jedoch noch vor dem eigentlichen Aufstecken des ESP32, wurde die Stromversorgung vorsorglich überprüft. Hierbei stellte sich heraus, dass das Board defekt war, da es die anliegenden 9,V direkt an den ESP32 weitergegeben hätte, was zur Zerstörung des Mikrocontrollers geführt hätte. Deswegen wurde die Stromversorgung erneut angepasst und der Mikrocontroller wieder direkt über den Micro-USB-Port versorgt. Dabei wurde festgestellt, dass die I2C-Kommunikation zur MPU6050 regelmäßig abriss. Eine Überprüfung des Datenblatts bezüglich der On-Board-LEDs des Entwicklungsboards zeigte jedoch, dass diese über eine Pufferschaltung verfügen, welche den GPIO-Zustand nicht beeinflusst. Durch einen Tausch mit einem zweiten MPU6050-Sensor konnte der Fehler letztlich auf einen Wackelkontakt der Steckverbindung am Board zurückgeführt werden, da diese ziemlich locker saßen.
+Zu Beginn des Projekts wurde ein ESP32-Entwicklungsboard genutzt, das bereits aus einem vorherigen Projekt im Team vorhanden war. 
+Dieses Board konnte jedoch nicht direkt über seine vorhandenen Buchsen mit Strom versorgt werden, da diese die benötigten Spannungen von 5,V bzw. 3,3,V nicht an den Mikrocontroller weiterleiteten. 
+Aus diesem Grund wurde der Mikrocontroller initial über ein USB-Kabel und im späteren Verlauf über einen Spannungswandler mit 5,V direkt am VIN Pin versorgt.
 
+Um Fehler in diesem Spezifischen Entwicklungsboard auszuschließen wurde auf ein anderes Entwicklungsboard des Herstellers Freenove gewechselt. 
+Dieses sollte über einen 9,V-Hohlstecker versorgt werden. 
+Nach der vollständigen Verkabelung, jedoch noch vor dem eigentlichen Aufstecken des ESP32, wurde die Stromversorgung vorsorglich überprüft. 
+Hierbei stellte sich heraus, dass das Board defekt war, da es die anliegenden 9,V direkt an den ESP32 weitergegeben hätte, was zur Zerstörung des Mikrocontrollers geführt hätte. 
+Deswegen wurde die Stromversorgung erneut angepasst und der Mikrocontroller wieder direkt über den Micro-USB-Port versorgt. 
+Dabei wurde festgestellt, dass die I2C-Kommunikation zur MPU6050 regelmäßig abriss. Eine Überprüfung des Datenblatts bezüglich der On-Board-LEDs des Entwicklungsboards zeigte jedoch, dass diese über eine Pufferschaltung verfügen, welche den GPIO-Zustand nicht beeinflusst. 
+Durch einen Tausch mit einem zweiten MPU6050-Sensor konnte der Fehler letztlich auf einen Wackelkontakt der Steckverbindung am Board zurückgeführt werden, da diese ziemlich locker saßen.
 Um eine dauerhafte Lösung zu schaffen, wurde eine Lochrasterplatine genutzt, auf welcher der ESP32 sowie alle Leitungen fest verlötet wurden. Im Verlauf des Betriebs erlitt dieser ESP32 jedoch einen Defekt. Da angeschlossene Sensoren zwar nicht mit der 5,V-Spannungsversorgung verbunden waren, aber über die verbleibenden Signalpins angeschlossen blieben, zogen sie ihren Strom vermutlich über die GPIO-Pins. Dies führte zu einer Überschreitung der maximal zulässigen Ausgangsleistung des Mikrocontrollers. Um den aufwendigen Prozess des Entlötens bei einem erneuten Defekt zu vermeiden, wurde beim nachfolgenden Aufbau eine weibliche Buchsenleiste auf die Platine gelötet. Der ESP32 ist dadurch steckbar ausgeführt und kann bei Bedarf schnell und unkompliziert ausgetauscht werden. 
 
 
@@ -618,61 +639,89 @@ Zur Vermeidung von Kollisionen wurden zwei HC-SR04 Ultraschallsensoren integrier
 
 Alle Sensoren werden mit 5V Betriebsspannung betrieben \cite{az-deliveryGY521}, \cite{reicheltHCSR04_Datasheet}.
 
-\subsection{Motorwahl und Treiber (geschrieben Lorenz)}
+\subsection{Motorwahl und Treiber (Schenkel)}
 \label{subsec:motorwahl_treiber}
 %todo: kapittel richten
 
-Eine der kritischsten Komponenten für die Stabilität des selbstbalancierenden Roboters sind die Motoren. Die Bezeichnung „NEMA 17“ spezifiziert dabei lediglich die Dimensionierung der vorderen Platte ($42,3 \text{ mm} \times 42,3 \text{ mm}$), sagt jedoch nichts über die Baulänge oder das erreichbare Drehmoment aus. Für dieses Projekt wurde das Modell 17HS15-1504S1 von Stepperonline ausgewählt, das mit 0,45 NM ein überdurchschnittliches Haltemoment besitzt. Dadurch sind die Motoren länger ($39\text{ mm}$ Gehäuselänge), da sie mehr Magnetringe im Inneren besitzen, wodurch Schrittverluste minimiert werden und der Zuwachs an Kraft deutlich größer ist als der Zuwachs an Gewicht. Warum Schrittmotoren im Vergleich zu DC-Motoren bevorzugt werden, wurde bereits in Kapitel~4.2.3 dargelegt. Dieses hohe Drehmoment ist essenziell, um die abrupten Beschleunigungs- und Bremsbefehle des PID-Reglers präzise umzusetzen und Schrittverluste zu vermeiden.
+Eine der kritischsten Komponenten für die Stabilität des selbstbalancierenden Roboters sind die Motoren. Die Bezeichnung „NEMA 17“ spezifiziert dabei lediglich die Dimensionierung der vorderen Platte ($42,3 \text{ mm} \times 42,3 \text{ mm}$), sagt jedoch nichts über die Baulänge oder das erreichbare Drehmoment aus. 
+Für dieses Projekt wurde das Modell 17HS15-1504S1 von Stepperonline ausgewählt, das mit 0,45 NM ein überdurchschnittliches Haltemoment besitzt. Dadurch sind die Motoren länger ($39\text{ mm}$ Gehäuselänge), da sie mehr Magnetringe im Inneren besitzen, wodurch Schrittverluste minimiert werden und der Zuwachs an Kraft deutlich größer ist als der Zuwachs an Gewicht. 
+Warum Schrittmotoren im Vergleich zu DC-Motoren bevorzugt werden, wurde bereits in Kapitel \ref{subsec:motorwahl_designentscheidung} dargelegt. Dieses hohe Drehmoment ist essenziell, um die abrupten Beschleunigungs- und Bremsbefehle des PID-Reglers präzise umzusetzen und Schrittverluste zu vermeiden.
 
 Die Ansteuerung wurde über ein Arduino Uno kompatibles, vorhandenes, CNC-Shield umgesetzt. Dies war bereits mit passenden Steckplätzen, Kondensatoren, Enable-Pins für die Treiber und möglichen Steckplätzen für Mikrosteps und für Step und Dir mitgeliefert. Um technische Probleme des CNC-Shields, vor allem der Kondensatoren, auszuschließen wurde dies einmal ausgetauscht.
 
-Als Treiber wurden am Anfang A4988-Treiber eingesetzt und am Ende dann gegen die moderneren TMC2209-Treiber getauscht, da diese mit ihrer PWM-Steuerung (StealthChop) deutlich leiser und präziser waren. Doch während des Projektes wurde oft getauscht oder getestet, einmal um Unterschiede festzustellen oder um die teureren Treiber vor eventuellen Schäden  zu schützen.
+Als Treiber wurden am Anfang A4988-Treiber eingesetzt und am Ende dann gegen die moderneren TMC2209-Treiber getauscht, da diese mit ihrer PWM-Steuerung (StealthChop) deutlich leiser und präziser waren \cite{Tmc2209_datasheet_rev109}. Doch während des Projektes wurde oft getauscht oder getestet, einmal um Unterschiede festzustellen oder um die teureren Treiber vor eventuellen Schäden  zu schützen.
 
-\newpage
-\newpage
 
 \section{Energieversorgung}
 \label{sec:energieversorgung}
-\subsection{Anforderungen und Ausgangsproblem (geschrieben Lorenz)}
+\subsection{Anforderungen und Ausgangsproblem (Schenkel)}
 \label{subsec:energie_anforderungen}
-Die Batterie des Systems soll sowohl die Anforderung F70 (autarker Betrieb ohne Kabelverbindung mit einer Mindestlaufzeit von 10\,Minuten) als auch eine ausreichende Spannungs- und Stromversorgung für zwei gleichzeitig betriebene Schrittmotoren sowie die empfindliche Sensorik erfüllen. Im initialen Aufbau wurden alle elektronischen Komponenten, sowohl der Mikrocontroller mit angeschlossener Sensorik als auch die Motortreiber, über eine gemeinsame Spannungsquelle versorgt. Dieser gemeinsame Versorgungsansatz erwies sich im weiteren Projektverlauf als Ursprung eines der zentralen Probleme des Projekts.
+Die Batterie des Systems soll sowohl die Anforderung F70 (autarker Betrieb ohne Kabelverbindung mit einer Mindestlaufzeit von 10\,Minuten) als auch eine ausreichende Spannungs- und Stromversorgung für zwei gleichzeitig betriebene Schrittmotoren sowie die empfindliche Sensorik erfüllen.
+Im initialen Aufbau wurden alle elektronischen Komponenten, sowohl der Mikrocontroller mit angeschlossener Sensorik als auch die Motortreiber, über eine gemeinsame Spannungsquelle versorgt.
+Dieser gemeinsame Versorgungsansatz erwies sich im weiteren Projektverlauf als Ursprung eines der zentralen Probleme des Projekts.
+Bei den ersten Einzeltests der Hardwarekomponenten funktionierte die Auswertung der MPU6050 für sich betrachtet einwandfrei. 
+Die Schrittmotoren zeigten hingegen von Beginn an ein sehr unzuverlässiges und schwer definierbares, inkonsistentes Fehlerbild. Diese waren oft viel zu schwach, erreichten nicht die eigentlich möglichen Drehzahlen oder verhielten sich durch Rütteln und starkes Vibrieren auffällig. 
+Um Defekte der alten Treiber auszuschließen und die neueren, flüssigeren TMC-Treiber auszutesten, wurden diese eingebaut und mit einfachem Beispielcode aus einer Library getestet. 
+Das funktionierte problemlos, und die leisen Motorgeräusche waren zufriedenstellend. Sobald jedoch der eigentliche Projektcode genutzt wurde, bewegten sich die Motoren gar nicht mehr.
 
-Bei den ersten Einzeltests der Hardwarekomponenten funktionierte die Auswertung der MPU6050 für sich betrachtet einwandfrei. Die Schrittmotoren zeigten hingegen von Beginn an ein sehr unzuverlässiges und schwer definierbares, inkonsistentes Fehlerbild. Diese waren oft viel zu schwach, erreichten nicht die eigentlich möglichen Drehzahlen oder verhielten sich durch Rütteln und starkes Vibrieren auffällig. Um Defekte der alten Treiber auszuschließen und die neueren, flüssigeren TMC-Treiber auszutesten, wurden diese eingebaut und mit einfachem Beispielcode aus einer Library getestet. Das funktionierte problemlos, und die leisen Motorgeräusche waren zufriedenstellend. Sobald jedoch der eigentliche Projektcode genutzt wurde, bewegten sich die Motoren gar nicht mehr.
+Es folgte eine langwierige Fehlersuche, bei der systematisch das Gesamtsystem überprüft wurde, da die Treiber zunächst als Fehlerquelle ausgeschlossen waren.
+Per Durchgangsprüfung wurden alle Verbindungen vom ESP32 zum CNC-Shield durchgemessen, sämtliche Spannungen direkt an den Treibern kontrolliert und auch die Motorkabel ausgeschlossen. 
+Testweise wurden sogar komplett andere Schrittmotoren angeschlossen, um einen Defekt der Antriebseinheit auszuschließen. Erst als das Oszilloskop angeschlossen wurde, zeigte sich das frustrierende Ergebnis.
+Die gesamte Überprüfung der Kette war fehlerfrei, denn es waren schlichtweg die neuen Treiber aus der Verpackung, die aus ungeklärten Gründen bereits beim ersten Betrieb kaputtgegangen waren. 
+Da diese gesamte Prozedur im weiteren Projektverlauf aufgrund ähnlicher Symptome mehrfach wiederholt werden musste, bedeutete dies einen enormen Zeitaufwand für das Team.
 
-Es folgte eine langwierige Fehlersuche, bei der systematisch das Gesamtsystem überprüft wurde, da die Treiber zunächst als Fehlerquelle ausgeschlossen waren. Per Durchgangsprüfung wurden alle Verbindungen vom ESP32 zum CNC-Shield durchgemessen, sämtliche Spannungen direkt an den Treibern kontrolliert und auch die Motorkabel ausgeschlossen. Testweise wurden sogar komplett andere Schrittmotoren angeschlossen, um einen Defekt der Antriebseinheit auszuschließen. Erst als das Oszilloskop angeschlossen wurde, zeigte sich das frustrierende Ergebnis. Die gesamte Überprüfung der Kette war fehlerfrei, denn es waren schlichtweg die neuen Treiber aus der Verpackung, die aus ungeklärten Gründen bereits beim ersten Betrieb kaputtgegangen waren. Da diese gesamte Prozedur im weiteren Projektverlauf aufgrund ähnlicher Symptome mehrfach wiederholt werden musste, bedeutete dies einen enormen Zeitaufwand für das Team.
+Ab diesem Zeitpunkt wurde sehr genau auf den Umgang mit der Hardware geachtet. Es wurden keine Treiber unter Spannung gewechselt, und die Wärmeentwicklung im Betrieb wurde genau überwacht. 
+Zudem wurde vor jeder Inbetriebnahme eine Durchgangsprüfung durchgeführt, um sicherzustellen, dass beispielsweise die Step-Leitung auch wirklich am richtigen Pin ankommt. 
+Im Rahmen dessen wurde schließlich das gesamte CNC-Shield komplett durchgemessen, um defekte Leitungen auszuschließen. 
+Nach dem erneuten Tauschen gegen wiederum neue Motortreiber funktionierte der Code endlich, und die Motoren reagierten auf die Neigung.
 
-Ab diesem Zeitpunkt wurde sehr genau auf den Umgang mit der Hardware geachtet. Es wurden keine Treiber unter Spannung gewechselt, und die Wärmeentwicklung im Betrieb wurde genau überwacht. Zudem wurde vor jeder Inbetriebnahme eine Durchgangsprüfung durchgeführt, um sicherzustellen, dass beispielsweise die Step-Leitung auch wirklich am richtigen Pin ankommt. Im Rahmen dessen wurde schließlich das gesamte CNC-Shield komplett durchgemessen, um defekte Leitungen auszuschließen. Nach dem erneuten Tauschen gegen wiederum neue Motortreiber funktionierte der Code endlich, und die Motoren reagierten auf die Neigung.
-
-\subsection{Spannungseinbruch unter Motorlast (geschrieben Lorenz)}
+\subsection{Spannungseinbruch unter Motorlast (Schenkel)}
 \label{subsec:spannungseinbruch}
-Jedoch reagierten die Motoren um den Nullpunkt herum nicht so wie erwartet. Die Ursache wurde fälschlicherweise zunächst wieder direkt bei den Motoren oder den Motortreibern vermutet. Da auf dem CNC-Shield bereits große Pufferkondensatoren verbaut waren, wurde ein Einbruch der Spannungsversorgung der Motortreiber anfangs nicht vermutet. Daraufhin wurden weitere mögliche Ursachen für das Problem untersucht. Als potenzielle Fehlerquellen wurden ein falsch eingestellter Referenzstrom ($V_{\text{ref}}$), eine fehlerhafte Microstep-Konfiguration, zeitliche Probleme im Code sowie ein ungeeigneter Motor mit möglichen Schrittverlusten aufgrund von Trägheit vermutet. Um diese Vermutungen zu prüfen, wurden diverse Maßnahmen ergriffen: Der Wert für $V_{\text{ref}}$ wurde testweise verändert, während die Temperatur der Treiber live mit einer Wärmebildkamera überwacht wurde, um Schäden zu vermeiden. Zudem wurden die Microsteps testweise umgestellt und der Code zu dritt intensiv durchgeschaut, wobei große Teile versuchsweise auskommentiert wurden, um nur noch das Nötigste laufen zu lassen. Bezüglich der Trägheit des Motors wurden zusätzlich Videos im Internet analysiert, in denen ein vergleichbares Projekt mit exakt demselben Motor erfolgreich umgesetzt wurde.
+Jedoch reagierten die Motoren um den Nullpunkt herum nicht so wie erwartet. Die Ursache wurde fälschlicherweise zunächst wieder direkt bei den Motoren oder den Motortreibern vermutet. 
+Da auf dem CNC-Shield bereits große Pufferkondensatoren verbaut waren, wurde ein Einbruch der Spannungsversorgung der Motortreiber anfangs nicht vermutet. Daraufhin wurden weitere mögliche Ursachen für das Problem untersucht.
+Als potenzielle Fehlerquellen wurden ein falsch eingestellter Referenzstrom ($V_{\text{ref}}$), eine fehlerhafte Microstep-Konfiguration, zeitliche Probleme im Code sowie ein ungeeigneter Motor mit möglichen Schrittverlusten aufgrund von Trägheit vermutet. 
+Um diese Vermutungen zu prüfen, wurden diverse Maßnahmen ergriffen: Der Wert für $V_{\text{ref}}$ wurde testweise verändert, während die Temperatur der Treiber live mit einer Wärmebildkamera überwacht wurde, um Schäden zu vermeiden. 
+Zudem wurden die Microsteps testweise umgestellt und der Code zu dritt intensiv durchgeschaut, wobei große Teile versuchsweise auskommentiert wurden, um nur noch das Nötigste laufen zu lassen.
+Bezüglich der Trägheit des Motors wurden zusätzlich Videos im Internet analysiert, in denen ein vergleichbares Projekt mit exakt demselben Motor erfolgreich umgesetzt wurde.
 
-Da all diese Maßnahmen keine Besserung brachten, wurde die Spannungsstabilität schließlich doch messtechnisch überprüft, wobei sich sporadische, kurze Einbrüche der Treiberspannung zeigten. Um auszuschließen, dass die Kondensatoren defekt waren, wurde ein LCR-Meter ausgeliehen. Damit wurden die verbauten Kondensatoren sowohl im eingebauten als auch im ausgelöteten Zustand vermessen und mit einem bekanntermaßen funktionierenden CNC-Shield verglichen. Diese Überprüfung lieferte jedoch keine Auffälligkeiten, sondern die Kapazität befand sich in der üblichen Toleranz von $\pm20\,\%$.
+Da all diese Maßnahmen keine Besserung brachten, wurde die Spannungsstabilität schließlich doch messtechnisch überprüft, wobei sich sporadische, kurze Einbrüche der Treiberspannung zeigten. Um auszuschließen, dass die Kondensatoren defekt waren, wurde ein LCR-Meter ausgeliehen. 
+Damit wurden die verbauten Kondensatoren sowohl im eingebauten als auch im ausgelöteten Zustand vermessen und mit einem bekanntermaßen funktionierenden CNC-Shield verglichen. 
+Diese Überprüfung lieferte jedoch keine Auffälligkeiten, sondern die Kapazität befand sich in der üblichen Toleranz von $\pm20\,\%$.
 
-Der eigentliche Durchbruch bei der Fehlersuche gelang erst, als der Roboter wieder an den PC angeschlossen und die Sensordaten der MPU6050 live im Logger überwacht werden konnten. Dabei fiel auf, dass bei einem ausgeprägten Neigungswinkel keine Fehler auftraten. Sobald sich der Roboter jedoch um die Null-Grad-Marke bewegte und die Motoren durch den Regelkreis schnell hin- und hersprangen, lieferten die Sensorwerte plötzlich falsche Werte. Eine anschließende Messung der Logikspannung direkt an der MPU6050 bestätigte, dass diese in den Momenten der schnellen Richtungswechsel dramatisch einbrach. Die schnellen Lastwechsel der Motoren koppelten somit direkt in die Versorgung der empfindlichen Sensorik ein.
+Der eigentliche Durchbruch bei der Fehlersuche gelang erst, als der Roboter wieder an den PC angeschlossen und die Sensordaten der MPU6050 live im Logger überwacht werden konnten. 
+Dabei fiel auf, dass bei einem ausgeprägten Neigungswinkel keine Fehler auftraten. Sobald sich der Roboter jedoch um die Null-Grad-Marke bewegte und die Motoren durch den Regelkreis schnell hin- und hersprangen, lieferten die Sensorwerte plötzlich falsche Werte. 
+Eine anschließende Messung der Logikspannung direkt an der MPU6050 bestätigte, dass diese in den Momenten der schnellen Richtungswechsel dramatisch einbrach. 
+Die schnellen Lastwechsel der Motoren koppelten somit direkt in die Versorgung der empfindlichen Sensorik ein.
 
 
 
-\subsection{Kondensator-Lösung am MPU6050 (geschrieben Lorenz)}
+\subsection{Kondensator-Lösung am MPU6050 (Schenkel)}
 \label{subsec:kondensator_loesung}
-Als erste Abhilfe wurde ein großer  $100\ \mu\text{F}$ Elektrolytkondensator nahe an der MPU6050 platziert, um die Logikspannung zu stützen. Diese Maßnahme erfüllte ihren Zweck und behob das Sensorproblem sowie die damit verbundenen Signalstörungen während der schnellen Motorzugriffe vollständig.
+Als erste Abhilfe wurde ein großer  $100\ \mu\text{F}$ Elektrolytkondensator nahe an der MPU6050 platziert, um die Logikspannung zu stützen. 
+Diese Maßnahme erfüllte ihren Zweck und behob das Sensorproblem sowie die damit verbundenen Signalstörungen während der schnellen Motorzugriffe vollständig.
 
 \subsection{ESP32 nicht programmierbar (Niklas)}
 \label{subsec:esp32_bespielbar}
 
 Die gewählte Kapazität führte jedoch zu einem neuen Fehler. Der ESP32 gab im Serial Monitor beim Starten einen 'invalid-head'-Fehler und ließ sich nicht mehr programmieren, da der Kondensator beim Einschalten bzw. Flashen vermutlich zu viel Strom zog. Da zu diesem Zeitpunkt bereits alle Komponenten fest miteinander verlötet waren, wurde als temporäre Lösung ein mechanischer Kippschalter eingebaut. Mit diesem konnte die MPU6050 inklusive des Kondensators für den Programmiervorgang und den Startvorgang manuell abgeschaltet werden, wodurch der ESP32 wieder bespielbar war und sich starten lies. Sobald der ESP32 fertig initialisiert war, wurde die MPU-Einheit manuell zugeschaltet.
 
-\subsection{Dimensionierung des Kondensators (Verkleinerung) (geschrieben Lorenz)}
+\subsection{Dimensionierung des Kondensators (Schenkel)}
 \label{subsec:kondensator_verkleinerung}
 
-Unter dem Oszilloskop wurden die Spannungseinbrüche anschließend genauer analysiert. Um den Boot-Fehler des ESP32 permanent zu beheben, wurde auf einen kleineren Kondensator mit $10\ \mu\text{F}$ gewechselt. Unter dem Oszilloskop waren damit zwar immer noch minimale, hochfrequente Einbrüche zu erkennen, welche aber zu keinen falschen Werten führten. Ein zusätzlicher Versuch, diese verbleibenden Störungen durch das parallele Anlöten eines schnellen Keramikkondensators vollständig zu eliminieren, brachte nur einen minimalen Unterschied. Obwohl das System mit dem kleineren $10\ \mu\text{F}$ Kondensator im Grundbetrieb funktionierte, zeigten sich im späteren Verlauf immer wieder sporadische Störungen bei der Spannungsstabilität.
+Unter dem Oszilloskop wurden die Spannungseinbrüche anschließend genauer analysiert. Um den Boot-Fehler des ESP32 permanent zu beheben, wurde auf einen kleineren Kondensator mit $10\ \mu\text{F}$ gewechselt. 
+Unter dem Oszilloskop waren damit zwar immer noch minimale, hochfrequente Einbrüche zu erkennen, welche aber zu keinen falschen Werten führten. 
+Ein zusätzlicher Versuch, diese verbleibenden Störungen durch das parallele Anlöten eines schnellen Keramikkondensators vollständig zu eliminieren, brachte nur einen minimalen Unterschied. 
+Obwohl das System mit dem kleineren $10\ \mu\text{F}$ Kondensator im Grundbetrieb funktionierte, zeigten sich im späteren Verlauf immer wieder sporadische Störungen bei der Spannungsstabilität.
 
-\subsection{Finale Lösung: Galvanische Trennung ESP32/MPU6050 (geschrieben Lorenz)}
+\subsection{Finale Lösung: Galvanische Trennung ESP32/MPU6050 (Schenkel)}
 \label{subsec:galvanische_trennung}
 
-Obwohl die verkleinerte Kondensatorkombination die Symptome deutlich reduzierte, blieb die grundlegende Ursache des Problems, die gemeinsame Spannungsversorgung von Logik- und Leistungskreis, bestehen. Um eine dauerhaft zuverlässige und von der Motorlast vollständig unabhängige Versorgung der Sensorik sicherzustellen, wurde die Spannungsversorgung des Systems final in zwei galvanisch getrennte Kreise aufgeteilt.
+Obwohl die verkleinerte Kondensatorkombination die Symptome deutlich reduzierte, blieb die grundlegende Ursache des Problems, die gemeinsame Spannungsversorgung von Logik- und Leistungskreis, bestehen. 
+Um eine dauerhaft zuverlässige und von der Motorlast vollständig unabhängige Versorgung der Sensorik sicherzustellen, wurde die Spannungsversorgung des Systems final in zwei galvanisch getrennte Kreise aufgeteilt.
 
-Der Leistungskreis, welcher die beiden Schrittmotoren über die TMC2209-Treiber versorgt, wird über einen 4S-LiPo-Akku mit 14,8\,V und 1300\,mAh Kapazität betrieben, wobei die Verbindung über einen XT60-Steckverbinder erfolgt und der Kreis durch eine 2\,A-Sicherung abgesichert ist. Der Logikkreis, bestehend aus dem ESP32, den Ultraschallsensor, das CNC shild, sowie der MPU6050, wird hingegen über eine separate, unabhängige Powerbank versorgt. Diese Trennung stellt sicher, dass die beim Motoranlauf auftretenden Stromspitzen keinen Einfluss mehr auf die Versorgungsspannung der Sensorik ausüben können. 
+Der Leistungskreis, welcher die beiden Schrittmotoren über die TMC2209-Treiber versorgt, wird über einen 4S-LiPo-Akku mit 14,8\,V und 1300\,mAh Kapazität betrieben, wobei die Verbindung über einen XT60-Steckverbinder erfolgt und der Kreis durch eine 2\,A-Sicherung abgesichert ist. 
+Der Logikkreis, bestehend aus dem ESP32, den Ultraschallsensor, das CNC shild, sowie der MPU6050, wird hingegen über eine separate, unabhängige Powerbank versorgt. 
+Diese Trennung stellt sicher, dass die beim Motoranlauf auftretenden Stromspitzen keinen Einfluss mehr auf die Versorgungsspannung der Sensorik ausüben können. 
 
 \subsection{Kippschalter (Niklas)}
 \label{subsec:kippschalter}
@@ -683,29 +732,33 @@ Als Ersatz diente ein zweites Modell mit integrierter LED. Bei diesem Schalter b
 
 Erst das dritte Modell, ein R13-28F (15 A bei 125 VAC bzw. 10 A bei 250 VAC), sorgte für eine zuverlässige Trennung. Warum genau das erste Modell versagte, lässt sich rückblickend nicht erklären. Zur Fehlerdiagnose wurden bei allen drei Modellen Durchgangsprüfungen sowie Spannungsmessungen unter Last durchgeführt.
 
-\section{Schaltplan (geschrieben von Lorenz)}
+\section{Schaltplan (Schenkel)}
 \label{sec:schaltplan}
-Für die Erstellung des Schaltplans wurde die Software KiCad gewählt. Entscheidend dafür war zum einen, dass das Programm kostenlos und quelloffen zur Verfügung steht. Zum anderen konnten so bereits vorhandene Grundkenntnisse genutzt werden, da die Software kurz im Modul Grundlagen der Elektronik zum Einsatz kam.
-
-Da für einige der verwendeten Komponenten keine passenden Symbole in den Bibliotheken der Software hinterlegt waren, mussten diese für den Schaltplan eigens erstellt werden. Konkret wurden hierfür zwei eigene Symbole gezeichnet. Eines für die Ultraschallsensoren und eines für das CNC-Shield, um alle Anschlüsse korrekt im Plan abbilden zu können.
-
+Für die Erstellung des Schaltplans wurde die Software KiCad gewählt. Entscheidend dafür war zum einen, dass das Programm kostenlos und quelloffen zur Verfügung steht.
+ Zum anderen konnten so bereits vorhandene Grundkenntnisse genutzt werden, da die Software kurz im Modul Grundlagen der Elektronik zum Einsatz kam.
+Da für einige der verwendeten Komponenten keine passenden Symbole in den Bibliotheken der Software hinterlegt waren, mussten diese für den Schaltplan eigens erstellt werden. 
+Konkret wurden hierfür zwei eigene Symbole gezeichnet. Eines für die Ultraschallsensoren und eines für das CNC-Shield, um alle Anschlüsse korrekt im Plan abbilden zu können.
 Der vollständige elektrische Schaltplan des Gesamtsystems ist in Anhang~B beigefügt.
 
-% [Abbildung einfügen: Vollständiger Schaltplan, Kurzform/Übersicht]
-\begin{figure}[h]
+\begin{figure}[htbp]
     \centering
-    % \includegraphics[width=\textwidth]{Schaltplan_Uebersicht.png}
-    \caption{Übersicht des elektrischen Schaltplans (Detailansicht siehe Anhang~B)}
+    % clip und trim schneiden weiße Ränder ab (links unten rechts oben)
+    \includegraphics[width=\textwidth,keepaspectratio]{../../Quellen/KiCAD_Schematic.pdf}
+    \caption{Übersicht des elektrischen Schaltplans}
     \label{fig:schaltplan_uebersicht}
 \end{figure}
 
 \section{Entwicklungsumgebung}
 \label{sec:entwicklungsumgebung}
 
-\subsection{PlatformIO-Einrichtung (geschrieben von Lorenz)}
+\subsection{PlatformIO-Einrichtung (Schenkel)}
 \label{subsec:platformio_einrichtung}
-Da bereits persönliche Vorerfahrungen mit PlatformIO aus früheren Projekten vorhanden waren und die Umgebung dort erfolgreich genutzt wurde, fiel die Wahl für dieses Projekt erneut auf diese Entwicklungsumgebung. In Visual Studio Code wurde das entsprechende PlatformIO-Plugin installiert und eingerichtet. Als Hardware-Plattform wurde der Mikrocontroller ESP-WROOM-32 ausgewählt.
-Bei den anschließenden beschreiben trat jedoch initial das Problem auf, dass der Mikrocontroller nicht erkannt wurde. Die Fehlersuche ergab, dass es sich bei dem verwendeten Micro-USB-Kabel um ein reines Stromkabel und kein Datenkabel handelte. Nach dem Austausch des Kabels konnten die Flash-Tests erfolgreich durchgeführt werden. Im Anschluss wurde ein neues Projekt innerhalb der Umgebung für dieses Board initialisiert. Die Projekterstellung erforderte die Konfiguration der grundlegenden Projektstruktur sowie die Definition der spezifischen Parameter, wie beispielsweise der seriellen Baudrate, in der platformio.ini Datei. Dieses Projekt wurde dann auf GitLab den anderen Teammitgliedern zur Verfügung gestellt, wobei für die Zusammenarbeit eine Git-Struktur mit verschiedenen Branches aufgesetzt wurde.
+Da bereits persönliche Vorerfahrungen mit PlatformIO aus früheren Projekten vorhanden waren und die Umgebung dort erfolgreich genutzt wurde, fiel die Wahl für dieses Projekt erneut auf diese Entwicklungsumgebung. 
+In Visual Studio Code wurde das entsprechende PlatformIO-Plugin installiert und eingerichtet. Als Hardware-Plattform wurde der Mikrocontroller ESP-WROOM-32 ausgewählt.
+Bei den anschließenden beschreiben trat jedoch initial das Problem auf, dass der Mikrocontroller nicht erkannt wurde. 
+Die Fehlersuche ergab, dass es sich bei dem verwendeten Micro-USB-Kabel um ein reines Stromkabel und kein Datenkabel handelte. Nach dem Austausch des Kabels konnten die Flash-Tests erfolgreich durchgeführt werden. 
+Im Anschluss wurde ein neues Projekt innerhalb der Umgebung für dieses Board initialisiert. Die Projekterstellung erforderte die Konfiguration der grundlegenden Projektstruktur sowie die Definition der spezifischen Parameter, wie beispielsweise der seriellen Baudrate, in der platformio.ini Datei. 
+Dieses Projekt wurde dann auf GitLab den anderen Teammitgliedern zur Verfügung gestellt, wobei für die Zusammenarbeit eine Git-Struktur mit verschiedenen Branches aufgesetzt wurde.
 
 \section{Code-Architektur (Niklas)}
 \label{sec:code_architektur}
@@ -972,58 +1025,73 @@ In der Praxis lieferte dieser gewichtete Mittelwert ein besseres
 Regelverhalten, weshalb wir uns für diesen entschieden haben. Der resultierende geglättete
 Wert dient als Eingangsgröße für den in Kapitel~\ref{subsec:neigung_pid_impl} 
 beschriebenen Neigungs-PID-Regler.
-\section{PS4-Controller-Integration (geschrieben von Lorenz)}
+\section{PS4-Controller-Integration}
 \label{sec:ps4_integration}
 
-\subsection{Bluetooth-Verbindungsaufbau  (geschrieben von Lorenz)}
+\subsection{Bluetooth-Verbindungsaufbau  (Schenkel, Stiegler)}
 \label{subsec:ps4_bluetooth}
 
-Für die drahtlose Fahrsteuerung des Roboters wurde ein PlayStation 4 Controller gewählt, welcher über die vorhandene Bluetooth-Schnittstelle des ESP32 ohne zusätzliche externe Hardware kommunizieren soll. Der Controller sucht aktiv nach einem Bluetooth-Gerät mit der MAC-Adresse, die in seinem Speicher steht.
-
-Um die Implementierung umzusetzen, wurden im Vorfeld verschiedene Bibliotheken getestet. Die Auswahl gestaltete sich zunächst undurchsichtig, da es keinen klar weit verbreiteten Favoriten gab und mehrere verfügbare Bibliotheken in Kombination mit dem jeweiligen Beispielcode nicht wie erwartet funktionierten. Nach mehreren erfolglosen Versuchen mit unterschiedlichen Bibliotheken und deren Standardcode wurde auf Basis eines Video-Tutorials die für das Arduino-Framework verfügbare PS4Controller-Bibliothek als funktionierende Bibliothek ausgewählt.
-
-Als Erstes wurde in Betracht gezogen, die MAC-Adresse des ESP32 dauerhaft im Code manuell zu überschreiben, damit sich der PS4-Controller mit diesem verbindet, nach dem er sucht. Diese Idee wurde aber verworfen, weil die Versuche mit verschiedenen Bibliotheken erfolglos blieben. Deswegen wurde die umgekehrte Methode gewählt. Die MAC-Adresse, nach der der Controller sucht, wurde identifiziert, und die Standard-MAC-Adresse des ESP32 wurde mit genau dieser gesuchten Adresse überschrieben, um die Verbindung erfolgreich herzustellen.
-
+Für die drahtlose Fahrsteuerung des Roboters wurde ein PlayStation 4 Controller gewählt, welcher über die vorhandene Bluetooth-Schnittstelle des ESP32 ohne zusätzliche externe Hardware kommunizieren soll.
+Der Controller sucht aktiv nach einem Bluetooth-Gerät mit der MAC-Adresse, die in seinem Speicher steht.
+Um die Implementierung umzusetzen, wurden im Vorfeld verschiedene Bibliotheken getestet. Die Auswahl gestaltete sich zunächst undurchsichtig, da es keinen klar weit verbreiteten Favoriten gab und mehrere verfügbare Bibliotheken in Kombination mit dem jeweiligen Beispielcode nicht wie erwartet funktionierten. 
+Nach mehreren erfolglosen Versuchen mit unterschiedlichen Bibliotheken und deren Standardcode wurde auf Basis eines Video-Tutorials die für das Arduino-Framework verfügbare PS4Controller-Bibliothek als funktionierende Bibliothek ausgewählt.
+Als Erstes wurde in Betracht gezogen, die MAC-Adresse des ESP32 dauerhaft im Code manuell zu überschreiben, damit sich der PS4-Controller mit diesem verbindet, nach dem er sucht. Diese Idee wurde aber verworfen, weil die Versuche mit verschiedenen Bibliotheken erfolglos blieben. 
+Deswegen wurde die umgekehrte Methode gewählt. Die MAC-Adresse, nach der der Controller sucht, wurde identifiziert, und die Standard-MAC-Adresse des ESP32 wurde mit genau dieser gesuchten Adresse überschrieben, um die Verbindung erfolgreich herzustellen.
 Aus Sicherheitsgründen wurde die Software zudem so geschrieben, dass bei einer fehlenden oder unterbrochenen Verbindung zum Controller grundsätzlich der Wert 0 für den Zielwinkel zurückgeliefert wird.
 
-\subsection{MAC-Adress-Manipulation (SixaxisPairTool)  (geschrieben von Lorenz)}
+\subsection{MAC-Adress-Manipulation (SixaxisPairTool)  (Schenkel)}
 \label{subsec:mac_manipulation}
-Für das Beschreiben der Zieladresse im Controller kam das Programm SixaxisPairTool zum Einsatz. Da dieses Programm teilweise über inoffizielle, unseriöse Quellen verbreitet wird, wurde der Download aus Sicherheitsgründen zunächst innerhalb einer virtuellen Maschine durchgeführt, um ein mögliches Malware-Risiko auszuschließen. Für die eigentliche Kopplung des Controllers wurde zunächst versucht, das Bluetooth-Signal des Controllers direkt an die virtuelle Maschine durchzureichen, wofür zusätzlich das VirtualBox Extension Pack installiert werden musste, da der eingebaute Bluetooth-Chip des Host-Systems standardmäßig vom Host belegt wird und erst durch eine gezielte Freigabe für die virtuelle Maschine nutzbar gemacht werden konnte.
+Für das Beschreiben der Zieladresse im Controller kam das Programm SixaxisPairTool zum Einsatz \cite{SixaxisPairTool}. Da dieses Programm teilweise über inoffizielle, unseriöse Quellen verbreitet wird, wurde der Download aus Sicherheitsgründen zunächst innerhalb einer virtuellen Maschine durchgeführt, um ein mögliches Malware-Risiko auszuschließen.
+ Für die eigentliche Kopplung des Controllers wurde zunächst versucht, das Bluetooth-Signal des Controllers direkt an die virtuelle Maschine durchzureichen, wofür zusätzlich das VirtualBox Extension Pack installiert werden musste, da der eingebaute Bluetooth-Chip des Host-Systems standardmäßig vom Host belegt wird und erst durch eine gezielte Freigabe für die virtuelle Maschine nutzbar gemacht werden konnte.
 
-Nachdem diese Bluetooth-Weiterleitung nach einigem Aufwand erfolgreich eingerichtet worden war, stellte sich im weiteren Verlauf heraus, dass für das eigentliche Beschreiben und Auslesen der Ziel-MAC-Adresse über SixaxisPairTool lediglich eine USB-Verbindung zum Controller notwendig ist. Die gesamte, aufwendig eingerichtete Bluetooth-Durchreichung an die virtuelle Maschine , wäre für diesen Zweck nicht erforderlich gewesen. Mit der USB-Verbindung konnte die Ziel-MAC-Adresse des Controllers erfolgreich auf die Adresse des ESP32 umgeschrieben werden. Dieser Vorgang musste im späteren Projektverlauf ein zweites Mal wiederholt werden, nachdem einer der beiden im Projekt eingesetzten ESP32 einen Defekt erlitten hatte und durch ein neues Board mit einer abweichenden MAC-Adresse ersetzt wurde
+Nachdem diese Bluetooth-Weiterleitung nach einigem Aufwand erfolgreich eingerichtet worden war, stellte sich im weiteren Verlauf heraus, dass für das eigentliche Beschreiben und Auslesen der Ziel-MAC-Adresse über SixaxisPairTool lediglich eine USB-Verbindung zum Controller notwendig ist.
+ Die gesamte, aufwendig eingerichtete Bluetooth-Durchreichung an die virtuelle Maschine , wäre für diesen Zweck nicht erforderlich gewesen. 
+ Mit der USB-Verbindung konnte die Ziel-MAC-Adresse des Controllers erfolgreich auf die Adresse des ESP32 umgeschrieben werden. 
+ Dieser Vorgang musste im späteren Projektverlauf ein zweites Mal wiederholt werden, nachdem einer der beiden im Projekt eingesetzten ESP32 einen Defekt erlitten hatte und durch ein neues Board mit einer abweichenden MAC-Adresse ersetzt wurde
 
-\subsection{Werteverarbeitung und Sollwert-Manipulation  (geschrieben von Lorenz) }
+\subsection{Werteverarbeitung und Sollwert-Manipulation  (Schenkel) }
 \label{subsec:ps4_werteverarbeitung}
 
-Die vom Controller empfangenen Werte einer einzelnen Joystick-Achse liegen in einem Bereich von -128 bis +127. Solange keine Verbindung zum Controller besteht, gibt die Funktion, die den Winkel liefert, eine Null zurück. Da der Joystick in der Ruhelage teils minimale, nicht vollständig auf 0 kalibrierte Abweichungen liefert, wurde eine softwareseitige Deadzone eingerichtet.
+Die vom Controller empfangenen Werte einer einzelnen Joystick-Achse liegen in einem Bereich von -128 bis +127. 
+Solange keine Verbindung zum Controller besteht, gibt die Funktion, die den Winkel liefert, eine Null zurück. 
+Da der Joystick in der Ruhelage teils minimale, nicht vollständig auf 0 kalibrierte Abweichungen liefert, wurde eine softwareseitige Deadzone eingerichtet.
+Die außerhalb der Deadzone liegenden, gefilterten Wertebereiche des Joysticks werden anschließend über eine lineare Skalierungsfunktion auf den maximalen Neigungswinkel skaliert, den man per Fernsteuerung vorgeben darf. 
+Dieser Maximalwert wurde durch Tests ermittelt, um herauszufinden, was für den Roboter mechanisch möglich ist. Die skalierten Daten werden so direkt auf die Zielfunktionen gemappt und geben den Zielwinkel für die Bewegung vor. 
+Da der integrierte PID-Regler des Roboters auf einen Zielwinkel von 0 Grad (Balancierpunkt) regelt, lässt sich über diese direkte Manipulation des Sollwerts eine intuitive Fahrsteuerung realisieren.
 
-Die außerhalb der Deadzone liegenden, gefilterten Wertebereiche des Joysticks werden anschließend über eine lineare Skalierungsfunktion auf den maximalen Neigungswinkel skaliert, den man per Fernsteuerung vorgeben darf. Dieser Maximalwert wurde durch Tests ermittelt, um herauszufinden, was für den Roboter mechanisch möglich ist. Die skalierten Daten werden so direkt auf die Zielfunktionen gemappt und geben den Zielwinkel für die Bewegung vor. Da der integrierte PID-Regler des Roboters auf einen Zielwinkel von 0 Grad (Balancierpunkt) regelt, lässt sich über diese direkte Manipulation des Sollwerts eine intuitive Fahrsteuerung realisieren.
 
-
-\section{Logger-System (geschrieben Lorenz)}
+\section{Logger-System }
 \label{sec:logger_system}
 
-\subsection{FreeRTOS-Queue-Architektur (geschrieben Lorenz)}
+\subsection{FreeRTOS-Queue-Architektur (Schenkel)}
 \label{subsec:logger_queue}
 
-Da das eingesetzte Echtzeitbetriebssystem FreeRTOS keine harten Speichergrenzen zwischen den einzelnen Tasks erzwingt, teilen sich alle Tasks des Systems standardmäßig denselben globalen Arbeitsspeicher. Im Gegensatz zu Prozessen unter klassischen Desktop-Betriebssystemen, dienormalerweise über einen virtuellen Speicher voneinander getrennt sind, könnten FreeRTOS-Tasks daher grundsätzlich ohne Eingschränkung auf gemeinsame Variablen zugreifen. Um jedoch kritische Race Conditions sowie Dateninkonsistenzen beim gleichzeitigen Zugriff zu verhindern, wurde eine sichere , threadsichere Kommunikation über eine FreeRTOS-Queue realisiert.
+Da das eingesetzte Echtzeitbetriebssystem FreeRTOS keine harten Speichergrenzen zwischen den einzelnen Tasks erzwingt, teilen sich alle Tasks des Systems standardmäßig denselben globalen Arbeitsspeicher. 
+Im Gegensatz zu Prozessen unter klassischen Desktop-Betriebssystemen, dienormalerweise über einen virtuellen Speicher voneinander getrennt sind, könnten FreeRTOS-Tasks daher grundsätzlich ohne Eingschränkung auf gemeinsame Variablen zugreifen \cite{freertos_ug}.
+Um jedoch kritische Race Conditions sowie Dateninkonsistenzen beim gleichzeitigen Zugriff zu verhindern, wurde eine sichere , threadsichere Kommunikation über eine FreeRTOS-Queue realisiert.
 
-Während der Entwicklungsphase wurde vermutet, dass die Aufrufe von Serial.print() innerhalb der Tasks zu zeitlichen Verzögerungen im Regelkreis führen könnten, da die serielle Übertragung verhältnismäßig langsam ist und im Vergleich zur eigentlichen Regelberechnung viel Zeit benötigt. Da ein blockierungsfreier Betrieb des zeitkritischen PID-Reglers jedoch oberste Priorität hat, wurde diese mögliche Fehlerquelle durch einen asynchronen, non-blocking Ansatz umgangen.
+Während der Entwicklungsphase wurde vermutet, dass die Aufrufe von Serial.print() innerhalb der Tasks zu zeitlichen Verzögerungen im Regelkreis führen könnten, da die serielle Übertragung verhältnismäßig langsam ist und im Vergleich zur eigentlichen Regelberechnung viel Zeit benötigt. 
+Da ein blockierungsfreier Betrieb des zeitkritischen PID-Reglers jedoch oberste Priorität hat, wurde diese mögliche Fehlerquelle durch einen asynchronen, non-blocking Ansatz umgangen.
 
-Die Umsetzung fasst alle wichtigen Daten einer Log-Nachricht, also einen Zeitstempel, den Namen des jeweiligen Tasks und den eigentlichen Nachrichtentext, in einer gemeinsamen Struktur zusammen. Die Funktionen befüllt diese Struktur und schiebt sie in die FreeRTOS-Queue. Eine zusätzliche Wrapper-Funktion sorgt dafür, dass man Variablen ähnlich wie bei printf formatiert übergeben kann. Die Queue kann bis zu 100 Nachrichten aufnehmen. Der schreibende Task kopiert seine Daten hierbei in die Queue und setzt seine Ausführung ohne jegliche Wartezeit fort.
+Die Umsetzung fasst alle wichtigen Daten einer Log-Nachricht, also einen Zeitstempel, den Namen des jeweiligen Tasks und den eigentlichen Nachrichtentext, in einer gemeinsamen Struktur zusammen. 
+Die Funktionen befüllt diese Struktur und schiebt sie in die FreeRTOS-Queue. Eine zusätzliche Wrapper-Funktion sorgt dafür, dass man Variablen ähnlich wie bei printf formatiert übergeben kann. Die Queue kann bis zu 100 Nachrichten aufnehmen. Der schreibende Task kopiert seine Daten hierbei in die Queue und setzt seine Ausführung ohne jegliche Wartezeit fort.
 
 Es wurde bewusst auf einen Sicherheitsmechanismus verzichtet, der ein Volllaufen oder Überschreiben der Queue verhindert. Der einzige Anhaltspunkt für einen potenziellen Datenverlust ist die mitgegebene Systemzeit in den Ausgaben, anhand derer Lücken in der Chronologie identifiziert werden könnten. Da im Testbetrieb jedoch keine Kapazitätsprobleme oder Datenverluste auftraten, wurde dieser Zustand zugunsten wichtigerer Projektthemen vorerst im System belassen. Diese Einschränkung wird in Kapitel~10.1.2 bei den softwareseitigen Lessons Learned noch einmal kritisch reflektiert.
 
 
-\subsection{Non-Blocking Serial.print() (geschrieben Lorenz)}
+\subsection{Non-Blocking Serial.print() (Schenkel)}
 \label{subsec:nonblocking_serial}
 
-Da direkte Aufrufe von Serial.print() innerhalb eines zeitkritischen Tasks dessen Ausführung unmittelbar verzögern würden, wurde das gesamte serielle Logging konsequent in einen separaten LoggerTask ausgelagert (vgl. Kapitel~7.2.2). Der eigentliche, PID-Berechnungen durchführende ControlTask schreibt dabei ausschließlich in die in FreeRTOS-Queue und wartet zu keinem Zeitpunkt auf den Abschluss der vergleichsweise trägen seriellen Übertragung. Auf diese Weise ist die Ausführungsgeschwindigkeit des Regelkreises vollständig unabhängig von der Geschwindigkeit der seriellen Schnittstelle.
+Da direkte Aufrufe von Serial.print() innerhalb eines zeitkritischen Tasks dessen Ausführung unmittelbar verzögern würden, wurde das gesamte serielle Logging konsequent in einen separaten LoggerTask ausgelagert.
+Der eigentliche, PID-Berechnungen durchführende ControlTask schreibt dabei ausschließlich in die in FreeRTOS-Queue und wartet zu keinem Zeitpunkt auf den Abschluss der vergleichsweise trägen seriellen Übertragung. 
+Auf diese Weise ist die Ausführungsgeschwindigkeit des Regelkreises vollständig unabhängig von der Geschwindigkeit der seriellen Schnittstelle.
 
-\subsection{Task-Scheduling (geschrieben Lorenz)}
+\subsection{Task-Scheduling (Schenkel)}
 \label{subsec:logger_scheduling}
 
-Der LoggerTask wurde, wie in Tabelle~\ref{tab:freertos_tasks} dargestellt, mit einer niedrigeren Priorität als der ControlTask auf Core~0 eingeplant. Dadurch kommt der LoggerTask gezielt in den kurzen Ruhephasen zur Ausführung, die der ControlTask durch sein festes Abtastintervall von rund 10\,ms zwischen zwei aufeinanderfolgenden Regelzyklen aufweist. Auf diese Weise wird die andernfalls ungenutzte Prozessorzeit während dieser Wartephasen effizient für die serielle Ausgabe genutzt, ohne die Abtastrate des Regelkreises zu beeinträchtigen.
+Der LoggerTask wurde, wie in Tabelle~\ref{tab:freertos_tasks} dargestellt, mit einer niedrigeren Priorität als der ControlTask auf Core~0 eingeplant. 
+Dadurch kommt der LoggerTask gezielt in den kurzen Ruhephasen zur Ausführung, die der ControlTask durch sein festes Abtastintervall von rund 10\,ms zwischen zwei aufeinanderfolgenden Regelzyklen aufweist. 
+Auf diese Weise wird die andernfalls ungenutzte Prozessorzeit während dieser Wartephasen effizient für die serielle Ausgabe genutzt, ohne die Abtastrate des Regelkreises zu beeinträchtigen.
 
 \chapter{Integration und Systemtest}
 \label{ch:integration}

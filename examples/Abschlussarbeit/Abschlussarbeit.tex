@@ -22,6 +22,8 @@ DIV=15,BCOR=10mm, % Seitenlayout wie bei Koma-Script
 \usepackage{array}
 \usepackage{multirow}
 
+\usepackage{tabularx}
+
 
 
 \usepackage[format=hang,
@@ -266,7 +268,38 @@ Tabelle~\ref{tab:nichtfunktionale_anforderungen} fasst die definierten nicht-fun
 
 N10 wurde durch den Matlab/Simulink-Regelungsentwurf umgesetzt, in dem das Systemverhalten vorab simuliert und gewisse Erkenntnisse daraus mitgenommen wurden (vgl. Kapitel~\ref{ch:simulation}). 
 %  TODO: Budget genau aufschlüsseln
-Das Budget wurde nicht eingehalten, das lag daran, dass ein Akku, mehrere Motortreiber und ein ESP kaputt gingen.
+Das Budget wurde nicht eingehalten, das lag daran, dass ein Akku, mehrere Motortreiber und ein ESP kaputt gingen. Die genaue Aufschlüsselung ist in der \ref{tab:bestellliste} ersichtlich. 
+
+\begin{table}[h]
+    \centering
+    \caption{Übersicht der Komponenten und Anschaffungskosten}
+    \label{tab:komponenten_kosten}
+    \begin{tabular}{|c|l|c|r|r|}
+        \hline
+        \textbf{Pos.} & \textbf{Bezeichnung} & \textbf{Menge} & \textbf{Stückpreis} & \textbf{Gesamtpreis} \\
+        \hline
+        1 & 6s Lipo Akku 1300mAh 22.2V & 1 & 30,87 € & 30,87 € \\
+        \hline
+        2 & Pololu NEMA 17 Stepper Motor Bipolar & 2 & 12,99 € & 25,98 € \\
+        \hline
+        3 & Step down converter & 1 & 4,99 € & 4,99 € \\
+        \hline
+        4 & Reifen & 1 & 16,94 € & 16,94 € \\
+        \hline
+        5 & 4S Lipo Akku 1300 mAh 14.8V & 1 & 25,00 € & 25,00 € \\
+        \hline
+        6 & Esp 32-Wroom & 1 & 6,99 € & 6,99 € \\
+        \hline
+        7 & Motortreiber Tmc2209 & 2 & 5,40 € & 10,80 € \\
+        \hline
+        8 & Datenkabel & 1 & 1,99 € & 1,99 € \\
+        \hline
+        9 & Gewindestangen + muttern & 1 & 7,75 € & 7,75 € \\
+        \hline
+        \multicolumn{3}{|l|}{} & \textbf{Gesamt:} & \textbf{131,31 €} \\
+        \hline
+    \end{tabular}
+\end{table}
 
 \chapter{Systemkonzept und Architektur (Dauerer)}
 \label{ch:systemkonzept}
@@ -535,7 +568,7 @@ Am realen System mussten die Parameterwerte jedoch deutlich nachgeregelt werden,
 \subsection{CAD-Konstruktion und Iterationen (Schenkel, Dauerer)}
 \label{subsec:cad_iterationen}
 
-Vor dem eigentlichen Bau wurde eine Kon\-kur\-renz\-ana\-ly\-se durchgeführt, um 
+Vor dem eigentlichen Bau wurde eine Kon\-kur\-renz\-ana\-ly\-se durch\-geführt, um 
 bestehende Konzepte selbst\-ba\-lan\-cie\-ren\-der Roboter zu analysieren. Daraus 
 resultierend wurde ein eigener Entwurf realisiert, der die Kriterien Leichtbau, 
 Kos\-ten\-ef\-fi\-zi\-enz und strukturelle Stabilität erfüllt.

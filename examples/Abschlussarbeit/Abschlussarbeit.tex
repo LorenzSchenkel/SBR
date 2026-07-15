@@ -284,7 +284,7 @@ Tabelle~\ref{tab:nichtfunktionale_anforderungen} fasst die definierten nicht-fun
 
 N10 wurde durch den Matlab/Simulink-Regelungsentwurf umgesetzt, in dem das Systemverhalten vorab simuliert und gewisse Erkenntnisse daraus mitgenommen wurden (vgl. Kapitel~\ref{ch:simulation}). 
 %  TODO: Budget genau aufschlüsseln
-Das Budget wurde nicht eingehalten, das lag daran, dass ein Akku, mehrere Motortreiber und ein ESP kaputt gingen. Die genaue Aufschlüsselung ist in der \ref{tab:bestellliste} ersichtlich. 
+Das Budget wurde nicht eingehalten, das lag daran, dass ein Akku, mehrere Motortreiber und ein ESP kaputt gingen. Die genaue Aufschlüsselung ist in der \ref{tab:komponenten_kosten} ersichtlich. 
 
 \begin{table}[h]
     \centering
@@ -350,7 +350,7 @@ die Motordrehzahl so, dass der Roboter sich nach dem Zielwinkel ausrichtet. Wür
 verwenden, bliebe der Roboter zwar stabil, würde jedoch kontinuierlich von seiner Startposition wegdriften,
 da er sich zur Stabilisierung ständig minimal in eine Richtung neigen muss.
 
-Der äußere Regelkreis bekäpft dieses Problem, indem er die aktuelle Position des Roboters überwacht 
+Der äußere Regelkreis bekämpft dieses Problem, indem er die aktuelle Position des Roboters überwacht 
 und den Sollwinkel des inneren Reglers dynamisch anpasst. Die Ist-Position ist die zurückgelegte Strecke,
 die durch Abzählen der Schritte bestimmt wird. 
 Weicht der Roboter beispielsweise nach links von seiner Zielposition ab, gibt der Positions-Regler 
@@ -643,7 +643,7 @@ Durch einen Tausch mit einem zweiten MPU6050-Sensor konnte der Fehler letztlich 
 Um eine dauerhafte Lösung zu schaffen, wurde eine Lochrasterplatine genutzt, auf welcher der ESP32 sowie alle Leitungen fest verlötet wurden. Im Verlauf des Betriebs erlitt dieser ESP32 jedoch einen Defekt. Da angeschlossene Sensoren zwar nicht mit der 5,V-Spannungsversorgung verbunden waren, aber über die verbleibenden Signalpins angeschlossen blieben, zogen sie ihren Strom vermutlich über die GPIO-Pins. Dies führte zu einer Überschreitung der maximal zulässigen Ausgangsleistung des Mikrocontrollers. Um den aufwendigen Prozess des Entlötens bei einem erneuten Defekt zu vermeiden, wurde beim nachfolgenden Aufbau eine weibliche Buchsenleiste auf die Platine gelötet. Der ESP32 ist dadurch steckbar ausgeführt und kann bei Bedarf schnell und unkompliziert ausgetauscht werden. 
 
 
-\subsection{Sensorik (MPU6050, HC-SR04) (Niklas)}
+\subsection{Sensorik (MPU6050, HC-SR04) (Stiegler)}
 \label{subsec:sensorik_hardware}
 
 Für das Messen der Neigung des Roboters wurde das GY-521-Board mit dem MPU6050-Modul verwendet. Es besteht aus einem 3-Achsen-Gyroskop in Verbindung mit einem 3-Achsen-Be\-schleu\-ni\-gungs\-sen\-sor und ist über den I2C-Bus mit dem ESP32 verbunden (zur soft\-ware\-sei\-ti\-gen Auswertung siehe Kapitel~\ref{sec:sensorintegration}). Der Sensor wurde bewusst auf der obersten Ebene des dreistöckigen Chassis montiert. Da die Auslenkungen dort oben am stärksten sind, liefert die MPU an dieser Position die deutlichsten Messwerte für die spätere Regelung \cite{az-deliveryGY521}.
@@ -704,9 +704,9 @@ Zudem wurde vor jeder Inbetriebnahme eine Durchgangsprüfung durchgeführt, um s
 Im Rahmen dessen wurde schließlich das gesamte CNC-Shield komplett durchgemessen, um defekte Leitungen auszuschließen. 
 Nach dem erneuten Tauschen gegen wiederum neue Motortreiber funktionierte der Code endlich, und die Motoren reagierten auf die Neigung.
 
-\subsection{Spannungseinbruch unter Motorlast (Schenkel, Stiegler, Stiegler)}
+\subsection{Spannungseinbruch unter Motorlast (Schenkel, Stiegler, Dauerer)}
 \label{subsec:spannungseinbruch}
-Jedoch reagierten die Motoren um den Nullpunkt herum nicht so wie erwartet. Die Ursache wurde fälschlicherweise zunächst wiedTODO MPU Hcsr04 Bilder direkt bei den Motoren oder den Motortreibern vermutet. 
+Jedoch reagierten die Motoren um den Nullpunkt herum nicht so wie erwartet. Die Ursache wurde fälschlicherweise zunächst direkt bei den Motoren oder den Motortreibern vermutet. 
 Da auf dem CNC-Shield bereits große Pufferkondensatoren verbaut waren, wurde ein Einbruch der Spannungsversorgung der Motortreiber anfangs nicht vermutet. Daraufhin wurden weitere mögliche Ursachen für das Problem untersucht.
 Als potenzielle Fehlerquellen wurden ein falsch eingestellter Referenzstrom ($V_{\text{ref}}$), eine fehlerhafte Microstep-Konfiguration, zeitliche Probleme im Code sowie ein ungeeigneter Motor mit möglichen Schrittverlusten aufgrund von Trägheit vermutet. 
 Um diese Vermutungen zu prüfen, wurden diverse Maßnahmen ergriffen: Der Wert für $V_{\text{ref}}$ wurde testweise verändert, während die Temperatur der Treiber live mit einer Wärmebildkamera überwacht wurde, um Schäden zu vermeiden. 
@@ -757,13 +757,6 @@ Ein zusätzlicher Versuch, diese verbleibenden Störungen durch das parallele An
 Obwohl das System mit dem kleineren $10\ \mu\text{F}$ Kondensator im Grundbetrieb funktionierte, zeigten sich im späteren Verlauf immer wieder sporadische Störungen bei der Spannungsstabilität.
 
 \begin{figure}[H]
-    \centering
-    \includegraphics[width=0.6\textwidth,keepaspectratio,trim={0 60pt 0 60pt},clip]{../../Quellen/MPU Kondensator.jpg}
-    \caption{Kondensator zur Spannungspufferung direkt an der MPU6050}
-    \label{fig:mpu_kondensator}
-\end{figure}
-
-\begin{figure}[htbp]
     \centering
     \includegraphics[width=0.6\textwidth,keepaspectratio,trim={0 60pt 0 60pt},clip]{../../Quellen/MPU Kondensator.jpg}
     \caption{Kondensator zur Spannungspufferung direkt an der MPU6050}
@@ -911,7 +904,7 @@ Eine anschließende Messung der STEP- und DIR-Signale direkt am Ausgang des CNC-
 
 Nach dem ESP32-Austausch drehten sich zwar beide Motoren, liefen aber nicht sauber an und ruckelten unkontrolliert vor und zurück. Da ein Motor aus einem Altprojekt, den wir zum Vergleich angeschlossen haben, sich korrekt drehte, konnten wir den Fehler auf hinter dem Treiberausgang eingrenzen und haben mit dem Durchgangsprüfer am Kabel und den Motoren die Spulenzugehörigkeit der einzelnen Anschlüsse (1A, 1B, 2A, 2B) ermittelt. Dabei zeigte sich, dass das mitgelieferte Verbindungskabel die Spulenanschlüsse gegenüber der Pinbelegung des CNC-Shields vertauscht führte. Nach dem Korrigieren der Kabelbelegung passend zur korrekten Spulenzuordnung liefen die beiden Motoren wie erwartet.
 
-\subsection{Kurzschluss und Treiberwechse (Dauerer, Stiegler, Schenkel)}
+\subsection{Kurzschluss und Treiberwechsel (Dauerer, Stiegler, Schenkel)}
 \label{subsec:motor_kurzschluss}
 
 Im weiteren Projektverlauf haben wir für den Betrieb ohne das Labornetzteil einen 6S-LiPo mit 22,2\,V Nennspannung angeschlossen. Der damals genutzte A4988 Treiber ist zwar grundsätzlich für Spannungen in diesem Bereich ausgelegt, wir hatten jedoch einen gebrauchten Treiber aus einem Altprojekt verwendet, der wahrscheinlich schon vorgeschädigt war. Der Treiber ist beim Anschließen des Akkus durchgebrannt und hat einen Kurzschluss verursacht.
@@ -1339,7 +1332,7 @@ Eine der wichtigsten praktischen Erkenntnisse des Projekts war der Umgang mit el
 
 Die größte technische Erkenntnis des Projekts ist, wie wichtig die Trennung von Logik- und Leistungsspannung ist. Wie in den Kapiteln~\ref{subsec:spannungseinbruch} bis~\ref{subsec:galvanische_trennung} beschrieben, wurden ESP32, Sensorik und Schrittmotoren anfangs über dieselbe Spannungsquelle versorgt. Getrennt funktionierten alle Komponenten problemlos. Zusammen führte das aber zu einem langanhaltenden Fehler im gesamten Projekt. Erst die Aufteilung in zwei getrennte Spannungskreise löste das Problem.
 
-\subsection{Neue Bauteile statt ungeprüfter Bestandsteile (Niklas)}
+\subsection{Neue Bauteile statt ungeprüfter Bestandsteile (Stiegler)}
 \label{subsec:lessons_bauteile}
 
 Im Projektverlauf zeigte sich wiederholt, dass der Einsatz von bereits vorhandenen Bauteilen aus dem Bestand ein hohes Risiko für Fehler sind. Ein Beispiel hierfür ist der Kurzschluss, ausgelöst durch A4988 Motortreiber aus dem Bestand (vgl. Kapitel~\ref{subsec:motor_kurzschluss})

@@ -23,6 +23,8 @@ DIV=15,BCOR=10mm, % Seitenlayout wie bei Koma-Script
 \usepackage{multirow}
 \usepackage{float}
 
+\usepackage{tabularx}
+
 
 
 \usepackage[format=hang,
@@ -54,8 +56,8 @@ position=bottom]{caption}
 \author{Felix Dauerer, Lorenz Schenkel, Niklas Stiegler}
 \department{Informatik und Mathematik}
 \studyprogramme{Technische Informatik}
-\startingdate{1.\,November 2088}
-\closingdate{11.\,Dezember 2089}
+\startingdate{15.\,März 2026}
+\closingdate{16.\,Juli 2026}
 \firstadvisor{Prof. Dr. Alexander Metzner}
 \secondadvisor{M. Sc. Matthias Altmann}
 
@@ -171,18 +173,33 @@ Die Absprachen im Team liefen über regelmäßige persönliche Treffen und fortl
 \label{subsec:versionsverwaltung}
 Um Änderungen im Code nachzuvollziehen zu können und eventuell alte Speicherstände wiederherstellen zu können, wurde ein GitLab Repository verwendet, welches von den Organisatoren bereitgestellt und von Anfang an des Projektstartes genutzt wurde. 
 
+\section{Erstellung des Plakates}
+\label{sec:plakat}
+\subsection{Konzeption und Werkzeugeinarbeitung (Schenkel)}
+Zu Beginn des Projekts wurde der Grundaufbau des Posters festgelegt. Das Plakat sollte die Kernziele, die grundlegenden Anforderungen und eine Gesamtdarstellung des Projekts übersichtlich aufzeigen. Für die ersten Schritte wurde das Open-Source-Programm Inkscape gewählt. Die Einarbeitung in die Software umfasste im Wesentlichen das Kennenlernen der Standardwerkzeuge und der Pfadbearbeitung.
+
+\subsection{KI-gestützte Bildgenerierung (Schenkel)}
+Um das Poster visuell aufzuwerten und das angestrebte System zu illustrieren, wollten wir KI-generiertes Bild erstellen.
+
+Zunächst wurden Versuche mit der Bild-KI von Canva durchgeführt. Trotz mehrfacher, detaillierter Anpassungen der Prompts lieferte die KI kein brauchbares Ergebnis. Unabhängig von der Formulierung wiesen die generierten Bilder immer eine starke Ähnlichkeit mit einem Segway auf, auf dem ein Ultraschallsensor als Kopf platziert war.
+
+Aufgrund dessen wurde zur Bildgenerierungs-KI von Google gewechselt, die direkt bessere Ergebnisse lieferte. Damit gelang es, eine realistische Darstellung des Systems zu erzeugen, die anschließend in eine abstrakte Grafik umgewandelt werden konnte.
+
+\subsection{Optimierung und Finalisierung (Stiegler)}
+Die finale Zusammenstellung und das Layout wurden anschließend mit Adobe Illustrator umgesetzt. Im Zuge dessen wurde das Werplakat auch direkt auf Basis des erhaltenen Feedbacks und der Kritik angepasst. Nach der erfolgreichen Umsetzung aller Optimierungspunkte wurde das Dokument in ein druckfähiges PDF-Format exportiert.
+
 
 \section{Aufbau der Dokumentation (Schenkel)}
 \label{sec:aufbau_dokumentation}
 Diese Dokumentation besteht aus neun Kapiteln, die den Ablauf des Projekts zeigen. Nach dieser Einleitung werden in Kapitel \ref{ch:anforderungen} die Anforderungen an den Roboter festgelegt. In Kapitel \ref{ch:systemkonzept} wird das Systemkonzept erklärt und Kapitel \ref{ch:designentscheidungen} zeigt die wichtigsten Designentscheidungen. Kapitel \ref{ch:simulation} befasst sich mit der Regelung in Matlab/Simulink. Danach folgen in den Kapiteln \ref{ch:hardware} und \ref{ch:integration} die Details zur Hardware und Integration. Die Fehlersuche wird in Kapitel \ref{sec:fehlersuche_methodik} beschrieben, während Kapitel \ref{ch:tests} die Testergebnisse zeigt. Zum Schluss zieht Kapitel \ref{sec:fazit} ein Fazit und blickt auf den Projektverlauf zurück.
 
 
-\chapter{Anforderungsspezifikation (geschrieben von Felix)}
+\chapter{Anforderungsspezifikation (Dauerer)}
 \label{ch:anforderungen}
 
 Dieses Kapitel dokumentiert die verbindlichen Anforderungen an das Self-Balancing-Robot-System. Die hier definierten Anforderungen bilden die Grundlage für Design, Implementierung und Test des Systems.
 
-\section{Funktionale Anforderungen}
+\section{Funktionale Anforderungen (Stiegler, Dauerer)}
 \label{sec:funktionale_anforderungen}
 
 Tabelle~\ref{tab:funktionale_anforderungen} listet die zentralen funktionalen Anforderungen an das System auf.
@@ -216,7 +233,7 @@ Tabelle~\ref{tab:funktionale_anforderungen} listet die zentralen funktionalen An
 
 Die Umsetzung und Verifikation dieser Anforderungen wird in den entsprechenden Fachkapiteln behandelt: F10 und F30 (vgl. Kapitel~\ref{sec:pid_regelung} und~\ref{sec:balancierverhalten}), F40 und F50 (vgl. Kapitel~\ref{sec:ps4_integration} und~\ref{sec:test_fahrsteuerung}), F60 (vgl. Kapitel~\ref{subsec:hcsr04}), F70 (vgl. Kapitel~\ref{sec:energieversorgung} und~\ref{sec:test_energieversorgung}) sowie F80 (vgl. Kapitel~\ref{subsec:motor_grundansteuerung} und~\ref{sec:test_notaus}).
 
-\section{Optionale Anforderungen}
+\section{Optionale Anforderungen (Stiegler, Dauerer)}
 \label{sec:optionale_anforderungen}
 
 Zusätzlich zu den verbindlichen funktionalen Anforderungen wurden optionale, erweiternde Anforderungen definiert, deren Umsetzung nur bei ausreichenden zeitlichen Ressourcen vorgesehen war (vgl. Tabelle~\ref{tab:optionale_anforderungen}).
@@ -243,7 +260,7 @@ Zusätzlich zu den verbindlichen funktionalen Anforderungen wurden optionale, er
 Angesichts des deutlich höheren als ursprünglich geplanten Zeitaufwands für die Kernfunktionalität des Systems (vgl. Kapitel~\ref{subsec:lessons_zeitplanung}) konnten die optionalen Anforderungen K10 bis K40 nicht mehr umgesetzt werden. 
 Sie stellen jedoch sinnvolle Ansatzpunkte für eine mögliche Weiterentwicklung dar.
 
-\section{Nicht-funktionale Anforderungen}
+\section{Nicht-funktionale Anforderungen (Stiegler, Dauerer)}
 \label{sec:nichtfunktionale_anforderungen}
 
 Tabelle~\ref{tab:nichtfunktionale_anforderungen} fasst die definierten nicht-funktionalen Anforderungen zusammen.
@@ -267,15 +284,46 @@ Tabelle~\ref{tab:nichtfunktionale_anforderungen} fasst die definierten nicht-fun
 
 N10 wurde durch den Matlab/Simulink-Regelungsentwurf umgesetzt, in dem das Systemverhalten vorab simuliert und gewisse Erkenntnisse daraus mitgenommen wurden (vgl. Kapitel~\ref{ch:simulation}). 
 %  TODO: Budget genau aufschlüsseln
-Das Budget wurde nicht eingehalten, das lag daran, dass ein Akku, mehrere Motortreiber und ein ESP kaputt gingen.
+Das Budget wurde nicht eingehalten, das lag daran, dass ein Akku, mehrere Motortreiber und ein ESP kaputt gingen. Die genaue Aufschlüsselung ist in der \ref{tab:bestellliste} ersichtlich. 
 
-\chapter{Systemkonzept und Architektur (geschrieben von Felix)}
+\begin{table}[h]
+    \centering
+    \caption{Übersicht der Komponenten und Anschaffungskosten}
+    \label{tab:komponenten_kosten}
+    \begin{tabular}{|c|l|c|r|r|}
+        \hline
+        \textbf{Pos.} & \textbf{Bezeichnung} & \textbf{Menge} & \textbf{Stückpreis} & \textbf{Gesamtpreis} \\
+        \hline
+        1 & 6s Lipo Akku 1300mAh 22.2V & 1 & 30,87 € & 30,87 € \\
+        \hline
+        2 & Pololu NEMA 17 Stepper Motor Bipolar & 2 & 12,99 € & 25,98 € \\
+        \hline
+        3 & Step down converter & 1 & 4,99 € & 4,99 € \\
+        \hline
+        4 & Reifen & 1 & 16,94 € & 16,94 € \\
+        \hline
+        5 & 4S Lipo Akku 1300 mAh 14.8V & 1 & 25,00 € & 25,00 € \\
+        \hline
+        6 & Esp 32-Wroom & 1 & 6,99 € & 6,99 € \\
+        \hline
+        7 & Motortreiber Tmc2209 & 2 & 5,40 € & 10,80 € \\
+        \hline
+        8 & Datenkabel & 1 & 1,99 € & 1,99 € \\
+        \hline
+        9 & Gewindestangen + muttern & 1 & 7,75 € & 7,75 € \\
+        \hline
+        \multicolumn{3}{|l|}{} & \textbf{Gesamt:} & \textbf{131,31 €} \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\chapter{Systemkonzept und Architektur (Dauerer)}
 \label{ch:systemkonzept}
 
 Dieses Kapitel beschreibt das grundlegende regelungstechnische Konzept des Self-Balancing Robots 
 sowie die Logik und den strukturellen Aufbau der Gesamtarchitektur.
 
-\section{Physikalisches Grundprinzip}
+\section{Physikalisches Grundprinzip (Dauerer)}
 \label{sec:invertiertes_pendel}
 
 Das dem Roboter zugrundeliegende physikalische Modell ist das eines invertierten Pendels 
@@ -292,7 +340,7 @@ Stab nach links kippt, muss die Hand auch nach links nachgezogen werden,
 um ihn wieder aufzurichten. Außerdem wirkt beim Fahren das Reaktionsmoment der Motoren. Das Drehen der Räder nach links erzeugt eine Gegenkraft, die zusätzlich hilft den Roboter wieder
 aufzurichten.
 
-\section{Regelungskonzept}
+\section{Regelungskonzept (Dauerer)}
 \label{sec:regelungskonzept}
 
 Zur Stabilisierung des invertierten Pendels wird ein kaskadierter Regelkreis genutzt, der aus einem 
@@ -314,7 +362,7 @@ Dieses Kas\-ka\-den\-prin\-zip wurde im Rahmen der Simulation erarbeitet und val
 (vgl. Kapitel~\ref{subsec:simulink_positions_pid}) und anschließend im realen System 
 umgesetzt (vgl. Kapitel~\ref{sec:pid_regelung}).
 
-\section{Systemarchitektur im Überblick}
+\section{Systemarchitektur im Überblick (Dauerer)}
 \label{sec:systemarchitektur_ueberblick}
 
 Das Gesamtsystem gliedert sich konzeptionell in drei Ebenen, die eng miteinander zusammenarbeiten.
@@ -364,7 +412,7 @@ Dadurch, dass der Roboter möglichst gut balancieren soll, war es naheliegend, h
 Aus diesem Grund wurden bipolare Schrittmotoren gegenüber klassischen DC-Motoren bevorzugt. Die Wahl fiel auf Schrittmotoren, darüber hinaus bieten diese in Kombination mit den Treibern die Möglichkeit die Auflösung mithilfe von Mikroschritten (Microsteps) flexibel anzupassen. 
 Zudem war keine zusätzliche Hardware wie ein externer Encoder nötig, welcher in der Konstruktion hätte berücksichtigt werden müssen. Die konkret eingesetzten Motoren vom Typ Pololu NEMA17 sowie deren Ansteuerung über die Motortreiber A4988 und TMC2209 werden in Kapitel \ref{subsec:motor_grundansteuerung} detailliert beschrieben.
 
-\chapter{Simulation und Modellierung (geschrieben von Felix)}
+\chapter{Simulation und Modellierung (Dauerer, Stiegler)}
 \label{ch:simulation}
 
 Um offene Fragen wie die optimale Reifengröße, die benötigte Motorstärke, die optimale Lage des Schwerpunkts und ob ein PID-Regler die richtige Wahl für die Balance ist, bereits vor der Hardwarebeschaffung zu klären, wurde das System vorab in Matlab/Simulink simuliert.
@@ -374,7 +422,7 @@ Diese Simulation diente dazu, das Verhalten des Roboters unter verschiedenen Bed
 \section{Matlab/Simulink Grundmodell}
 \label{sec:simulink_grundmodell}
 
-\subsection{Modellierung der Physik (Gravitation, Reifen, Achsen, Körper)}
+\subsection{Modellierung der Physik (Gravitation, Reifen, Achsen, Körper) (Stiegler, Dauerer)}
 \label{subsec:simulink_physik}
 
 Mittels der Simulation entstand ein physikalisches Modell des Roboters in Simulink. Den Körper des Roboters bildet dabei ein BrickSolid mit einstellbarem Gewicht und Schwerpunkt. Die beiden Reifen sind über Revolute Joints angebunden, die Rotationen um ihre Achse erlauben, und das Motordrehmoment ist auf 0,55\,Nm begrenzt (Stärke der Nema17 Steppermotoren). Gravitation und das grundlegende mechanische Umfeld stammen aus den Standard-Mechanik-Blöcken, die Simulink bei der Erstellung eines neuen Projekts bereitstellt.
@@ -382,7 +430,7 @@ Mittels der Simulation entstand ein physikalisches Modell des Roboters in Simuli
 
 Um den Modellierungsaufwand anfangs überschaubar zu halten, wurde bewusst mit einem vereinfachten Modell begonnen. Zusätzliche Eigenschaften wie Reifendrift und Verformung, Luftwiderstand oder Sensorrauschen wurden erst in späteren Erweiterungen hinzugefügt, nachdem das Grundmodell funktionierte. Diese Erweiterungen werden in den kommenden Abschnitten beschrieben.
 
-\subsection{Neigungs-PID-Regler}
+\subsection{Neigungs-PID-Regler (Dauerer, Stiegler)}
 \label{subsec:simulink_neigungs_pid}
 Um einen PID-Regelkreis in Simulink zu realisieren, dient der Neigungswinkel des Roboters als zentrale Regelgröße. Erfasst wird er über einen Transform Sensor-Block, der zwischen dem World Frame und dem Ausgang des Brick Solid positioniert ist und die aktuelle Neigung des Roboters liefert. Ein nachgeschalteter PS-Simulink Converter wandelt diesen Wert in numerische Größen um, außerdem wird er in Grad umgerechnet.
 
@@ -429,7 +477,7 @@ Die deutliche Abweichung zu den final verwendeten PID-Werten lässt sich neben F
 \end{table}
 
 
-\subsection{Erste Erkenntnisse aus der Simulation}
+\subsection{Erste Erkenntnisse aus der Simulation (Dauerer, Stiegler)}
 \label{subsec:simulink_dimensionierung}
 
 Ein zentraler Nutzen des Simulink-Modells lag darin, bereits vor der Hardwarebestellung kritische Designentscheidungen treffen zu können. Zu klären waren insbesondere, ob die ausgewählten Motoren ausreichend Drehmoment liefern, welche Reifengröße sich am besten eignet, wo der Schwerpunkt des Roboters liegen sollte und ob ein PID-Regler für die Stabilisierung grundsätzlich geeignet ist.
@@ -444,12 +492,12 @@ Als Konsequenz daraus wurde die Position des Schwerpunkts zumindest auf oberhalb
 
 Insgesamt bestätigte die Simulation, dass die gewählte Hardware-Konfiguration grundsätzlich funktionieren würde und dass ein PID-basierter Ansatz zur Stabilisierung des Roboters geeignet ist. Die Simulation ermöglichte damit eine fundierte Kom\-po\-nen\-ten\-aus\-wahl vor der Be\-schaf\-fungs\-pha\-se.
 
-\section{Erweiterte Simulink-Modellierung}
+\section{Erweiterte Simulink-Modellierung (Dauerer, Stiegler)}
 \label{sec:simulink_erweitert}
 
 Nach Fertigstellung des Grundmodells wurde die Simulation in mehreren Schritten um zusätzliche, realitätsnähere Effekte erweitert, um die Aussagekraft der gewonnenen Erkenntnisse für den späteren realen Betrieb weiter zu erhöhen.
 
-\subsection{Störfaktoren: Luftwiderstand und Rauschen}
+\subsection{Störfaktoren: Luftwiderstand und Rauschen (Dauerer)}
 \label{subsec:simulink_rauschen}
 
 In einem ersten Erweiterungsschritt wurde das Grundmodell um zwei wesentliche Störgrößen erweitert, um die Simulation realitätsnäher zu gestalten.
@@ -460,7 +508,7 @@ Zusätzlich wird der simulierte Neigungswinkel mit einem Rauschsignal überlager
 
 Der Einfluss des Luftwiderstands auf das Regelverhalten erwies sich als sehr gering und hatte kaum messbare Auswirkungen auf die Stabilität. Das Sensorrauschen hingegen führte zu einer spürbaren Instabilität des Roboters. Der Regler kam nie vollständig zur Ruhe, sondern korrigierte permanent leichte Abweichungen vom Sollwert. Diese Erkenntnis führte zur Entscheidung, am realen System anfangs einen Medianfilter über die letzten drei Sensorwerte einzusetzen.
 
-\subsection{Testen der Stabilität}
+\subsection{Testen der Stabilität (Stiegler, Dauerer)}
 \label{subsec:simulink_stoergroessen}
 
 Zur Überprüfung der Robustheit der PID-Regelung wurde das Simulink-Modell unter zwei verschiedenen Störszenarien getestet. Im ersten Szenario startet der Roboter mit einer definierten Anfangsneigung. Über einen Transform-Block wird eine initiale Neigung von 10 bis 15~Grad erzeugt, die der Regler beim Simulationsstart ausgleichen muss. Im zweiten Szenario wird der Roboter während des Betriebs angestoßen, indem über einen Pulse-Generator-Block und einen External-Force-Block gezielte Impulse von bis zu 5~Nm auf den obersten Punkt des Roboters einwirken.
@@ -476,7 +524,7 @@ stabilisieren kann, jedoch keine Kontrolle über die absolute Position
 des Roboters bietet. Dies führte zur Entwicklung 
 einer kaskadierten Regelstruktur mit einem zusätzlichen Positions-PID-Regler.
 
-\subsection{Positions-PID-Entwicklung}
+\subsection{Positions-PID-Entwicklung (Dauerer)}
 \label{subsec:simulink_positions_pid}
 
 Da der Roboter trotz erfolgreicher Stabilisierung kontinuierlich von seiner 
@@ -520,7 +568,7 @@ Für den Positions-PID-Regler ergaben sich in der Simulation folgende Parameter:
 \end{table}
 
 Mit dieser Konfiguration konnte in der Simulation der kontinuierliche Positionsdrift eliminiert und nach starken Kraftstößen zuverlässig zur Startposition zurückgefahren werden. Diese Werte dienten später als Startpunkt für das reale Hardwaretuning des Positions-PID-Reglers (vgl. Kapitel~\ref{subsec:positions_pid_integration}).
-\section{Übertragung der Erkenntnisse auf das reale System}
+\section{Übertragung der Erkenntnisse auf das reale System (Stiegler, Dauerer)}
 \label{sec:simulink_transfer}
 
 Aus der Simulation resultierten konkrete Entscheidungen für den realen Aufbau: Als Reifengröße wurden die kleineren Räder mit 6,5~cm Durchmesser gewählt, der Schwerpunkt wurde bewusst im oberen Bereich des Chassis positioniert und als Regelstruktur kam eine Kaskadenregelung aus Neigungs- und Positions-PID zum Einsatz. Die in den Tabellen~\ref{tab:pid_neigung_sim} und~\ref{tab:pid_position_sim} ermittelten Parameter flossen als Startwerte in die Implementierung am ESP32 ein (vgl. Kapitel~\ref{subsec:neigung_pid_impl} und~\ref{subsec:positions_pid_integration}).
@@ -536,7 +584,7 @@ Am realen System mussten die Parameterwerte jedoch deutlich nachgeregelt werden,
 \subsection{CAD-Konstruktion und Iterationen (Schenkel, Dauerer)}
 \label{subsec:cad_iterationen}
 
-Vor dem eigentlichen Bau wurde eine Kon\-kur\-renz\-ana\-ly\-se durchgeführt, um 
+Vor dem eigentlichen Bau wurde eine Kon\-kur\-renz\-ana\-ly\-se durch\-geführt, um 
 bestehende Konzepte selbst\-ba\-lan\-cie\-ren\-der Roboter zu analysieren. Daraus 
 resultierend wurde ein eigener Entwurf realisiert, der die Kriterien Leichtbau, 
 Kos\-ten\-ef\-fi\-zi\-enz und strukturelle Stabilität erfüllt.
@@ -595,7 +643,7 @@ Durch einen Tausch mit einem zweiten MPU6050-Sensor konnte der Fehler letztlich 
 Um eine dauerhafte Lösung zu schaffen, wurde eine Lochrasterplatine genutzt, auf welcher der ESP32 sowie alle Leitungen fest verlötet wurden. Im Verlauf des Betriebs erlitt dieser ESP32 jedoch einen Defekt. Da angeschlossene Sensoren zwar nicht mit der 5,V-Spannungsversorgung verbunden waren, aber über die verbleibenden Signalpins angeschlossen blieben, zogen sie ihren Strom vermutlich über die GPIO-Pins. Dies führte zu einer Überschreitung der maximal zulässigen Ausgangsleistung des Mikrocontrollers. Um den aufwendigen Prozess des Entlötens bei einem erneuten Defekt zu vermeiden, wurde beim nachfolgenden Aufbau eine weibliche Buchsenleiste auf die Platine gelötet. Der ESP32 ist dadurch steckbar ausgeführt und kann bei Bedarf schnell und unkompliziert ausgetauscht werden. 
 
 
-\subsection{Sensorik (MPU6050, HC-SR04) (Niklas)TODO MPU Hcsr04 Bild}
+\subsection{Sensorik (MPU6050, HC-SR04) (Niklas)}
 \label{subsec:sensorik_hardware}
 
 Für das Messen der Neigung des Roboters wurde das GY-521-Board mit dem MPU6050-Modul verwendet. Es besteht aus einem 3-Achsen-Gyroskop in Verbindung mit einem 3-Achsen-Be\-schleu\-ni\-gungs\-sen\-sor und ist über den I2C-Bus mit dem ESP32 verbunden (zur soft\-ware\-sei\-ti\-gen Auswertung siehe Kapitel~\ref{sec:sensorintegration}). Der Sensor wurde bewusst auf der obersten Ebene des dreistöckigen Chassis montiert. Da die Auslenkungen dort oben am stärksten sind, liefert die MPU an dieser Position die deutlichsten Messwerte für die spätere Regelung \cite{az-deliveryGY521}.
@@ -613,7 +661,7 @@ Zur Vermeidung von Kollisionen wurden zwei HC-SR04 Ul\-tra\-schall\-sen\-so\-ren
 
 Alle Sensoren werden mit 5V Betriebsspannung betrieben \cite{az-deliveryGY521}, \cite{reicheltHCSR04_Datasheet}.
 
-\subsection{Motorwahl und Treiber (Schenkel)}
+\subsection{Motorwahl und Treiber (Schenkel, Stiegler, Dauerer)}
 \label{subsec:motorwahl_treiber}
 %todo: kapittel richten
 
@@ -635,7 +683,7 @@ Als Treiber wurden am Anfang A4988-Treiber eingesetzt und am Ende dann gegen die
 
 \section{Energieversorgung}
 \label{sec:energieversorgung}
-\subsection{Anforderungen und Ausgangsproblem (Schenkel)}
+\subsection{Anforderungen und Ausgangsproblem (Schenkel, Dauerer, Stiegler)}
 \label{subsec:energie_anforderungen}
 Die Batterie des Systems soll sowohl die Anforderung F70 (autarker Betrieb ohne Kabelverbindung mit einer Mindestlaufzeit von 10\,Minuten) als auch eine ausreichende Spannungs- und Stromversorgung für zwei gleichzeitig betriebene Schrittmotoren sowie die empfindliche Sensorik erfüllen.
 Im initialen Aufbau wurden alle elektronischen Komponenten, sowohl der Mikrocontroller mit angeschlossener Sensorik als auch die Motortreiber, über eine gemeinsame Spannungsquelle versorgt.
@@ -656,9 +704,9 @@ Zudem wurde vor jeder Inbetriebnahme eine Durchgangsprüfung durchgeführt, um s
 Im Rahmen dessen wurde schließlich das gesamte CNC-Shield komplett durchgemessen, um defekte Leitungen auszuschließen. 
 Nach dem erneuten Tauschen gegen wiederum neue Motortreiber funktionierte der Code endlich, und die Motoren reagierten auf die Neigung.
 
-\subsection{Spannungseinbruch unter Motorlast (Schenkel)}
+\subsection{Spannungseinbruch unter Motorlast (Schenkel, Stiegler, Stiegler)}
 \label{subsec:spannungseinbruch}
-Jedoch reagierten die Motoren um den Nullpunkt herum nicht so wie erwartet. Die Ursache wurde fälschlicherweise zunächst wieder direkt bei den Motoren oder den Motortreibern vermutet. 
+Jedoch reagierten die Motoren um den Nullpunkt herum nicht so wie erwartet. Die Ursache wurde fälschlicherweise zunächst wiedTODO MPU Hcsr04 Bilder direkt bei den Motoren oder den Motortreibern vermutet. 
 Da auf dem CNC-Shield bereits große Pufferkondensatoren verbaut waren, wurde ein Einbruch der Spannungsversorgung der Motortreiber anfangs nicht vermutet. Daraufhin wurden weitere mögliche Ursachen für das Problem untersucht.
 Als potenzielle Fehlerquellen wurden ein falsch eingestellter Referenzstrom ($V_{\text{ref}}$), eine fehlerhafte Microstep-Konfiguration, zeitliche Probleme im Code sowie ein ungeeigneter Motor mit möglichen Schrittverlusten aufgrund von Trägheit vermutet. 
 Um diese Vermutungen zu prüfen, wurden diverse Maßnahmen ergriffen: Der Wert für $V_{\text{ref}}$ wurde testweise verändert, während die Temperatur der Treiber live mit einer Wärmebildkamera überwacht wurde, um Schäden zu vermeiden. 
@@ -690,12 +738,12 @@ Die schnellen Lastwechsel der Motoren koppelten somit direkt in die Versorgung d
     \label{fig:spannungseinbruch_oszi}
 \end{figure}
 
-\subsection{Kondensator-Lösung am MPU6050 (Schenkel)}
+\subsection{Kondensator-Lösung am MPU6050 (Schenkel, Stiegler, Dauerer)}
 \label{subsec:kondensator_loesung}
 Als erste Abhilfe wurde ein großer  $100\ \mu\text{F}$ Elek\-tro\-lyt\-kon\-den\-sa\-tor nahe an der MPU6050 platziert, um die Logikspannung zu stützen. 
 Diese Maßnahme erfüllte ihren Zweck und behob das Sensorproblem sowie die damit verbundenen Signalstörungen während der schnellen Motorzugriffe vollständig.
 
-\subsection{ESP32 nicht programmierbar (Niklas)}
+\subsection{ESP32 nicht programmierbar (Dauerer, Schenkel)}
 \label{subsec:esp32_bespielbar}
 
 Die gewählte Kapazität führte jedoch zu einem neuen Fehler. Der ESP32 gab im Serial Monitor beim Starten einen 'invalid-head'-Fehler und ließ sich nicht mehr programmieren, da der Kondensator beim Einschalten bzw. Flashen vermutlich zu viel Strom zog. Da zu diesem Zeitpunkt bereits alle Komponenten fest miteinander verlötet waren, wurde als temporäre Lösung ein mechanischer Kippschalter eingebaut. Mit diesem konnte die MPU6050 inklusive des Kondensators für den Programmiervorgang und den Startvorgang manuell abgeschaltet werden, wodurch der ESP32 wieder bespielbar war und sich starten lies. Sobald der ESP32 fertig initialisiert war, wurde die MPU-Einheit manuell zugeschaltet.
@@ -715,7 +763,14 @@ Obwohl das System mit dem kleineren $10\ \mu\text{F}$ Kondensator im Grundbetrie
     \label{fig:mpu_kondensator}
 \end{figure}
 
-\subsection{Finale Lösung: Galvanische Trennung ESP32/MPU6050 (Schenkel)}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.6\textwidth,keepaspectratio,trim={0 60pt 0 60pt},clip]{../../Quellen/MPU Kondensator.jpg}
+    \caption{Kondensator zur Spannungspufferung direkt an der MPU6050}
+    \label{fig:mpu_kondensator}
+\end{figure}
+
+\subsection{Finale Lösung: Galvanische Trennung ESP32/MPU6050 (Schenkel, Stiegler, Dauerer)}
 \label{subsec:galvanische_trennung}
 
 Obwohl die verkleinerte Kondensatorkombination die Symptome deutlich reduzierte, blieb die grundlegende Ursache des Problems, die gemeinsame Spannungsversorgung von Logik- und Leistungskreis, bestehen. 
@@ -725,7 +780,7 @@ Der Leistungskreis, welcher die beiden Schrittmotoren über die TMC2209-Treiber 
 Der Logikkreis, bestehend aus dem ESP32, den Ultraschallsensor, das CNC shild, sowie der MPU6050, wird hingegen über eine separate, unabhängige Powerbank versorgt. 
 Diese Trennung stellt sicher, dass die beim Motoranlauf auftretenden Stromspitzen keinen Einfluss mehr auf die Versorgungsspannung der Sensorik ausüben können. 
 
-\subsection{Kippschalter (Niklas)}
+\subsection{Kippschalter (Stiegler, Dauerer, Schenkel)}
 \label{subsec:kippschalter}
 
 Um beim Einstecken des Akkus Funken zu verhindern und die Bedienung komfortabler zu machen, wurde ein Kippschalter eingebaut. Das erste Modell (E-TEN1021) (ausgelegt für 15 A bei 250 VAC) fiel jedoch nach längerer Betriebszeit aus. Der Schalter leitete die anliegende Spannung nicht mehr vollständig weiter. Zuerst war die Vermutung ein defekter Motortreiber, der die Versorgungsspannung einbrechen ließ. Die Eingrenzung duch betreiben ohne Motortreiber hat dies nicht bestätigt. Eine Spannungsmessung direkt am Schalterausgang zeigte jedoch den internen Defekt. Statt der 16 V aus dem Labornetzteil kamen am Ausgang nur noch ca. 3 V an. Die Durchgangsprüfung hat gezeigt, dass keine leitende Verbindung zwischen den Pins im eingeschalteten Zustand besteht.
@@ -753,7 +808,7 @@ Der vollständige elektrische Schaltplan des Gesamtsystems ist in Anhang~B beige
 \section{Entwicklungsumgebung}
 \label{sec:entwicklungsumgebung}
 
-\subsection{PlatformIO-Einrichtung (Schenkel)}
+\subsection{PlatformIO-Einrichtung (Schenkel, Dauerer, Stiegler)}
 \label{subsec:platformio_einrichtung}
 Da bereits persönliche Vorerfahrungen mit PlatformIO aus früheren Projekten vorhanden waren und die Umgebung dort erfolgreich genutzt wurde, fiel die Wahl für dieses Projekt erneut auf diese Entwicklungsumgebung. 
 In Visual Studio Code wurde das entsprechende PlatformIO-Plugin installiert und eingerichtet. Als Hardware-Plattform wurde der Mikrocontroller ESP-WROOM-32 ausgewählt.
@@ -762,17 +817,17 @@ Die Fehlersuche ergab, dass es sich bei dem verwendeten Micro-USB-Kabel um ein r
 Im Anschluss wurde ein neues Projekt innerhalb der Umgebung für dieses Board initialisiert. Die Projekterstellung erforderte die Konfiguration der grundlegenden Projektstruktur sowie die Definition der spezifischen Parameter, wie beispielsweise der seriellen Baudrate, in der platformio.ini Datei. 
 Dieses Projekt wurde dann auf GitLab den anderen Teammitgliedern zur Verfügung gestellt, wobei für die Zusammenarbeit eine Git-Struktur mit verschiedenen Branches aufgesetzt wurde.
 
-\section{Code-Architektur (Niklas)}
+\section{Code-Architektur}
 \label{sec:code_architektur}
 
-\subsection{Nicht-blockierendes Design (Niklas)}
+\subsection{Nicht-blockierendes Design (Stiegler, Dauerer, Schenkel)}
 \label{subsec:nicht_blockierend}
 
 Ein Hauptmerkmal der gesamten Softwarearchitektur ist der vollständige Verzicht auf die Funktion \texttt{delay()} in zeitkritischen Bereichen. Diese Regel wurde nicht von Beginn des Projekts an als feste Vorgabe festgelegt, sondern entwickelte sich im Projektverlauf aus einer Vermutung des Teams. Da der PID-Regelkreis inkl. der Motorsteuerung auf feste Intervalle angewiesen ist, wurde befürchtet, dass blockierende Wartezeiten durch \texttt{delay()}-Aufrufe innerhalb einzelner Programmteile zu unkontrollierten Verzögerungen im Regelkreis führen könnten. Deshalb wurde der Verzicht auf \texttt{delay()} im weiteren Projektverlauf als verbindliche Team-Regel eingeführt und konsequent in den wichtigsten Bereichen (z.B. Intervallberechnung der Schrittmotoransteuerung) umgesetzt.
 
 Anstelle von \texttt{delay()} findet die Zeitsteuerung im Code über einen Vergleich der Systemzeit mittels \texttt{millis()} beziehungsweise \texttt{micros()} statt, wodurch einzelne Programmteile innerhalb eines Tasks zeitgesteuert ausgeführt werden können, ohne die Ausführung anderer Aufgaben zu blockieren. Für den PID-Regler wurde auf diese Weise ein genaues Abtastintervall von 25\,ms, realisiert, ohne dass parallel laufende Aufgaben wie Motoransteuerung, Sensorabfrage, PS4-Controller-Kommunikation oder Logging dadurch blockiert werden.
 
-\subsection{FreeRTOS Multicore-Ansatz (Niklas)}
+\subsection{FreeRTOS Multicore-Ansatz (Stiegler, Dauerer, Schenkel)}
 \label{subsec:freertos_multicore}
 
 Um das echtzeitfähige Systemverhaltens umzusetzen wurde beide Kerne des ESP32 in Verbindung mit FReeRTOS verwendet. Anstatt alle Funktionalität in einer einzelnen Ausführungsschleife (Loop) zu bündeln, wurde die Anwendung in mehrere unabhängige FreeRTOS-Tasks aufgeteilt, die gezielt auf die beiden verfügbaren Prozessorkerne verteilt wurden \cite{freertos_ug}.
@@ -799,17 +854,17 @@ Tabelle~\ref{tab:freertos_tasks} zeigt die konkrete Task-Konfiguration des Syste
 Der \texttt{MotorUpdateTask} läuft dabei isoliert auf Core 1, da eine un\-ter\-bre\-chungs\-freie Ansteuerung der Motoren wichtig ist. Auf Core 0 laufen der \texttt{ControlTask}, welcher die eigentliche Regelungslogik inklusive PID-Berechnung, Sensorauswertung und Verarbeitung der PS4-Controller-Eingaben übernimmt, sowie der \texttt{LoggerTask} mit niedrigerer Priorität. Durch diese Priorisierung wird sichergestellt, dass der \texttt{LoggerTask} nur dann zur Ausführung kommt, wenn der \texttt{ControlTask} sich in einer Wartephase befindet, wodurch das Logging die zeitkritische Regelung nicht beeinflusst \cite{marwedel2021} (vgl. Kapitel~\ref{subsec:nonblocking_serial}). Die Trennung der Motoransteuerung auf einen eigenen Kern stellt zusätzlich sicher, dass selbst eine kurzfristige Verzögerung innerhalb des \texttt{ControlTask}, etwa durch einen I2C-Timeout (vgl. Kapitel~\ref{subsec:i2c_errorhandling}), keinen unmittelbaren Einfluss auf die laufende Motoransteuerung hat.
 
 
-\subsection{Modulare Code Struktur (Niklas)}
+\subsection{Modulare Code Struktur (Stiegler)}
 \label{subsec:modulare_struktur}
 
 Um die Wartbarkeit und Übersichtlichkeit des Quellcodes zu verbessern, wurde eine modulare Softwarearchitektur umgesetzt, bei der für jede Komponente des Systems eine eigene Quellcode- und zugehörige Header-Datei angelegt wurde.
 
 Wichtige Konfigurationswerte wie Pin-Belegungen und PID-Parameter wurden in einer \texttt{config.h}-Datei als Defines zentral verwaltet. Dies ermöglicht es, beispielsweise für das PID-Tuning (vgl. Kapitel~\ref{sec:pid_regelung}) oder bei Anpassungen der Pin-Belegung, gezielt die relevanten Parameter zuzugreifen.
 
-\section{Motorsteuerung (geschrieben von Felix)}
+\section{Motorsteuerung}
 \label{sec:motorsteuerung}
 
-\subsection{Grundlegende Ansteuerung}
+\subsection{Grundlegende Ansteuerung (Stiegler, Schenkel)}
 \label{subsec:motor_grundansteuerung}
 
 Die Nema 17 Schrittmotoren werden über zwei Pins angesteuert. Der DIR-Pin legt die Drehrichtung fest,
@@ -847,7 +902,7 @@ so groß wird, dass sich der Roboter nicht mehr aufrichten kann. Das entspricht 
 (vgl. Kapitel~\ref{sec:funktionale_anforderungen}) und verhindert, dass die Motoren beim
 Umkippen des Roboters unkontrolliert weiterlaufen.
 
-\subsection{Defekter ESP32 und vertauschte Spulenanschlüsse}
+\subsection{Defekter ESP32 und vertauschte Spulenanschlüsse (Dauerer, Stiegler, Schenkel)}
 \label{subsec:motor_problem_cncshield}
 
 Bei der ersten In\-be\-trieb\-nah\-me der Mo\-tor\-an\-steue\-rung über das CNC-Shield trat das Problem auf, dass von den beiden angeschlossenen Motoren zunächst durchgehend nur einer angesteuert wurde, während der zweite entweder stillstand oder ein hörbares Fiepen ohne tatsächliche Rotation zeigte. Zur Fehlersuche wurden zunächst sämtliche Versorgungsspannungen, Steckverbindungen und die Pin-Beschaltung des A4988-Treibers mittels Multimeter durchgemessen, ohne dass hierbei eine Auffälligkeit festgestellt werden konnte.
@@ -856,7 +911,7 @@ Eine anschließende Messung der STEP- und DIR-Signale direkt am Ausgang des CNC-
 
 Nach dem ESP32-Austausch drehten sich zwar beide Motoren, liefen aber nicht sauber an und ruckelten unkontrolliert vor und zurück. Da ein Motor aus einem Altprojekt, den wir zum Vergleich angeschlossen haben, sich korrekt drehte, konnten wir den Fehler auf hinter dem Treiberausgang eingrenzen und haben mit dem Durchgangsprüfer am Kabel und den Motoren die Spulenzugehörigkeit der einzelnen Anschlüsse (1A, 1B, 2A, 2B) ermittelt. Dabei zeigte sich, dass das mitgelieferte Verbindungskabel die Spulenanschlüsse gegenüber der Pinbelegung des CNC-Shields vertauscht führte. Nach dem Korrigieren der Kabelbelegung passend zur korrekten Spulenzuordnung liefen die beiden Motoren wie erwartet.
 
-\subsection{Kurzschluss und Treiberwechsel}
+\subsection{Kurzschluss und Treiberwechse (Dauerer, Stiegler, Schenkel)}
 \label{subsec:motor_kurzschluss}
 
 Im weiteren Projektverlauf haben wir für den Betrieb ohne das Labornetzteil einen 6S-LiPo mit 22,2\,V Nennspannung angeschlossen. Der damals genutzte A4988 Treiber ist zwar grundsätzlich für Spannungen in diesem Bereich ausgelegt, wir hatten jedoch einen gebrauchten Treiber aus einem Altprojekt verwendet, der wahrscheinlich schon vorgeschädigt war. Der Treiber ist beim Anschließen des Akkus durchgebrannt und hat einen Kurzschluss verursacht.
@@ -870,7 +925,7 @@ Nach dem Vorfall haben wir systematisch gemessen, was genau beschädigt wurde. W
 
 Da wir ohnehin einen neuen Treiber einsetzen mussten, haben wir uns entschieden, auf den TMC2209 umzusteigen, der in mehreren Punkten besser zu unseren Anforderungen passt (vgl. Kapitel~\ref{subsec:tmc2209_integration}).
 
-\subsection{TMC2209-Integration und Tuning}
+\subsection{TMC2209-Integration und Tuning (Dauerer, Stiegler, Schenkel)}
 \label{subsec:tmc2209_integration}
 
 Nach dem Wechsel auf den TMC2209 zeigte sich schnell, dass der neue Treiber dem A4988 in einem entscheidenden Punkt überlegen ist. Er arbeitet standardmäßig mit 8 Mikroschritten pro Vollschritt, ohne dass wir dafür etwas konfigurieren mussten (vgl. Kapitel~\ref{subsec:motorwahl_treiber}). Gerade bei niedrigen Geschwindigkeiten war der Unterschied deutlich spürbar, die Motorbewegung wurde insgesamt ruhiger und gleichmäßiger.
@@ -898,17 +953,17 @@ Der TMC2209 besitzt eine UART-Schnittstelle, über die er per Software konfiguri
 
 Später im Projekt während der Optimierung der SW und PID-Parameter brannte außerdem ein TMC2209-Treiber der Version v1.3 durch, nachdem an dessen Motorausgang dauerhaft 24\,V anlagen (vgl. Kapitel~\ref{subsec:motor_kurzschluss}). Das war auf eine fehlerhafte Verkabelung zurückzuführen und der Treiber musste ausgetauscht werden. Ein weiteres, wiederkehrendes Problem war, dass die Adern des Ver\-bin\-dungs\-ka\-bels zwischen Treiber und Motor erneut in falscher Reihenfolge angeschlossen waren, analog zu dem in Kapitel~7.3.2 beschriebenen Fehlerbild beim A4988.
 
-\section{Sensorintegration (Niklas)}
+\section{Sensorintegration}
 \label{sec:sensorintegration}
 
-\subsection{MPU6050 Neigungssensor (Niklas)}
+\subsection{MPU6050 Neigungssensor (Stiegler, Dauerer, Schenkel)}
 \label{subsec:mpu6050_i2c}
 
 Die Kommunikation mit dem MPU6050 erfolgt über den I2C-Bus (SDA/SCL) mit der Stan\-dard-Adresse 0x68 \cite{az-deliveryGY521}. Die Sensordaten werden mit einer Abtastrate von 40\,Hz bzw. in einem Intervall von 25\,ms ausgelesen, also die Abtastrate des PID-Regelkreises.
 
 Die Rohdaten mussten zunächst in einen anschaulichen und für die Regelung nutzbaren Neigungswinkel in Grad umgerechnet werden. Bei der ersten Implementierung traten dabei fehlerhafte Ergebnisse auf, da die Messwerte der relevanten Achse durch die übrigen Achsen, sowie durch Beschleunigung beeinflusst wurden. Durch die Verwendung der Bibliothek \texttt{MPU6050\_light} und den Komplementärfilter, der die Werte des Gyroskops mit dem Beschleunigungssensor verrechnet, konnte das Problem behoben werden und zuverlässige Neigungswerte für die Balancierregelung zur Verfügung stehen \cite{rfetickMPU6050_light_library}.
 
-\subsection{I2C-Errorhandling und Timeout-Optimierung (Niklas)}
+\subsection{I2C-Errorhandling und Timeout-Optimierung (Stiegler, Dauerer)}
 \label{subsec:i2c_errorhandling}
 
 Im praktischen Betrieb zeigte sich, dass die I2C-Kommunikation zwischen ESP32 und MPU6050 insbesondere während des Motorbetriebs sporadisch abbrach. Dadurch bekam der Regler kurzzeitig keine aktuellen Neigungswerte. Als Ursachen wurden neben den bereits beschriebenen Spannungsproblemen auch unzuverlässige Steckverbindungen identifiziert.
@@ -917,7 +972,7 @@ Zur softwareseitigen Behandlung wurde eine Fehlerbehandlungsfunktion implementie
 
 Ergänzend dazu wurden auch die Löt- und Kabelverbindungen an der MPU mechanisch verbessert, um die Häufigkeit der Verbindungsabbrüche zusätzlich zu minimieren.
 
-\subsection{HC-SR04 Ultraschallsensor (Niklas)}
+\subsection{HC-SR04 Ultraschallsensor (Stiegler)}
 \label{subsec:hcsr04}
 
 Zur Erfüllung der Kollisionsvermeidung wurden zwei Ultraschallsensoren vom Typ HC-SR04 in die Software integriert. Die Distanzmessung erfolgt nach dem Trigger-Echo-Prinzip: Über den Trigger-Pin wird ein Ultraschallimpuls ausgesendet und über den Echo-Pin die Laufzeit des reflektierten Signals gemessen \cite{reicheltHCSR04_Datasheet}.
@@ -925,10 +980,11 @@ Zur Erfüllung der Kollisionsvermeidung wurden zwei Ultraschallsensoren vom Typ 
 Da der Sensor laut Datenblatt eine maximale Reichweite von etwa 400\,cm besitzt, muss das Signal im Grenzfall einen Hin- und Rückweg von insgesamt 800\,cm zurücklegen \cite{reicheltHCSR04_Datasheet}. Bei Berechnung mit der Schallgeschwindigkeit ergibt sich daraus eine maximale Laufzeit von ca. 25\,ms. Dieser Wert liegt weit unter dem 100 ms Abfrageintervall unseres Roboters, welches aber ausreichend ist.
 
 Der praktische Einsatz der Sensoren dient der Erkennung von Hindernissen vor und hinter dem Roboter sowie der Auslösung eines softwareseitigen Nothalts bei Unterschreitung eines definierten Mindestabstands. Zu beachten ist dabei der im Datenblatt angegebene Totbereich von unter 2\,cm, in dem keine zuverlässige Messung mehr möglich ist \cite{reicheltHCSR04_Datasheet}.
-\section{PID-Regelung (geschrieben von Felix)}
+
+\section{PID-Regelung}
 \label{sec:pid_regelung}
 
-\subsection{Neigungs-PID-Regler}
+\subsection{Neigungs-PID-Regler (Dauerer, Stiegler, Schenkel)}
 \label{subsec:neigung_pid_impl}
 
 Der Neigungs-PID-Regler bildet den inneren Regelkreis und ist für die eigentliche Balance des Roboters zuständig.
@@ -950,7 +1006,8 @@ deutlich angepasst werden.
 Motorsteuerung und PID-Regler wurden gemäß der modularen Code-Architektur als separate Module ausgelagert,
 um die getrennte Weiterentwicklung, Überschaubarkeit und das spätere Tuning der Regelung zu vereinfachen
 (vgl. Kapitel~\ref{sec:code_architektur}).
-\subsection{Positions-PID-Integration}
+
+\subsection{Positions-PID-Integration (Dauerer)}
 \label{subsec:positions_pid_integration}
 
 Wie bereits in der Simulation festgestellt (vgl. Kapitel~\ref{subsec:simulink_positions_pid}),
@@ -976,7 +1033,7 @@ Für den Positions-PID-Regler wurden zunächst die aus der Simulation stammenden
 Startwerte übernommen (vgl. Kapitel~\ref{subsec:simulink_positions_pid}) und im realen Betrieb
 empirisch nachjustiert (vgl. Kapitel~\ref{subsec:pid_optimierung}).
 
-\subsection{Systematische PID-Optimierung}
+\subsection{Systematische PID-Optimierung (Dauerer, Stiegler, Schenkel)}
 \label{subsec:pid_optimierung}
 
 Das Nachjustieren der PID-Parameter am realen System erfolgte nach einem systematischen Vorgehen. 
@@ -1011,7 +1068,7 @@ mitberücksichtigt werden mussten.
 \end{tabular}
 \end{table}
 
-\subsection{Filter für Glättung}
+\subsection{Filter für Glättung (Dauerer, Stiegler)}
 \label{subsec:median_filter}
 
 Die unbearbeiteten Messwerte des MPU6050 enthielten durch Vibrationen 
@@ -1031,7 +1088,7 @@ Wert dient als Eingangsgröße für den Neigungs-PID-Regler (vgl. Kapitel~\ref{s
 \section{PS4-Controller-Integration}
 \label{sec:ps4_integration}
 
-\subsection{Bluetooth-Verbindungsaufbau  (Schenkel, Stiegler)}
+\subsection{Bluetooth-Verbindungsaufbau (Schenkel, Stiegler)}
 \label{subsec:ps4_bluetooth}
 
 Für die drahtlose Fahrsteuerung des Roboters wurde ein PlayStation 4 Controller gewählt, welcher über die vorhandene Bluetooth-Schnittstelle des ESP32 ohne zusätzliche externe Hardware kommunizieren soll.
@@ -1042,7 +1099,7 @@ Als Erstes wurde in Betracht gezogen, die MAC-Adresse des ESP32 dauerhaft im Cod
 Deswegen wurde die umgekehrte Methode gewählt. Die MAC-Adresse, nach der der Controller sucht, wurde identifiziert, und die Standard-MAC-Adresse des ESP32 wurde mit genau dieser gesuchten Adresse überschrieben, um die Verbindung erfolgreich herzustellen.
 Aus Sicherheitsgründen wurde die Software zudem so geschrieben, dass bei einer fehlenden oder unterbrochenen Verbindung zum Controller grundsätzlich der Wert 0 für den Zielwinkel zurückgeliefert wird.
 
-\subsection{MAC-Adress-Manipulation (SixaxisPairTool)  (Schenkel)}
+\subsection{MAC-Adress-Manipulation (SixaxisPairTool) (Schenkel)}
 \label{subsec:mac_manipulation}
 Für das Beschreiben der Zieladresse im Controller kam das Programm SixaxisPairTool zum Einsatz \cite{SixaxisPairTool}. Da dieses Programm teilweise über inoffizielle, unseriöse Quellen verbreitet wird, wurde der Download aus Sicherheitsgründen zunächst innerhalb einer virtuellen Maschine durchgeführt, um ein mögliches Malware-Risiko auszuschließen.
  Für die eigentliche Kopplung des Controllers wurde zunächst versucht, das Bluetooth-Signal des Controllers direkt an die virtuelle Maschine durchzureichen, wofür zusätzlich das VirtualBox Extension Pack installiert werden musste, da der eingebaute Bluetooth-Chip des Host-Systems standardmäßig vom Host belegt wird und erst durch eine gezielte Freigabe für die virtuelle Maschine nutzbar gemacht werden konnte.
@@ -1052,7 +1109,7 @@ Nachdem diese Bluetooth-Weiterleitung nach einigem Aufwand erfolgreich eingerich
  Mit der USB-Verbindung konnte die Ziel-MAC-Adresse des Controllers erfolgreich auf die Adresse des ESP32 umgeschrieben werden. 
  Dieser Vorgang musste im späteren Projektverlauf ein zweites Mal wiederholt werden, nachdem einer der beiden im Projekt eingesetzten ESP32 einen Defekt erlitten hatte und durch ein neues Board mit einer abweichenden MAC-Adresse ersetzt wurde
 
-\subsection{Werteverarbeitung und Sollwert-Manipulation  (Schenkel) }
+\subsection{Werteverarbeitung und Sollwert-Manipulation (Schenkel)}
 \label{subsec:ps4_werteverarbeitung}
 
 Die vom Controller empfangenen Werte einer einzelnen Joystick-Achse liegen in einem Bereich von -128 bis +127. 
@@ -1099,7 +1156,7 @@ Auf diese Weise wird die andernfalls ungenutzte Prozessorzeit während dieser Wa
 \chapter{Integration und Systemtest}
 \label{ch:integration}
 
-\section{Zusammenführung der Teilsysteme (Felix)}
+\section{Zusammenführung der Teilsysteme (Dauerer, Stiegler, Schenkel}
 \label{sec:zusammenfuehrung}
 
 Bevor die Teilsysteme zusammengeführt wurden, wurde jedes einzeln getestet und sichergestellt, dass es für sich funktioniert. Da das Balancieren die Kernfunktion des Roboters ist, lag der Fokus beim Zusammenführen zunächst ausschließlich auf MPU6050 und Motoransteuerung. In dieser Phase wurde bewusst nur der Neigungs-PID-Regler verwendet und der äußere Positionsregler weggelassen, um das System so einfach wie möglich zu halten. PS4-Controller und Ultraschallsensoren wurden zwischendurch kurz geprüft, um sicherzugehen, dass sie grundsätzlich noch funktionieren, standen jedoch in dieser Phase nicht im Fokus.
@@ -1108,7 +1165,7 @@ Motoransteuerung und Neigungserfassung liefen einzeln jeweils problemlos, doch s
 
 Das Logger-System war nicht von Anfang an geplant, sondern wurde erst mit dem Wechsel auf den FreeRTOS-Multicore-Ansatz eingeführt. Um den Motorloop auf Core~0 nicht zu stören, wurde der Logiktask auf Core~1 gesetzt, damit er die zeitkritische Regelung nicht verzögert und die Steppermotoren konstant geupdatet werden (vgl. Kapitel~\ref{subsec:freertos_multicore}).
 
-\section{Fehlersuche-Methodik (Felix)}
+\section{Fehlersuche-Methodik (Dauerer, Stiegler, Schenkel)}
 \label{sec:fehlersuche_methodik}
 
 Über den gesamten Projektverlauf hinweg wurde bei auftretenden Hardwareproblemen konsequent nach einem einheitlichen, systematischen Vorgehen gearbeitet. Zur Verifikation von Spannungspegeln und zum Erkennen von Kurzschlüssen oder unterbrochenen Leitungen wurde die Durchgangsprüfung genutzt. Wenn ein Problem damit nicht eindeutig einzugrenzen war, wurde das Oszilloskop eingesetzt, um die Versorgungsspannungen unter Last genauer zu betrachten oder die Ausgangssignale der Treiber direkt zu messen. Das Labornetzteil wurde dabei stets mit überprüft, um Spannung und Stromstärke im Betrieb im Blick zu behalten. Vor allem um zu sehen, falls die Spannung dort einbricht.
@@ -1124,7 +1181,7 @@ Ein weiterer fester Bestandteil der Fehlersuche waren einfache Testcodes, also b
 
 Ein Großteil der Parameteränderungen beim PID- und Treiber-Tuning wurde zusätzlich in Excel-Tabellen festgehalten, damit im Nachhinein noch nachvollzogen werden konnte, welche Anpassung welchen Effekt hatte.
 
-\section{Hardware-Defekte im Überblick (Niklas)}
+\section{Hardware-Defekte im Überblick (Stiegler)}
 \label{sec:hardware_defekte_ueberblick}
 
 Im Verlauf des Projekts traten mehrere teilweise unabhängige Hardwaredefekte auf, die in den vorangegangenen Kapiteln bereits im beschrieben wurden. Tabelle~\ref{tab:defekte_uebersicht} fasst diese Defekte zusammen.
@@ -1154,10 +1211,10 @@ Im Verlauf des Projekts traten mehrere teilweise unabhängige Hardwaredefekte au
     \end{tabular}
 \end{table}
 
-\chapter{Tests und Ergebnisse (geschrieben von Felix)}
+\chapter{Tests und Ergebnisse}
 \label{ch:tests}
 
-\section{Testmethodik}
+\section{Testmethodik (Dauerer, Stiegler, Schenkel)}
 \label{sec:testmethodik}
 
 Um die Funktionalität des Gesamtsystems zu bewerten, wurden die in Kapitel~\ref{sec:funktionale_anforderungen} definierten funktionalen Anforderungen als Grundlage genutzt und die Tests entsprechend darauf ausgelegt.
@@ -1166,7 +1223,7 @@ Die Hauptanforderung war das selbstständige Balancieren des Roboters, weshalb d
 
 Sobald der Roboter stabil balancieren konnte, wurden Stoßtests durchgeführt (vgl. Kapitel~\ref{sec:balancierverhalten}). Dazu wurde der Roboter leicht angestoßen und beobachtet, ob er umfällt, überschwingt oder selbstständig zurück in die Balance findet und an seiner Ausgangsposition bleibt. Zusätzlich wurde die Fernsteuerung per PS4-Controller getestet (vgl. Kapitel~\ref{sec:test_fahrsteuerung}), also ob die Verbindung stabil ist und ob der Roboter die vorgegebene Neigung und damit die gewünschte Fahrtrichtung zuverlässig anpeilt.
 
-\section{Balancierverhalten}
+\section{Balancierverhalten (Dauerer, Stiegler, Schenkel)}
 \label{sec:balancierverhalten}
 
 Der Roboter konnte erfolgreich über mehr als 60\,Sekunden selbstständig balancieren, ohne dabei mehr als $\pm$20\,cm von der Ausgangsposition abzuweichen. Das zeigt, dass Neigungs- und Positions-PID-Regler zusammen wie erwartet funktionieren (vgl. Kapitel~\ref{subsec:neigung_pid_impl} und~\ref{subsec:positions_pid_integration}). Das beste aufgezeichnete Ergebnis lief über 2\,Minuten mit einer Positionsabweichung von nur ca. 10--15\,cm.
@@ -1196,7 +1253,7 @@ Bei starken Auslenkungen, zum Beispiel durch einen kräftigen Stoß, fängt sich
     \end{tabular}
 \end{table}
 
-\section{Fahrsteuerung über PS4-Controller}
+\section{Fahrsteuerung über PS4-Controller (Stiegler, Dauerer, Schenkel)}
 \label{sec:test_fahrsteuerung}
 
 Die Fahrsteuerung per PS4-Controller (vgl. Kapitel~\ref{subsec:ps4_werteverarbeitung}) hat funktioniert. Vorwärts- und Rückwärtsfahren über den Joystick lief wie erwartet, und 
@@ -1204,17 +1261,17 @@ die Idee den Sollwert des Neigungsreglers zu manipulieren erwies sich dabei als 
 
 Im Zusammenspiel mit dem Balancierverhalten (vgl. Kapitel~\ref{sec:balancierverhalten}) zeigte sich jedoch, dass der Übergang von der Fahrt in den Stillstand fehleranfällig ist. Bremst der Roboter abrupt, hat er durch die Fahrt noch zu viel Schwung und kann sich nicht mehr selbstständig fangen. Deshalb wurde der maximale Sollwinkel, den der PS4-Controller vorgeben darf, auf kleine Werte begrenzt.
 
-\section{Not-Aus}
+\section{Not-Aus (Dauerer, Stiegler)}
 \label{sec:test_notaus}
 
 Die softwareseitige Sicherheitsabschaltung (vgl. Kapitel~\ref{subsec:motor_grundansteuerung}) hat wie erwartet funktioniert. Sobald der Neigungswinkel 45\,Grad überschreitet, schalten die Motoren zuverlässig ab und der Roboter bleibt liegen, ohne dass die Motoren unkontrolliert weiterdrehen. Damit ist Anforderung F80 (Not-Aus bei Sturz, vgl. Kapitel~\ref{sec:funktionale_anforderungen}) erfüllt.
 
-\section{Energieversorgung}
+\section{Energieversorgung (Stiegler, Schenkel, Dauerer)}
 \label{sec:test_energieversorgung}
 
 Die galvanisch getrennte Energieversorgung aus Leistungs- und Logikkreis (vgl. Kapitel~\ref{subsec:galvanische_trennung}) hat im Testbetrieb funktioniert. Der Roboter lief zuverlässig ohne externes Netzteil, womit Anforderung F70 (autarker Batteriebetrieb, vgl. Kapitel~\ref{sec:funktionale_anforderungen}) erfüllt ist. Durch die Trennung der beiden Kreise traten auch keine Spannungseinbrüche mehr an der Sensorik mehr auf, was den stabilen Betrieb während den anderen Testdurchläufen erst möglich gemacht hat.
 
-\section{Offene Testfälle}
+\section{Offene Testfälle (Dauerer, Stiegler, Schenkel)}
 \label{sec:offene_testfaelle}
 
 Einige Tests konnten im Projektzeitraum nicht mehr vollständig durchgeführt werden. Durch die zahlreichen Hardwareprobleme und Fehlersuchen wurde der Großteil der Zeit für die Kernfunktionen Balancieren und Fahren benötigt, sodass weniger priorisierte Features zurückgestellt wurden.
@@ -1225,17 +1282,17 @@ Einige Tests konnten im Projektzeitraum nicht mehr vollständig durchgeführt we
 % - Quantitative HC-SR04 Kollisionsvermeidungs-Tests
 Konkret fehlen noch: ein genauer Test der Bat\-te\-rie\-lauf\-zeit über die geforderten 10\,Minuten hinaus, eine Messung des maximalen Aus\-len\-kungs\-win\-kels, aus dem sich der Roboter noch selbst\-stän\-dig fängt, sowie ein Test der Kol\-li\-si\-ons\-ver\-mei\-dung mit den Ul\-tra\-schall\-sen\-so\-ren unter realen Bedingungen.
 
-\chapter{Inbetriebnahme}
+\chapter{Inbetriebnahme (Dauerer)}
 \label{ch:inbetriebnahme}
 
 Dieses Kapitel beschreibt, wie der Roboter ordnungsgemäß in Betrieb genommen und wieder abgeschaltet wird.
 
-\section{Vorbereitungen}
+\section{Vorbereitungen (Dauerer, Schenkel, Stiegler)}
 \label{sec:inbetrieb_vorbereitung}
 
 Vor dem Einschalten sollten beide Energiequellen auf ausreichende Ladung geprüft werden. Der Ladestand der Powerbank, die den Logikkreis des ESP32 versorgt, ist an den LEDs an der Powerbank ablesbar. Der Akku für die Motorversorgung sollte mit einem Multimeter gemessen werden und die Spannung mindestens 15\,V betragen, um einen sicheren Betrieb zu gewährleisten.
 
-\section{Einschalten}
+\section{Einschalten (Dauerer, Stiegler, Schenkel)}
 \label{sec:inbetrieb_einschalten}
 
 Das Einschalten des Roboters erfolgt in mehreren Schritten, um einen kontrollierten Start zu erreichen:
@@ -1250,12 +1307,12 @@ Das Einschalten des Roboters erfolgt in mehreren Schritten, um einen kontrollier
     \item Sobald die Motoren beginnen, den Roboter aktiv zu stabilisieren, kann er losgelassen werden. In den ersten Sekunden sollte der Roboter noch leicht gestützt werden, bis sich der Positions-PID-Regler auf die Gleichgewichtslage eingestellt hat.
 \end{enumerate}
 
-\section{Fahrsteuerung per PS4-Controller}
+\section{Fahrsteuerung mittels PS4-Controller (Stiegler, Schenkel, Dauerer)}
 \label{sec:inbetrieb_ps4}
 
-Soll der Roboter per PS4-Controller gesteuert werden, wird der Controller eingeschaltet. Da die MAC-Adresse des ESP32 bereits vorab im Controller hinterlegt wurde (vgl. Kapitel~\ref{subsec:mac_manipulation}), verbindet sich der Controller automatisch mit dem ESP32, sobald dieser erreichbar ist. Eine manuelle Kopplungsaktion ist nicht erforderlich. Nach erfolgreicher Verbindung kann der linke Joystick für Vorwärts- und Rückwärtsfahrt genutzt werden (vgl. Kapitel~\ref{subsec:ps4_werteverarbeitung}).
+Soll der Roboter mittels PS4-Controller gesteuert werden, wird der Controller eingeschaltet. Da die MAC-Adresse des ESP32 bereits vorab im Controller hinterlegt wurde (vgl. Kapitel~\ref{subsec:mac_manipulation}), verbindet sich der Controller automatisch mit dem ESP32, sobald dieser erreichbar ist. Eine manuelle Kopplungsaktion ist nicht erforderlich. Nach erfolgreicher Verbindung kann der linke Joystick für Vorwärts- und Rückwärtsfahrt genutzt werden (vgl. Kapitel~\ref{subsec:ps4_werteverarbeitung}).
 
-\section{Ausschalten}
+\section{Ausschalten (Dauerer)}
 \label{sec:inbetrieb_ausschalten}
 
 Zum geordneten Abschalten wird in folgender Reihenfolge vorgegangen:
@@ -1272,12 +1329,12 @@ Zum geordneten Abschalten wird in folgender Reihenfolge vorgegangen:
 \section{Technische Erkenntnisse}
 \label{sec:technische_erkenntnisse}
 
-\subsection{Umgang mit Messgeräten (Niklas)}
+\subsection{Umgang mit Messgeräten (Stiegler, Dauerer, Schenkel)}
 \label{subsec:lessons_messtechnik}
 
 Eine der wichtigsten praktischen Erkenntnisse des Projekts war der Umgang mit elementaren Messgeräten wie Multimeter und Oszilloskop. Zu Projektbeginn war die Erfahrung im Team mit diesen Werkzeugen noch begrenzt, was insbesondere in den ersten Fehlersuchen, etwa bei der Diagnose des defekten ESP32-Boards (vgl. ~\ref{subsec:spannungseinbruch}), zunächst zu einem vergleichsweise hohen Zeitaufwand führte. Im Projektverlauf entwickelte sich der Einsatz der Messgeräte zu einem Bestandteil jeder Fehlersuche (vgl. Kapitel~8.2) und erwies sich rückblickend als eine der wertvollsten praktischen Fähigkeiten, die im Rahmen des Projekts erlernt wurden.
 
-\subsection{Trennung von Logik- und Leistungsspannung (Niklas)}
+\subsection{Trennung von Logik- und Leistungsspannung (Stiegler, Schenkel, Dauerer)}
 \label{subsec:lessons_spannungstrennung}
 
 Die größte technische Erkenntnis des Projekts ist, wie wichtig die Trennung von Logik- und Leistungsspannung ist. Wie in den Kapiteln~\ref{subsec:spannungseinbruch} bis~\ref{subsec:galvanische_trennung} beschrieben, wurden ESP32, Sensorik und Schrittmotoren anfangs über dieselbe Spannungsquelle versorgt. Getrennt funktionierten alle Komponenten problemlos. Zusammen führte das aber zu einem langanhaltenden Fehler im gesamten Projekt. Erst die Aufteilung in zwei getrennte Spannungskreise löste das Problem.
@@ -1287,32 +1344,32 @@ Die größte technische Erkenntnis des Projekts ist, wie wichtig die Trennung vo
 
 Im Projektverlauf zeigte sich wiederholt, dass der Einsatz von bereits vorhandenen Bauteilen aus dem Bestand ein hohes Risiko für Fehler sind. Ein Beispiel hierfür ist der Kurzschluss, ausgelöst durch A4988 Motortreiber aus dem Bestand (vgl. Kapitel~\ref{subsec:motor_kurzschluss})
 
-\subsection{Systematisches Debugging (Niklas)}
+\subsection{Systematisches Debugging (Dauerer, Stiegler, Schenkel)}
 \label{subsec:lessons_debugging}
 
 Ein strukturiertes Vorgehen bei der Fehlersuche war deutlich effizienter als reines Ausprobieren. Das Teilsystem eingrenzen, gezielt messen und der schrittweise Austausch von Komponenten waren besonders bei komplexen Problemen essenziell. Besonders bei der Fehlersuche an den Motoren (vgl. Kapitel~\ref{sec:motorsteuerung}) und bei Flash-Prolemen des ESP32 (vgl. Kapitel~\ref{subsec:esp32_bespielbar}) war diese Methode notwendig.
 
-\subsection{Elektronische Probleme (Niklas)}
+\subsection{Elektronische Probleme (Stiegler, Dauerer, Schenkel)}
 \label{subsec:lessons_elektronik_relevanz}
 
 Selbst kleine elektronische Probleme können große Auswirkungen auf das gesamte System haben. Ein Spannungseinbruch an einem Sensor (vgl. Kapitel~\ref{subsec:spannungseinbruch}) wirkt anfangs trivial, kann aber wochenlang den gesamten Regelkreis blockieren. Auch wenn der Fokus eigentlich auf der Software liegt, unterschätzt man schnell Elektronik-Probleme beim Bau eines Roboters.
 
-\section{Organisatorische Erkenntnisse (Niklas)}
+\section{Organisatorische Erkenntnisse}
 \label{sec:organisatorische_erkenntnisse}
 
-\subsection{Teamarbeit (Niklas)}
+\subsection{Teamarbeit (Schenkel, Stiegler, Dauerer)}
 \label{subsec:lessons_teamarbeit}
 
 Die Aufteilung der Verantwortlichkeiten auf die drei Teammitglieder, etwa die mechanische Konstruktion und einfache Ansteuerung der Sensoren, ermöglichte es, mehrere Aufgaben parallel zu bearbeiten und dadurch den Gesamtfortschritt zu beschleunigen. Bei komplexen Fehlerketten wie der MPU6050-Spannungsproblematik zeigte sich zudem, wie wichtig es ist, unterschiedliche Lösungsvorschläge innerhalb des Teams zusammenzuführen.
 
 Während zunächst verschiedene Vermutungen zur Fehlerursache, wie mechanische Vibrationen oder elektronische Störungen bestanden, führte erst das schrittweise, gemeinsame Vorgehen zur Lösung. Auf den Vorschlag hin, die Messwerte der MPU während des Motorbetriebs live zu überwachen, konnte man stark fehlerhafte Sensordaten beobachten. Die Idee, die Stromversorgung zeitgleich mit einem Oszilloskop zu überprüfen, brachte schließlich die Gewissheit. Ein Spannungseinbruch beim Anlaufen der Motoren war der wirkliche Hauptgrund für die Störungen. Durch die Verkettung von Teilschritten konnte die Ursache identifiziert und durch den Einbau eines Kondensators behoben werden.
 
-\subsection{Zeitplanung (Niklas)}
+\subsection{Zeitplanung (Stiegler, Dauerer)}
 \label{subsec:lessons_zeitplanung}
 
 Ein starrer Zeitplan ist bei einem Hardware-Projekt oft wenig praktisch. Unvorhergesehene Hardwaredefekte (vgl. Kapitel~\ref{subsec:motor_kurzschluss} und die aufwendige Fehlersuche bei der Stromversorgung der MPU6050 (vgl. Kapitel~\ref{subsec:spannungseinbruch}) führten wiederholt zu Verzögerungen. Es zeigte sich, dass bei mechatronischen Systemen von Anfang an Puffer für die Fehlersuche und den Austausch defekter Bauteile eingeplant werden muss. Ein störungsfreier Ablauf ist schwer realisierbar. Der Gesamtaufwand verteilte sich dementsprechend am Ende anders auf die einzelnen Projektphasen, als in der ursprünglichen Planung vorgesehen war.
 
-\section{Fazit (Niklas)}
+\section{Fazit (Stiegler, Dauerer, Schenkel)}
 \label{sec:fazit}
 
 Das im Rahmen dieses Projekts entwickelte System eines selbstbalancierenden, zweirädrigen Roboters konnte in seinen zentralen funktionalen Anforderungen erfolgreich umgesetzt werden: Der Roboter balanciert eigenständig über einen Zeitraum von mehr als 60\,Sekunden mit einer Positionsabweichung von unter $\pm$20\,cm, lässt sich über einen PS4-Controller fahren, gleicht leichte äußere Störungen selbstständig aus und verfügt über eine funktionierende, autarke Energieversorgung samt zuverlässigem Not-Aus-Mechanismus (vgl. Kapitel~\ref{ch:tests}).
@@ -1334,9 +1391,6 @@ Der eigentliche Wert des Projekts liegt jedoch nicht ausschließlich im funktion
 	\addcontentsline{toc}{chapter}{Abkürzungsverzeichnis}\label{Sec:Abkuerzungen}
 	\chapter*{Abkürzungsverzeichnis}
 	\begin{acronym}[OTH R]
-	 \acro{OTH R}{Ostbayerische Technische Hochschule Regensburg}
-	 \acro{OTH}{Ostbayerische Technische Hochschule}
-	 \acro{GCC}{Der Compiler namens gcc}
 	 \acro{I2C}[I²C]{Inter-Integrated Circuit}
 	 \acro{sbr}[SBR]{Self-Balancing Robot}
 	 \acro{pid}[PID]{Proportional-Integral-Differential}

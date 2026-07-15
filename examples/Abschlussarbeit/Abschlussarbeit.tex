@@ -494,7 +494,7 @@ Neigungswinkel wieder gegen 0~Grad und der Roboter bleibt auf der Stelle stehen.
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=\textwidth,keepaspectratio]{../../Quellen/SBR_SimulinkNeigungsPID.png}
+    \includegraphics[width=\textwidth,keepaspectratio]{../../Quellen/PID Neigung SBR.png}
     \caption{Kaskadenregelung mit Neigungs- und Positions-PID im Simulink-Modell}
     \label{fig:simulink_neigungs_pid}
 \end{figure}
@@ -603,6 +603,13 @@ Während der Hardware-Tests kam es jedoch immer wieder zu Messausfällen und Pro
 
 Zur Vermeidung von Kollisionen wurden zwei HC-SR04 Ultraschallsensoren integriert. Die Wahl fiel auf dieses Modell, da es bereits vorhanden war, leicht anzusteuern und für diesen Einsatzzweck präzise genug ist. Der HC-SR04 hat eine maximale Reichweite von etwa 400\,cm und eine theoretische Messgenauigkeit von bis zu 3\,mm. Da der Roboter in beide Richtungen fahren kann, wurde ein Sensor vorne und einer hinten angebracht. Sie arbeiten nach dem Trigger-Echo-Prinzip und berechnen den genauen Abstand zum Hindernis anhand der Laufzeit des ausgesendeten Ultraschallimpulses \cite{reicheltHCSR04_Datasheet}. 
 
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.6\textwidth,keepaspectratio]{../../Quellen/Ultraschallsensoren.png}
+    \caption{Verbaute HC-SR04 Ultraschallsensoren am Chassis}
+    \label{fig:ultraschallsensoren}
+\end{figure}
+
 Alle Sensoren werden mit 5V Betriebsspannung betrieben \cite{az-deliveryGY521}, \cite{reicheltHCSR04_Datasheet}.
 
 \subsection{Motorwahl und Treiber (Schenkel, Stiegler, Dauerer)}
@@ -683,6 +690,20 @@ Unter dem Oszilloskop wurden die Spannungseinbrüche anschließend genauer analy
 Unter dem Oszilloskop waren damit zwar immer noch minimale, hochfrequente Einbrüche zu erkennen, welche aber zu keinen falschen Werten führten. 
 Ein zusätzlicher Versuch, diese verbleibenden Störungen durch das parallele Anlöten eines schnellen Keramikkondensators vollständig zu eliminieren, brachte nur einen minimalen Unterschied. 
 Obwohl das System mit dem kleineren $10\ \mu\text{F}$ Kondensator im Grundbetrieb funktionierte, zeigten sich im späteren Verlauf immer wieder sporadische Störungen bei der Spannungsstabilität.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.6\textwidth,keepaspectratio,trim={0 60pt 0 60pt},clip]{../../Quellen/MPU Kondensator.jpg}
+    \caption{Kondensator zur Spannungspufferung direkt an der MPU6050}
+    \label{fig:mpu_kondensator}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.6\textwidth,keepaspectratio,trim={0 60pt 0 60pt},clip]{../../Quellen/MPU Kondensator.jpg}
+    \caption{Kondensator zur Spannungspufferung direkt an der MPU6050}
+    \label{fig:mpu_kondensator}
+\end{figure}
 
 \subsection{Finale Lösung: Galvanische Trennung ESP32/MPU6050 (Schenkel, Stiegler, Dauerer)}
 \label{subsec:galvanische_trennung}
@@ -1084,6 +1105,13 @@ Das Logger-System war nicht von Anfang an geplant, sondern wurde erst mit dem We
 
 Über den gesamten Projektverlauf hinweg wurde bei auftretenden Hardwareproblemen konsequent nach einem einheitlichen, systematischen Vorgehen gearbeitet. Zur Verifikation von Spannungspegeln und zum Erkennen von Kurzschlüssen oder unterbrochenen Leitungen wurde die Durchgangsprüfung genutzt. Wenn ein Problem damit nicht eindeutig einzugrenzen war, wurde das Oszilloskop eingesetzt, um die Versorgungsspannungen unter Last genauer zu betrachten oder die Ausgangssignale der Treiber direkt zu messen. Das Labornetzteil wurde dabei stets mit überprüft, um Spannung und Stromstärke im Betrieb im Blick zu behalten. Vor allem um zu sehen, falls die Spannung dort einbricht.
 
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.7\textwidth,keepaspectratio]{../../Quellen/A4988 Ausgangssignale.jpg}
+    \caption{Am Oszilloskop gemessene Ausgangssignale des A4988-Motortreibers}
+    \label{fig:a4988_ausgangssignale}
+\end{figure}
+
 Ein weiterer fester Bestandteil der Fehlersuche waren einfache Testcodes, also bekannte funktionierende Code-Zustände, die konstant einsatzbereit gehalten wurden. Dieser enthielt zum Beispiel eine Motorrampe, die die Drehzahl gleichmäßig von 0 auf 200\,RPM beschleunigt, um Treiber und Motoren isoliert vom restlichen Projektcode zu testen. So konnte bei auftretenden Problemen schnell geprüft werden, ob ein Bauteil tatsächlich defekt war oder ob der Fehler nur im Zusammenspiel mit dem restlichen System oder durch neue Codeänderungen auftrat.
 
 Ein Großteil der Parameteränderungen beim PID- und Treiber-Tuning wurde zusätzlich in Excel-Tabellen festgehalten, damit im Nachhinein noch nachvollzogen werden konnte, welche Anpassung welchen Effekt hatte.
@@ -1206,7 +1234,7 @@ Das Einschalten des Roboters erfolgt in mehreren Schritten, um einen kontrollier
 
 \begin{enumerate}
     \item Das USB-Kabel der Powerbank wird in den Micro-USB-Anschluss des ESP32 gesteckt. Damit wird der Logikkreis versorgt und der ESP32 startet.
-    \item Der LiPo-Akku wird angesteckt, der Kippschalter bleibt dabei noch in der Aus-Stellung, sodass die Motortreiber noch keinen Strom erhalten.
+    \item Der LiPo-Akku wird angesteckt, der Kippschalter bleibt dabei noch in der Aus-Stellung (ist beschriftet), sodass die Motortreiber noch keinen Strom erhalten.
     \item Der Reset-Knopf am ESP32 wird gedrückt. Damit werden die Motoren für einen kurzen Moment deaktiviert, sodass der Roboter beim anschließenden Einschalten nicht sofort wegfährt.
     \item Direkt nach dem Reset wird der Kippschalter umgelegt.
     \item Anschließend wird der Reset-Knopf ein zweites Mal gedrückt. Während dieses zweiten Neustarts kalibriert sich die MPU6050 und die aktuelle Position des Roboters wird als 0\,Grad definiert. Der Roboter sollte in dieser Phase möglichst ruhig und senkrecht gehalten werden.

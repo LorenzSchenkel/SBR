@@ -145,26 +145,26 @@ Der tatsächliche Projektverlauf zeigte hierbei deutliche Abweichungen von der u
 
 \subsection{Kommunikation und Zusammenarbeit (Schenkel, Stiegler, Dauerer)}
 \label{subsec:kommunikation}
-Die Absprachen im Team liefen über regelmäßige persönliche Treffen und fortlaufend über WhatsApp. Die meiste Zeit wurde zu zweit oder zu dritt im Labor zusammengearbeitet. Das war besonders bei komplexen Problemen sehr gut, weil so jeder direkt neue Ideen und Vorschläge zur Fehlersuche einbringen konnte.
+Die Absprachen im Team liefen über regelmäßige persönliche Treffen und fortlaufend über WhatsApp. Die meiste Zeit wurde zu zweit oder zu dritt im Labor zusammengearbeitet. Das war besonders bei komplexen Problemen sehr gut, weil so alle Teilnehmer direkt neue Ideen und Vorschläge zur Fehlersuche einbringen konnte.
 
 \subsection{Versionsverwaltung (Schenkel)}
 \label{subsec:versionsverwaltung}
-Um Änderungen im Code nachzuvollziehen zu können und eventuell alte Speicherstände wiederherstellen zu können, wurde ein GitLab Repository verwendet, welches von den Organisatoren bereitgestellt und von Anfang an des Projektstartes genutzt wurde. 
+Um Änderungen im Code nachvollziehen zu können und eventuell alte Speicherstände wiederherstellen zu können, wurde ein GitLab Repository verwendet, welches von den Organisatoren bereitgestellt und von Anfang an des Projektstartes genutzt wurde. 
 
 \section{Erstellung des Plakates}
 \label{sec:plakat}
 \subsection{Konzeption und Werkzeugeinarbeitung (Schenkel, Stiegler)}
-Zu Beginn des Projekts wurde der Grundaufbau des Posters festgelegt. Das Plakat sollte die Kernziele, die grundlegenden Anforderungen und eine Gesamtdarstellung des Projekts übersichtlich aufzeigen. Für die ersten Schritte wurde das Open-Source-Programm Inkscape gewählt. Für die weitere Bildbearbeitung wurde das Professionelle Bildbearbeitungsprogramm Adobe Illustrator verwendet. Die Einarbeitung in die Software umfasste im Wesentlichen das Kennenlernen der Standardwerkzeuge und der Pfadbearbeitung. 
+Zu Beginn des Projekts wurde der Grundaufbau des Posters festgelegt. Das Plakat sollte die Kernziele, die grundlegenden Anforderungen und eine Gesamtdarstellung des Projekts übersichtlich aufzeigen. Für die ersten Schritte wurde das Open-Source-Programm Inkscape gewählt. Für die weitere Bildbearbeitung wurde das professionelle Bildbearbeitungsprogramm Adobe Illustrator verwendet. Die Einarbeitung in die Software umfasste im Wesentlichen das Kennenlernen der Standardwerkzeuge und der Pfadbearbeitung. 
 
 \subsection{KI-gestützte Bildgenerierung (Schenkel)}
-Um das Poster visuell aufzuwerten und das angestrebte System zu illustrieren, wollten wir KI-generiertes Bild erstellen.
+Um das Poster visuell aufzuwerten und das angestrebte System zu illustrieren, sollte ein KI-generiertes Bild erstellen werden.
 
 Zunächst wurden Versuche mit der Bild-KI von Canva durchgeführt. Trotz mehrfacher, detaillierter Anpassungen der Prompts lieferte die KI kein brauchbares Ergebnis. Unabhängig von der Formulierung wiesen die generierten Bilder immer eine starke Ähnlichkeit mit einem Segway auf, auf dem ein Ultraschallsensor als Kopf platziert war.
 
 Aufgrund dessen wurde zur Bildgenerierungs-KI von Google gewechselt, die direkt bessere Ergebnisse lieferte. Damit gelang es, eine realistische Darstellung des Systems zu erzeugen, die anschließend in eine abstrakte Grafik umgewandelt werden konnte.
 
 \subsection{Optimierung und Finalisierung (Stiegler)}
-Die finale Zusammenstellung und das Layout wurden anschließend mit Adobe Illustrator umgesetzt. In diesem Schritt wurde das Werplakat auch direkt auf Basis des erhaltenen Feedbacks und der Kritik angepasst. Nach der erfolgreichen Umsetzung aller Optimierungspunkte wurde das Dokument in ein druckfähiges PDF-Format exportiert.
+Die finale Zusammenstellung und das Layout wurden anschließend mit Adobe Illustrator umgesetzt. In diesem Schritt wurde das Werbeplakat auch direkt auf Basis des erhaltenen Feedbacks und der Kritik angepasst. Nach der erfolgreichen Umsetzung aller Optimierungspunkte wurde das Dokument in ein druckfähiges PDF-Format exportiert.
 
 
 \section{Aufbau der Dokumentation (Schenkel)}
@@ -262,7 +262,7 @@ Tabelle~\ref{tab:nichtfunktionale_anforderungen} fasst die definierten nicht-fun
 
 N20 wurde durch den Matlab/Simulink-Regelungsentwurf umgesetzt, in dem das Systemverhalten vorab simuliert und gewisse Erkenntnisse daraus mitgenommen wurden (vgl. Kapitel~\ref{ch:simulation}). 
 
-Das Budget wurde nicht eingehalten, das lag daran, dass ein Akku, mehrere Motortreiber und ein ESP kaputt gingen. Die genaue Aufschlüsselung ist in der Tabelle~\ref{tab:komponenten_kosten} ersichtlich. 
+Das vorgegebene Budget konnte aufgrund von Defekten an einem Akku, mehreren Motortreibern und einem ESP32 nicht eingehalten werden. Die genaue Aufschlüsselung ist in der Tabelle~\ref{tab:komponenten_kosten} ersichtlich. 
 
 \begin{table}[h]
     \centering
@@ -301,7 +301,7 @@ Das Budget wurde nicht eingehalten, das lag daran, dass ein Akku, mehrere Motort
 Dieses Kapitel beschreibt das grundlegende regelungstechnische Konzept des Self-Balancing Robots 
 sowie die Logik und den strukturellen Aufbau der Gesamtarchitektur.
 
-\section{Physikalisches Grundprinzip (Dauerer, Niklas)}
+\section{Physikalisches Grundprinzip (Dauerer, Stiegler)}
 \label{sec:invertiertes_pendel}
 
 Das dem Roboter zugrundeliegende physikalische Modell ist das eines invertierten Pendels 
@@ -369,7 +369,7 @@ Komponenten weiterleitet.
 
 Dieses Kapitel begründet die zentralen technischen Entscheidungen, die im Vorfeld getroffen wurden.
 
-\section{Mikrocontroller(Schenkel, Stiegler, Dauerer)}
+\section{Mikrocontroller (Schenkel, Stiegler, Dauerer)}
 \label{subsec:esp32_designentscheidung}
 Ausschlaggebend für die Wahl des Prozessors waren das gute Verhältnis von Preis und Leistung sowie die Dual-Core-Architektur. Durch die hohe Prozessortaktung eignet er sich ideal für die Echtzeitaufgaben. 
 Die integrierte Bluetooth-Funktion war ein weiterer Pluspunkt, über den die Fernsteuerung implementiert wurde \cite{esp32_wroom_32_datasheet}. Ein Nachteil war jedoch, dass das genutzte CNC-Shield für einen Arduino Uno ausgelegt war und sich nicht so einfach verbinden ließ.
@@ -593,7 +593,7 @@ Der ursprüngliche Aufbau des Systems erfolgte zunächst als Pro\-vi\-so\-ri\-um
 einzelne Komponenten mit Kabelbindern fixiert wurden, um einen schnellen, 
 funk\-tions\-fä\-hi\-gen Pro\-to\-typ für erste Tests zu erhalten.
 Die Montage des Roboters brachte einen erheblichen Zeitaufwand mit sich. Aufgrund eines Defekts an einem der Schrittmotoren musste der gesamte Aufbau zweimal komplett von Grund auf durchgeführt werden. 
-Die Schrittmotoren waren über vier parallele M3-Gewindestangen zur Erhöhung der Ge\-samt\-stei\-fig\-keit des Systems verbunden. Zwischen den Motoren wurden zahlreiche Muttern platziert, um diese kontern zu können und ein Lösen durch Vibrationen, der Schittmotoren, zu verhindern. 
+Die Schrittmotoren waren über vier parallele M3-Gewindestangen zur Erhöhung der Ge\-samt\-stei\-fig\-keit des Systems verbunden. Zwischen den Motoren wurden zahlreiche Muttern platziert, um diese kontern zu können und ein Lösen durch Vibrationen der Schittmotoren, zu verhindern. 
 Mithilfe eines Akkuschraubers wurde dieser zeitintensive Montageprozess beschleunigt. Da sich das Gewinde durch das Kürzen mit einer Kappzange verformt hatte, mussten die M3-Gewindestangen einseitig nachgeschnitten und die Kanten anschließend gefeilt werden.
 Die Reifen wurden mittels Sekundenkleber fixiert und über eine feste Kupplung direkt mit den Motorwellen verschraubt, um einen spielfreien Direktantrieb zu ermöglichen.
 
@@ -746,7 +746,7 @@ Obwohl die verkleinerte Kondensatorkombination die Symptome deutlich reduzierte,
 Um eine dauerhaft zuverlässige und von der Motorlast vollständig unabhängige Versorgung der Sensorik sicherzustellen, wurde die Spannungsversorgung des Systems final in zwei galvanisch getrennte Kreise aufgeteilt.
 
 Der Leistungskreis, welcher die beiden Schrittmotoren über die TMC2209-Treiber versorgt, wird über einen 4S-LiPo-Akku mit 14,8\,V und 1300\,mAh Kapazität betrieben, wobei die Verbindung über einen XT60-Steckverbinder erfolgt und der Kreis durch eine 2\,A-Sicherung abgesichert ist. 
-Der Logikkreis, bestehend aus dem ESP32, den Ultraschallsensor, das CNC shild, sowie der MPU6050, wird hingegen über eine separate, unabhängige Powerbank versorgt. 
+Der Logikkreis, bestehend aus dem ESP32, den Ultraschallsensor, das CNC-Shild, sowie der MPU6050, wird hingegen über eine separate, unabhängige Powerbank versorgt. 
 Diese Trennung stellt sicher, dass die beim Motoranlauf auftretenden Stromspitzen keinen Einfluss mehr auf die Versorgungsspannung der Sensorik ausüben können. 
 
 \subsection{Kippschalter (Stiegler, Dauerer, Schenkel)}
@@ -781,7 +781,7 @@ Der vollständige elektrische Schaltplan des Gesamtsystems ist in Anhang~B beige
 \label{subsec:platformio_einrichtung}
 Da bereits persönliche Vorerfahrungen mit PlatformIO aus früheren Projekten vorhanden waren und die Umgebung dort erfolgreich genutzt wurde, fiel die Wahl für dieses Projekt erneut auf diese Entwicklungsumgebung. 
 In Visual Studio Code wurde das entsprechende PlatformIO-Plugin installiert und eingerichtet. Als Hardware-Plattform wurde der Mikrocontroller ESP-WROOM-32 ausgewählt.
-Bei den anschließenden beschreiben trat jedoch initial das Problem auf, dass der Mikrocontroller nicht erkannt wurde. 
+Bei den anschließenden Beschreiben trat jedoch initial das Problem auf, dass der Mikrocontroller nicht erkannt wurde. 
 Die Fehlersuche ergab, dass es sich bei dem verwendeten Micro-USB-Kabel um ein reines Stromkabel und kein Datenkabel handelte. Nach dem Austausch des Kabels konnten die Flash-Tests erfolgreich durchgeführt werden. 
 Im Anschluss wurde ein neues Projekt innerhalb der Umgebung für dieses Board initialisiert. Die Projekterstellung erforderte die Konfiguration der grundlegenden Projektstruktur sowie die Definition der spezifischen Parameter, wie beispielsweise der seriellen Baudrate, in der platformio.ini Datei. 
 Dieses Projekt wurde dann auf GitLab den anderen Teammitgliedern zur Verfügung gestellt, wobei für die Zusammenarbeit eine Git-Struktur mit verschiedenen Branches aufgesetzt wurde.
@@ -799,7 +799,7 @@ Anstelle von \texttt{delay()} findet die Zeitsteuerung im Code über einen Vergl
 \subsection{FreeRTOS Multicore-Ansatz (Stiegler, Dauerer, Schenkel)}
 \label{subsec:freertos_multicore}
 
-Um das echtzeitfähige Systemverhaltens umzusetzen wurde beide Kerne des ESP32 in Verbindung mit FReeRTOS verwendet. Anstatt alle Funktionalität in einer einzelnen Ausführungsschleife (Loop) zu bündeln, wurde die Anwendung in mehrere unabhängige FreeRTOS-Tasks aufgeteilt, die gezielt auf die beiden verfügbaren Prozessorkerne verteilt wurden \cite{freertos_ug}.
+Um das echtzeitfähige Systemverhaltens umzusetzen wurde beide Kerne des ESP32 in Verbindung mit FreeRTOS verwendet. Anstatt alle Funktionalität in einer einzelnen Ausführungsschleife (Loop) zu bündeln, wurde die Anwendung in mehrere unabhängige FreeRTOS-Tasks aufgeteilt, die gezielt auf die beiden verfügbaren Prozessorkerne verteilt wurden \cite{freertos_ug}.
 
 Tabelle~\ref{tab:freertos_tasks} zeigt die konkrete Task-Konfiguration des Systems.
 
@@ -858,7 +858,7 @@ voneinander in deren jeweiligen Task und Core laufen.
 Die Frage, wie der PID-Ausgabewert in eine konkrete Motorgeschwindigkeit übersetzt wird,
 hat sich im Projektverlauf verändert. Die Simulation in
  Simulink berechnete einem Drehmomentwert in
-Newtonmeter, unsere Schrittmotoren werden aber nicht über Drehmoment,
+Newtonmeter, die verwendeten Schrittmotoren werden aber nicht über Drehmoment,
 sondern über ihre Drehzahl in RPM angesteuert. Deshalb haben wir anfangs eine lineare
 Umrechnung implementiert, die den maximalen Drehmomentwert der maximalen RPM-Zahl zuordnet und den 
 Rest dazwischen linear skaliert. Im weiteren Verlauf haben
@@ -1096,7 +1096,7 @@ Da der integrierte PID-Regler des Roboters auf einen Zielwinkel von 0 Grad (Bala
 \label{subsec:logger_queue}
 
 Da das eingesetzte Echtzeitbetriebssystem FreeRTOS keine harten Speichergrenzen zwischen den einzelnen Tasks erzwingt, teilen sich alle Tasks des Systems standardmäßig denselben globalen Arbeitsspeicher. 
-Im Gegensatz zu Prozessen unter klassischen Desktop-Betriebssystemen, dienormalerweise über einen virtuellen Speicher voneinander getrennt sind, könnten FreeRTOS-Tasks daher grundsätzlich ohne Eingschränkung auf gemeinsame Variablen zugreifen \cite{freertos_ug}.
+Im Gegensatz zu Prozessen unter klassischen Desktop-Betriebssystemen, die normalerweise über einen virtuellen Speicher voneinander getrennt sind, könnten FreeRTOS-Tasks daher grundsätzlich ohne Eingschränkung auf gemeinsame Variablen zugreifen \cite{freertos_ug}.
 Um jedoch kritische Race Conditions sowie Dateninkonsistenzen beim gleichzeitigen Zugriff zu verhindern, wurde eine sichere , threadsichere Kommunikation über eine FreeRTOS-Queue realisiert.
 
 Während der Entwicklungsphase wurde vermutet, dass die Aufrufe von Serial.print() innerhalb der Tasks zu zeitlichen Verzögerungen im Regelkreis führen könnten, da die serielle Übertragung verhältnismäßig langsam ist und im Vergleich zur eigentlichen Regelberechnung viel Zeit benötigt. 

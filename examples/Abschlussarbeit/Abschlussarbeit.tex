@@ -1357,7 +1357,14 @@ Der eigentliche Wert des Projekts liegt jedoch nicht ausschließlich im funktion
 	\includepdf[pages=-, pagecommand={\thispagestyle{empty}}, addtotoc={1,chapter,1,Stundenliste Lorenz Schenkel,stundenliste:schenkel}]{../../Stundenlisten/StundenlisteVorlageDT_Lorenz_Schenkel.pdf}
 	\includepdf[pages=-, pagecommand={\thispagestyle{empty}}, addtotoc={1,chapter,1,Stundenliste Niklas Stiegler,stundenliste:stiegler}]{../../Stundenlisten/StundenlisteVorlageDT_Niklas_Stiegler.pdf}
 
-	\thispagestyle{empty}
+    \addcontentsline{toc}{chapter}{Abbildungsverzeichnis}
+	\listoffigures
+
+
+	\addcontentsline{toc}{chapter}{Tabellenverzeichnis}
+	\listoftables
+
+    	\thispagestyle{empty}
 	\addcontentsline{toc}{chapter}{Abkürzungsverzeichnis}\label{Sec:Abkuerzungen}
 	\chapter*{Abkürzungsverzeichnis}
 	\begin{acronym}[OTH R]
@@ -1374,11 +1381,6 @@ Der eigentliche Wert des Projekts liegt jedoch nicht ausschließlich im funktion
 	 \acro{ble}[BLE]{Bluetooth Low Energy}
 	\end{acronym}
 	% Anhang
-	\addcontentsline{toc}{chapter}{Abbildungsverzeichnis}
-	\listoffigures
-
-	\addcontentsline{toc}{chapter}{Tabellenverzeichnis}
-	\listoftables
 
     	% Literaturverzeichnis in das Inhaltsverzeichnis einfügen
 	\addcontentsline{toc}{chapter}{Literaturverzeichnis}

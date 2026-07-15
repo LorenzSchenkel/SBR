@@ -106,7 +106,7 @@ Das Gesamtziel des Projekts bestand in der Entwicklung, Konstruktion und Program
 
 Das Projektteam bestand aus drei Studierenden, wobei Niklas Stiegler die Rolle des Projektleiters übernahm. Als weitere Teammitglieder arbeiteten Felix Dauerer und Lorenz Schenkel am Projekt mit. Die konkrete Aufgabenverteilung innerhalb der einzelnen Bereiche ist den jeweiligen Kapiteln der Projektdokumentation zu entnehmen.
 
-\section{Projektmanagement (Schenkel, Stiegler, Dauerer)}
+\section{Projektmanagement}
 \label{sec:projektmanagement}
 
 \subsection{Zeitplan und Meilensteine (Schenkel, Stiegler, Dauerer)}
@@ -371,7 +371,7 @@ Dieses Kapitel begründet die zentralen technischen Entscheidungen, die im Vorfe
 
 \section{Mikrocontroller (Schenkel, Stiegler, Dauerer)}
 \label{subsec:esp32_designentscheidung}
-Ausschlaggebend für die Wahl des Prozessors waren das gute Verhältnis von Preis und Leistung sowie die Dual-Core-Architektur. Durch die hohe Prozessortaktung eignet er sich ideal für die Echtzeitaufgaben. 
+Die Entscheidung viel auf einen ESPA-32-Wroom. Ausschlaggebend für die Wahl des Prozessors waren das gute Verhältnis von Preis und Leistung sowie die Dual-Core-Architektur. Durch die hohe Prozessortaktung eignet er sich ideal für die Echtzeitaufgaben. 
 Die integrierte Bluetooth-Funktion war ein weiterer Pluspunkt, über den die Fernsteuerung implementiert wurde \cite{esp32_wroom_32_datasheet}. Ein Nachteil war jedoch, dass das genutzte CNC-Shield für einen Arduino Uno ausgelegt war und sich nicht so einfach verbinden ließ.
 
 
@@ -544,6 +544,7 @@ Für den Positions-PID-Regler ergaben sich in der Simulation folgende Parameter:
         $K_i$ & 0,002 \\
         \hline
         $K_d$ & 0,01 \\
+
         \hline
     \end{tabular}
 \end{table}
@@ -617,7 +618,7 @@ Dieses sollte über einen 9\,V-Hohlstecker versorgt werden.
 Nach der vollständigen Verkabelung, jedoch noch vor dem eigentlichen Aufstecken des ESP32, wurde die Stromversorgung vorsorglich überprüft. 
 Hierbei stellte sich heraus, dass das Board defekt war, da es die anliegenden 9\,V direkt an den ESP32 weitergegeben hätte, was zur Zerstörung des Mikrocontrollers geführt hätte. 
 Deswegen wurde die Stromversorgung erneut angepasst und der Mikrocontroller wieder direkt über den Micro-USB-Port versorgt. 
-Dabei wurde festgestellt, dass die I2C-Kommunikation zur MPU6050 regelmäßig abriss. Eine Überprüfung des Datenblatts bezüglich der On-Board-LEDs des Entwicklungsboards zeigte jedoch, dass diese über eine Pufferschaltung verfügen, welche den GPIO-Zustand nicht beeinflusst. 
+Dabei wurde festgestellt, dass die I2C-Kommunikation zur MPU6050 regelmäßig abriss. Eine Überprüfung des Datenblatts bezüglich der On-Board-LEDs des Entwicklungsboards zeigte jedoch, dass diese über eine Pufferschaltung verfügen, welche den GPIO-Zustand nicht beeinflusst \cite{freenove_breakout_design}. 
 Durch einen Tausch mit einem zweiten MPU6050-Sensor konnte der Fehler letztlich auf einen Wackelkontakt der Steckverbindung am Board zurückgeführt werden, da diese ziemlich locker saßen.
 Um eine dauerhafte Lösung zu schaffen, wurde eine Lochrasterplatine genutzt, auf welcher der ESP32 sowie alle Leitungen fest verlötet wurden. Im Verlauf des Betriebs erlitt dieser ESP32 jedoch einen Defekt. Da angeschlossene Sensoren zwar nicht mit der 5\,V-Spannungsversorgung verbunden waren, aber über die verbleibenden Signalpins angeschlossen blieben, zogen sie ihren Strom vermutlich über die GPIO-Pins. Dies führte zu einer Überschreitung der maximal zulässigen Ausgangsleistung des Mikrocontrollers. Um den aufwendigen Prozess des Entlötens bei einem erneuten Defekt zu vermeiden, wurde beim nachfolgenden Aufbau eine weibliche Buchsenleiste auf die Platine gelötet. Der ESP32 ist dadurch steckbar ausgeführt und kann bei Bedarf schnell und unkompliziert ausgetauscht werden. 
 
@@ -647,7 +648,7 @@ Eine der kritischsten Komponenten für die Stabilität des selbstbalancierenden 
 Für dieses Projekt wurde das Modell 17HS15-1504S1 von Stepperonline ausgewählt, das mit 0,45\,Nm ein überdurchschnittliches Haltemoment besitzt \cite{Nema17HS151504S1_Full_Datasheet}. Dadurch sind die Motoren länger ($39\text{ mm}$ Gehäuselänge), da sie mehr Magnetringe im Inneren besitzen, wodurch Schrittverluste minimiert werden und der Zuwachs an Kraft deutlich größer ist als der Zuwachs an Gewicht. 
 Warum Schrittmotoren im Vergleich zu DC-Motoren bevorzugt werden, wurde bereits in Kapitel \ref{subsec:motorwahl_designentscheidung} dargelegt. Dieses hohe Drehmoment ist essenziell, um die abrupten Beschleunigungs- und Bremsbefehle des PID-Reglers präzise umzusetzen und Schrittverluste zu vermeiden.
 
-Die Ansteuerung wurde über ein Arduino Uno kompatibles, vorhandenes, CNC-Shield umgesetzt. Dies war bereits mit passenden Steckplätzen, Kondensatoren, Enable-Pins für die Treiber und möglichen Steckplätzen für Mikrosteps und für Step und Dir mitgeliefert \cite{CNCShield_V3_Datenblatt}. Um technische Probleme des CNC-Shields, vor allem der Kondensatoren, auszuschließen wurde dies einmal ausgetauscht.
+Die Ansteuerung wurde über ein Arduino Uno kompatibles, vorhandenes, CNC-Shield umgesetzt. Dieses verfügte bereits über geeignete Steckplätze, Stützkondensatoren, Enable-Pins für die Treiber sowie Steckplätze zur Konfiguration der Mikrosteps und für die Signale Step und Dir \cite{CNCShield_V3_Datenblatt}. Um technische Probleme des CNC-Shields, vor allem der Kondensatoren, auszuschließen wurde dies einmal ausgetauscht.
 
 Als Treiber wurden am Anfang A4988-Treiber eingesetzt und am Ende dann gegen die moderneren TMC2209-Treiber getauscht, da diese mit ihrer PWM-Steuerung (StealthChop) deutlich leiser und präziser waren \cite{Tmc2209_datasheet_rev109}. Doch während des Projektes wurde oft getauscht oder getestet, einmal um Unterschiede festzustellen oder um die teureren Treiber vor eventuellen Schäden  zu schützen.
 
@@ -692,7 +693,7 @@ Zudem wurden die Microsteps testweise umgestellt und der Code zu dritt intensiv 
 Bezüglich der Trägheit des Motors wurden zusätzlich Videos im Internet analysiert, in denen ein vergleichbares Projekt mit exakt demselben Motor erfolgreich umgesetzt wurde.
 
 Da all diese Maßnahmen keine Besserung brachten, wurde die Spannungsstabilität schließlich doch messtechnisch überprüft, wobei sich sporadische, kurze Einbrüche der Treiberspannung zeigten. Um auszuschließen, dass die Kondensatoren defekt waren, wurde ein LCR-Meter ausgeliehen. 
-Damit wurden die verbauten Kondensatoren sowohl im eingebauten als auch im ausgelöteten Zustand vermessen und mit einem bekanntermaßen funktionierenden CNC-Shield verglichen. 
+Damit wurden die verbauten Kondensatoren sowohl im eingebauten als auch im ausgelöteten Zustand vermessen und mit einem funktionierenden CNC-Shield verglichen. 
 Diese Überprüfung lieferte jedoch keine Auffälligkeiten, sondern die Kapazität befand sich in der üblichen Toleranz von $\pm20\,\%$.
 
 \begin{figure}[H]
@@ -741,7 +742,7 @@ Obwohl das System mit dem kleineren $10\ \mu\text{F}$ Kondensator im Grundbetrie
     \label{fig:mpu_kondensator}
 \end{figure}
 
-\subsection{Finale Lösung: Galvanische Trennung ESP32/MPU6050 (Schenkel, Stiegler, Dauerer)}
+\subsection{Finale Lösung: Galvanische Trennung (Schenkel, Stiegler, Dauerer)}
 \label{subsec:galvanische_trennung}
 
 Obwohl die verkleinerte Kondensatorkombination die Symptome deutlich reduzierte, blieb die grundlegende Ursache des Problems, die gemeinsame Spannungsversorgung von Logik- und Leistungskreis, bestehen. 
@@ -765,8 +766,9 @@ Erst das dritte Modell, ein R13-28F (15 A bei 125 VAC bzw. 10 A bei 250 VAC), so
 Für die Erstellung des Schaltplans wurde die Software KiCad gewählt. Entscheidend dafür war zum einen, dass das Programm kostenlos und quelloffen zur Verfügung steht.
  Zum anderen konnten so bereits vorhandene Grundkenntnisse genutzt werden, da die Software kurz im Modul Grundlagen der Elektronik zum Einsatz kam.
 Da für einige der verwendeten Komponenten keine passenden Symbole in den Bibliotheken der Software hinterlegt waren, mussten diese für den Schaltplan eigens erstellt werden. 
-Konkret wurden hierfür zwei eigene Symbole gezeichnet. Eines für die Ultraschallsensoren und eines für das CNC-Shield, um alle Anschlüsse korrekt im Plan abbilden zu können.
-Der vollständige elektrische Schaltplan des Gesamtsystems ist in Anhang~B beigefügt.
+Konkret wurden hierfür zwei eigene Symbole gezeichnet \ref{fig:schaltplan_uebersicht}. Eines für die Ultraschallsensoren und eines für das CNC-Shield, um alle Anschlüsse korrekt im Plan abbilden zu können.
+
+
 
 \begin{figure}[H]
     \centering
@@ -794,7 +796,7 @@ Dieses Projekt wurde dann auf GitLab den anderen Teammitgliedern zur Verfügung 
 \subsection{Nicht-blockierendes Design (Stiegler, Dauerer, Schenkel)}
 \label{subsec:nicht_blockierend}
 
-Ein Hauptmerkmal der gesamten Softwarearchitektur ist der vollständige Verzicht auf die Funktion \texttt{delay()} in zeitkritischen Bereichen. Diese Regel wurde nicht von Beginn des Projekts an als feste Vorgabe festgelegt, sondern entwickelte sich im Projektverlauf aus einer Vermutung des Teams. Da der PID-Regelkreis inkl. der Motorsteuerung auf feste Intervalle angewiesen ist, wurde befürchtet, dass blockierende Wartezeiten durch \texttt{delay()}-Aufrufe innerhalb einzelner Programmteile zu unkontrollierten Verzögerungen im Regelkreis führen könnten. Deshalb wurde der Verzicht auf \texttt{delay()} im weiteren Projektverlauf als verbindliche Team-Regel eingeführt und konsequent in den wichtigsten Bereichen (z.B. Intervallberechnung der Schrittmotoransteuerung) umgesetzt.
+Ein Hauptmerkmal der gesamten Softwarearchitektur ist der vollständige Verzicht auf die Funktion \texttt{delay()} in zeitkritischen Bereichen. Diese Regel wurde nicht von Beginn des Projekts an als feste Vorgabe festgelegt, sondern entwickelte sich im Projektverlauf aus einer Vermutung des Teams. Da der PID-Regelkreis inkl. der Motorsteuerung auf feste Intervalle angewiesen ist, wurde befürchtet, dass blockierende Wartezeiten durch \texttt{delay()}-Aufrufe innerhalb einzelner Programmteile zu unkontrollierten Verzögerungen im Regelkreis führen könnten. Deshalb wurde der Verzicht auf \texttt{delay()} im weiteren Projektverlauf als Team-Regel eingeführt und konsequent in den wichtigsten Bereichen (z.B. Intervallberechnung der Schrittmotoransteuerung) umgesetzt.
 
 Anstelle von \texttt{delay()} findet die Zeitsteuerung im Code über einen Vergleich der Systemzeit mittels \texttt{millis()} beziehungsweise \texttt{micros()} statt, wodurch einzelne Programmteile innerhalb eines Tasks zeitgesteuert ausgeführt werden können, ohne die Ausführung anderer Aufgaben zu blockieren. Für den PID-Regler wurde auf diese Weise ein genaues Abtastintervall von 27\,ms, realisiert, ohne dass parallel laufende Aufgaben wie Motoransteuerung, Sensorabfrage, PS4-Controller-Kommunikation oder Logging dadurch blockiert werden.
 
@@ -822,7 +824,7 @@ Tabelle~\ref{tab:freertos_tasks} zeigt die konkrete Task-Konfiguration des Syste
     \end{tabular}
 \end{table}
 
-Der \texttt{MotorUpdateTask} läuft dabei isoliert auf Core 1, da eine un\-ter\-bre\-chungs\-freie Ansteuerung der Motoren wichtig ist. Auf Core 0 laufen der \texttt{ControlTask}, welcher die eigentliche Regelungslogik inklusive PID-Berechnung, Sensorauswertung und Verarbeitung der PS4-Controller-Eingaben übernimmt, sowie der \texttt{LoggerTask} mit niedrigerer Priorität. Durch diese Priorisierung wird sichergestellt, dass der \texttt{LoggerTask} nur dann zur Ausführung kommt, wenn der \texttt{ControlTask} sich in einer Wartephase befindet, wodurch das Logging die zeitkritische Regelung nicht beeinflusst \cite{marwedel2021} (vgl. Kapitel~\ref{subsec:nonblocking_serial}). Die Trennung der Motoransteuerung auf einen eigenen Kern stellt zusätzlich sicher, dass selbst eine kurzfristige Verzögerung innerhalb des \texttt{ControlTask}, etwa durch einen I2C-Timeout (vgl. Kapitel~\ref{subsec:i2c_errorhandling}), keinen unmittelbaren Einfluss auf die laufende Motoransteuerung hat.
+Der \texttt{MotorUpdateTask} läuft dabei isoliert auf Core 1, da eine un\-ter\-bre\-chungs\-freie Ansteuerung der Motoren wichtig ist. Auf Core 0 laufen der \texttt{ControlTask}, welcher die eigentliche Regelungslogik inklusive PID-Berechnung, Sensorauswertung und Verarbeitung der PS4-Controller-Eingaben übernimmt, sowie der \texttt{LoggerTask} mit niedrigerer Priorität. Durch diese Priorisierung wird sichergestellt, dass der \texttt{LoggerTask} nur dann zur Ausführung kommt, wenn der \texttt{ControlTask} sich in einer Wartephase befindet, wodurch das Logging die zeitkritische Regelung nicht beeinflusst (vgl. Kapitel~\ref{subsec:nonblocking_serial}). Die Trennung der Motoransteuerung auf einen eigenen Kern stellt zusätzlich sicher, dass selbst eine kurzfristige Verzögerung innerhalb des \texttt{ControlTask}, etwa durch einen I2C-Timeout (vgl. Kapitel~\ref{subsec:i2c_errorhandling}), keinen unmittelbaren Einfluss auf die laufende Motoransteuerung hat \cite{marwedel2021}.
 
 
 \subsection{Modulare Code Struktur (Stiegler)}
@@ -917,7 +919,7 @@ Zur Erfüllung der Kollisionsvermeidung wurden zwei Ultraschallsensoren vom Typ 
 
 Da der Sensor laut Datenblatt eine maximale Reichweite von etwa 400\,cm besitzt, muss das Signal im Grenzfall einen Hin- und Rückweg von insgesamt 800\,cm zurücklegen \cite{reicheltHCSR04_Datasheet}. Bei Berechnung mit der Schallgeschwindigkeit ergibt sich daraus eine maximale Laufzeit von ca. 27\,ms. Dieser Wert liegt weit unter dem 100 ms Abfrageintervall unseres Roboters, welches aber ausreichend ist.
 
-Der praktische Einsatz der Sensoren dient der Erkennung von Hindernissen vor und hinter dem Roboter sowie der Auslösung eines softwareseitigen Nothalts bei Unterschreitung eines definierten Mindestabstands. Zu beachten ist dabei der im Datenblatt angegebene Totbereich von unter 2\,cm, in dem keine zuverlässige Messung mehr möglich ist \cite{reicheltHCSR04_Datasheet}.
+Der praktische Einsatz der Sensoren dient der Erkennung von Hindernissen vor und hinter dem Roboter sowie der Auslösung eines softwareseitigen Nothalts bei Unterschreitung eines definierten Mindestabstands. Zu beachten ist dabei der im Datenblatt angegebene Totbereich von unter 2\,cm, in dem keine zuverlässige Messung mehr möglich ist, aber im realen Betrieb des Roboters nicht auftritt \cite{reicheltHCSR04_Datasheet}.
 
 \section{PID-Regelung}
 \label{sec:pid_regelung}
@@ -1105,7 +1107,7 @@ Das Logger-System war nicht von Anfang an geplant, sondern wurde erst mit dem We
 \section{Fehlersuche-Methodik (Stiegler, Dauerer, Schenkel)}
 \label{sec:fehlersuche_methodik}
 
-Über den gesamten Projektverlauf hinweg wurde bei auftretenden Hardwareproblemen konsequent nach einem einheitlichen, systematischen Vorgehen gearbeitet. Zur Verifikation von Spannungspegeln und zum Erkennen von Kurzschlüssen oder unterbrochenen Leitungen wurde die Durchgangsprüfung genutzt. Wenn ein Problem damit nicht eindeutig einzugrenzen war, wurde das Oszilloskop eingesetzt, um die Versorgungsspannungen unter Last genauer zu betrachten oder die Ausgangssignale der Treiber direkt zu messen. Das Labornetzteil wurde dabei stets mit überprüft, um Spannung und Stromstärke im Betrieb im Blick zu behalten. Vor allem um zu sehen, falls die Spannung dort einbricht.
+Über den gesamten Projektverlauf hinweg wurde bei auftretenden Hardwareproblemen konsequent nach einem einheitlichen, systematischen Vorgehen gearbeitet. Zur Verifikation von Spannungspegeln und zum Erkennen von Kurzschlüssen oder unterbrochenen Leitungen wurde die Durchgangsprüfung genutzt. Wenn ein Problem damit nicht eindeutig einzugrenzen war, wurde das Oszilloskop eingesetzt, um die Versorgungsspannungen unter Last genauer zu betrachten oder die Ausgangssignale der Treiber direkt zu messen. Das Labornetzteil wurde dabei stets mit überprüft, um Spannung und Stromstärke im Betrieb im Blick zu behalten und ein Einbrechen der Spannung zu sehen.
 
 \begin{figure}[H]
     \centering
@@ -1203,7 +1205,7 @@ Die folgende Tabelle fasst die Ergebnisse der durchgeführten Balancier-Tests zu
 \section{Fahrsteuerung über PS4-Controller (Stiegler, Dauerer, Schenkel)}
 \label{sec:test_fahrsteuerung}
 
-Die Fahrsteuerung per PS4-Controller (vgl. Kapitel~\ref{subsec:ps4_werteverarbeitung}) hat funktioniert. Vorwärts- und Rückwärtsfahren über den Joystick lief wie erwartet, und 
+Die Fahrsteuerung per PS4-Controller (vgl. Kapitel~\ref{subsec:ps4_werteverarbeitung}) funktioniert. Vorwärts- und Rückwärtsfahren über den Joystick lief wie erwartet, und 
 die Idee den Sollwert des Neigungsreglers zu manipulieren erwies sich dabei als der richtige Ansatz.
 
 Im Zusammenspiel mit dem Balancierverhalten (vgl. Kapitel~\ref{sec:balancierverhalten}) zeigte sich jedoch, dass der Übergang von der Fahrt in den Stillstand fehleranfällig ist. Bremst der Roboter abrupt, hat er durch die Fahrt noch zu viel Schwung und kann sich nicht mehr selbstständig fangen. Deshalb wurde der maximale Sollwinkel, den der PS4-Controller vorgeben darf, auf kleine Werte begrenzt.
@@ -1253,7 +1255,7 @@ Das Einschalten des Roboters erfolgt in mehreren Schritten, um einen kontrollier
 \section{Fahrsteuerung mittels PS4-Controller (Stiegler, Schenkel, Dauerer)}
 \label{sec:inbetrieb_ps4}
 
-Soll der Roboter mittels PS4-Controller gesteuert werden, wird der Controller eingeschaltet. Da die MAC-Adresse des ESP32 bereits vorab im Controller hinterlegt wurde (vgl. Kapitel~\ref{subsec:mac_manipulation}), verbindet sich der Controller automatisch mit dem ESP32, sobald dieser erreichbar ist. Eine manuelle Kopplungsaktion ist nicht erforderlich. Nach erfolgreicher Verbindung kann der linke Joystick für Vorwärts- und Rückwärtsfahrt genutzt werden (vgl. Kapitel~\ref{subsec:ps4_werteverarbeitung}).
+Soll der Roboter mittels PS4-Controller gesteuert werden, wird der Controller eingeschaltet. Da die MAC-Adresse des ESP32 bereits vorab im Controller hinterlegt wurde (vgl. Kapitel~\ref{subsec:mac_manipulation}), verbindet sich der Controller automatisch mit dem ESP32, sobald dieser erreichbar ist. Eine manuelle Kopplungsaktion ist nicht erforderlich. Nach erfolgreicher Verbindung kann der rechte Joystick für Vorwärts- und Rückwärtsfahrt genutzt werden (vgl. Kapitel~\ref{subsec:ps4_werteverarbeitung}).
 
 \section{Ausschalten (Dauerer)}
 \label{sec:inbetrieb_ausschalten}
@@ -1295,7 +1297,7 @@ Ein strukturiertes Vorgehen bei der Fehlersuche war deutlich effizienter als rei
 \subsection{Elektronische Probleme (Stiegler, Dauerer, Schenkel)}
 \label{subsec:lessons_elektronik_relevanz}
 
-Selbst kleine elektronische Probleme können große Auswirkungen auf das gesamte System haben. Ein Spannungseinbruch an einem Sensor (vgl. Kapitel~\ref{subsec:spannungseinbruch}) wirkt anfangs trivial, kann aber wochenlang den gesamten Regelkreis blockieren. Auch wenn der Fokus eigentlich auf der Software liegt, unterschätzt man schnell Elektronik-Probleme beim Bau eines Roboters.
+Selbst kleine elektronische Probleme können große Auswirkungen auf das gesamte System haben. Ein Spannungseinbruch an einem Sensor (vgl. Kapitel~\ref{subsec:spannungseinbruch}) wirkt anfangs trivial, kann aber wochenlang den gesamten Regelkreis blockieren. Auch wenn der Fokus eigentlich auf der Software liegt, werden Elektronik-Probleme beim Bau eines Roboters schnell unterschätzt.
 
 \section{Organisatorische Erkenntnisse}
 \label{sec:organisatorische_erkenntnisse}
@@ -1315,9 +1317,9 @@ Ein starrer Zeitplan ist bei einem Hardware-Projekt oft wenig praktisch. Unvorhe
 \section{Fazit (Stiegler, Dauerer, Schenkel)}
 \label{sec:fazit}
 
-Das im Rahmen dieses Projekts entwickelte System eines selbstbalancierenden, zweirädrigen Roboters konnte in seinen zentralen funktionalen Anforderungen erfolgreich umgesetzt werden: Der Roboter balanciert eigenständig über einen Zeitraum von mehr als 60\,Sekunden mit einer Positionsabweichung von unter $\pm$20\,cm, lässt sich über einen PS4-Controller fahren, gleicht leichte äußere Störungen selbstständig aus und verfügt über eine funktionierende, autarke Energieversorgung samt zuverlässigem Not-Aus-Mechanismus (vgl. Kapitel~\ref{ch:tests}).
+Das im Rahmen dieses Projekts entwickelte System eines selbstbalancierenden, zweirädrigen Roboters konnte in seinen zentralen funktionalen Anforderungen erfolgreich umgesetzt werden: Der Roboter balanciert eigenständig über einen Zeitraum von mehr als 60\,Sekunden mit einer Positionsabweichung von unter $\pm$20\,cm, lässt sich über einen PS4-Controller fahren, gleicht leichte äußere Störungen selbstständig aus und verfügt über eine funktionierende, autarke Energieversorgung und einen zuverlässigen Not-Aus-Mechanismus (vgl. Kapitel~\ref{ch:tests}).
 
-Der eigentliche Wert des Projekts liegt jedoch nicht ausschließlich im funktionalen Ergebnis, sondern auch im technischen und methodischen Erkenntnisgewinn, der im Rahmen der zahlreichen langwierigen Fehlersuchen erarbeitet wurde. Insbesondere die Erkenntnis, dass einzeln einwandfrei funktionierende Teilsysteme bei ihrer Zusammenführung neue Wechselwirkungen zeigen können, ist für zukünftige mechatronische Projekte wichtig. Die verbleibende, in Kapitel~\ref{sec:balancierverhalten} dokumentierte Einschränkung, dass sich der Roboter aus einer starken Auslenkung heraus noch nicht selbstständig aufrichtet, bietet einen klaren Ansatzpunkt für eine Weiterentwicklung des Systems über den Rahmen dieses Projekts hinaus.
+Der eigentliche Wert des Projekts liegt jedoch nicht ausschließlich im funktionalen Ergebnis, sondern auch im technischen und methodischen Erkenntnisgewinn, der im Rahmen der zahlreichen langwierigen Fehlersuchen erarbeitet wurde. Insbesondere die Erkenntnis, dass einzeln einwandfrei funktionierende Teilsysteme bei ihrer Zusammenführung neue Wechselwirkungen zeigen können, ist für zukünftige mechatronische Projekte wichtig. Die verbleibende, in Kapitel~\ref{sec:balancierverhalten} dokumentierte Einschränkung, dass sich der Roboter aus einer starken Auslenkung heraus noch nicht selbstständig aufrichtet, bietet einen Ansatzpunkt für eine Weiterentwicklung des Systems über den Rahmen dieses Projekts hinaus.
 
 
 

@@ -371,7 +371,7 @@ Dieses Kapitel begründet die zentralen technischen Entscheidungen, die im Vorfe
 
 \section{Mikrocontroller (Schenkel, Stiegler, Dauerer)}
 \label{subsec:esp32_designentscheidung}
-Ausschlaggebend für die Wahl des Prozessors waren das gute Verhältnis von Preis und Leistung sowie die Dual-Core-Architektur. Durch die hohe Prozessortaktung eignet er sich ideal für die Echtzeitaufgaben. 
+Die Entscheidung viel auf einen ESPA-32-Wroom. Ausschlaggebend für die Wahl des Prozessors waren das gute Verhältnis von Preis und Leistung sowie die Dual-Core-Architektur. Durch die hohe Prozessortaktung eignet er sich ideal für die Echtzeitaufgaben. 
 Die integrierte Bluetooth-Funktion war ein weiterer Pluspunkt, über den die Fernsteuerung implementiert wurde \cite{esp32_wroom_32_datasheet}. Ein Nachteil war jedoch, dass das genutzte CNC-Shield für einen Arduino Uno ausgelegt war und sich nicht so einfach verbinden ließ.
 
 
@@ -541,6 +541,7 @@ Für den Positions-PID-Regler ergaben sich in der Simulation folgende Parameter:
         $K_i$ & 0,002 \\
         \hline
         $K_d$ & 0,01 \\
+
         \hline
     \end{tabular}
 \end{table}
@@ -738,7 +739,7 @@ Obwohl das System mit dem kleineren $10\ \mu\text{F}$ Kondensator im Grundbetrie
     \label{fig:mpu_kondensator}
 \end{figure}
 
-\subsection{Finale Lösung: Galvanische Trennung ESP32/MPU6050 (Schenkel, Stiegler, Dauerer)}
+\subsection{Finale Lösung: Galvanische Trennung (Schenkel, Stiegler, Dauerer)}
 \label{subsec:galvanische_trennung}
 
 Obwohl die verkleinerte Kondensatorkombination die Symptome deutlich reduzierte, blieb die grundlegende Ursache des Problems, die gemeinsame Spannungsversorgung von Logik- und Leistungskreis, bestehen. 
@@ -762,8 +763,9 @@ Erst das dritte Modell, ein R13-28F (15 A bei 125 VAC bzw. 10 A bei 250 VAC), so
 Für die Erstellung des Schaltplans wurde die Software KiCad gewählt. Entscheidend dafür war zum einen, dass das Programm kostenlos und quelloffen zur Verfügung steht.
  Zum anderen konnten so bereits vorhandene Grundkenntnisse genutzt werden, da die Software kurz im Modul Grundlagen der Elektronik zum Einsatz kam.
 Da für einige der verwendeten Komponenten keine passenden Symbole in den Bibliotheken der Software hinterlegt waren, mussten diese für den Schaltplan eigens erstellt werden. 
-Konkret wurden hierfür zwei eigene Symbole gezeichnet. Eines für die Ultraschallsensoren und eines für das CNC-Shield, um alle Anschlüsse korrekt im Plan abbilden zu können.
-Der vollständige elektrische Schaltplan des Gesamtsystems ist in Anhang~B beigefügt.
+Konkret wurden hierfür zwei eigene Symbole gezeichnet \ref{fig:schaltplan_uebersicht}. Eines für die Ultraschallsensoren und eines für das CNC-Shield, um alle Anschlüsse korrekt im Plan abbilden zu können.
+
+
 
 \begin{figure}[H]
     \centering

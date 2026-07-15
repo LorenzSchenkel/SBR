@@ -424,7 +424,7 @@ Um die Simulation performant zu halten und Abstürze durch zu hohe Rechenlast zu
 Da die beiden Motoren im realen Aufbau spiegelbildlich zueinander orientiert sind, wird das Signal für einen der beiden Räder über einen Skalier-Block (Faktor -1) invertiert. Die Drehmomente werden anschließend über Simulink-PS Converter zurück in physikalische Größen gewandelt und auf die Revolute Joints der beiden Reifen angewendet.
 
 
-Zur Analyse des Regelverhaltens werden virtuelle Oszilloskope genutzt, die den Verlauf des Neigungswinkels, der Motorausgangsgröße sowie einer eventuellen Positionsdrift grafisch sichtbar machen und können genutzt werden, um die Regelung gezielt nachzuverfolgen. Durch iteratives Anpassen der PID-Parameter ergaben sich folgende Startwerte für den Neigungs-PID-Regler:
+Zur Analyse des Regelverhaltens werden virtuelle Oszilloskope genutzt, die den Verlauf des Neigungswinkels, der Motorausgangsgröße sowie einen eventuellen Positionsdrift grafisch sichtbar machen und genutzt werden können, um die Regelung gezielt nachzuverfolgen.
 
 \begin{figure}[H]
     \centering
@@ -433,9 +433,8 @@ Zur Analyse des Regelverhaltens werden virtuelle Oszilloskope genutzt, die den V
     \label{fig:neigung_oszi}
 \end{figure}
 
-Die in der Simulation gewonnenen Werte dienten später als Ausgangsbasis für das reale PID-Tuning (vgl. Kapitel~\ref{subsec:pid_optimierung}), mussten dort jedoch stark an die tatsächlichen physikalischen Eigenschaften des Systems angepasst werden.
-Die deutliche Abweichung zu den final verwendeten PID-Werten lässt sich neben Faktoren wie Reibung, tatsächlichem Schwerpunkt und Trägheit der Elektronik vor allem dadurch erklären, dass der PID-Regler in Simulink direkt ein Drehmoment in Nm liefert, während die Motoren im realen System über ihre Drehgeschwindigkeit in RPM angesteuert werden.
 
+Durch iteratives Anpassen der PID-Parameter ergaben sich folgende Startwerte für den Neigungs-PID-Regler:
 
 \begin{table}[h]
     \centering
@@ -455,6 +454,10 @@ Die deutliche Abweichung zu den final verwendeten PID-Werten lässt sich neben F
 \end{table}
 
 
+Die in der Simulation gewonnenen Werte dienten später als Ausgangsbasis für das reale PID-Tuning (vgl. Kapitel~\ref{subsec:pid_optimierung}), mussten dort jedoch stark an die tatsächlichen physikalischen Eigenschaften des Systems angepasst werden.
+Die deutliche Abweichung zu den final verwendeten PID-Werten lässt sich neben Faktoren wie Reibung, tatsächlichem Schwerpunkt und Trägheit der Elektronik vor allem dadurch erklären, dass der PID-Regler in Simulink direkt ein Drehmoment in Nm liefert, während die Motoren im realen System über ihre Drehgeschwindigkeit in RPM angesteuert werden.
+
+
 \subsection{Erste Erkenntnisse aus der Simulation (Dauerer, Stiegler)}
 \label{subsec:simulink_dimensionierung}
 
@@ -462,18 +465,18 @@ Ein zentraler Nutzen des Simulink-Modells lag darin, bereits vor der Hardwarebes
 
 \textbf{Schwerpunktlage:} Aus der Simulation ging hervor, dass ein möglichst hoch liegender Schwerpunkt die Regelbarkeit des invertierten Pendels begünstigt, da ein längeres Pendel mit Gewicht am oberen Ende sehr träge ist und deshalb langsamer kippt, was dem Regler mehr Reaktionszeit zum Gegensteuern gibt. Allerdings existiert hier auch ein Trade-off. Ein höherer Schwerpunkt bedeutet auch einen längeren Hebelarm, wodurch die Motoren mehr Kraft aufbringen müssen, um den Roboter aufzurichten.
 
-Als Konsequenz daraus wurde die Position des Schwerpunkts zumindest auf oberhalb der Hälfte der Gesamthöhe festgelegt. Da die schweren Schrittmotoren im realen Aufbau den Schwerpunkt ohnehin nach unten ziehen, wurde die Batterie im finalen Aufbau bewusst an der höchsten Stelle des Chassis platziert.
+Als Konsequenz daraus wurde die Position des Schwerpunkts zumindest auf oberhalb der Hälfte der Gesamthöhe festgelegt. Da die schweren Schrittmotoren im realen Aufbau den Schwerpunkt ohnehin nach unten ziehen, wurde die Batterie als Ausgleich bewusst an der höchsten Stelle des Chassis platziert.
 
 \textbf{Reifengröße:} Aus vorherigen Projekten standen zwei Reifengrößen zur Verfügung. Eine kleinere Variante mit 6,5~cm Durchmesser und eine größere mit 10~cm. Für beide Kon\-fi\-gu\-ra\-tio\-nen wurden die PID-Parameter angepasst, um einen fairen Vergleich zu gewährleisten. Die kleinere Variante erwies sich bei den Tests (vgl. Kapitel~\ref{subsec:simulink_stoergroessen}) als die bessere Wahl, auch wenn der Unterschied nicht stark verschieden war. Die Entscheidung fiel daher auf die kleineren Räder mit 6,5~cm Durchmesser.
 
 \textbf{Motordimensionierung:} Die Simulation zeigte, dass die NEMA\,17 Schrittmotoren mit einem Nenndrehmoment von 0,55~Nm \cite{Nema17HS151504S1_Full_Datasheet} für die geplante Masse des Systems ausreichend sind, um die geforderte Stoßtoleranz (F20) und Positionsgenauigkeit (F30) und Balance zu erfüllen.
 
-Insgesamt bestätigte die Simulation, dass die gewählte Hardware-Konfiguration grundsätzlich funktionieren würde und dass ein PID-basierter Ansatz zur Stabilisierung des Roboters geeignet ist. Die Simulation ermöglichte damit eine fundierte Kom\-po\-nen\-ten\-aus\-wahl vor der Be\-schaf\-fungs\-pha\-se.
+Insgesamt bestätigte die Simulation, dass die gewählte Hardware-Konfiguration grundsätzlich funktionieren würde und dass ein PID-basierter Ansatz zur Stabilisierung des Roboters geeignet ist. Die Simulation ermöglichte damit eine sinnvolle Kom\-po\-nen\-ten\-aus\-wahl vor der Be\-schaf\-fungs\-pha\-se.
 
 \section{Erweiterte Simulink-Modellierung (Dauerer, Stiegler)}
 \label{sec:simulink_erweitert}
 
-Nach Fertigstellung des Grundmodells wurde die Simulation in mehreren Schritten um zusätzliche, realitätsnähere Effekte erweitert, um die Aussagekraft der gewonnenen Erkenntnisse für den späteren realen Betrieb weiter zu erhöhen.
+Nach Fertigstellung des Grundmodells wurde die Simulation in mehreren Schritten um zusätzliche Effekte / Faktoren erweitert, um die Aussagekraft der gewonnenen Erkenntnisse für den späteren realen Betrieb weiter zu erhöhen.
 
 \subsection{Störfaktoren: Luftwiderstand und Rauschen (Dauerer)}
 \label{subsec:simulink_rauschen}
@@ -551,7 +554,7 @@ Mit dieser Konfiguration konnte in der Simulation der kontinuierliche Positionsd
 
 Aus der Simulation resultierten konkrete Entscheidungen für den realen Aufbau: Als Reifengröße wurden die kleineren Räder mit 6,5~cm Durchmesser gewählt, der Schwerpunkt wurde bewusst im oberen Bereich des Chassis positioniert und als Regelstruktur kam eine Kaskadenregelung aus Neigungs- und Positions-PID zum Einsatz. Die in den Tabellen~\ref{tab:pid_neigung_sim} und~\ref{tab:pid_position_sim} ermittelten Parameter flossen als Startwerte in die Implementierung am ESP32 ein (vgl. Kapitel~\ref{subsec:neigung_pid_impl} und~\ref{subsec:positions_pid_integration}).
 
-Am realen System mussten die Parameterwerte jedoch deutlich nachgeregelt werden, da Effekte wie mechanisches Spiel, Motorvibrationen oder das Verhalten der TMC2209-Treiber im Microstepping-Betrieb im vereinfachten Modell nicht abgebildet sind (vgl. Kapitel~\ref{subsec:pid_optimierung}).
+Am realen System mussten die Parameterwerte jedoch deutlich angepasst werden, da Effekte wie mechanisches Spiel, Motorvibrationen oder das Verhalten der TMC2209-Treiber im Microstepping-Betrieb im vereinfachten Modell nicht abgebildet sind (vgl. Kapitel~\ref{subsec:pid_optimierung}).
 
 \chapter{Hardware-Entwicklung}
 \label{ch:hardware}
@@ -802,7 +805,7 @@ Um das echtzeitfähige Systemverhaltens umzusetzen wurde beide Kerne des ESP32 i
 
 Tabelle~\ref{tab:freertos_tasks} zeigt die konkrete Task-Konfiguration des Systems.
 
-\begin{table}[h]
+\begin{table}[H]
     \centering
     \caption{Übersicht der FreeRTOS-Tasks mit Kern- und Prioritätszuweisung}
     \label{tab:freertos_tasks}
@@ -848,16 +851,16 @@ Als Sicherheitsfunktion werden die Motoren automatisch stromlos geschaltet, soba
 
 Bei der ersten In\-be\-trieb\-nah\-me der Mo\-tor\-an\-steue\-rung über das CNC-Shield trat das Problem auf, dass von den beiden angeschlossenen Motoren zunächst durchgehend nur einer angesteuert wurde, während der zweite entweder stillstand oder ein hörbares Fiepen ohne tatsächliche Rotation zeigte. Zur Fehlersuche wurden zunächst sämtliche Versorgungsspannungen, Steckverbindungen und die Pin-Beschaltung des A4988-Treibers mittels Multimeter durchgemessen, ohne dass hierbei eine Auffälligkeit festgestellt werden konnte.
 
-Eine anschließende Messung der STEP- und DIR-Signale direkt am Ausgang des CNC-Shields mit dem Oszilloskop sah auf den ersten Blick korrekt aus. Als der Low-Pegel am ESP32-Ausgang direkt mit dem Multimeter gemessen wurde, lag statt der erwarteten 0 V eine Spannung von etwa 2,3 V an – also kein sauber definierter Low-Pegel. Diese Fehlfunktion wurde auf einen elektrischen Defekt des ESP32-Boards zurückgeführt. Nach dem Austausch des Boards konnten am entsprechenden Pin die erwarteten, klar definierten Pegel von 0 V beziehungsweise 3,3 V gemessen werden.
+Eine anschließende Messung der STEP- und DIR-Signale direkt am Ausgang des CNC-Shields mit dem Oszilloskop sah auf den ersten Blick korrekt aus. Als der Low-Pegel am ESP32-Ausgang direkt mit dem Multimeter gemessen wurde, lag statt der erwarteten 0 V eine Spannung von etwa 2,3 V an, also kein sauber definierter Low-Pegel. Diese Fehlfunktion wurde auf einen elektrischen Defekt des ESP32-Boards zurückgeführt. Nach dem Austausch des Boards konnten am entsprechenden Pin die erwarteten, klar definierten Pegel von 0 V beziehungsweise 3,3 V gemessen werden.
 
-Nach dem ESP32-Austausch drehten sich zwar beide Motoren, liefen aber nicht sauber an und ruckelten unkontrolliert vor und zurück. Da ein zuvor funktionierender Motor aus einem Altprojekt angeschlossen wurde und dieser sich korrekt drehte, konnte der Fehler auf den Bereich hinter dem Treiberausgang eingegrenzt werden. Anschließend wurde mit dem Durchgangsprüfer am Kabel und den Motoren die Spulenzugehörigkeit der einzelnen Anschlüsse (1A, 1B, 2A, 2B) ermittelt. Dabei zeigte sich, dass das mitgelieferte Verbindungskabel die Spulenanschlüsse gegenüber der Pinbelegung des CNC-Shields vertauscht führte. Nach dem Korrigieren der Kabelbelegung passend zur korrekten Spulenzuordnung liefen die beiden Motoren wie erwartet.
+Nach dem Austausch des ESP-32 drehten sich zwar beide Motoren, liefen aber nicht sauber an und ruckelten unkontrolliert vor und zurück. Da ein zuvor funktionierender Motor aus einem Altprojekt angeschlossen wurde und dieser sich korrekt drehte, konnte der Fehler auf den Bereich hinter dem Treiberausgang eingegrenzt werden. Anschließend wurde mit dem Durchgangsprüfer am Kabel und den Motoren die Spulenzugehörigkeit der einzelnen Anschlüsse (1A, 1B, 2A, 2B) ermittelt. Dabei zeigte sich, dass das mitgelieferte Verbindungskabel die Spulenanschlüsse gegenüber der Pinbelegung des CNC-Shields vertauscht führte. Nach dem Korrigieren der Kabelbelegung passend zur korrekten Spulenzuordnung liefen die beiden Motoren wie erwartet.
 
 \subsection{Kurzschluss und Treiberwechsel (Dauerer, Stiegler, Schenkel)}
 \label{subsec:motor_kurzschluss}
 
 Im weiteren Projektverlauf wurde für den Betrieb ohne das Labornetzteil ein 6S-LiPo-Akku mit einer Nennspannung von 22,2,V angeschlossen. Der zu diesem Zeitpunkt eingesetzte A4988-Treiber ist zwar grundsätzlich für Spannungen in diesem Bereich ausgelegt \cite{A4988}, jedoch wurde ein gebrauchter Treiber aus einem Altprojekt verwendet, der vermutlich bereits vorgeschädigt war. Beim Anschließen des Akkus brannte der Treiber durch und verursachte einen Kurzschluss.
 
-Nach dem Vorfall wurde systematisch untersucht, welche Komponenten beschädigt worden waren. Hierzu wurden sämtliche Leitungen mithilfe eines Durchgangsprüfers auf Kurzschlüsse überprüft, die Versorgungsspannungen nachgemessen sowie die Signale an den Treibern und Motoren mit einem Oszilloskop analysiert. Dabei zeigte sich, dass sich einer der Motoren nach dem Kurzschluss nicht mehr drehen ließ, was auf eine Beschädigung hindeutete. Die anschließend durchgeführte Widerstandsmessung der Motorwicklungen bestätigte diesen Verdacht, da beide Wicklungen deutlich von den erwarteten Widerstandswerten abwichen. Aufgrund der fehlerhaften Messwerte und der ausbleibenden Funktion musste der Motor ausgetauscht werden.
+Nach dem Vorfall wurde systematisch untersucht, welche Komponenten beschädigt worden waren. Hierzu wurden sämtliche Leitungen mithilfe eines Durchgangsprüfers auf Kurzschlüsse überprüft, die Versorgungsspannungen nachgemessen sowie die Signale an den Treibern und Motoren mit einem Oszilloskop analysiert. Dabei zeigte sich, dass sich einer der Motoren nach dem Kurzschluss nicht mehr drehen ließ, was auf eine Beschädigung hindeutete. Die anschließend durchgeführte Widerstandsmessung der Motorwicklungen bestätigte diesen Verdacht, da beide Wicklungen deutlich von den erwarteten Widerstandswerten abwichen. Aufgrund der fehlerhaften Messwerte und weil sich der Motor nichtmehr drehte, musste dieser augetauscht werden.
 
 Da ohnehin ein neuer Motortreiber erforderlich war, wurde auf den TMC2209 umgestellt, da dieser die Anforderungen des Projekts in mehreren Punkten besser erfüllt (vgl. Kapitel~\ref{subsec:tmc2209_integration}).
 
@@ -866,7 +869,7 @@ Da ohnehin ein neuer Motortreiber erforderlich war, wurde auf den TMC2209 umgest
 
 Nach dem Wechsel auf den TMC2209 zeigte sich schnell, dass der neue Treiber dem A4988 in einem entscheidenden Punkt überlegen ist. Er arbeitet standardmäßig mit 8 Mikroschritten pro Vollschritt \cite{Tmc2209_datasheet_rev109}. (vgl. Kapitel~\ref{subsec:motorwahl_treiber}). Gerade bei niedrigen Geschwindigkeiten war der Unterschied deutlich spürbar, die Motorbewegung wurde insgesamt ruhiger und gleichmäßiger.
 
-Der maximal zulässige Motorstrom wurde über das Potentiometer der Treiber (VREF) eingestellt. Die Formel aus dem Datenblatt wurde verwendet.
+Der maximal zulässige Motorstrom wurde über das Potentiometer der Treiber (VREF) eingestellt. Dazu wurde die Formel aus dem Datenblatt verwendet.
 \begin{equation}
     V_{REF} = I_{RMS} \times 1{,}41
 \end{equation}
@@ -884,8 +887,7 @@ Das Potentiometer wurde auf etwa 1{,}6\,V eingestellt. Anschließend wurde mithi
 \end{figure}
 
 Der TMC2209 bietet die beiden Betriebsmodi StealthChop und SpreadCycle. Beide Modi wurden getestet und hinsichtlich des Bewegungsverhaltens der Motoren untersucht. Durch den Wechsel auf den neuen Treiber konnte in beiden Betriebsmodi eine deutlich flüssigere Motorbewegung als zuvor mit dem A4988 beobachtet werden.
-
-Der TMC2209 verfügt über eine UART-Schnittstelle, über die eine softwareseitige Konfiguration möglich ist. Es wurde überprüft, ob die hierfür erforderlichen Pins auf dem verwendeten CNC-Shield belegt oder blockiert sind; dies war jedoch nicht der Fall (vgl. Kapitel~\ref{subsec:motor_problem_cncshield}). Da die UART-Schnittstelle im finalen Aufbau nicht benötigt wird, wird der Treiber im Standalone-Modus betrieben. Die nicht genutzten Pins des TMC2209 wurden aus Sicherheitsgründen isoliert.
+Da die UART-Schnittstelle im finalen Aufbau nicht benötigt wird, wird der Treiber im Standalone-Modus betrieben. Die nicht genutzten Pins des TMC2209 wurden deshalb aus Sicherheitsgründen abisoliert.
 
 Im weiteren Projektverlauf, während der Optimierung der Software und der PID-Parameter, brannte außerdem ein TMC2209-Treiber der Version v1.3 durch, nachdem an dessen Motorausgang dauerhaft 24,V anlagen (vgl. Kapitel~\ref{subsec:motor_kurzschluss}). Ursache hierfür war eine fehlerhafte Verkabelung, weshalb der Treiber ausgetauscht werden musste. Ein weiteres wiederkehrendes Problem bestand darin, dass die Adern des Verbindungskabels zwischen Treiber und Motor erneut in einer falschen Reihenfolge angeschlossen waren. Dieses Fehlerbild entsprach dem bereits in Kapitel~\ref{subsec:motor_problem_cncshield} für den A4988 beschriebenen Fall.
 
@@ -924,7 +926,7 @@ Der praktische Einsatz der Sensoren dient der Erkennung von Hindernissen vor und
 \label{subsec:neigung_pid_impl}
 
 Der Neigungs-PID-Regler bildet den inneren Regelkreis und ist für die eigentliche Balance des Roboters zuständig.
-Er liest im festen Regeltakt (alle 10-20\,ms) den aktuellen Neigungswinkel vom MPU6050 aus und berechnet 
+Er liest im festen Regeltakt (alle 27\,ms) den aktuellen Neigungswinkel vom MPU6050 aus und berechnet 
 daraus, wie schnell sich die Motoren drehen sollen, um den Roboter aufrecht zu halten.
 Als Sollwert ist grundsätzlich 0\,Grad vorgegeben, 
 also vollkommen senkrecht. Über den PS4-Controller lässt sich dieser Sollwert um 
@@ -966,8 +968,7 @@ Während der Fahrt mit dem PS4-Controller ist der Positions-PID deaktiviert,
 da sich beide Regler sonst gegenseitig behindern würden. Nach der Fahrt wird der
 Schrittezähler zurückgesetzt, damit der Roboter an der neuen Position stehen bleibt.
 Für den Positions-PID-Regler wurden zunächst die aus der Simulation stammenden
-Startwerte übernommen (vgl. Kapitel~\ref{subsec:simulink_positions_pid}) und im realen Betrieb
-empirisch nachjustiert (vgl. Kapitel~\ref{subsec:pid_optimierung}).
+Startwerte übernommen (vgl. Kapitel~\ref{subsec:simulink_positions_pid}) und im realen Betrieb nachjustiert (vgl. Kapitel~\ref{subsec:pid_optimierung}).
 
 \subsection{Systematische PID-Optimierung (Dauerer, Stiegler, Schenkel)}
 \label{subsec:pid_optimierung}

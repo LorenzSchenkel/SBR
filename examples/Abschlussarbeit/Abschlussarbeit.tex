@@ -21,6 +21,7 @@ DIV=15,BCOR=10mm, % Seitenlayout wie bei Koma-Script
 \usepackage{longtable}
 \usepackage{array}
 \usepackage{multirow}
+\usepackage{float}
 
 
 
@@ -49,7 +50,7 @@ position=bottom]{caption}
 \automark*[section]{}
 
 \documenttype{Projektdokumentation}
-\title{Self-Balancing Robot -- Projektstudium Technische Informatik}
+\title{Self-Balancing Robot -- Pro\-jekt\-stu\-di\-um Technische Informatik}
 \author{Felix Dauerer, Lorenz Schenkel, Niklas Stiegler}
 \department{Informatik und Mathematik}
 \studyprogramme{Technische Informatik}
@@ -309,7 +310,7 @@ einen Soll-Neigungswinkel nach rechts vor, sodass sich der Roboter nach rechts l
 Zielposition zurückkehrt. Beide Regler arbeiten kontinuierlich zusammen, sodass der Roboter sowohl 
 in der Balance bleibt als auch seine Position hält.
 
-Dieses Kaskadenprinzip wurde im Rahmen der Simulation erarbeitet und validiert 
+Dieses Kas\-ka\-den\-prin\-zip wurde im Rahmen der Simulation erarbeitet und validiert 
 (vgl. Kapitel~\ref{subsec:simulink_positions_pid}) und anschließend im realen System 
 umgesetzt (vgl. Kapitel~\ref{sec:pid_regelung}).
 
@@ -387,7 +388,7 @@ Um einen PID-Regelkreis in Simulink zu realisieren, dient der Neigungswinkel des
 
 Um die Simulation performant zu halten und Abstürze durch zu hohe Rechenlast zu vermeiden, wurde eine feste Abtastrate für die Sensorabfrage definiert. Der in Grad vorliegende Neigungswinkel wird mit einem Comparer-Block gegen den Sollwert von 0 Grad verglichen. Die resultierende Regelabweichung fließt in einen PID-Regler-Block, dessen Ausgangsgröße das benötigte Drehmoment angibt.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth,keepaspectratio]{../../Quellen/PID SBR SImulink.png}
     \caption{Simulink-Modell des PID-Regelkreises für den Self-Balancing Robot}
@@ -399,7 +400,7 @@ Da die beiden Motoren im realen Aufbau spiegelbildlich zueinander orientiert sin
 
 Zur Analyse des Regelverhaltens werden virtuelle Oszilloskope genutzt, die den Verlauf des Neigungswinkels, der Motorausgangsgröße sowie einer eventuellen Positionsdrift grafisch sichtbar machen und können genutzt werden, um die Regelung gezielt nachzuverfolgen. Durch iteratives Anpassen der PID-Parameter ergaben sich folgende Startwerte für den Neigungs-PID-Regler:
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth,keepaspectratio]{../../Quellen/SBR_DrehwinkelSimulationInRad.png}
     \caption{Verlauf des Drehwinkels im Simulink-Modell während der PID-Optimierung}
@@ -437,11 +438,11 @@ Ein zentraler Nutzen des Simulink-Modells lag darin, bereits vor der Hardwarebes
 
 Als Konsequenz daraus wurde die Position des Schwerpunkts zumindest auf oberhalb der Hälfte der Gesamthöhe festgelegt. Da die schweren Schrittmotoren im realen Aufbau den Schwerpunkt ohnehin nach unten ziehen, wurde die Batterie im finalen Aufbau bewusst an der höchsten Stelle des Chassis platziert.
 
-\textbf{Reifengröße:} Aus vorherigen Projekten standen zwei Reifengrößen zur Verfügung. Eine kleinere Variante mit 6,5~cm Durchmesser und eine größere mit 10~cm. Für beide Konfigurationen wurden die PID-Parameter angepasst, um einen fairen Vergleich zu gewährleisten. Die kleinere Variante erwies sich bei den Tests (vgl. Kapitel~\ref{subsec:simulink_stoergroessen}) als die bessere Wahl, auch wenn der Unterschied nicht stark verschieden war. Die Entscheidung fiel daher auf die kleineren Räder mit 6,5~cm Durchmesser.
+\textbf{Reifengröße:} Aus vorherigen Projekten standen zwei Reifengrößen zur Verfügung. Eine kleinere Variante mit 6,5~cm Durchmesser und eine größere mit 10~cm. Für beide Kon\-fi\-gu\-ra\-tio\-nen wurden die PID-Parameter angepasst, um einen fairen Vergleich zu gewährleisten. Die kleinere Variante erwies sich bei den Tests (vgl. Kapitel~\ref{subsec:simulink_stoergroessen}) als die bessere Wahl, auch wenn der Unterschied nicht stark verschieden war. Die Entscheidung fiel daher auf die kleineren Räder mit 6,5~cm Durchmesser.
 
 \textbf{Motordimensionierung:} Die Simulation zeigte, dass die NEMA\,17 Schrittmotoren mit einem Nenndrehmoment von 0,55~Nm für die geplante Masse des Systems ausreichend sind, um die geforderte Stoßtoleranz (F20) und Positionsgenauigkeit (F30) und Balance zu erfüllen.
 
-Insgesamt bestätigte die Simulation, dass die gewählte Hardware-Konfiguration grundsätzlich funktionieren würde und dass ein PID-basierter Ansatz zur Stabilisierung des Roboters geeignet ist. Die Simulation ermöglichte damit eine fundierte Komponentenauswahl vor der Beschaffungsphase.
+Insgesamt bestätigte die Simulation, dass die gewählte Hardware-Konfiguration grundsätzlich funktionieren würde und dass ein PID-basierter Ansatz zur Stabilisierung des Roboters geeignet ist. Die Simulation ermöglichte damit eine fundierte Kom\-po\-nen\-ten\-aus\-wahl vor der Be\-schaf\-fungs\-pha\-se.
 
 \section{Erweiterte Simulink-Modellierung}
 \label{sec:simulink_erweitert}
@@ -492,7 +493,7 @@ und dadurch wieder zur Startposition zurückkehrt.
 Sobald die Zielposition erreicht ist, konvergiert der vorgegebene 
 Neigungswinkel wieder gegen 0~Grad und der Roboter bleibt auf der Stelle stehen.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth,keepaspectratio]{../../Quellen/PID Neigung SBR.png}
     \caption{Kaskadenregelung mit Neigungs- und Positions-PID im Simulink-Modell}
@@ -541,13 +542,13 @@ resultierend wurde ein eigener Entwurf realisiert, der die Kriterien Leichtbau,
 Kos\-ten\-ef\-fi\-zi\-enz und strukturelle Stabilität erfüllt.
 Für das Gehäuse wurde ein dreistöckiger Aufbau im Stile eines Regals gewählt. Als modulares System ermöglicht es, elektronische Komponenten auf verschiedenen Ebenen zu platzieren und so die Gewichtsverteilung sowie das Systemverhalten gezielt zu verändern. Bis zum finalen Design wurden fünf iterative Entwürfe erstellt. Hierbei wurden die Abmessungen der Plattformen schrittweise bis zum Maximum des verfügbaren Druckbettes bei flacher Bauteillage vergrößert und die Anzahl der Etagen von zwei auf drei erhöht, um den Schwerpunkt weiter nach oben zu verlagern und mehr Platz für die Bauteile zu schaffen. Die Konstruktion beinhaltet passgenaue Aussparungen für die Schrittmotoren sowie eine Steckverbindung zwischen den Plattformen und den tragenden Pfosten.
 
-Die Plattformen wurden explizit auf die genutzten Komponenten angepasst, sodass es passgenaue Montagelöcher und Steckhalterungen gibt. So können die Ultraschallsensoren gesteckt sowie der ESP32, das CNC-Shield, der Buck-Converter und die MPU mit Schrauben montiert werden. Der Akku besitzt ein Einschubfach mit Halterungen für Gummibänder, die den Akku gegen die Plattform pressen. Der Schalter wurde nachträglich hinzugefügt, wofür eine entsprechende Bohrung vorgenommen wurde. Als Material für den 3D-Druck kam PLA-Filament zum Einsatz. Die M3-Gewindestangen dienen dazu, die beiden Motoren fest miteinander zu verbinden.
+Die Plattformen wurden explizit auf die genutzten Komponenten angepasst, sodass es passgenaue Montagelöcher und Steckhalterungen gibt. So können die Ul\-tra\-schall\-sen\-so\-ren gesteckt sowie der ESP32, das CNC-Shield, der Buck-Converter und die MPU mit Schrauben montiert werden. Der Akku besitzt ein Einschubfach mit Halterungen für Gummibänder, die den Akku gegen die Plattform pressen. Der Schalter wurde nachträglich hinzugefügt, wofür eine entsprechende Bohrung vorgenommen wurde. Als Material für den 3D-Druck kam PLA-Filament zum Einsatz. Die M3-Gewindestangen dienen dazu, die beiden Motoren fest miteinander zu verbinden.
 
 Ein wesentlicher Teil der späteren Iterationen wurde durch den in Kapitel~7.3.3 beschriebenen Kurzschluss-Vorfall verursacht, der einen mechanischen Neuaufbau erforderlich machte. Im Zuge dieses Neuaufbaus wurde zeitgleich eine Anpassung der Gehäusehöhe vorgenommen.
 
 % TODO: [Abbildung einfügen: CAD-Modell des finalen Chassis]
 
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
     % \includegraphics[width=0.7\textwidth]{CAD_Chassis_final.png}
     \caption{Finales CAD-Modell des dreistöckigen Chassis-Aufbaus}
@@ -564,11 +565,11 @@ Um hierbei Material und Zeit zu sparen, wurden vorab kleine Testdrucke durchgef�
 \subsection{Montage und Aufbau (Schenkel, Stiegler)}
 \label{subsec:montage_aufbau}
 
-Der ursprüngliche Aufbau des Systems erfolgte zunächst als Provisorium, bei dem 
+Der ursprüngliche Aufbau des Systems erfolgte zunächst als Pro\-vi\-so\-ri\-um, bei dem 
 einzelne Komponenten mit Kabelbindern fixiert wurden, um einen schnellen, 
 funk\-tions\-fä\-hi\-gen Pro\-to\-typ für erste Tests zu erhalten.
 Die Montage des Roboters brachte einen erheblichen Zeitaufwand mit sich. Aufgrund eines Defekts an einem der Schrittmotoren musste der gesamte Aufbau zweimal komplett von Grund auf durchgeführt werden. 
-Die Schrittmotoren waren über vier parallele M3-Gewindestangen zur Erhöhung der Gesamtsteifigkeit des Systems verbunden. Zwischen den Motoren wurden zahlreiche Muttern platziert, um diese kontern zu können und ein Lösen durch Vibrationen, der Schittmotoren, zu verhindern. 
+Die Schrittmotoren waren über vier parallele M3-Gewindestangen zur Erhöhung der Ge\-samt\-stei\-fig\-keit des Systems verbunden. Zwischen den Motoren wurden zahlreiche Muttern platziert, um diese kontern zu können und ein Lösen durch Vibrationen, der Schittmotoren, zu verhindern. 
 Mithilfe eines Akkuschraubers wurde dieser zeitintensive Montageprozess beschleunigt. Da sich das Gewinde durch das Kürzen mit einer Kappzange verformt hatte, mussten die M3-Gewindestangen einseitig nachgeschnitten und die Kanten anschließend gefeilt werden.
 Die Reifen wurden mittels Sekundenkleber fixiert und über eine feste Kupplung direkt mit den Motorwellen verschraubt, um einen spielfreien Direktantrieb zu ermöglichen.
 
@@ -597,13 +598,13 @@ Um eine dauerhafte Lösung zu schaffen, wurde eine Lochrasterplatine genutzt, au
 \subsection{Sensorik (MPU6050, HC-SR04) (Niklas)TODO MPU Hcsr04 Bild}
 \label{subsec:sensorik_hardware}
 
-Für das Messen der Neigung des Roboters wurde das GY-521-Board mit dem MPU6050-Modul verwendet. Es besteht aus einem 3-Achsen-Gyroskop in Verbindung mit einem 3-Achsen-Beschleunigungssensor und ist über den I2C-Bus mit dem ESP32 verbunden (zur softwareseitigen Auswertung siehe Kapitel~\ref{sec:sensorintegration}). Der Sensor wurde bewusst auf der obersten Ebene des dreistöckigen Chassis montiert. Da die Auslenkungen dort oben am stärksten sind, liefert die MPU an dieser Position die deutlichsten Messwerte für die spätere Regelung \cite{az-deliveryGY521}.
+Für das Messen der Neigung des Roboters wurde das GY-521-Board mit dem MPU6050-Modul verwendet. Es besteht aus einem 3-Achsen-Gyroskop in Verbindung mit einem 3-Achsen-Be\-schleu\-ni\-gungs\-sen\-sor und ist über den I2C-Bus mit dem ESP32 verbunden (zur soft\-ware\-sei\-ti\-gen Auswertung siehe Kapitel~\ref{sec:sensorintegration}). Der Sensor wurde bewusst auf der obersten Ebene des dreistöckigen Chassis montiert. Da die Auslenkungen dort oben am stärksten sind, liefert die MPU an dieser Position die deutlichsten Messwerte für die spätere Regelung \cite{az-deliveryGY521}.
 
 Während der Hardware-Tests kam es jedoch immer wieder zu Messausfällen und Problemen mit der Spannungsversorgung. Auf der Suche nach der genauen Fehlerquelle wurden nacheinander zwei verschiedene MPU-Module in Verbindung mit unterschiedlichsten Kondensator-Kombinationen ausprobiert. Dabei fielen auch, als mögliche Ursache, unzuverlässige Steckverbindungen auf. Um Wackelkontakte auszuschließen, wurden die Kabel letztendlich fest an die Kontakte der MPU gelötet (siehe Abbildung~\ref{fig:sensoren}).
 
-Zur Vermeidung von Kollisionen wurden zwei HC-SR04 Ultraschallsensoren integriert. Die Wahl fiel auf dieses Modell, da es bereits vorhanden war, leicht anzusteuern und für diesen Einsatzzweck präzise genug ist. Der HC-SR04 hat eine maximale Reichweite von etwa 400\,cm und eine theoretische Messgenauigkeit von bis zu 3\,mm. Da der Roboter in beide Richtungen fahren kann, wurde ein Sensor vorne und einer hinten angebracht. Sie arbeiten nach dem Trigger-Echo-Prinzip und berechnen den genauen Abstand zum Hindernis anhand der Laufzeit des ausgesendeten Ultraschallimpulses \cite{reicheltHCSR04_Datasheet}. 
+Zur Vermeidung von Kollisionen wurden zwei HC-SR04 Ul\-tra\-schall\-sen\-so\-ren integriert. Die Wahl fiel auf dieses Modell, da es bereits vorhanden war, leicht anzusteuern und für diesen Einsatzzweck präzise genug ist. Der HC-SR04 hat eine maximale Reichweite von etwa 400\,cm und eine theoretische Messgenauigkeit von bis zu 3\,mm. Da der Roboter in beide Richtungen fahren kann, wurde ein Sensor vorne und einer hinten angebracht. Sie arbeiten nach dem Trigger-Echo-Prinzip und berechnen den genauen Abstand zum Hindernis anhand der Laufzeit des ausgesendeten Ul\-tra\-schall\-im\-pul\-ses \cite{reicheltHCSR04_Datasheet}. 
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.6\textwidth,keepaspectratio]{../../Quellen/Ultraschallsensoren.png}
     \caption{Verbaute HC-SR04 Ultraschallsensoren am Chassis}
@@ -623,6 +624,13 @@ Warum Schrittmotoren im Vergleich zu DC-Motoren bevorzugt werden, wurde bereits 
 Die Ansteuerung wurde über ein Arduino Uno kompatibles, vorhandenes, CNC-Shield umgesetzt. Dies war bereits mit passenden Steckplätzen, Kondensatoren, Enable-Pins für die Treiber und möglichen Steckplätzen für Mikrosteps und für Step und Dir mitgeliefert. Um technische Probleme des CNC-Shields, vor allem der Kondensatoren, auszuschließen wurde dies einmal ausgetauscht.
 
 Als Treiber wurden am Anfang A4988-Treiber eingesetzt und am Ende dann gegen die moderneren TMC2209-Treiber getauscht, da diese mit ihrer PWM-Steuerung (StealthChop) deutlich leiser und präziser waren \cite{Tmc2209_datasheet_rev109}. Doch während des Projektes wurde oft getauscht oder getestet, einmal um Unterschiede festzustellen oder um die teureren Treiber vor eventuellen Schäden  zu schützen.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth,keepaspectratio]{../../Quellen/TMC Output am Oszi.png}
+    \caption{Ausgangssignale des TMC2209-Treibers am Oszilloskop (PWM-basierte Motoransteuerung im StealthChop-Modus)}
+    \label{fig:tmc_output_oszi}
+\end{figure}
 
 
 \section{Energieversorgung}
@@ -661,21 +669,30 @@ Da all diese Maßnahmen keine Besserung brachten, wurde die Spannungsstabilität
 Damit wurden die verbauten Kondensatoren sowohl im eingebauten als auch im ausgelöteten Zustand vermessen und mit einem bekanntermaßen funktionierenden CNC-Shield verglichen. 
 Diese Überprüfung lieferte jedoch keine Auffälligkeiten, sondern die Kapazität befand sich in der üblichen Toleranz von $\pm20\,\%$.
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth,keepaspectratio]{../../Quellen/Kondesatormessung am CNC Shield.png}
+    \caption{Kondensatormessung am CNC-Shield mit dem LCR-Meter}
+    \label{fig:kondensatormessung_cnc}
+\end{figure}
+
+
+
 Der eigentliche Durchbruch bei der Fehlersuche gelang erst, als der Roboter wieder an den PC angeschlossen und die Sensordaten der MPU6050 live im Logger überwacht werden konnten. 
 Dabei fiel auf, dass bei einem ausgeprägten Neigungswinkel keine Fehler auftraten. Sobald sich der Roboter jedoch um die Null-Grad-Marke bewegte und die Motoren durch den Regelkreis schnell hin- und hersprangen, lieferten die Sensorwerte plötzlich falsche Werte. 
 Eine anschließende Messung der Logikspannung direkt an der MPU6050 bestätigte, dass diese in den Momenten der schnellen Richtungswechsel dramatisch einbrach. 
 Die schnellen Lastwechsel der Motoren koppelten somit direkt in die Versorgung der empfindlichen Sensorik ein.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.9\textwidth,keepaspectratio,trim={0 60pt 0 60pt},clip]{../../Quellen/MPU Spannungseinbruch am Oszi.png}
-    \caption{Spannungseinbruch an der MPU6050-Versorgung unter Motorlast, aufgenommen am Oszilloskop}
+    \caption{Spannungseinbruch an der MPU6050-Ver\-sor\-gung unter Motorlast, aufgenommen am Oszilloskop}
     \label{fig:spannungseinbruch_oszi}
 \end{figure}
 
 \subsection{Kondensator-Lösung am MPU6050 (Schenkel)}
 \label{subsec:kondensator_loesung}
-Als erste Abhilfe wurde ein großer  $100\ \mu\text{F}$ Elektrolytkondensator nahe an der MPU6050 platziert, um die Logikspannung zu stützen. 
+Als erste Abhilfe wurde ein großer  $100\ \mu\text{F}$ Elek\-tro\-lyt\-kon\-den\-sa\-tor nahe an der MPU6050 platziert, um die Logikspannung zu stützen. 
 Diese Maßnahme erfüllte ihren Zweck und behob das Sensorproblem sowie die damit verbundenen Signalstörungen während der schnellen Motorzugriffe vollständig.
 
 \subsection{ESP32 nicht programmierbar (Niklas)}
@@ -691,7 +708,7 @@ Unter dem Oszilloskop waren damit zwar immer noch minimale, hochfrequente Einbr�
 Ein zusätzlicher Versuch, diese verbleibenden Störungen durch das parallele Anlöten eines schnellen Keramikkondensators vollständig zu eliminieren, brachte nur einen minimalen Unterschied. 
 Obwohl das System mit dem kleineren $10\ \mu\text{F}$ Kondensator im Grundbetrieb funktionierte, zeigten sich im späteren Verlauf immer wieder sporadische Störungen bei der Spannungsstabilität.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.6\textwidth,keepaspectratio,trim={0 60pt 0 60pt},clip]{../../Quellen/MPU Kondensator.jpg}
     \caption{Kondensator zur Spannungspufferung direkt an der MPU6050}
@@ -725,7 +742,7 @@ Da für einige der verwendeten Komponenten keine passenden Symbole in den Biblio
 Konkret wurden hierfür zwei eigene Symbole gezeichnet. Eines für die Ultraschallsensoren und eines für das CNC-Shield, um alle Anschlüsse korrekt im Plan abbilden zu können.
 Der vollständige elektrische Schaltplan des Gesamtsystems ist in Anhang~B beigefügt.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
     % clip und trim schneiden weiße Ränder ab (links unten rechts oben)
     \includegraphics[width=\textwidth,keepaspectratio]{../../Quellen/KiCAD_Schematic.pdf}
@@ -766,7 +783,7 @@ Tabelle~\ref{tab:freertos_tasks} zeigt die konkrete Task-Konfiguration des Syste
     \centering
     \caption{Übersicht der FreeRTOS-Tasks mit Kern- und Prioritätszuweisung}
     \label{tab:freertos_tasks}
-    \begin{tabular}{|l|c|c|l|}
+    \begin{tabular}{|l|c|c|p{5.5cm}|}
         \hline
         \textbf{Task} & \textbf{Core} & \textbf{Priorität} & \textbf{Aufgabe} \\
         \hline
@@ -779,7 +796,7 @@ Tabelle~\ref{tab:freertos_tasks} zeigt die konkrete Task-Konfiguration des Syste
     \end{tabular}
 \end{table}
 
-Der \texttt{MotorUpdateTask} läuft dabei isoliert auf Core 1, da eine unterbrechungsfreie Ansteuerung der Motoren wichtig ist. Auf Core 0 laufen der \texttt{ControlTask}, welcher die eigentliche Regelungslogik inklusive PID-Berechnung, Sensorauswertung und Verarbeitung der PS4-Controller-Eingaben übernimmt, sowie der \texttt{LoggerTask} mit niedrigerer Priorität. Durch diese Priorisierung wird sichergestellt, dass der \texttt{LoggerTask} nur dann zur Ausführung kommt, wenn der \texttt{ControlTask} sich in einer Wartephase befindet, wodurch das Logging die zeitkritische Regelung nicht beeinflusst \cite{marwedel2021} (vgl. Kapitel~\ref{subsec:nonblocking_serial}). Die Trennung der Motoransteuerung auf einen eigenen Kern stellt zusätzlich sicher, dass selbst eine kurzfristige Verzögerung innerhalb des \texttt{ControlTask}, etwa durch einen I2C-Timeout (vgl. Kapitel~\ref{subsec:i2c_errorhandling}), keinen unmittelbaren Einfluss auf die laufende Motoransteuerung hat.
+Der \texttt{MotorUpdateTask} läuft dabei isoliert auf Core 1, da eine un\-ter\-bre\-chungs\-freie Ansteuerung der Motoren wichtig ist. Auf Core 0 laufen der \texttt{ControlTask}, welcher die eigentliche Regelungslogik inklusive PID-Berechnung, Sensorauswertung und Verarbeitung der PS4-Controller-Eingaben übernimmt, sowie der \texttt{LoggerTask} mit niedrigerer Priorität. Durch diese Priorisierung wird sichergestellt, dass der \texttt{LoggerTask} nur dann zur Ausführung kommt, wenn der \texttt{ControlTask} sich in einer Wartephase befindet, wodurch das Logging die zeitkritische Regelung nicht beeinflusst \cite{marwedel2021} (vgl. Kapitel~\ref{subsec:nonblocking_serial}). Die Trennung der Motoransteuerung auf einen eigenen Kern stellt zusätzlich sicher, dass selbst eine kurzfristige Verzögerung innerhalb des \texttt{ControlTask}, etwa durch einen I2C-Timeout (vgl. Kapitel~\ref{subsec:i2c_errorhandling}), keinen unmittelbaren Einfluss auf die laufende Motoransteuerung hat.
 
 
 \subsection{Modulare Code Struktur (Niklas)}
@@ -833,7 +850,7 @@ Umkippen des Roboters unkontrolliert weiterlaufen.
 \subsection{Defekter ESP32 und vertauschte Spulenanschlüsse}
 \label{subsec:motor_problem_cncshield}
 
-Bei der ersten Inbetriebnahme der Motoransteuerung über das CNC-Shield trat das Problem auf, dass von den beiden angeschlossenen Motoren zunächst durchgehend nur einer angesteuert wurde, während der zweite entweder stillstand oder ein hörbares Fiepen ohne tatsächliche Rotation zeigte. Zur Fehlersuche wurden zunächst sämtliche Versorgungsspannungen, Steckverbindungen und die Pin-Beschaltung des A4988-Treibers mittels Multimeter durchgemessen, ohne dass hierbei eine Auffälligkeit festgestellt werden konnte.
+Bei der ersten In\-be\-trieb\-nah\-me der Mo\-tor\-an\-steue\-rung über das CNC-Shield trat das Problem auf, dass von den beiden angeschlossenen Motoren zunächst durchgehend nur einer angesteuert wurde, während der zweite entweder stillstand oder ein hörbares Fiepen ohne tatsächliche Rotation zeigte. Zur Fehlersuche wurden zunächst sämtliche Versorgungsspannungen, Steckverbindungen und die Pin-Beschaltung des A4988-Treibers mittels Multimeter durchgemessen, ohne dass hierbei eine Auffälligkeit festgestellt werden konnte.
 
 Eine anschließende Messung der STEP- und DIR-Signale direkt am Ausgang des CNC-Shields mit dem Oszilloskop sah auf den ersten Blick korrekt aus. Als wir dann aber den Low-Pegel am ESP32-Ausgang direkt mit dem Multimeter gemessen haben, stellten wir fest, dass dort statt der erwarteten 0\,V etwa 2,3\,V anlagen, also kein sauber definierter Low-Pegel. Diese Fehlfunktion wurde auf einen elektrischen Defekt des ESP32-Boards zurückgeführt. Nach dem Austausch des Boards konnten am entsprechenden Pin die erwarteten, klar definierten Pegel von 0\,V beziehungsweise 3,3\,V gemessen werden.
 
@@ -868,7 +885,7 @@ Für unseren NEMA17 Motor wollten wir einen effektiven Motorstrom von $I_{RMS} =
 \end{equation}
 Wir stellten das Potentiometer auf ca 1{,}6\,V ein und überprüften anschließend mit einer Wärmebildkamera, ob die Treiber nach längerem Betrieb auffällig warm wurden. Die Temperatur blieb im sicheren Bereich, also behielten wir diesen Wert bei.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.42\textwidth,keepaspectratio]{../../Quellen/Waermebild_TMC.png}
     \caption{Wärmebildaufnahme der TMC2209-Treiber zur Überprüfung der VREF-Einstellung}
@@ -879,7 +896,7 @@ Der TMC2209 bietet zwei Betriebsmodi, StealthChop und SpreadCycle. Wir haben bei
 
 Der TMC2209 besitzt eine UART-Schnittstelle, über die er per Software konfiguriert werden kann. Wir haben geprüft, ob die dafür benötigten Pins auf unserem CNC-Shield belegt oder blockiert sind, das war aber nicht der Fall (vgl. Kapitel~\ref{subsec:motor_problem_cncshield}). Da wir UART im finalen Aufbau nicht benötigen, betreiben wir den Treiber im Standalone-Modus. Die nicht genutzten Pins des TMC2209 haben wir aus Sicherheitsgründen abisoliert.
 
-Später im Projekt während der optimierung der SW und PID-Parameter brannte außerdem ein TMC2209-Treiber der Version v1.3 durch, nachdem an dessen Motorausgang dauerhaft 24\,V anlagen (vgl. Kapitel~\ref{subsec:motor_kurzschluss}). Das war auf eine fehlerhafte Verkabelung zurückzuführen und der Treiber musste ausgetauscht werden. Ein weiteres, wiederkehrendes Problem war, dass die Adern des Verbindungskabels zwischen Treiber und Motor erneut in falscher Reihenfolge angeschlossen waren, analog zu dem in Kapitel~7.3.2 beschriebenen Fehlerbild beim A4988.
+Später im Projekt während der Optimierung der SW und PID-Parameter brannte außerdem ein TMC2209-Treiber der Version v1.3 durch, nachdem an dessen Motorausgang dauerhaft 24\,V anlagen (vgl. Kapitel~\ref{subsec:motor_kurzschluss}). Das war auf eine fehlerhafte Verkabelung zurückzuführen und der Treiber musste ausgetauscht werden. Ein weiteres, wiederkehrendes Problem war, dass die Adern des Ver\-bin\-dungs\-ka\-bels zwischen Treiber und Motor erneut in falscher Reihenfolge angeschlossen waren, analog zu dem in Kapitel~7.3.2 beschriebenen Fehlerbild beim A4988.
 
 \section{Sensorintegration (Niklas)}
 \label{sec:sensorintegration}
@@ -887,7 +904,7 @@ Später im Projekt während der optimierung der SW und PID-Parameter brannte au�
 \subsection{MPU6050 Neigungssensor (Niklas)}
 \label{subsec:mpu6050_i2c}
 
-Die Kommunikation mit dem MPU6050 erfolgt über den I2C-Bus (SDA/SCL) mit der Standard-Adresse 0x68 \cite{az-deliveryGY521}. Die Sensordaten werden mit einer Abtastrate von 40\,Hz bzw. in einem Intervall von 25\,ms ausgelesen, also die Abtastrate des PID-Regelkreises.
+Die Kommunikation mit dem MPU6050 erfolgt über den I2C-Bus (SDA/SCL) mit der Stan\-dard-Adresse 0x68 \cite{az-deliveryGY521}. Die Sensordaten werden mit einer Abtastrate von 40\,Hz bzw. in einem Intervall von 25\,ms ausgelesen, also die Abtastrate des PID-Regelkreises.
 
 Die Rohdaten mussten zunächst in einen anschaulichen und für die Regelung nutzbaren Neigungswinkel in Grad umgerechnet werden. Bei der ersten Implementierung traten dabei fehlerhafte Ergebnisse auf, da die Messwerte der relevanten Achse durch die übrigen Achsen, sowie durch Beschleunigung beeinflusst wurden. Durch die Verwendung der Bibliothek \texttt{MPU6050\_light} und den Komplementärfilter, der die Werte des Gyroskops mit dem Beschleunigungssensor verrechnet, konnte das Problem behoben werden und zuverlässige Neigungswerte für die Balancierregelung zur Verfügung stehen \cite{rfetickMPU6050_light_library}.
 
@@ -971,7 +988,7 @@ sehr spät in der Entwicklung eingeführt.
 Parameteränderungen und deren beobachtete Auswirkungen wurden systematisch in einer Excel-Tabelle
 dokumentiert. Eine wichtige Erkenntnis war, dass ein beobachtetes Ruckeln der Motoren bei niedrigen
 Drehzahlen nicht primär durch die PID-Parameter selbst, sondern maßgeblich durch eine Erhöhung der
-Mikroschritt-Auflösung des TMC2209-Treibers behoben werden konnte (vgl. Kapitel~\ref{subsec:tmc2209_integration}).
+Mikroschritt-Auf\-lö\-sung des TMC2209-Treibers behoben werden konnte (vgl. Kapitel~\ref{subsec:tmc2209_integration}).
 Der größte Auslöser für das Ruckeln waren jedoch elektronische Probleme mit der MPU
 (vgl. Kapitel~\ref{subsec:galvanische_trennung})
 Generell zeigte sich im Projektverlauf, dass Motorparameter wie die Referenzspannung (Vref),
@@ -1062,13 +1079,13 @@ Da ein blockierungsfreier Betrieb des zeitkritischen PID-Reglers jedoch oberste 
 Die Umsetzung fasst alle wichtigen Daten einer Log-Nachricht, also einen Zeitstempel, den Namen des jeweiligen Tasks und den eigentlichen Nachrichtentext, in einer gemeinsamen Struktur zusammen. 
 Die Funktionen befüllt diese Struktur und schiebt sie in die FreeRTOS-Queue. Eine zusätzliche Wrapper-Funktion sorgt dafür, dass man Variablen ähnlich wie bei printf formatiert übergeben kann. Die Queue kann bis zu 100 Nachrichten aufnehmen. Der schreibende Task kopiert seine Daten hierbei in die Queue und setzt seine Ausführung ohne jegliche Wartezeit fort.
 
-Es wurde bewusst auf einen Sicherheitsmechanismus verzichtet, der ein Volllaufen oder Überschreiben der Queue verhindert. Der einzige Anhaltspunkt für einen potenziellen Datenverlust ist die mitgegebene Systemzeit in den Ausgaben, anhand derer Lücken in der Chronologie identifiziert werden könnten. Da im Testbetrieb jedoch keine Kapazitätsprobleme oder Datenverluste auftraten, wurde dieser Zustand zugunsten wichtigerer Projektthemen vorerst im System belassen. Diese Einschränkung wird in Kapitel~10.1.2 bei den softwareseitigen Lessons Learned noch einmal kritisch reflektiert.
+Es wurde bewusst auf einen Sicherheitsmechanismus verzichtet, der ein Volllaufen oder Überschreiben der Queue verhindert. Der einzige Anhaltspunkt für einen potenziellen Datenverlust ist die mitgegebene Systemzeit in den Ausgaben, anhand derer Lücken in der Chronologie identifiziert werden könnten. Da im Testbetrieb jedoch keine Kapazitätsprobleme oder Datenverluste auftraten, wurde dieser Zustand zugunsten wichtigerer Projektthemen vorerst im System belassen. Diese Einschränkung wird in Kapitel~10.1.2 bei den soft\-ware\-sei\-ti\-gen Lessons Learned noch einmal kritisch reflektiert.
 
 
 \subsection{Non-Blocking Serial.print() (Schenkel)}
 \label{subsec:nonblocking_serial}
 
-Da direkte Aufrufe von Serial.print() innerhalb eines zeitkritischen Tasks dessen Ausführung unmittelbar verzögern würden, wurde das gesamte serielle Logging konsequent in einen separaten LoggerTask ausgelagert.
+Da direkte Aufrufe von Serial.print() innerhalb eines zeitkritischen Tasks dessen Ausführung unmittelbar verzögern würden, wurde das gesamte serielle Logging konsequent in einen separaten Log\-ger\-Task ausgelagert.
 Der eigentliche, PID-Berechnungen durchführende ControlTask schreibt dabei ausschließlich in die in FreeRTOS-Queue und wartet zu keinem Zeitpunkt auf den Abschluss der vergleichsweise trägen seriellen Übertragung. 
 Auf diese Weise ist die Ausführungsgeschwindigkeit des Regelkreises vollständig unabhängig von der Geschwindigkeit der seriellen Schnittstelle.
 
@@ -1096,7 +1113,7 @@ Das Logger-System war nicht von Anfang an geplant, sondern wurde erst mit dem We
 
 Über den gesamten Projektverlauf hinweg wurde bei auftretenden Hardwareproblemen konsequent nach einem einheitlichen, systematischen Vorgehen gearbeitet. Zur Verifikation von Spannungspegeln und zum Erkennen von Kurzschlüssen oder unterbrochenen Leitungen wurde die Durchgangsprüfung genutzt. Wenn ein Problem damit nicht eindeutig einzugrenzen war, wurde das Oszilloskop eingesetzt, um die Versorgungsspannungen unter Last genauer zu betrachten oder die Ausgangssignale der Treiber direkt zu messen. Das Labornetzteil wurde dabei stets mit überprüft, um Spannung und Stromstärke im Betrieb im Blick zu behalten. Vor allem um zu sehen, falls die Spannung dort einbricht.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.7\textwidth,keepaspectratio]{../../Quellen/A4988 Ausgangssignale.jpg}
     \caption{Am Oszilloskop gemessene Ausgangssignale des A4988-Motortreibers}
@@ -1116,7 +1133,7 @@ Im Verlauf des Projekts traten mehrere teilweise unabhängige Hardwaredefekte au
     \centering
     \caption{Überblick der aufgetretenen Hardwaredefekte}
     \label{tab:defekte_uebersicht}
-    \begin{tabular}{|l|l|l|}
+    \begin{tabular}{|l|p{5cm}|l|}
         \hline
         \textbf{Komponente} & \textbf{Symptom} & \textbf{Detailbeschreibung} \\
         \hline
@@ -1206,7 +1223,7 @@ Einige Tests konnten im Projektzeitraum nicht mehr vollständig durchgeführt we
 % - Exakte Batterielaufzeit
 % - Max. Auslenkungswinkel für selbstständiges Aufrichten
 % - Quantitative HC-SR04 Kollisionsvermeidungs-Tests
-Konkret fehlen noch: ein genauer Test der Batterielaufzeit über die geforderten 10\,Minuten hinaus, eine Messung des maximalen Auslenkungswinkels, aus dem sich der Roboter noch selbstständig fängt, sowie ein Test der Kollisionsvermeidung mit den Ultraschallsensoren unter realen Bedingungen.
+Konkret fehlen noch: ein genauer Test der Bat\-te\-rie\-lauf\-zeit über die geforderten 10\,Minuten hinaus, eine Messung des maximalen Aus\-len\-kungs\-win\-kels, aus dem sich der Roboter noch selbst\-stän\-dig fängt, sowie ein Test der Kol\-li\-si\-ons\-ver\-mei\-dung mit den Ul\-tra\-schall\-sen\-so\-ren unter realen Bedingungen.
 
 \chapter{Inbetriebnahme}
 \label{ch:inbetriebnahme}

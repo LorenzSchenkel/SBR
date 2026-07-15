@@ -260,7 +260,7 @@ Tabelle~\ref{tab:nichtfunktionale_anforderungen} fasst die definierten nicht-fun
     \end{tabular}
 \end{table}
 
-N20 wurde durch den Matlab/Simulink-Regelungsentwurf umgesetzt, in dem das Systemverhalten vorab simuliert und gewisse Erkenntnisse daraus mitgenommen wurden (vgl. Kapitel~\ref{ch:simulation}). 
+N10 wurde durch den Matlab/Simulink-Regelungsentwurf umgesetzt, in dem das Systemverhalten vorab simuliert und gewisse Erkenntnisse daraus mitgenommen wurden (vgl. Kapitel~\ref{ch:simulation}). 
 
 Das vorgegebene Budget konnte aufgrund von Defekten an einem Akku, mehreren Motortreibern und einem ESP32 nicht eingehalten werden. Die genaue Aufschlüsselung ist in der Tabelle~\ref{tab:komponenten_kosten} ersichtlich. 
 
@@ -836,40 +836,23 @@ Wichtige Konfigurationswerte wie Pin-Belegungen und PID-Parameter wurden in eine
 \subsection{Grundlegende Ansteuerung (Stiegler, Schenkel)}
 \label{subsec:motor_grundansteuerung}
 
-Die Nema 17 Schrittmotoren werden über zwei Pins angesteuert. Der DIR-Pin legt die Drehrichtung fest,
-und jeder Impuls auf dem STEP-Pin dreht den Motor 
-um einen von den gewählten Mikrosteps definierten Winkel 
-weiter (vgl. Kapitel~\ref{subsec:tmc2209_integration}). 
-Eine Ansteuerung über PWM oder eine
+Die Nema17-Schrittmotoren werden mit zwei Pins über den Microcontroller angesteuert. Der DIR-Pin legt die Drehrichtung fest und jeder Impuls auf dem STEP-Pin dreht den Motor 
+um einen Winkel, der durch die gewählten Mikrosteps definiert ist (vgl. Kapitel~\ref{subsec:tmc2209_integration}). 
+Eine Ansteuerung über eine
 H-Brücke wie bei DC-Motoren ist dabei nicht nötig.
-Die Pin-Belegung für STEP und DIR beider Motoren haben wir zentral in der
-\texttt{config.h} Datei festgelegt (vgl. Kapitel~\ref{subsec:modulare_struktur}).
+Die Pin-Belegung für STEP und DIR beider Motoren sind zentral in der \texttt{config.h} Datei definiert (vgl. Kapitel~\ref{subsec:modulare_struktur}).
 
-Die Schrittimpulse erzeugen wir nicht mit \texttt{delay()}, sondern indem wir bei jedem
-Durchlauf des Motor-Tasks mit \texttt{micros()} prüfen, ob seit dem letzten Schritt
-bereits genug Zeit vergangen ist. Das benötigte Zeitintervall zwischen zwei Schritten
-wird dabei indirekt von der vorgegebenen Drehzahl durch den
- PID-Regler vorgegeben, der in einem separaten Task läuft und das Intervall
-bei jeder Regelberechnung neu setzt. Auf diese Weise blockiert die Motoransteuerung
-den Rest des Programms nicht, und PID-Berechnung sowie Schrittausgabe können unabhängig
+Die Schrittimpulse werden in jedem Durchlauf des Motor-Tasks mit \texttt{micros()} erzeugt. Dabei wird geprüft ob seit dem letzten Schritt die benötigte Zeit vergangen ist. Das Zeitintervall zwischen zwei Schritten
+wird dabei indirekt von der vorgegebenen Drehzahl durch den PID-Regler vorgegeben, der in einem separaten Task läuft und das Intervall bei jeder Regelberechnung neu setzt. Auf diese Weise ist die Motoransteuerung non-blocking und beeinflusst den Rest des Programms nicht. So können die PID-Berechnung sowie Schrittausgabe können unabhängig
 voneinander in deren jeweiligen Task und Core laufen.
 
-
-Die Frage, wie der PID-Ausgabewert in eine konkrete Motorgeschwindigkeit übersetzt wird,
-hat sich im Projektverlauf verändert. Die Simulation in
- Simulink berechnete einem Drehmomentwert in
-Newtonmeter, die verwendeten Schrittmotoren werden aber nicht über Drehmoment,
-sondern über ihre Drehzahl in RPM angesteuert. Deshalb haben wir anfangs eine lineare
-Umrechnung implementiert, die den maximalen Drehmomentwert der maximalen RPM-Zahl zuordnet und den 
-Rest dazwischen linear skaliert. Im weiteren Verlauf haben
-wir diese Zwischenschicht wieder entfernt und stattdessen direkt neue PID-Parameter
-genutzt, deren Ausgabe direkt als RPM-Steuerwert interpretiert werden kann
+Die Frage, wie der PID-Ausgabewert in eine konkrete Motorgeschwindigkeit übersetzt wird, hat sich im Projektverlauf verändert. Die Simulation in Simulink berechnete einen Drehmomentwert in Newtonmeter, wobei die verwendeten Schrittmotoren nicht über Drehmoment,
+sondern über ihre Drehzahl in RPM angesteuert werden. Deshalb wurde anfangs eine lineare Umrechnung implementiert, die den maximalen Drehmomentwert der maximalen RPM-Zahl zuordnet und linear skaliert. Im weiteren Verlauf wurden diese Zwischenschicht entfernt und stattdessen neue PID-Parameter genutzt, deren Ausgabe direkt als RPM-Steuerwert interpretiert werden kann
 (vgl. Kapitel~\ref{subsec:simulink_neigungs_pid} und~\ref{subsec:pid_optimierung}).
 
-Als Sicherheitsfunktion schalten die Motoren automatisch ab, sobald der Neigungswinkel 
-so groß wird, dass sich der Roboter nicht mehr aufrichten kann. Das entspricht der Anforderung F80
-(vgl. Kapitel~\ref{sec:funktionale_anforderungen}) und verhindert, dass die Motoren beim
-Umkippen des Roboters unkontrolliert weiterlaufen.
+Als Sicherheitsfunktion werden die Motoren automatisch stromlos geschalten, sobald der Neigungswinkel 
+eine größe erreicht hat, aus der sich der Roboter nicht mehr selbstständig aufrichten kann, wie in Anforderung F80
+(vgl. Kapitel~\ref{sec:funktionale_anforderungen}) festgelegt.
 
 \subsection{Defekter ESP32 und vertauschte Spulenanschlüsse (Dauerer, Stiegler, Schenkel)}
 \label{subsec:motor_problem_cncshield}

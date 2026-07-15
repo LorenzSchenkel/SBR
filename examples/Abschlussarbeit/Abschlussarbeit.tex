@@ -1202,7 +1202,7 @@ Die folgende Tabelle fasst die Ergebnisse der durchgeführten Balancier-Tests zu
 \section{Fahrsteuerung über PS4-Controller (Stiegler, Dauerer, Schenkel)}
 \label{sec:test_fahrsteuerung}
 
-Die Fahrsteuerung per PS4-Controller (vgl. Kapitel~\ref{subsec:ps4_werteverarbeitung}) hat funktioniert. Vorwärts- und Rückwärtsfahren über den Joystick lief wie erwartet, und 
+Die Fahrsteuerung per PS4-Controller (vgl. Kapitel~\ref{subsec:ps4_werteverarbeitung}) funktioniert. Vorwärts- und Rückwärtsfahren über den Joystick lief wie erwartet, und 
 die Idee den Sollwert des Neigungsreglers zu manipulieren erwies sich dabei als der richtige Ansatz.
 
 Im Zusammenspiel mit dem Balancierverhalten (vgl. Kapitel~\ref{sec:balancierverhalten}) zeigte sich jedoch, dass der Übergang von der Fahrt in den Stillstand fehleranfällig ist. Bremst der Roboter abrupt, hat er durch die Fahrt noch zu viel Schwung und kann sich nicht mehr selbstständig fangen. Deshalb wurde der maximale Sollwinkel, den der PS4-Controller vorgeben darf, auf kleine Werte begrenzt.
@@ -1294,7 +1294,7 @@ Ein strukturiertes Vorgehen bei der Fehlersuche war deutlich effizienter als rei
 \subsection{Elektronische Probleme (Stiegler, Dauerer, Schenkel)}
 \label{subsec:lessons_elektronik_relevanz}
 
-Selbst kleine elektronische Probleme können große Auswirkungen auf das gesamte System haben. Ein Spannungseinbruch an einem Sensor (vgl. Kapitel~\ref{subsec:spannungseinbruch}) wirkt anfangs trivial, kann aber wochenlang den gesamten Regelkreis blockieren. Auch wenn der Fokus eigentlich auf der Software liegt, unterschätzt man schnell Elektronik-Probleme beim Bau eines Roboters.
+Selbst kleine elektronische Probleme können große Auswirkungen auf das gesamte System haben. Ein Spannungseinbruch an einem Sensor (vgl. Kapitel~\ref{subsec:spannungseinbruch}) wirkt anfangs trivial, kann aber wochenlang den gesamten Regelkreis blockieren. Auch wenn der Fokus eigentlich auf der Software liegt, werden Elektronik-Probleme beim Bau eines Roboters schnell unterschätzt.
 
 \section{Organisatorische Erkenntnisse}
 \label{sec:organisatorische_erkenntnisse}
@@ -1314,9 +1314,9 @@ Ein starrer Zeitplan ist bei einem Hardware-Projekt oft wenig praktisch. Unvorhe
 \section{Fazit (Stiegler, Dauerer, Schenkel)}
 \label{sec:fazit}
 
-Das im Rahmen dieses Projekts entwickelte System eines selbstbalancierenden, zweirädrigen Roboters konnte in seinen zentralen funktionalen Anforderungen erfolgreich umgesetzt werden: Der Roboter balanciert eigenständig über einen Zeitraum von mehr als 60\,Sekunden mit einer Positionsabweichung von unter $\pm$20\,cm, lässt sich über einen PS4-Controller fahren, gleicht leichte äußere Störungen selbstständig aus und verfügt über eine funktionierende, autarke Energieversorgung samt zuverlässigem Not-Aus-Mechanismus (vgl. Kapitel~\ref{ch:tests}).
+Das im Rahmen dieses Projekts entwickelte System eines selbstbalancierenden, zweirädrigen Roboters konnte in seinen zentralen funktionalen Anforderungen erfolgreich umgesetzt werden: Der Roboter balanciert eigenständig über einen Zeitraum von mehr als 60\,Sekunden mit einer Positionsabweichung von unter $\pm$20\,cm, lässt sich über einen PS4-Controller fahren, gleicht leichte äußere Störungen selbstständig aus und verfügt über eine funktionierende, autarke Energieversorgung und einen zuverlässigen Not-Aus-Mechanismus (vgl. Kapitel~\ref{ch:tests}).
 
-Der eigentliche Wert des Projekts liegt jedoch nicht ausschließlich im funktionalen Ergebnis, sondern auch im technischen und methodischen Erkenntnisgewinn, der im Rahmen der zahlreichen langwierigen Fehlersuchen erarbeitet wurde. Insbesondere die Erkenntnis, dass einzeln einwandfrei funktionierende Teilsysteme bei ihrer Zusammenführung neue Wechselwirkungen zeigen können, ist für zukünftige mechatronische Projekte wichtig. Die verbleibende, in Kapitel~\ref{sec:balancierverhalten} dokumentierte Einschränkung, dass sich der Roboter aus einer starken Auslenkung heraus noch nicht selbstständig aufrichtet, bietet einen klaren Ansatzpunkt für eine Weiterentwicklung des Systems über den Rahmen dieses Projekts hinaus.
+Der eigentliche Wert des Projekts liegt jedoch nicht ausschließlich im funktionalen Ergebnis, sondern auch im technischen und methodischen Erkenntnisgewinn, der im Rahmen der zahlreichen langwierigen Fehlersuchen erarbeitet wurde. Insbesondere die Erkenntnis, dass einzeln einwandfrei funktionierende Teilsysteme bei ihrer Zusammenführung neue Wechselwirkungen zeigen können, ist für zukünftige mechatronische Projekte wichtig. Die verbleibende, in Kapitel~\ref{sec:balancierverhalten} dokumentierte Einschränkung, dass sich der Roboter aus einer starken Auslenkung heraus noch nicht selbstständig aufrichtet, bietet einen Ansatzpunkt für eine Weiterentwicklung des Systems über den Rahmen dieses Projekts hinaus.
 
 
 

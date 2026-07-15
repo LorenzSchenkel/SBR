@@ -796,7 +796,7 @@ Dieses Projekt wurde dann auf GitLab den anderen Teammitgliedern zur Verfügung 
 
 Ein Hauptmerkmal der gesamten Softwarearchitektur ist der vollständige Verzicht auf die Funktion \texttt{delay()} in zeitkritischen Bereichen. Diese Regel wurde nicht von Beginn des Projekts an als feste Vorgabe festgelegt, sondern entwickelte sich im Projektverlauf aus einer Vermutung des Teams. Da der PID-Regelkreis inkl. der Motorsteuerung auf feste Intervalle angewiesen ist, wurde befürchtet, dass blockierende Wartezeiten durch \texttt{delay()}-Aufrufe innerhalb einzelner Programmteile zu unkontrollierten Verzögerungen im Regelkreis führen könnten. Deshalb wurde der Verzicht auf \texttt{delay()} im weiteren Projektverlauf als verbindliche Team-Regel eingeführt und konsequent in den wichtigsten Bereichen (z.B. Intervallberechnung der Schrittmotoransteuerung) umgesetzt.
 
-Anstelle von \texttt{delay()} findet die Zeitsteuerung im Code über einen Vergleich der Systemzeit mittels \texttt{millis()} beziehungsweise \texttt{micros()} statt, wodurch einzelne Programmteile innerhalb eines Tasks zeitgesteuert ausgeführt werden können, ohne die Ausführung anderer Aufgaben zu blockieren. Für den PID-Regler wurde auf diese Weise ein genaues Abtastintervall von 25\,ms, realisiert, ohne dass parallel laufende Aufgaben wie Motoransteuerung, Sensorabfrage, PS4-Controller-Kommunikation oder Logging dadurch blockiert werden.
+Anstelle von \texttt{delay()} findet die Zeitsteuerung im Code über einen Vergleich der Systemzeit mittels \texttt{millis()} beziehungsweise \texttt{micros()} statt, wodurch einzelne Programmteile innerhalb eines Tasks zeitgesteuert ausgeführt werden können, ohne die Ausführung anderer Aufgaben zu blockieren. Für den PID-Regler wurde auf diese Weise ein genaues Abtastintervall von 27\,ms, realisiert, ohne dass parallel laufende Aufgaben wie Motoransteuerung, Sensorabfrage, PS4-Controller-Kommunikation oder Logging dadurch blockiert werden.
 
 \subsection{FreeRTOS Multicore-Ansatz (Stiegler, Dauerer, Schenkel)}
 \label{subsec:freertos_multicore}
@@ -930,7 +930,7 @@ Später im Projekt während der Optimierung der SW und PID-Parameter brannte au�
 \subsection{MPU6050 Neigungssensor (Stiegler, Dauerer, Schenkel)}
 \label{subsec:mpu6050_i2c}
 
-Die Kommunikation mit dem MPU6050 erfolgt über den I2C-Bus (SDA/SCL) mit der Stan\-dard-Adresse 0x68 \cite{az-deliveryGY521}. Die Sensordaten werden mit einer Abtastrate von 40\,Hz bzw. in einem Intervall von 25\,ms ausgelesen, also die Abtastrate des PID-Regelkreises.
+Die Kommunikation mit dem MPU6050 erfolgt über den I2C-Bus (SDA/SCL) mit der Stan\-dard-Adresse 0x68 \cite{az-deliveryGY521}. Die Sensordaten werden mit einer Abtastrate von 37\,Hz bzw. in einem Intervall von 27\,ms ausgelesen, also die Abtastrate des PID-Regelkreises. Das Abtastintervall wurde im Rahmen wiederholter Tests festgelegt, um ein stabiles Regelverhalten zu ermöglichen.
 
 Die Rohdaten mussten zunächst in einen anschaulichen und für die Regelung nutzbaren Neigungswinkel in Grad umgerechnet werden. Bei der ersten Implementierung traten dabei fehlerhafte Ergebnisse auf, da die Messwerte der relevanten Achse durch die übrigen Achsen, sowie durch Beschleunigung beeinflusst wurden. Durch die Verwendung der Bibliothek \texttt{MPU6050\_light} und den Komplementärfilter, der die Werte des Gyroskops mit dem Beschleunigungssensor verrechnet, konnte das Problem behoben werden und zuverlässige Neigungswerte für die Balancierregelung zur Verfügung stehen \cite{rfetickMPU6050_light_library}.
 
@@ -948,7 +948,7 @@ Ergänzend dazu wurden auch die Löt- und Kabelverbindungen an der MPU mechanisc
 
 Zur Erfüllung der Kollisionsvermeidung wurden zwei Ultraschallsensoren vom Typ HC-SR04 in die Software integriert. Die Distanzmessung erfolgt nach dem Trigger-Echo-Prinzip: Über den Trigger-Pin wird ein Ultraschallimpuls ausgesendet und über den Echo-Pin die Laufzeit des reflektierten Signals gemessen \cite{reicheltHCSR04_Datasheet}.
 
-Da der Sensor laut Datenblatt eine maximale Reichweite von etwa 400\,cm besitzt, muss das Signal im Grenzfall einen Hin- und Rückweg von insgesamt 800\,cm zurücklegen \cite{reicheltHCSR04_Datasheet}. Bei Berechnung mit der Schallgeschwindigkeit ergibt sich daraus eine maximale Laufzeit von ca. 25\,ms. Dieser Wert liegt weit unter dem 100 ms Abfrageintervall unseres Roboters, welches aber ausreichend ist.
+Da der Sensor laut Datenblatt eine maximale Reichweite von etwa 400\,cm besitzt, muss das Signal im Grenzfall einen Hin- und Rückweg von insgesamt 800\,cm zurücklegen \cite{reicheltHCSR04_Datasheet}. Bei Berechnung mit der Schallgeschwindigkeit ergibt sich daraus eine maximale Laufzeit von ca. 27\,ms. Dieser Wert liegt weit unter dem 100 ms Abfrageintervall unseres Roboters, welches aber ausreichend ist.
 
 Der praktische Einsatz der Sensoren dient der Erkennung von Hindernissen vor und hinter dem Roboter sowie der Auslösung eines softwareseitigen Nothalts bei Unterschreitung eines definierten Mindestabstands. Zu beachten ist dabei der im Datenblatt angegebene Totbereich von unter 2\,cm, in dem keine zuverlässige Messung mehr möglich ist \cite{reicheltHCSR04_Datasheet}.
 

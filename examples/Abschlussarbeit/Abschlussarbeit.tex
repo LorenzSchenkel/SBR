@@ -194,7 +194,7 @@ Die finale Zusammenstellung und das Layout wurden anschließend mit Adobe Illust
 Diese Dokumentation besteht aus neun Kapiteln, die den Ablauf des Projekts zeigen. Nach dieser Einleitung werden in Kapitel \ref{ch:anforderungen} die Anforderungen an den Roboter festgelegt. In Kapitel \ref{ch:systemkonzept} wird das Systemkonzept erklärt und Kapitel \ref{ch:designentscheidungen} zeigt die wichtigsten Designentscheidungen. Kapitel \ref{ch:simulation} befasst sich mit der Regelung in Matlab/Simulink. Danach folgen in den Kapiteln \ref{ch:hardware} und \ref{ch:integration} die Details zur Hardware und Integration. Die Fehlersuche wird in Kapitel \ref{sec:fehlersuche_methodik} beschrieben, während Kapitel \ref{ch:tests} die Testergebnisse zeigt. Zum Schluss zieht Kapitel \ref{sec:fazit} ein Fazit und blickt auf den Projektverlauf zurück.
 
 
-\chapter{Anforderungsspezifikation (Dauerer)}
+\chapter{Anforderungsspezifikation (Stiegler)}
 \label{ch:anforderungen}
 
 Dieses Kapitel dokumentiert die verbindlichen Anforderungen an das Self-Balancing-Robot-System. Die hier definierten Anforderungen bilden die Grundlage für Design, Implementierung und Test des Systems.
@@ -323,7 +323,7 @@ Das Budget wurde nicht eingehalten, das lag daran, dass ein Akku, mehrere Motort
 Dieses Kapitel beschreibt das grundlegende regelungstechnische Konzept des Self-Balancing Robots 
 sowie die Logik und den strukturellen Aufbau der Gesamtarchitektur.
 
-\section{Physikalisches Grundprinzip (Dauerer)}
+\section{Physikalisches Grundprinzip (Dauerer, Niklas)}
 \label{sec:invertiertes_pendel}
 
 Das dem Roboter zugrundeliegende physikalische Modell ist das eines invertierten Pendels 
@@ -386,7 +386,7 @@ Zentrales Verbindungselement zwischen diesen drei Ebenen ist der Mikrocontroller
 erfasst, die Regelung berechnet und die resultierenden Steuerbefehle an die nachgelagerten 
 Komponenten weiterleitet.
 
-\chapter{Designentscheidungen (Schenkel, Stiegler, Dauerer)}
+\chapter{Designentscheidungen (Stiegler, Schenkel, Dauerer)}
 \label{ch:designentscheidungen}
 
 Dieses Kapitel begründet die zentralen technischen Entscheidungen, die im Vorfeld getroffen wurden.
@@ -1158,7 +1158,7 @@ Motoransteuerung und Neigungserfassung liefen einzeln jeweils problemlos, doch s
 
 Das Logger-System war nicht von Anfang an geplant, sondern wurde erst mit dem Wechsel auf den FreeRTOS-Multicore-Ansatz eingeführt. Um den Motorloop auf Core~0 nicht zu stören, wurde der Logiktask auf Core~1 gesetzt, damit er die zeitkritische Regelung nicht verzögert und die Steppermotoren konstant geupdatet werden (vgl. Kapitel~\ref{subsec:freertos_multicore}).
 
-\section{Fehlersuche-Methodik (Dauerer, Stiegler, Schenkel)}
+\section{Fehlersuche-Methodik (Stiegler, Dauerer, Schenkel)}
 \label{sec:fehlersuche_methodik}
 
 Über den gesamten Projektverlauf hinweg wurde bei auftretenden Hardwareproblemen konsequent nach einem einheitlichen, systematischen Vorgehen gearbeitet. Zur Verifikation von Spannungspegeln und zum Erkennen von Kurzschlüssen oder unterbrochenen Leitungen wurde die Durchgangsprüfung genutzt. Wenn ein Problem damit nicht eindeutig einzugrenzen war, wurde das Oszilloskop eingesetzt, um die Versorgungsspannungen unter Last genauer zu betrachten oder die Ausgangssignale der Treiber direkt zu messen. Das Labornetzteil wurde dabei stets mit überprüft, um Spannung und Stromstärke im Betrieb im Blick zu behalten. Vor allem um zu sehen, falls die Spannung dort einbricht.

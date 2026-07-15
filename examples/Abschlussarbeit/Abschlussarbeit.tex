@@ -572,12 +572,10 @@ Die Plattformen wurden explizit auf die genutzten Komponenten angepasst, sodass 
 
 Ein wesentlicher Teil der späteren Iterationen wurde durch den in Kapitel~\ref{subsec:motor_kurzschluss} beschriebenen Kurzschluss-Vorfall verursacht, der einen mechanischen Neuaufbau erforderlich machte. Im Zuge dieses Neuaufbaus wurde zeitgleich eine Anpassung der Gehäusehöhe vorgenommen.
 
-% TODO: [Abbildung einfügen: CAD-Modell des finalen Chassis]
-
 \begin{figure}[H]
     \centering
-    % \includegraphics[width=0.7\textwidth]{CAD_Chassis_final.png}
-    \caption{Finales CAD-Modell des dreistöckigen Chassis-Aufbaus}
+    \includegraphics[width=0.7\textwidth]{../../Quellen/Erstes CAD Modell.png}
+    \caption{Erstes CAD-Modell des Chassis}
     \label{fig:cad_chassis}
 \end{figure}
 
@@ -626,14 +624,14 @@ Um eine dauerhafte Lösung zu schaffen, wurde eine Lochrasterplatine genutzt, au
 
 Für das Messen der Neigung des Roboters wurde das GY-521-Board mit dem MPU6050-Modul verwendet. Es besteht aus einem 3-Achsen-Gyroskop in Verbindung mit einem 3-Achsen-Be\-schleu\-ni\-gungs\-sen\-sor und ist über den I2C-Bus mit dem ESP32 verbunden (zur soft\-ware\-sei\-ti\-gen Auswertung siehe Kapitel~\ref{sec:sensorintegration}). Der Sensor wurde bewusst auf der obersten Ebene des dreistöckigen Chassis montiert. Da die Auslenkungen dort oben am stärksten sind, liefert die MPU an dieser Position die deutlichsten Messwerte für die spätere Regelung \cite{az-deliveryGY521}.
 
-Während der Hardware-Tests kam es jedoch immer wieder zu Messausfällen und Problemen mit der Spannungsversorgung. Auf der Suche nach der genauen Fehlerquelle wurden nacheinander zwei verschiedene MPU-Module in Verbindung mit unterschiedlichsten Kondensator-Kombinationen ausprobiert. Dabei fielen auch, als mögliche Ursache, unzuverlässige Steckverbindungen auf. Um Wackelkontakte auszuschließen, wurden die Kabel letztendlich fest an die Kontakte der MPU gelötet (siehe Abbildung~\ref{fig:ultraschallsensoren}).
+Während der Hardware-Tests kam es jedoch immer wieder zu Messausfällen und Problemen mit der Spannungsversorgung. Auf der Suche nach der genauen Fehlerquelle wurden nacheinander zwei verschiedene MPU-Module in Verbindung mit unterschiedlichsten Kondensator-Kombinationen ausprobiert. Dabei fielen auch, als mögliche Ursache, unzuverlässige Steckverbindungen auf. Um Wackelkontakte auszuschließen, wurden die Kabel letztendlich fest an die Kontakte der MPU gelötet.
 
 Zur Vermeidung von Kollisionen wurden zwei HC-SR04 Ul\-tra\-schall\-sen\-so\-ren integriert. Die Wahl fiel auf dieses Modell, da es bereits vorhanden war, leicht anzusteuern und für diesen Einsatzzweck präzise genug ist. Der HC-SR04 hat eine maximale Reichweite von etwa 400\,cm und eine theoretische Messgenauigkeit von bis zu 3\,mm. Da der Roboter in beide Richtungen fahren kann, wurde ein Sensor vorne und einer hinten angebracht. Sie arbeiten nach dem Trigger-Echo-Prinzip und berechnen den genauen Abstand zum Hindernis anhand der Laufzeit des ausgesendeten Ul\-tra\-schall\-im\-pul\-ses \cite{reicheltHCSR04_Datasheet}. 
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.6\textwidth,keepaspectratio]{../../Quellen/Ultraschallsensoren.png}
-    \caption{Verbaute HC-SR04 Ultraschallsensoren am Chassis}
+    \caption{HC-SR04 Ultraschallsensoren}
     \label{fig:ultraschallsensoren}
 \end{figure}
 
@@ -1127,7 +1125,7 @@ Auf diese Weise wird die andernfalls ungenutzte Prozessorzeit während dieser Wa
 \chapter{Integration und Systemtest}
 \label{ch:integration}
 
-\section{Zusammenführung der Teilsysteme (Dauerer, Stiegler, Schenkel}
+\section{Zusammenführung der Teilsysteme (Dauerer, Stiegler, Schenkel)}
 \label{sec:zusammenfuehrung}
 
 Bevor die Teilsysteme zusammengeführt wurden, wurde jedes einzeln getestet und sichergestellt, dass es für sich funktioniert. Da das Balancieren die Kernfunktion des Roboters ist, lag der Fokus beim Zusammenführen zunächst ausschließlich auf MPU6050 und Motoransteuerung. In dieser Phase wurde bewusst nur der Neigungs-PID-Regler verwendet und der äußere Positionsregler weggelassen, um das System so einfach wie möglich zu halten. PS4-Controller und Ultraschallsensoren wurden zwischendurch kurz geprüft, um sicherzugehen, dass sie grundsätzlich noch funktionieren, standen jedoch in dieser Phase nicht im Fokus.
@@ -1204,6 +1202,16 @@ Auch leichte Stöße von außen konnte der Roboter ausgleichen und selbstständi
 
 Bei starken Auslenkungen, zum Beispiel durch einen kräftigen Stoß, fängt sich der Roboter jedoch nicht mehr selbstständig und fällt um. Starkes Beschleunigen und dann abruptes Stehenbleiben mit dem PS4-Controller konnte der Roboter auch nicht mehr ausgleichen (vgl. Kapitel~\ref{sec:offene_testfaelle}). Mit mehr Zeit hätte man die PID-Parameter noch weiter optimieren können, vor allem den I-Anteil beider Regler und die Aggressivität des Positions-PIDs, um die Positionshaltung zu verbessern und den Roboter stabiler gegen stärkere Störungen zu machen.
 
+Abbildung~\ref{fig:finaler_roboter} zeigt den finalen Roboter. Gut erkennbar sind der dreistöckige Chassis-Aufbau sowie die Anordnung aller verbauten Komponenten.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.55\textwidth]{../../Quellen/Finaler Roboter.png}
+    \caption{Finaler Roboter während eines Balancier-Tests}
+    \label{fig:finaler_roboter}
+\end{figure}
+
+Die folgende Tabelle fasst die Ergebnisse der durchgeführten Balancier-Tests zusammen. Die aufgeführten Werte beziehen sich auf die besten erzielten Durchläufe.
 
 \begin{table}[h]
     \centering

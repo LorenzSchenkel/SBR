@@ -145,11 +145,11 @@ Der tatsächliche Projektverlauf zeigte hierbei deutliche Abweichungen von der u
 
 \subsection{Kommunikation und Zusammenarbeit (Schenkel, Stiegler, Dauerer)}
 \label{subsec:kommunikation}
-Die Absprachen im Team liefen über regelmäßige persönliche Treffen und fortlaufend über WhatsApp. Die meiste Zeit wurde zu zweit oder zu dritt im Labor zusammengearbeitet. Das war besonders bei komplexen Problemen sehr gut, weil so alle Teilnehmer direkt neue Ideen und Vorschläge zur Fehlersuche einbringen konnte.
+Die Absprachen im Team liefen über regelmäßige persönliche Treffen und fortlaufend über WhatsApp. Die meiste Zeit wurde zu zweit oder zu dritt im Labor zusammengearbeitet. Das war besonders bei komplexen Problemen sehr gut, weil so alle Teilnehmer direkt neue Ideen und Vorschläge zur Fehlersuche einbringen konnten.
 
 \subsection{Versionsverwaltung (Schenkel)}
 \label{subsec:versionsverwaltung}
-Um Änderungen im Code nachvollziehen zu können und eventuell alte Speicherstände wiederherstellen zu können, wurde ein GitLab Repository verwendet, welches von den Organisatoren bereitgestellt und von Anfang an des Projektstartes genutzt wurde. 
+Um Änderungen im Code nachvollziehen zu können und eventuell alte Speicherstände wiederherstellen zu können, wurde ein GitLab Repository verwendet, welches von den Organisatoren bereitgestellt und seit Projektbeginn genutzt wurde. 
 
 \section{Erstellung des Plakates}
 \label{sec:plakat}
@@ -157,7 +157,7 @@ Um Änderungen im Code nachvollziehen zu können und eventuell alte Speicherstä
 Zu Beginn des Projekts wurde der Grundaufbau des Posters festgelegt. Das Plakat sollte die Kernziele, die grundlegenden Anforderungen und eine Gesamtdarstellung des Projekts übersichtlich aufzeigen. Für die ersten Schritte wurde das Open-Source-Programm Inkscape gewählt. Für die weitere Bildbearbeitung wurde das professionelle Bildbearbeitungsprogramm Adobe Illustrator verwendet. Die Einarbeitung in die Software umfasste im Wesentlichen das Kennenlernen der Standardwerkzeuge und der Pfadbearbeitung. 
 
 \subsection{KI-gestützte Bildgenerierung (Schenkel)}
-Um das Poster visuell aufzuwerten und das angestrebte System zu illustrieren, sollte ein KI-generiertes Bild erstellen werden.
+Um das Poster visuell aufzuwerten und das angestrebte System zu illustrieren, sollte ein KI-generiertes Bild erstellt werden.
 
 Zunächst wurden Versuche mit der Bild-KI von Canva durchgeführt. Trotz mehrfacher, detaillierter Anpassungen der Prompts lieferte die KI kein brauchbares Ergebnis. Unabhängig von der Formulierung wiesen die generierten Bilder immer eine starke Ähnlichkeit mit einem Segway auf, auf dem ein Ultraschallsensor als Kopf platziert war.
 
@@ -169,7 +169,7 @@ Die finale Zusammenstellung und das Layout wurden anschließend mit Adobe Illust
 
 \section{Aufbau der Dokumentation (Schenkel)}
 \label{sec:aufbau_dokumentation}
-Diese Dokumentation besteht aus zehn Kapiteln, die den Ablauf des Projekts zeigen. Nach dieser Einleitung werden in Kapitel \ref{ch:anforderungen} die Anforderungen an den Roboter festgelegt. In Kapitel \ref{ch:systemkonzept} wird das Systemkonzept erklärt und Kapitel \ref{ch:designentscheidungen} zeigt die wichtigsten Designentscheidungen. Kapitel \ref{ch:simulation} befasst sich mit der Regelung in Matlab/Simulink. Danach folgen in den Kapiteln \ref{ch:hardware} und \ref{ch:integration} die Details zur Hardware und Integration. Die Fehlersuche wird in Kapitel \ref{sec:fehlersuche_methodik} beschrieben, während Kapitel \ref{ch:tests} die Testergebnisse zeigt. Zum Schluss zieht Kapitel \ref{sec:fazit} ein Fazit und blickt auf den Projektverlauf zurück.
+Diese Dokumentation besteht aus zehn Kapiteln, die den Ablauf des Projekts zeigen. Nach dieser Einleitung werden in Kapitel \ref{ch:anforderungen} die Anforderungen an den Roboter festgelegt. In Kapitel \ref{ch:systemkonzept} wird das Systemkonzept erklärt und Kapitel \ref{ch:designentscheidungen} zeigt die wichtigsten Designentscheidungen. Kapitel \ref{ch:simulation} befasst sich mit der Regelung in Matlab/Simulink. Danach folgen in den Kapiteln \ref{ch:hardware} und \ref{ch:integration} die Details zur Hardware und Integration. Die Fehlersuche wird im Abschnitt~\ref{sec:fehlersuche_methodik} erläutert, während Kapitel~\ref{ch:tests} die Testergebnisse zeigt. Kapitel~\ref{ch:inbetriebnahme} beschreibt die Inbetriebnahme des Roboters. Zum Schluss zieht Kapitel~\ref{ch:lessons_learned} ein Fazit und blickt auf den Projektverlauf zurück.
 
 
 \chapter{Anforderungsspezifikation (Stiegler)}
@@ -606,17 +606,17 @@ Zwischen den Reifen und den Motoren wurde das 3D-gedruckte Gehäuse mithilfe von
 \label{subsec:esp32_komponente}
 
 Zu Beginn des Projekts wurde ein ESP32-Entwicklungsboard genutzt, das bereits aus einem vorherigen Projekt im Team vorhanden war. 
-Dieses Board konnte jedoch nicht direkt über seine vorhandenen Buchsen mit Strom versorgt werden, da diese die benötigten Spannungen von 5,V bzw. 3,3,V nicht an den Mikrocontroller weiterleiteten. 
-Aus diesem Grund wurde der Mikrocontroller initial über ein USB-Kabel und im späteren Verlauf über einen Spannungswandler mit 5,V direkt am VIN Pin versorgt.
+Dieses Board konnte jedoch nicht direkt über seine vorhandenen Buchsen mit Strom versorgt werden, da diese die benötigten Spannungen von 5\,V bzw. 3{,}3\,V nicht an den Mikrocontroller weiterleiteten. 
+Aus diesem Grund wurde der Mikrocontroller initial über ein USB-Kabel und im späteren Verlauf über einen Spannungswandler mit 5\,V direkt am VIN Pin versorgt.
 
-Um Fehler in diesem Spezifischen Entwicklungsboard auszuschließen wurde auf ein anderes Entwicklungsboard des Herstellers Freenove gewechselt. 
-Dieses sollte über einen 9,V-Hohlstecker versorgt werden. 
+Um Fehler in diesem spezifischen Entwicklungsboard auszuschließen wurde auf ein anderes Entwicklungsboard des Herstellers Freenove gewechselt. 
+Dieses sollte über einen 9\,V-Hohlstecker versorgt werden. 
 Nach der vollständigen Verkabelung, jedoch noch vor dem eigentlichen Aufstecken des ESP32, wurde die Stromversorgung vorsorglich überprüft. 
-Hierbei stellte sich heraus, dass das Board defekt war, da es die anliegenden 9,V direkt an den ESP32 weitergegeben hätte, was zur Zerstörung des Mikrocontrollers geführt hätte. 
+Hierbei stellte sich heraus, dass das Board defekt war, da es die anliegenden 9\,V direkt an den ESP32 weitergegeben hätte, was zur Zerstörung des Mikrocontrollers geführt hätte. 
 Deswegen wurde die Stromversorgung erneut angepasst und der Mikrocontroller wieder direkt über den Micro-USB-Port versorgt. 
 Dabei wurde festgestellt, dass die I2C-Kommunikation zur MPU6050 regelmäßig abriss. Eine Überprüfung des Datenblatts bezüglich der On-Board-LEDs des Entwicklungsboards zeigte jedoch, dass diese über eine Pufferschaltung verfügen, welche den GPIO-Zustand nicht beeinflusst. 
 Durch einen Tausch mit einem zweiten MPU6050-Sensor konnte der Fehler letztlich auf einen Wackelkontakt der Steckverbindung am Board zurückgeführt werden, da diese ziemlich locker saßen.
-Um eine dauerhafte Lösung zu schaffen, wurde eine Lochrasterplatine genutzt, auf welcher der ESP32 sowie alle Leitungen fest verlötet wurden. Im Verlauf des Betriebs erlitt dieser ESP32 jedoch einen Defekt. Da angeschlossene Sensoren zwar nicht mit der 5,V-Spannungsversorgung verbunden waren, aber über die verbleibenden Signalpins angeschlossen blieben, zogen sie ihren Strom vermutlich über die GPIO-Pins. Dies führte zu einer Überschreitung der maximal zulässigen Ausgangsleistung des Mikrocontrollers. Um den aufwendigen Prozess des Entlötens bei einem erneuten Defekt zu vermeiden, wurde beim nachfolgenden Aufbau eine weibliche Buchsenleiste auf die Platine gelötet. Der ESP32 ist dadurch steckbar ausgeführt und kann bei Bedarf schnell und unkompliziert ausgetauscht werden. 
+Um eine dauerhafte Lösung zu schaffen, wurde eine Lochrasterplatine genutzt, auf welcher der ESP32 sowie alle Leitungen fest verlötet wurden. Im Verlauf des Betriebs erlitt dieser ESP32 jedoch einen Defekt. Da angeschlossene Sensoren zwar nicht mit der 5\,V-Spannungsversorgung verbunden waren, aber über die verbleibenden Signalpins angeschlossen blieben, zogen sie ihren Strom vermutlich über die GPIO-Pins. Dies führte zu einer Überschreitung der maximal zulässigen Ausgangsleistung des Mikrocontrollers. Um den aufwendigen Prozess des Entlötens bei einem erneuten Defekt zu vermeiden, wurde beim nachfolgenden Aufbau eine weibliche Buchsenleiste auf die Platine gelötet. Der ESP32 ist dadurch steckbar ausgeführt und kann bei Bedarf schnell und unkompliziert ausgetauscht werden. 
 
 
 \subsection{Sensorik (MPU6050, HC-SR04) (Stiegler)}
@@ -639,10 +639,9 @@ Alle Sensoren werden mit 5V Betriebsspannung betrieben \cite{az-deliveryGY521}, 
 
 \subsection{Motorwahl und Treiber (Schenkel, Stiegler, Dauerer)}
 \label{subsec:motorwahl_treiber}
-%todo: kapittel richten
 
 Eine der kritischsten Komponenten für die Stabilität des selbstbalancierenden Roboters sind die Motoren. Die Bezeichnung „NEMA 17“ spezifiziert dabei lediglich die Dimensionierung der vorderen Platte ($42,3 \text{ mm} \times 42,3 \text{ mm}$), sagt jedoch nichts über die Baulänge oder das erreichbare Drehmoment aus. 
-Für dieses Projekt wurde das Modell 17HS15-1504S1 von Stepperonline ausgewählt, das mit 0,45 NM ein überdurchschnittliches Haltemoment besitzt \cite{Nema17HS151504S1_Full_Datasheet}. Dadurch sind die Motoren länger ($39\text{ mm}$ Gehäuselänge), da sie mehr Magnetringe im Inneren besitzen, wodurch Schrittverluste minimiert werden und der Zuwachs an Kraft deutlich größer ist als der Zuwachs an Gewicht. 
+Für dieses Projekt wurde das Modell 17HS15-1504S1 von Stepperonline ausgewählt, das mit 0,45\,Nm ein überdurchschnittliches Haltemoment besitzt \cite{Nema17HS151504S1_Full_Datasheet}. Dadurch sind die Motoren länger ($39\text{ mm}$ Gehäuselänge), da sie mehr Magnetringe im Inneren besitzen, wodurch Schrittverluste minimiert werden und der Zuwachs an Kraft deutlich größer ist als der Zuwachs an Gewicht. 
 Warum Schrittmotoren im Vergleich zu DC-Motoren bevorzugt werden, wurde bereits in Kapitel \ref{subsec:motorwahl_designentscheidung} dargelegt. Dieses hohe Drehmoment ist essenziell, um die abrupten Beschleunigungs- und Bremsbefehle des PID-Reglers präzise umzusetzen und Schrittverluste zu vermeiden.
 
 Die Ansteuerung wurde über ein Arduino Uno kompatibles, vorhandenes, CNC-Shield umgesetzt. Dies war bereits mit passenden Steckplätzen, Kondensatoren, Enable-Pins für die Treiber und möglichen Steckplätzen für Mikrosteps und für Step und Dir mitgeliefert \cite{CNCShield_V3_Datenblatt}. Um technische Probleme des CNC-Shields, vor allem der Kondensatoren, auszuschließen wurde dies einmal ausgetauscht.
@@ -746,13 +745,13 @@ Obwohl die verkleinerte Kondensatorkombination die Symptome deutlich reduzierte,
 Um eine dauerhaft zuverlässige und von der Motorlast vollständig unabhängige Versorgung der Sensorik sicherzustellen, wurde die Spannungsversorgung des Systems final in zwei galvanisch getrennte Kreise aufgeteilt.
 
 Der Leistungskreis, welcher die beiden Schrittmotoren über die TMC2209-Treiber versorgt, wird über einen 4S-LiPo-Akku mit 14,8\,V und 1300\,mAh Kapazität betrieben, wobei die Verbindung über einen XT60-Steckverbinder erfolgt und der Kreis durch eine 2\,A-Sicherung abgesichert ist. 
-Der Logikkreis, bestehend aus dem ESP32, den Ultraschallsensor, das CNC-Shild, sowie der MPU6050, wird hingegen über eine separate, unabhängige Powerbank versorgt. 
+Der Logikkreis, bestehend aus dem ESP32, den Ultraschallsensoren, dem CNC-Shield sowie der MPU6050, wird hingegen über eine separate, unabhängige Powerbank versorgt. 
 Diese Trennung stellt sicher, dass die beim Motoranlauf auftretenden Stromspitzen keinen Einfluss mehr auf die Versorgungsspannung der Sensorik ausüben können. 
 
 \subsection{Kippschalter (Stiegler, Dauerer, Schenkel)}
 \label{subsec:kippschalter}
 
-Um beim Einstecken des Akkus Funken zu verhindern und die Bedienung komfortabler zu machen, wurde ein Kippschalter eingebaut. Das erste Modell (E-TEN1021) (ausgelegt für 15 A bei 250 VAC) fiel jedoch nach längerer Betriebszeit aus. Der Schalter leitete die anliegende Spannung nicht mehr vollständig weiter. Zuerst war die Vermutung ein defekter Motortreiber, der die Versorgungsspannung einbrechen ließ. Die Eingrenzung duch betreiben ohne Motortreiber hat dies nicht bestätigt. Eine Spannungsmessung direkt am Schalterausgang zeigte jedoch den internen Defekt. Statt der 16 V aus dem Labornetzteil kamen am Ausgang nur noch ca. 3 V an. Die Durchgangsprüfung hat gezeigt, dass keine leitende Verbindung zwischen den Pins im eingeschalteten Zustand besteht.
+Um beim Einstecken des Akkus Funken zu verhindern und die Bedienung komfortabler zu machen, wurde ein Kippschalter eingebaut. Das erste Modell (E-TEN1021) (ausgelegt für 15 A bei 250 VAC) fiel jedoch nach längerer Betriebszeit aus. Der Schalter leitete die anliegende Spannung nicht mehr vollständig weiter. Zuerst war die Vermutung ein defekter Motortreiber, der die Versorgungsspannung einbrechen ließ. Die Eingrenzung durch den Betrieb ohne Motortreiber hat dies nicht bestätigt. Eine Spannungsmessung direkt am Schalterausgang zeigte jedoch den internen Defekt. Statt der 16 V aus dem Labornetzteil kamen am Ausgang nur noch ca. 3 V an. Die Durchgangsprüfung hat gezeigt, dass keine leitende Verbindung zwischen den Pins im eingeschalteten Zustand besteht.
 
 Als Ersatz diente ein zweites Modell mit integrierter LED. Bei diesem Schalter brannte die LED direkt bei der ersten Inbetriebnahme durch, was auf einen für die Akkuspannung unterdimensionierten Vorwiderstand hindeutet. Der Schalter war danach ebenfalls nicht mehr funktionsfähig.
 
@@ -867,15 +866,15 @@ Da ohnehin ein neuer Motortreiber erforderlich war, wurde auf den TMC2209 umgest
 
 Nach dem Wechsel auf den TMC2209 zeigte sich schnell, dass der neue Treiber dem A4988 in einem entscheidenden Punkt überlegen ist. Er arbeitet standardmäßig mit 8 Mikroschritten pro Vollschritt \cite{Tmc2209_datasheet_rev109}. (vgl. Kapitel~\ref{subsec:motorwahl_treiber}). Gerade bei niedrigen Geschwindigkeiten war der Unterschied deutlich spürbar, die Motorbewegung wurde insgesamt ruhiger und gleichmäßiger.
 
-Den maximal zulässigen Motorstrom wurde über das Potentiometer der Treiber (VREF) eingestellt. Die Formel aus dem Datenblatt wurde verwendet.
+Der maximal zulässige Motorstrom wurde über das Potentiometer der Treiber (VREF) eingestellt. Die Formel aus dem Datenblatt wurde verwendet.
 \begin{equation}
     V_{REF} = I_{RMS} \times 1{,}41
 \end{equation}
-Für unseren NEMA17 Motor wurde einen effektiven Motorstrom von $I_{RMS} = 1{,}2\,\text{A}$ eingestellt. Daraus ergibt sich
+Für unseren NEMA17 Motor wurde ein effektiver Motorstrom von $I_{RMS} = 1{,}2\,\text{A}$ eingestellt. Daraus ergibt sich
 \begin{equation}
     V_{REF} = 1{,}2\,\text{A} \times 1{,}41 \approx 1{,}7\,\text{V}
 \end{equation}
-Das Potentiometer wurde auf etwa 1{,}6,V eingestellt. Anschließend wurde mithilfe einer Wärmebildkamera überprüft, ob die Treiber nach längerem Betrieb eine auffällige Erwärmung aufwiesen. Da die Temperatur im sicheren Bereich blieb, wurde dieser Wert beibehalten.
+Das Potentiometer wurde auf etwa 1{,}6\,V eingestellt. Anschließend wurde mithilfe einer Wärmebildkamera überprüft, ob die Treiber nach längerem Betrieb eine auffällige Erwärmung aufwiesen. Da die Temperatur im sicheren Bereich blieb, wurde dieser Wert beibehalten.
 
 \begin{figure}[H]
     \centering
@@ -1100,7 +1099,7 @@ Bevor die Teilsysteme zusammengeführt wurden, wurde jedes einzeln getestet und 
 
 Motoransteuerung und Neigungserfassung liefen einzeln jeweils problemlos, doch sobald beide zusammen betrieben wurden, traten die in Kapitel~\ref{subsec:spannungseinbruch} beschriebenen Spannungseinbrüche und Probleme an der MPU6050 auf. Die zugehörige Fehlersuche war aufwendig und führte über mehrere Zwischenschritte, bis die Ursache in der gemeinsamen Versorgung von Logik und Motoren identifiziert war. Die schlussendliche Lösung war es diese beiden Stromkreise getrennt zu versorgen (vgl. Kapitel~\ref{subsec:galvanische_trennung}).
 
-Das Logger-System war nicht von Anfang an geplant, sondern wurde erst mit dem Wechsel auf den FreeRTOS-Multicore-Ansatz eingeführt. Um den Motorloop auf Core~0 nicht zu stören, wurde der Logiktask auf Core~1 gesetzt, damit er die zeitkritische Regelung nicht verzögert und die Steppermotoren konstant geupdatet werden (vgl. Kapitel~\ref{subsec:freertos_multicore}).
+Das Logger-System war nicht von Anfang an geplant, sondern wurde erst mit dem Wechsel auf den FreeRTOS-Multicore-Ansatz eingeführt. Der MotorUpdateTask wurde auf Core~1 isoliert, um die zeitkritische Motoransteuerung nicht zu verzögern, während ControlTask und LoggerTask auf Core~0 laufen (vgl. Kapitel~\ref{subsec:freertos_multicore}).
 
 \section{Fehlersuche-Methodik (Stiegler, Dauerer, Schenkel)}
 \label{sec:fehlersuche_methodik}
@@ -1223,10 +1222,6 @@ Die galvanisch getrennte Energieversorgung aus Leistungs- und Logikkreis (vgl. K
 
 Einige Tests konnten im Projektzeitraum nicht mehr vollständig durchgeführt werden. Durch die zahlreichen Hardwareprobleme und Fehlersuchen wurde der Großteil der Zeit für die Kernfunktionen Balancieren und Fahren benötigt, sodass weniger priorisierte Features zurückgestellt wurden.
 
-% TODO: Nach Ergebnisvorführung (09.07.) final ergänzen:
-% - Exakte Batterielaufzeit
-% - Max. Auslenkungswinkel für selbstständiges Aufrichten
-% - Quantitative HC-SR04 Kollisionsvermeidungs-Tests
 Konkret fehlen noch: ein genauer Test der Bat\-te\-rie\-lauf\-zeit über die geforderten 10\,Minuten hinaus, eine Messung des maximalen Aus\-len\-kungs\-win\-kels, aus dem sich der Roboter noch selbst\-stän\-dig fängt, sowie ein Test der Kol\-li\-si\-ons\-ver\-mei\-dung mit den Ul\-tra\-schall\-sen\-so\-ren unter realen Bedingungen.
 
 \chapter{Inbetriebnahme (Dauerer)}

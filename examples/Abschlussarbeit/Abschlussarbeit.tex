@@ -387,18 +387,24 @@ Um einen PID-Regelkreis in Simulink zu realisieren, dient der Neigungswinkel des
 
 Um die Simulation performant zu halten und Abstürze durch zu hohe Rechenlast zu vermeiden, wurde eine feste Abtastrate für die Sensorabfrage definiert. Der in Grad vorliegende Neigungswinkel wird mit einem Comparer-Block gegen den Sollwert von 0 Grad verglichen. Die resultierende Regelabweichung fließt in einen PID-Regler-Block, dessen Ausgangsgröße das benötigte Drehmoment angibt.
 
-
-[Bild Simulinkaufbau]
-
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth,keepaspectratio]{../../Quellen/PID SBR SImulink.png}
+    \caption{Simulink-Modell des PID-Regelkreises für den Self-Balancing Robot}
+    \label{fig:simulink_aufbau}
+\end{figure}
 
 Da die beiden Motoren im realen Aufbau spiegelbildlich zueinander orientiert sind, wird das Signal für einen der beiden Räder über einen Skalier-Block (Faktor -1) invertiert. Die Drehmomente werden anschließend über Simulink-PS Converter zurück in physikalische Größen gewandelt und auf die Revolute Joints der beiden Reifen angewendet.
 
 
 Zur Analyse des Regelverhaltens werden virtuelle Oszilloskope genutzt, die den Verlauf des Neigungswinkels, der Motorausgangsgröße sowie einer eventuellen Positionsdrift grafisch sichtbar machen und können genutzt werden, um die Regelung gezielt nachzuverfolgen. Durch iteratives Anpassen der PID-Parameter ergaben sich folgende Startwerte für den Neigungs-PID-Regler:
 
-
-[Bild NeigungsOszi]
-
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth,keepaspectratio]{../../Quellen/SBR_DrehwinkelSimulationInRad.png}
+    \caption{Verlauf des Drehwinkels im Simulink-Modell während der PID-Optimierung}
+    \label{fig:neigung_oszi}
+\end{figure}
 
 Die in der Simulation gewonnenen Werte dienten später als Ausgangsbasis für das reale PID-Tuning (vgl. Kapitel~7.5.3), mussten dort jedoch stark an die tatsächlichen physikalischen Eigenschaften des Systems angepasst werden.
 Die deutliche Abweichung zu den final verwendeten PID-Werten lässt sich neben Faktoren wie Reibung, tatsächlichem Schwerpunkt und Trägheit der Elektronik vor allem dadurch erklären, dass der PID-Regler in Simulink direkt ein Drehmoment in Nm liefert, während die Motoren im realen System über ihre Drehgeschwindigkeit in RPM angesteuert werden.
@@ -486,7 +492,12 @@ und dadurch wieder zur Startposition zurückkehrt.
 Sobald die Zielposition erreicht ist, konvergiert der vorgegebene 
 Neigungswinkel wieder gegen 0~Grad und der Roboter bleibt auf der Stelle stehen.
 
-[Bild Neigungs-PID]
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth,keepaspectratio]{../../Quellen/SBR_SimulinkNeigungsPID.png}
+    \caption{Kaskadenregelung mit Neigungs- und Positions-PID im Simulink-Modell}
+    \label{fig:simulink_neigungs_pid}
+\end{figure}
 
 Für den Positions-PID-Regler ergaben sich in der Simulation folgende Parameter:
 
@@ -648,7 +659,12 @@ Dabei fiel auf, dass bei einem ausgeprägten Neigungswinkel keine Fehler auftrat
 Eine anschließende Messung der Logikspannung direkt an der MPU6050 bestätigte, dass diese in den Momenten der schnellen Richtungswechsel dramatisch einbrach. 
 Die schnellen Lastwechsel der Motoren koppelten somit direkt in die Versorgung der empfindlichen Sensorik ein.
 
-
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth,keepaspectratio,trim={0 60pt 0 60pt},clip]{../../Quellen/MPU Spannungseinbruch am Oszi.png}
+    \caption{Spannungseinbruch an der MPU6050-Versorgung unter Motorlast, aufgenommen am Oszilloskop}
+    \label{fig:spannungseinbruch_oszi}
+\end{figure}
 
 \subsection{Kondensator-Lösung am MPU6050 (Schenkel)}
 \label{subsec:kondensator_loesung}
@@ -838,6 +854,13 @@ Für unseren NEMA17 Motor wollten wir einen effektiven Motorstrom von $I_{RMS} =
 \end{equation}
 Wir stellten das Potentiometer auf ca 1{,}6\,V ein und überprüften anschließend mit einer Wärmebildkamera, ob die Treiber nach längerem Betrieb auffällig warm wurden. Die Temperatur blieb im sicheren Bereich, also behielten wir diesen Wert bei.
 
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.42\textwidth,keepaspectratio]{../../Quellen/Waermebild_TMC.png}
+    \caption{Wärmebildaufnahme der TMC2209-Treiber zur Überprüfung der VREF-Einstellung}
+    \label{fig:waermebild_tmc}
+\end{figure}
+
 Der TMC2209 bietet zwei Betriebsmodi, StealthChop und SpreadCycle. Wir haben beide getestet und die Motorbewegung dabei beobachtet. Durch den Wechsel auf den neuen Treiber wurde die Bewegung der Motoren in beiden Modi deutlich flüssiger als mit dem A4988 zuvor.
 
 Der TMC2209 besitzt eine UART-Schnittstelle, über die er per Software konfiguriert werden kann. Wir haben geprüft, ob die dafür benötigten Pins auf unserem CNC-Shield belegt oder blockiert sind, das war aber nicht der Fall (vgl. Kapitel~\ref{subsec:motor_problem_cncshield}). Da wir UART im finalen Aufbau nicht benötigen, betreiben wir den Treiber im Standalone-Modus. Die nicht genutzten Pins des TMC2209 haben wir aus Sicherheitsgründen abisoliert.
@@ -954,7 +977,7 @@ mitberücksichtigt werden mussten.
         \hline
         Positions-PID & 0{,}0027 & 0{,}0 & 0{,}00007 & max. Sollwinkel $\pm$0{,}4\,° \\
         \hline
-    \end{tabular}
+\end{tabular}
 \end{table}
 
 \subsection{Filter für Glättung}

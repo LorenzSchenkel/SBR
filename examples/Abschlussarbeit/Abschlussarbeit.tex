@@ -425,7 +425,7 @@ Diese Simulation diente dazu, das Verhalten des Roboters unter verschiedenen Bed
 \subsection{Modellierung der Physik (Gravitation, Reifen, Achsen, Körper) (Stiegler, Dauerer)}
 \label{subsec:simulink_physik}
 
-Mittels der Simulation entstand ein physikalisches Modell des Roboters in Simulink. Den Körper des Roboters bildet dabei ein BrickSolid mit einstellbarem Gewicht und Schwerpunkt. Die beiden Reifen sind über Revolute Joints angebunden, die Rotationen um ihre Achse erlauben, und das Motordrehmoment ist auf 0,55\,Nm begrenzt (Stärke der Nema17 Steppermotoren). Gravitation und das grundlegende mechanische Umfeld stammen aus den Standard-Mechanik-Blöcken, die Simulink bei der Erstellung eines neuen Projekts bereitstellt.
+Mittels der Simulation entstand ein physikalisches Modell des Roboters in Simulink. Den Körper des Roboters bildet dabei ein BrickSolid mit einstellbarem Gewicht und Schwerpunkt. Die beiden Reifen sind über Revolute Joints angebunden, die Rotationen um ihre Achse erlauben, und das Motordrehmoment ist auf 0,55\,Nm begrenzt (Stärke der Nema17 Steppermotoren \cite{Nema17HS151504S1_Full_Datasheet}). Gravitation und das grundlegende mechanische Umfeld stammen aus den Standard-Mechanik-Blöcken, die Simulink bei der Erstellung eines neuen Projekts bereitstellt.
 
 
 Um den Modellierungsaufwand anfangs überschaubar zu halten, wurde bewusst mit einem vereinfachten Modell begonnen. Zusätzliche Eigenschaften wie Reifendrift und Verformung, Luftwiderstand oder Sensorrauschen wurden erst in späteren Erweiterungen hinzugefügt, nachdem das Grundmodell funktionierte. Diese Erweiterungen werden in den kommenden Abschnitten beschrieben.
@@ -488,7 +488,7 @@ Als Konsequenz daraus wurde die Position des Schwerpunkts zumindest auf oberhalb
 
 \textbf{Reifengröße:} Aus vorherigen Projekten standen zwei Reifengrößen zur Verfügung. Eine kleinere Variante mit 6,5~cm Durchmesser und eine größere mit 10~cm. Für beide Kon\-fi\-gu\-ra\-tio\-nen wurden die PID-Parameter angepasst, um einen fairen Vergleich zu gewährleisten. Die kleinere Variante erwies sich bei den Tests (vgl. Kapitel~\ref{subsec:simulink_stoergroessen}) als die bessere Wahl, auch wenn der Unterschied nicht stark verschieden war. Die Entscheidung fiel daher auf die kleineren Räder mit 6,5~cm Durchmesser.
 
-\textbf{Motordimensionierung:} Die Simulation zeigte, dass die NEMA\,17 Schrittmotoren mit einem Nenndrehmoment von 0,55~Nm für die geplante Masse des Systems ausreichend sind, um die geforderte Stoßtoleranz (F20) und Positionsgenauigkeit (F30) und Balance zu erfüllen.
+\textbf{Motordimensionierung:} Die Simulation zeigte, dass die NEMA\,17 Schrittmotoren mit einem Nenndrehmoment von 0,55~Nm \cite{Nema17HS151504S1_Full_Datasheet} für die geplante Masse des Systems ausreichend sind, um die geforderte Stoßtoleranz (F20) und Positionsgenauigkeit (F30) und Balance zu erfüllen.
 
 Insgesamt bestätigte die Simulation, dass die gewählte Hardware-Konfiguration grundsätzlich funktionieren würde und dass ein PID-basierter Ansatz zur Stabilisierung des Roboters geeignet ist. Die Simulation ermöglichte damit eine fundierte Kom\-po\-nen\-ten\-aus\-wahl vor der Be\-schaf\-fungs\-pha\-se.
 
@@ -504,7 +504,7 @@ In einem ersten Erweiterungsschritt wurde das Grundmodell um zwei wesentliche St
 
 Zur Modellierung des Luftwiderstands wird die aktuelle Geschwindigkeit quadriert und mit dem Faktor $-0{,}00625$ multipliziert. Der Faktor ergibt sich aus einer groben Abschätzung der Gehäuseform und das negative Vorzeichen stellt sicher, dass der Widerstand als Kraft entgegen der Bewegung wirkt. Der berechnete Wert wird über einen ExternalForce-Block direkt auf den BrickSolid-Körper des Roboters angewendet.
 
-Zusätzlich wird der simulierte Neigungswinkel mit einem Rauschsignal überlagert, das als normalverteilte Zufallsgröße mit einem Erwartungswert von 0,05~Grad modelliert ist. Dieser Wert entstammt dem Datenblatt der MPU-6050 Neigungssensors.
+Zusätzlich wird der simulierte Neigungswinkel mit einem Rauschsignal überlagert, das als normalverteilte Zufallsgröße mit einem Erwartungswert von 0,05~Grad modelliert ist. Dieser Wert entstammt dem Datenblatt der MPU-6050 Neigungssensors \cite{az-deliveryGY521}.
 
 Der Einfluss des Luftwiderstands auf das Regelverhalten erwies sich als sehr gering und hatte kaum messbare Auswirkungen auf die Stabilität. Das Sensorrauschen hingegen führte zu einer spürbaren Instabilität des Roboters. Der Regler kam nie vollständig zur Ruhe, sondern korrigierte permanent leichte Abweichungen vom Sollwert. Diese Erkenntnis führte zur Entscheidung, am realen System anfangs einen Medianfilter über die letzten drei Sensorwerte einzusetzen.
 
@@ -666,10 +666,10 @@ Alle Sensoren werden mit 5V Betriebsspannung betrieben \cite{az-deliveryGY521}, 
 %todo: kapittel richten
 
 Eine der kritischsten Komponenten für die Stabilität des selbstbalancierenden Roboters sind die Motoren. Die Bezeichnung „NEMA 17“ spezifiziert dabei lediglich die Dimensionierung der vorderen Platte ($42,3 \text{ mm} \times 42,3 \text{ mm}$), sagt jedoch nichts über die Baulänge oder das erreichbare Drehmoment aus. 
-Für dieses Projekt wurde das Modell 17HS15-1504S1 von Stepperonline ausgewählt, das mit 0,45 NM ein überdurchschnittliches Haltemoment besitzt. Dadurch sind die Motoren länger ($39\text{ mm}$ Gehäuselänge), da sie mehr Magnetringe im Inneren besitzen, wodurch Schrittverluste minimiert werden und der Zuwachs an Kraft deutlich größer ist als der Zuwachs an Gewicht. 
+Für dieses Projekt wurde das Modell 17HS15-1504S1 von Stepperonline ausgewählt, das mit 0,45 NM ein überdurchschnittliches Haltemoment besitzt \cite{Nema17HS151504S1_Full_Datasheet}. Dadurch sind die Motoren länger ($39\text{ mm}$ Gehäuselänge), da sie mehr Magnetringe im Inneren besitzen, wodurch Schrittverluste minimiert werden und der Zuwachs an Kraft deutlich größer ist als der Zuwachs an Gewicht. 
 Warum Schrittmotoren im Vergleich zu DC-Motoren bevorzugt werden, wurde bereits in Kapitel \ref{subsec:motorwahl_designentscheidung} dargelegt. Dieses hohe Drehmoment ist essenziell, um die abrupten Beschleunigungs- und Bremsbefehle des PID-Reglers präzise umzusetzen und Schrittverluste zu vermeiden.
 
-Die Ansteuerung wurde über ein Arduino Uno kompatibles, vorhandenes, CNC-Shield umgesetzt. Dies war bereits mit passenden Steckplätzen, Kondensatoren, Enable-Pins für die Treiber und möglichen Steckplätzen für Mikrosteps und für Step und Dir mitgeliefert. Um technische Probleme des CNC-Shields, vor allem der Kondensatoren, auszuschließen wurde dies einmal ausgetauscht.
+Die Ansteuerung wurde über ein Arduino Uno kompatibles, vorhandenes, CNC-Shield umgesetzt. Dies war bereits mit passenden Steckplätzen, Kondensatoren, Enable-Pins für die Treiber und möglichen Steckplätzen für Mikrosteps und für Step und Dir mitgeliefert \cite{CNCShield_V3_Datenblatt}. Um technische Probleme des CNC-Shields, vor allem der Kondensatoren, auszuschließen wurde dies einmal ausgetauscht.
 
 Als Treiber wurden am Anfang A4988-Treiber eingesetzt und am Ende dann gegen die moderneren TMC2209-Treiber getauscht, da diese mit ihrer PWM-Steuerung (StealthChop) deutlich leiser und präziser waren \cite{Tmc2209_datasheet_rev109}. Doch während des Projektes wurde oft getauscht oder getestet, einmal um Unterschiede festzustellen oder um die teureren Treiber vor eventuellen Schäden  zu schützen.
 
@@ -907,7 +907,7 @@ Nach dem ESP32-Austausch drehten sich zwar beide Motoren, liefen aber nicht saub
 \subsection{Kurzschluss und Treiberwechsel (Dauerer, Stiegler, Schenkel)}
 \label{subsec:motor_kurzschluss}
 
-Im weiteren Projektverlauf haben wir für den Betrieb ohne das Labornetzteil einen 6S-LiPo mit 22,2\,V Nennspannung angeschlossen. Der damals genutzte A4988 Treiber ist zwar grundsätzlich für Spannungen in diesem Bereich ausgelegt, wir hatten jedoch einen gebrauchten Treiber aus einem Altprojekt verwendet, der wahrscheinlich schon vorgeschädigt war. Der Treiber ist beim Anschließen des Akkus durchgebrannt und hat einen Kurzschluss verursacht.
+Im weiteren Projektverlauf haben wir für den Betrieb ohne das Labornetzteil einen 6S-LiPo mit 22,2\,V Nennspannung angeschlossen. Der damals genutzte A4988 Treiber ist zwar grundsätzlich für Spannungen in diesem Bereich ausgelegt \cite{A4988}, wir hatten jedoch einen gebrauchten Treiber aus einem Altprojekt verwendet, der wahrscheinlich schon vorgeschädigt war. Der Treiber ist beim Anschließen des Akkus durchgebrannt und hat einen Kurzschluss verursacht.
 
 Nach dem Vorfall haben wir systematisch gemessen, was genau beschädigt wurde. Wir haben alle Leitungen
  mit dem Durchgangsprüfer auf Kurzschlüsse geprüft, die Versorgungsspannungen nachgemessen und mit dem
@@ -921,7 +921,7 @@ Da wir ohnehin einen neuen Treiber einsetzen mussten, haben wir uns entschieden,
 \subsection{TMC2209-Integration und Tuning (Dauerer, Stiegler, Schenkel)}
 \label{subsec:tmc2209_integration}
 
-Nach dem Wechsel auf den TMC2209 zeigte sich schnell, dass der neue Treiber dem A4988 in einem entscheidenden Punkt überlegen ist. Er arbeitet standardmäßig mit 8 Mikroschritten pro Vollschritt, ohne dass wir dafür etwas konfigurieren mussten (vgl. Kapitel~\ref{subsec:motorwahl_treiber}). Gerade bei niedrigen Geschwindigkeiten war der Unterschied deutlich spürbar, die Motorbewegung wurde insgesamt ruhiger und gleichmäßiger.
+Nach dem Wechsel auf den TMC2209 zeigte sich schnell, dass der neue Treiber dem A4988 in einem entscheidenden Punkt überlegen ist. Er arbeitet standardmäßig mit 8 Mikroschritten pro Vollschritt, ohne dass wir dafür etwas konfigurieren mussten \cite{Tmc2209_datasheet_rev109}. (vgl. Kapitel~\ref{subsec:motorwahl_treiber}). Gerade bei niedrigen Geschwindigkeiten war der Unterschied deutlich spürbar, die Motorbewegung wurde insgesamt ruhiger und gleichmäßiger.
 
 Den maximal zulässigen Motorstrom stellten wir über das Potentiometer der Treiber (VREF) ein. Für den TMC2209 haben wir folgende Formel verwendet.
 \begin{equation}

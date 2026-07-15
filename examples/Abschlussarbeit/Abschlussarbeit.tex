@@ -603,6 +603,13 @@ Während der Hardware-Tests kam es jedoch immer wieder zu Messausfällen und Pro
 
 Zur Vermeidung von Kollisionen wurden zwei HC-SR04 Ultraschallsensoren integriert. Die Wahl fiel auf dieses Modell, da es bereits vorhanden war, leicht anzusteuern und für diesen Einsatzzweck präzise genug ist. Der HC-SR04 hat eine maximale Reichweite von etwa 400\,cm und eine theoretische Messgenauigkeit von bis zu 3\,mm. Da der Roboter in beide Richtungen fahren kann, wurde ein Sensor vorne und einer hinten angebracht. Sie arbeiten nach dem Trigger-Echo-Prinzip und berechnen den genauen Abstand zum Hindernis anhand der Laufzeit des ausgesendeten Ultraschallimpulses \cite{reicheltHCSR04_Datasheet}. 
 
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.6\textwidth,keepaspectratio]{../../Quellen/Ultraschallsensoren.png}
+    \caption{Verbaute HC-SR04 Ultraschallsensoren am Chassis}
+    \label{fig:ultraschallsensoren}
+\end{figure}
+
 Alle Sensoren werden mit 5V Betriebsspannung betrieben \cite{az-deliveryGY521}, \cite{reicheltHCSR04_Datasheet}.
 
 \subsection{Motorwahl und Treiber (Schenkel)}

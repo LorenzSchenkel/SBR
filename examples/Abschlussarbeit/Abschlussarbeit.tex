@@ -284,7 +284,7 @@ Tabelle~\ref{tab:nichtfunktionale_anforderungen} fasst die definierten nicht-fun
 
 N10 wurde durch den Matlab/Simulink-Regelungsentwurf umgesetzt, in dem das Systemverhalten vorab simuliert und gewisse Erkenntnisse daraus mitgenommen wurden (vgl. Kapitel~\ref{ch:simulation}). 
 %  TODO: Budget genau aufschlüsseln
-Das Budget wurde nicht eingehalten, das lag daran, dass ein Akku, mehrere Motortreiber und ein ESP kaputt gingen. Die genaue Aufschlüsselung ist in der \ref{tab:komponenten_kosten} ersichtlich. 
+Das Budget wurde nicht eingehalten, das lag daran, dass ein Akku, mehrere Motortreiber und ein ESP kaputt gingen. Die genaue Aufschlüsselung ist in der Tabelle~\ref{tab:komponenten_kosten} ersichtlich. 
 
 \begin{table}[h]
     \centering
@@ -455,7 +455,7 @@ Zur Analyse des Regelverhaltens werden virtuelle Oszilloskope genutzt, die den V
     \label{fig:neigung_oszi}
 \end{figure}
 
-Die in der Simulation gewonnenen Werte dienten später als Ausgangsbasis für das reale PID-Tuning (vgl. Kapitel~7.5.3), mussten dort jedoch stark an die tatsächlichen physikalischen Eigenschaften des Systems angepasst werden.
+Die in der Simulation gewonnenen Werte dienten später als Ausgangsbasis für das reale PID-Tuning (vgl. Kapitel~\ref{subsec:pid_optimierung}), mussten dort jedoch stark an die tatsächlichen physikalischen Eigenschaften des Systems angepasst werden.
 Die deutliche Abweichung zu den final verwendeten PID-Werten lässt sich neben Faktoren wie Reibung, tatsächlichem Schwerpunkt und Trägheit der Elektronik vor allem dadurch erklären, dass der PID-Regler in Simulink direkt ein Drehmoment in Nm liefert, während die Motoren im realen System über ihre Drehgeschwindigkeit in RPM angesteuert werden.
 
 
@@ -592,7 +592,7 @@ Für das Gehäuse wurde ein dreistöckiger Aufbau im Stile eines Regals gewählt
 
 Die Plattformen wurden explizit auf die genutzten Komponenten angepasst, sodass es passgenaue Montagelöcher und Steckhalterungen gibt. So können die Ul\-tra\-schall\-sen\-so\-ren gesteckt sowie der ESP32, das CNC-Shield, der Buck-Converter und die MPU mit Schrauben montiert werden. Der Akku besitzt ein Einschubfach mit Halterungen für Gummibänder, die den Akku gegen die Plattform pressen. Der Schalter wurde nachträglich hinzugefügt, wofür eine entsprechende Bohrung vorgenommen wurde. Als Material für den 3D-Druck kam PLA-Filament zum Einsatz. Die M3-Gewindestangen dienen dazu, die beiden Motoren fest miteinander zu verbinden.
 
-Ein wesentlicher Teil der späteren Iterationen wurde durch den in Kapitel~7.3.3 beschriebenen Kurzschluss-Vorfall verursacht, der einen mechanischen Neuaufbau erforderlich machte. Im Zuge dieses Neuaufbaus wurde zeitgleich eine Anpassung der Gehäusehöhe vorgenommen.
+Ein wesentlicher Teil der späteren Iterationen wurde durch den in Kapitel~\ref{subsec:motor_kurzschluss} beschriebenen Kurzschluss-Vorfall verursacht, der einen mechanischen Neuaufbau erforderlich machte. Im Zuge dieses Neuaufbaus wurde zeitgleich eine Anpassung der Gehäusehöhe vorgenommen.
 
 % TODO: [Abbildung einfügen: CAD-Modell des finalen Chassis]
 
@@ -648,7 +648,7 @@ Um eine dauerhafte Lösung zu schaffen, wurde eine Lochrasterplatine genutzt, au
 
 Für das Messen der Neigung des Roboters wurde das GY-521-Board mit dem MPU6050-Modul verwendet. Es besteht aus einem 3-Achsen-Gyroskop in Verbindung mit einem 3-Achsen-Be\-schleu\-ni\-gungs\-sen\-sor und ist über den I2C-Bus mit dem ESP32 verbunden (zur soft\-ware\-sei\-ti\-gen Auswertung siehe Kapitel~\ref{sec:sensorintegration}). Der Sensor wurde bewusst auf der obersten Ebene des dreistöckigen Chassis montiert. Da die Auslenkungen dort oben am stärksten sind, liefert die MPU an dieser Position die deutlichsten Messwerte für die spätere Regelung \cite{az-deliveryGY521}.
 
-Während der Hardware-Tests kam es jedoch immer wieder zu Messausfällen und Problemen mit der Spannungsversorgung. Auf der Suche nach der genauen Fehlerquelle wurden nacheinander zwei verschiedene MPU-Module in Verbindung mit unterschiedlichsten Kondensator-Kombinationen ausprobiert. Dabei fielen auch, als mögliche Ursache, unzuverlässige Steckverbindungen auf. Um Wackelkontakte auszuschließen, wurden die Kabel letztendlich fest an die Kontakte der MPU gelötet (siehe Abbildung~\ref{fig:sensoren}).
+Während der Hardware-Tests kam es jedoch immer wieder zu Messausfällen und Problemen mit der Spannungsversorgung. Auf der Suche nach der genauen Fehlerquelle wurden nacheinander zwei verschiedene MPU-Module in Verbindung mit unterschiedlichsten Kondensator-Kombinationen ausprobiert. Dabei fielen auch, als mögliche Ursache, unzuverlässige Steckverbindungen auf. Um Wackelkontakte auszuschließen, wurden die Kabel letztendlich fest an die Kontakte der MPU gelötet (siehe Abbildung~\ref{fig:ultraschallsensoren}).
 
 Zur Vermeidung von Kollisionen wurden zwei HC-SR04 Ul\-tra\-schall\-sen\-so\-ren integriert. Die Wahl fiel auf dieses Modell, da es bereits vorhanden war, leicht anzusteuern und für diesen Einsatzzweck präzise genug ist. Der HC-SR04 hat eine maximale Reichweite von etwa 400\,cm und eine theoretische Messgenauigkeit von bis zu 3\,mm. Da der Roboter in beide Richtungen fahren kann, wurde ein Sensor vorne und einer hinten angebracht. Sie arbeiten nach dem Trigger-Echo-Prinzip und berechnen den genauen Abstand zum Hindernis anhand der Laufzeit des ausgesendeten Ul\-tra\-schall\-im\-pul\-ses \cite{reicheltHCSR04_Datasheet}. 
 
@@ -944,7 +944,7 @@ Der TMC2209 bietet zwei Betriebsmodi, StealthChop und SpreadCycle. Wir haben bei
 
 Der TMC2209 besitzt eine UART-Schnittstelle, über die er per Software konfiguriert werden kann. Wir haben geprüft, ob die dafür benötigten Pins auf unserem CNC-Shield belegt oder blockiert sind, das war aber nicht der Fall (vgl. Kapitel~\ref{subsec:motor_problem_cncshield}). Da wir UART im finalen Aufbau nicht benötigen, betreiben wir den Treiber im Standalone-Modus. Die nicht genutzten Pins des TMC2209 haben wir aus Sicherheitsgründen abisoliert.
 
-Später im Projekt während der Optimierung der SW und PID-Parameter brannte außerdem ein TMC2209-Treiber der Version v1.3 durch, nachdem an dessen Motorausgang dauerhaft 24\,V anlagen (vgl. Kapitel~\ref{subsec:motor_kurzschluss}). Das war auf eine fehlerhafte Verkabelung zurückzuführen und der Treiber musste ausgetauscht werden. Ein weiteres, wiederkehrendes Problem war, dass die Adern des Ver\-bin\-dungs\-ka\-bels zwischen Treiber und Motor erneut in falscher Reihenfolge angeschlossen waren, analog zu dem in Kapitel~7.3.2 beschriebenen Fehlerbild beim A4988.
+Später im Projekt während der Optimierung der SW und PID-Parameter brannte außerdem ein TMC2209-Treiber der Version v1.3 durch, nachdem an dessen Motorausgang dauerhaft 24\,V anlagen (vgl. Kapitel~\ref{subsec:motor_kurzschluss}). Das war auf eine fehlerhafte Verkabelung zurückzuführen und der Treiber musste ausgetauscht werden. Ein weiteres, wiederkehrendes Problem war, dass die Adern des Ver\-bin\-dungs\-ka\-bels zwischen Treiber und Motor erneut in falscher Reihenfolge angeschlossen waren, analog zu dem in Kapitel~\ref{subsec:motor_problem_cncshield} beschriebenen Fehlerbild beim A4988.
 
 \section{Sensorintegration}
 \label{sec:sensorintegration}
@@ -1129,7 +1129,7 @@ Da ein blockierungsfreier Betrieb des zeitkritischen PID-Reglers jedoch oberste 
 Die Umsetzung fasst alle wichtigen Daten einer Log-Nachricht, also einen Zeitstempel, den Namen des jeweiligen Tasks und den eigentlichen Nachrichtentext, in einer gemeinsamen Struktur zusammen. 
 Die Funktionen befüllt diese Struktur und schiebt sie in die FreeRTOS-Queue. Eine zusätzliche Wrapper-Funktion sorgt dafür, dass man Variablen ähnlich wie bei printf formatiert übergeben kann. Die Queue kann bis zu 100 Nachrichten aufnehmen. Der schreibende Task kopiert seine Daten hierbei in die Queue und setzt seine Ausführung ohne jegliche Wartezeit fort.
 
-Es wurde bewusst auf einen Sicherheitsmechanismus verzichtet, der ein Volllaufen oder Überschreiben der Queue verhindert. Der einzige Anhaltspunkt für einen potenziellen Datenverlust ist die mitgegebene Systemzeit in den Ausgaben, anhand derer Lücken in der Chronologie identifiziert werden könnten. Da im Testbetrieb jedoch keine Kapazitätsprobleme oder Datenverluste auftraten, wurde dieser Zustand zugunsten wichtigerer Projektthemen vorerst im System belassen. Diese Einschränkung wird in Kapitel~10.1.2 bei den soft\-ware\-sei\-ti\-gen Lessons Learned noch einmal kritisch reflektiert.
+Es wurde bewusst auf einen Sicherheitsmechanismus verzichtet, der ein Volllaufen oder Überschreiben der Queue verhindert. Der einzige Anhaltspunkt für einen potenziellen Datenverlust ist die mitgegebene Systemzeit in den Ausgaben, anhand derer Lücken in der Chronologie identifiziert werden könnten. Da im Testbetrieb jedoch keine Kapazitätsprobleme oder Datenverluste auftraten, wurde dieser Zustand zugunsten wichtigerer Projektthemen vorerst im System belassen. Diese Einschränkung wird in Kapitel~\ref{subsec:lessons_debugging} bei den soft\-ware\-sei\-ti\-gen Lessons Learned noch einmal kritisch reflektiert.
 
 
 \subsection{Non-Blocking Serial.print() (Schenkel)}
@@ -1325,7 +1325,7 @@ Zum geordneten Abschalten wird in folgender Reihenfolge vorgegangen:
 \subsection{Umgang mit Messgeräten (Stiegler, Dauerer, Schenkel)}
 \label{subsec:lessons_messtechnik}
 
-Eine der wichtigsten praktischen Erkenntnisse des Projekts war der Umgang mit elementaren Messgeräten wie Multimeter und Oszilloskop. Zu Projektbeginn war die Erfahrung im Team mit diesen Werkzeugen noch begrenzt, was insbesondere in den ersten Fehlersuchen, etwa bei der Diagnose des defekten ESP32-Boards (vgl. ~\ref{subsec:spannungseinbruch}), zunächst zu einem vergleichsweise hohen Zeitaufwand führte. Im Projektverlauf entwickelte sich der Einsatz der Messgeräte zu einem Bestandteil jeder Fehlersuche (vgl. Kapitel~8.2) und erwies sich rückblickend als eine der wertvollsten praktischen Fähigkeiten, die im Rahmen des Projekts erlernt wurden.
+Eine der wichtigsten praktischen Erkenntnisse des Projekts war der Umgang mit elementaren Messgeräten wie Multimeter und Oszilloskop. Zu Projektbeginn war die Erfahrung im Team mit diesen Werkzeugen noch begrenzt, was insbesondere in den ersten Fehlersuchen, etwa bei der Diagnose des defekten ESP32-Boards (vgl. Kapitel~\ref{subsec:motor_problem_cncshield}), zunächst zu einem vergleichsweise hohen Zeitaufwand führte. Im Projektverlauf entwickelte sich der Einsatz der Messgeräte zu einem Bestandteil jeder Fehlersuche (vgl. Kapitel~\ref{sec:fehlersuche_methodik}) und erwies sich rückblickend als eine der wertvollsten praktischen Fähigkeiten, die im Rahmen des Projekts erlernt wurden.
 
 \subsection{Trennung von Logik- und Leistungsspannung (Stiegler, Schenkel, Dauerer)}
 \label{subsec:lessons_spannungstrennung}

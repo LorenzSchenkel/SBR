@@ -22,6 +22,7 @@ DIV=15,BCOR=10mm, % Seitenlayout wie bei Koma-Script
 \usepackage{array}
 \usepackage{multirow}
 \usepackage{float}
+\usepackage{pdfpages}
 
 \usepackage{tabularx}
 
@@ -1379,6 +1380,12 @@ Der eigentliche Wert des Projekts liegt jedoch nicht ausschließlich im funktion
 	\bibliography{literatur}
 
 	\newpage
+
+	% Stundenlisten
+	\addcontentsline{toc}{chapter}{Stundenlisten}
+	\includepdf[pages=-, pagecommand={\thispagestyle{empty}}, addtotoc={1,chapter,1,Stundenliste Felix Dauerer,stundenliste:dauerer}]{../../Stundenlisten/Stundenliste_minimiert DauererFelix.pdf}
+	\includepdf[pages=-, pagecommand={\thispagestyle{empty}}, addtotoc={1,chapter,1,Stundenliste Lorenz Schenkel,stundenliste:schenkel}]{../../Stundenlisten/StundenlisteVorlageDT_Lorenz_Schenkel.pdf}
+	\includepdf[pages=-, pagecommand={\thispagestyle{empty}}, addtotoc={1,chapter,1,Stundenliste Niklas Stiegler,stundenliste:stiegler}]{../../Stundenlisten/StundenlisteVorlageDT_Niklas_Stiegler.pdf}
 
 	\thispagestyle{empty}
 	\addcontentsline{toc}{chapter}{Abkürzungsverzeichnis}\label{Sec:Abkuerzungen}

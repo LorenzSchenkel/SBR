@@ -74,7 +74,7 @@ position=bottom]{caption}
 
 % 1. Automatische Titelseite generieren lassen (nutzt \title, \author, \department etc.)
 \maketitle
-\cleardoublepage
+
 
 % 2. Römische Seitennummerierung für die Verzeichnisse
 \pagenumbering{roman}
@@ -84,29 +84,6 @@ position=bottom]{caption}
 \tableofcontents
 \cleardoublepage
 
-% 5. Abkürzungsverzeichnis (Unnummeriertes OTH-Kapitel)
-\addchap{Abkürzungsverzeichnis} 
-\begin{acronym}[MPU6050] % Das längste Wort bestimmt die Spaltenbreite
-    \acro{OTH}{Ostbayerische Technische Hochschule}
-    \acro{I2C}{Inter-Integrated Circuit}
-    \acro{ESP32}{ESP32 Mikrocontroller}
-    \acro{PID}{Proportional-Integral-Derivative}
-    \acro{FREERTOS}{FreeRTOS}
-\end{acronym}
-\cleardoublepage
-\pagenumbering{roman}
-\setcounter{page}{3}
-
-\addchap{Abkürzungsverzeichnis} % Erstellt ein unnummeriertes Kapitel im OTH-Stil
-\begin{acronym}[MPU6050] % Das längste Wort in den Klammern bestimmt die Spaltenbreite
-    \acro{OTH}{Ostbayerische Technische Hochschule}
-    \acro{I2C}{Inter-Integrated Circuit}
-    \acro{ESP32}{ESP32 Mikrocontroller}
-    \acro{PID}{Proportional-Integral-Derivative}
-    \acro{FREERTOS}{FreeRTOS}
-\end{acronym}
-
-\newpage{}
 
 
 
@@ -283,8 +260,8 @@ Tabelle~\ref{tab:nichtfunktionale_anforderungen} fasst die definierten nicht-fun
     \end{tabular}
 \end{table}
 
-N10 wurde durch den Matlab/Simulink-Regelungsentwurf umgesetzt, in dem das Systemverhalten vorab simuliert und gewisse Erkenntnisse daraus mitgenommen wurden (vgl. Kapitel~\ref{ch:simulation}). 
-%  TODO: Budget genau aufschlüsseln
+N20 wurde durch den Matlab/Simulink-Regelungsentwurf umgesetzt, in dem das Systemverhalten vorab simuliert und gewisse Erkenntnisse daraus mitgenommen wurden (vgl. Kapitel~\ref{ch:simulation}). 
+
 Das Budget wurde nicht eingehalten, das lag daran, dass ein Akku, mehrere Motortreiber und ein ESP kaputt gingen. Die genaue Aufschlüsselung ist in der Tabelle~\ref{tab:komponenten_kosten} ersichtlich. 
 
 \begin{table}[h]
@@ -1093,7 +1070,7 @@ Als Erstes wurde in Betracht gezogen, die MAC-Adresse des ESP32 dauerhaft im Cod
 Deswegen wurde die umgekehrte Methode gewählt. Die MAC-Adresse, nach der der Controller sucht, wurde identifiziert, und die Standard-MAC-Adresse des ESP32 wurde mit genau dieser gesuchten Adresse überschrieben, um die Verbindung erfolgreich herzustellen.
 Aus Sicherheitsgründen wurde die Software zudem so geschrieben, dass bei einer fehlenden oder unterbrochenen Verbindung zum Controller grundsätzlich der Wert 0 für den Zielwinkel zurückgeliefert wird.
 
-\subsection{MAC-Adress-Manipulation (SixaxisPairTool) (Schenkel)}
+\subsection{MAC-Adress-Manipulation (Schenkel)}
 \label{subsec:mac_manipulation}
 Für das Beschreiben der Zieladresse im Controller kam das Programm SixaxisPairTool zum Einsatz \cite{SixaxisPairTool}. Da dieses Programm teilweise über inoffizielle, unseriöse Quellen verbreitet wird, wurde der Download aus Sicherheitsgründen zunächst innerhalb einer virtuellen Maschine durchgeführt, um ein mögliches Malware-Risiko auszuschließen.
  Für die eigentliche Kopplung des Controllers wurde zunächst versucht, das Bluetooth-Signal des Controllers direkt an die virtuelle Maschine durchzureichen, wofür zusätzlich das VirtualBox Extension Pack installiert werden musste, da der eingebaute Bluetooth-Chip des Host-Systems standardmäßig vom Host belegt wird und erst durch eine gezielte Freigabe für die virtuelle Maschine nutzbar gemacht werden konnte.
@@ -1370,14 +1347,7 @@ Das im Rahmen dieses Projekts entwickelte System eines selbstbalancierenden, zwe
 
 Der eigentliche Wert des Projekts liegt jedoch nicht ausschließlich im funktionalen Ergebnis, sondern auch im technischen und methodischen Erkenntnisgewinn, der im Rahmen der zahlreichen langwierigen Fehlersuchen erarbeitet wurde. Insbesondere die Erkenntnis, dass einzeln einwandfrei funktionierende Teilsysteme bei ihrer Zusammenführung neue Wechselwirkungen zeigen können, ist für zukünftige mechatronische Projekte wichtig. Die verbleibende, in Kapitel~\ref{sec:balancierverhalten} dokumentierte Einschränkung, dass sich der Roboter aus einer starken Auslenkung heraus noch nicht selbstständig aufrichtet, bietet einen klaren Ansatzpunkt für eine Weiterentwicklung des Systems über den Rahmen dieses Projekts hinaus.
 
-	% Literaturverzeichnis in das Inhaltsverzeichnis einfügen
-	\addcontentsline{toc}{chapter}{Literaturverzeichnis}
 
-	% Style für die Bibliothek festlegen
-  	\bibliographystyle{unsrturl}
-
-  	% Einfügen des Literaturverzeichnisses in das Dokument
-	\bibliography{literatur}
 
 	\newpage
 
@@ -1409,6 +1379,15 @@ Der eigentliche Wert des Projekts liegt jedoch nicht ausschließlich im funktion
 
 	\addcontentsline{toc}{chapter}{Tabellenverzeichnis}
 	\listoftables
+
+    	% Literaturverzeichnis in das Inhaltsverzeichnis einfügen
+	\addcontentsline{toc}{chapter}{Literaturverzeichnis}
+
+	% Style für die Bibliothek festlegen
+  	\bibliographystyle{unsrturl}
+
+  	% Einfügen des Literaturverzeichnisses in das Dokument
+	\bibliography{literatur}
 
 	%\addcontentsline{toc}{chapter}{Listingsverzeichnis} % für Quellcode
 	%\lstlistoflistings

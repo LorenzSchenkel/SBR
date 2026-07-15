@@ -859,38 +859,33 @@ eine größe erreicht hat, aus der sich der Roboter nicht mehr selbstständig au
 
 Bei der ersten In\-be\-trieb\-nah\-me der Mo\-tor\-an\-steue\-rung über das CNC-Shield trat das Problem auf, dass von den beiden angeschlossenen Motoren zunächst durchgehend nur einer angesteuert wurde, während der zweite entweder stillstand oder ein hörbares Fiepen ohne tatsächliche Rotation zeigte. Zur Fehlersuche wurden zunächst sämtliche Versorgungsspannungen, Steckverbindungen und die Pin-Beschaltung des A4988-Treibers mittels Multimeter durchgemessen, ohne dass hierbei eine Auffälligkeit festgestellt werden konnte.
 
-Eine anschließende Messung der STEP- und DIR-Signale direkt am Ausgang des CNC-Shields mit dem Oszilloskop sah auf den ersten Blick korrekt aus. Als wir dann aber den Low-Pegel am ESP32-Ausgang direkt mit dem Multimeter gemessen haben, stellten wir fest, dass dort statt der erwarteten 0\,V etwa 2,3\,V anlagen, also kein sauber definierter Low-Pegel. Diese Fehlfunktion wurde auf einen elektrischen Defekt des ESP32-Boards zurückgeführt. Nach dem Austausch des Boards konnten am entsprechenden Pin die erwarteten, klar definierten Pegel von 0\,V beziehungsweise 3,3\,V gemessen werden.
+Eine anschließende Messung der STEP- und DIR-Signale direkt am Ausgang des CNC-Shields mit dem Oszilloskop sah auf den ersten Blick korrekt aus. Als der Low-Pegel am ESP32-Ausgang direkt mit dem Multimeter gemessen wurde, lag statt der erwarteten 0 V eine Spannung von etwa 2,3 V an – also kein sauber definierter Low-Pegel. Diese Fehlfunktion wurde auf einen elektrischen Defekt des ESP32-Boards zurückgeführt. Nach dem Austausch des Boards konnten am entsprechenden Pin die erwarteten, klar definierten Pegel von 0 V beziehungsweise 3,3 V gemessen werden.
 
-Nach dem ESP32-Austausch drehten sich zwar beide Motoren, liefen aber nicht sauber an und ruckelten unkontrolliert vor und zurück. Da ein Motor aus einem Altprojekt, den wir zum Vergleich angeschlossen haben, sich korrekt drehte, konnten wir den Fehler auf hinter dem Treiberausgang eingrenzen und haben mit dem Durchgangsprüfer am Kabel und den Motoren die Spulenzugehörigkeit der einzelnen Anschlüsse (1A, 1B, 2A, 2B) ermittelt. Dabei zeigte sich, dass das mitgelieferte Verbindungskabel die Spulenanschlüsse gegenüber der Pinbelegung des CNC-Shields vertauscht führte. Nach dem Korrigieren der Kabelbelegung passend zur korrekten Spulenzuordnung liefen die beiden Motoren wie erwartet.
+Nach dem ESP32-Austausch drehten sich zwar beide Motoren, liefen aber nicht sauber an und ruckelten unkontrolliert vor und zurück. Da ein zuvor funktionierender Motor aus einem Altprojekt angeschlossen wurde und dieser sich korrekt drehte, konnte der Fehler auf den Bereich hinter dem Treiberausgang eingegrenzt werden. Anschließend wurde mit dem Durchgangsprüfer am Kabel und den Motoren die Spulenzugehörigkeit der einzelnen Anschlüsse (1A, 1B, 2A, 2B) ermittelt. Dabei zeigte sich, dass das mitgelieferte Verbindungskabel die Spulenanschlüsse gegenüber der Pinbelegung des CNC-Shields vertauscht führte. Nach dem Korrigieren der Kabelbelegung passend zur korrekten Spulenzuordnung liefen die beiden Motoren wie erwartet.
 
 \subsection{Kurzschluss und Treiberwechsel (Dauerer, Stiegler, Schenkel)}
 \label{subsec:motor_kurzschluss}
 
-Im weiteren Projektverlauf haben wir für den Betrieb ohne das Labornetzteil einen 6S-LiPo mit 22,2\,V Nennspannung angeschlossen. Der damals genutzte A4988 Treiber ist zwar grundsätzlich für Spannungen in diesem Bereich ausgelegt \cite{A4988}, wir hatten jedoch einen gebrauchten Treiber aus einem Altprojekt verwendet, der wahrscheinlich schon vorgeschädigt war. Der Treiber ist beim Anschließen des Akkus durchgebrannt und hat einen Kurzschluss verursacht.
+Im weiteren Projektverlauf wurde für den Betrieb ohne das Labornetzteil ein 6S-LiPo-Akku mit einer Nennspannung von 22,2,V angeschlossen. Der zu diesem Zeitpunkt eingesetzte A4988-Treiber ist zwar grundsätzlich für Spannungen in diesem Bereich ausgelegt \cite{A4988}, jedoch wurde ein gebrauchter Treiber aus einem Altprojekt verwendet, der vermutlich bereits vorgeschädigt war. Beim Anschließen des Akkus brannte der Treiber durch und verursachte einen Kurzschluss.
 
-Nach dem Vorfall haben wir systematisch gemessen, was genau beschädigt wurde. Wir haben alle Leitungen
- mit dem Durchgangsprüfer auf Kurzschlüsse geprüft, die Versorgungsspannungen nachgemessen und mit dem
-  Oszilloskop die Signale an den Treibern und Motoren kontrolliert. Ein Motor konnte sich nach dem Kurzschluss
-   nicht mehr drehten, was uns vermuten ließ, dass er zerstört wurde. Die anschließende Widerstandsmessung 
-  an den Motorwicklungen hat das bestätigt, da beide Wicklungen einen deutlich abweichenden Widerstandswert zeigten.
-   Da der Motor weder lief noch korrekte Messwerte zeigte, musste er ausgetauscht werden.
+Nach dem Vorfall wurde systematisch untersucht, welche Komponenten beschädigt worden waren. Hierzu wurden sämtliche Leitungen mithilfe eines Durchgangsprüfers auf Kurzschlüsse überprüft, die Versorgungsspannungen nachgemessen sowie die Signale an den Treibern und Motoren mit einem Oszilloskop analysiert. Dabei zeigte sich, dass sich einer der Motoren nach dem Kurzschluss nicht mehr drehen ließ, was auf eine Beschädigung hindeutete. Die anschließend durchgeführte Widerstandsmessung der Motorwicklungen bestätigte diesen Verdacht, da beide Wicklungen deutlich von den erwarteten Widerstandswerten abwichen. Aufgrund der fehlerhaften Messwerte und der ausbleibenden Funktion musste der Motor ausgetauscht werden.
 
-Da wir ohnehin einen neuen Treiber einsetzen mussten, haben wir uns entschieden, auf den TMC2209 umzusteigen, der in mehreren Punkten besser zu unseren Anforderungen passt (vgl. Kapitel~\ref{subsec:tmc2209_integration}).
+Da ohnehin ein neuer Motortreiber erforderlich war, wurde auf den TMC2209 umgestellt, da dieser die Anforderungen des Projekts in mehreren Punkten besser erfüllt (vgl. Kapitel~\ref{subsec:tmc2209_integration}).
 
 \subsection{TMC2209-Integration und Tuning (Dauerer, Stiegler, Schenkel)}
 \label{subsec:tmc2209_integration}
 
-Nach dem Wechsel auf den TMC2209 zeigte sich schnell, dass der neue Treiber dem A4988 in einem entscheidenden Punkt überlegen ist. Er arbeitet standardmäßig mit 8 Mikroschritten pro Vollschritt, ohne dass wir dafür etwas konfigurieren mussten \cite{Tmc2209_datasheet_rev109}. (vgl. Kapitel~\ref{subsec:motorwahl_treiber}). Gerade bei niedrigen Geschwindigkeiten war der Unterschied deutlich spürbar, die Motorbewegung wurde insgesamt ruhiger und gleichmäßiger.
+Nach dem Wechsel auf den TMC2209 zeigte sich schnell, dass der neue Treiber dem A4988 in einem entscheidenden Punkt überlegen ist. Er arbeitet standardmäßig mit 8 Mikroschritten pro Vollschritt \cite{Tmc2209_datasheet_rev109}. (vgl. Kapitel~\ref{subsec:motorwahl_treiber}). Gerade bei niedrigen Geschwindigkeiten war der Unterschied deutlich spürbar, die Motorbewegung wurde insgesamt ruhiger und gleichmäßiger.
 
-Den maximal zulässigen Motorstrom stellten wir über das Potentiometer der Treiber (VREF) ein. Für den TMC2209 haben wir folgende Formel verwendet.
+Den maximal zulässigen Motorstrom wurde über das Potentiometer der Treiber (VREF) eingestellt. Die Formel aus dem Datenblatt wurde verwendet.
 \begin{equation}
     V_{REF} = I_{RMS} \times 1{,}41
 \end{equation}
-Für unseren NEMA17 Motor wollten wir einen effektiven Motorstrom von $I_{RMS} = 1{,}2\,\text{A}$ einstellen. Daraus ergibt sich
+Für unseren NEMA17 Motor wurde einen effektiven Motorstrom von $I_{RMS} = 1{,}2\,\text{A}$ eingestellt. Daraus ergibt sich
 \begin{equation}
     V_{REF} = 1{,}2\,\text{A} \times 1{,}41 \approx 1{,}7\,\text{V}
 \end{equation}
-Wir stellten das Potentiometer auf ca 1{,}6\,V ein und überprüften anschließend mit einer Wärmebildkamera, ob die Treiber nach längerem Betrieb auffällig warm wurden. Die Temperatur blieb im sicheren Bereich, also behielten wir diesen Wert bei.
+Das Potentiometer wurde auf etwa 1{,}6,V eingestellt. Anschließend wurde mithilfe einer Wärmebildkamera überprüft, ob die Treiber nach längerem Betrieb eine auffällige Erwärmung aufwiesen. Da die Temperatur im sicheren Bereich blieb, wurde dieser Wert beibehalten.
 
 \begin{figure}[H]
     \centering
@@ -899,11 +894,11 @@ Wir stellten das Potentiometer auf ca 1{,}6\,V ein und überprüften anschließe
     \label{fig:waermebild_tmc}
 \end{figure}
 
-Der TMC2209 bietet zwei Betriebsmodi, StealthChop und SpreadCycle. Wir haben beide getestet und die Motorbewegung dabei beobachtet. Durch den Wechsel auf den neuen Treiber wurde die Bewegung der Motoren in beiden Modi deutlich flüssiger als mit dem A4988 zuvor.
+Der TMC2209 bietet die beiden Betriebsmodi StealthChop und SpreadCycle. Beide Modi wurden getestet und hinsichtlich des Bewegungsverhaltens der Motoren untersucht. Durch den Wechsel auf den neuen Treiber konnte in beiden Betriebsmodi eine deutlich flüssigere Motorbewegung als zuvor mit dem A4988 beobachtet werden.
 
-Der TMC2209 besitzt eine UART-Schnittstelle, über die er per Software konfiguriert werden kann. Wir haben geprüft, ob die dafür benötigten Pins auf unserem CNC-Shield belegt oder blockiert sind, das war aber nicht der Fall (vgl. Kapitel~\ref{subsec:motor_problem_cncshield}). Da wir UART im finalen Aufbau nicht benötigen, betreiben wir den Treiber im Standalone-Modus. Die nicht genutzten Pins des TMC2209 haben wir aus Sicherheitsgründen abisoliert.
+Der TMC2209 verfügt über eine UART-Schnittstelle, über die eine softwareseitige Konfiguration möglich ist. Es wurde überprüft, ob die hierfür erforderlichen Pins auf dem verwendeten CNC-Shield belegt oder blockiert sind; dies war jedoch nicht der Fall (vgl. Kapitel~\ref{subsec:motor_problem_cncshield}). Da die UART-Schnittstelle im finalen Aufbau nicht benötigt wird, wird der Treiber im Standalone-Modus betrieben. Die nicht genutzten Pins des TMC2209 wurden aus Sicherheitsgründen isoliert.
 
-Später im Projekt während der Optimierung der SW und PID-Parameter brannte außerdem ein TMC2209-Treiber der Version v1.3 durch, nachdem an dessen Motorausgang dauerhaft 24\,V anlagen (vgl. Kapitel~\ref{subsec:motor_kurzschluss}). Das war auf eine fehlerhafte Verkabelung zurückzuführen und der Treiber musste ausgetauscht werden. Ein weiteres, wiederkehrendes Problem war, dass die Adern des Ver\-bin\-dungs\-ka\-bels zwischen Treiber und Motor erneut in falscher Reihenfolge angeschlossen waren, analog zu dem in Kapitel~\ref{subsec:motor_problem_cncshield} beschriebenen Fehlerbild beim A4988.
+Im weiteren Projektverlauf, während der Optimierung der Software und der PID-Parameter, brannte außerdem ein TMC2209-Treiber der Version v1.3 durch, nachdem an dessen Motorausgang dauerhaft 24,V anlagen (vgl. Kapitel~\ref{subsec:motor_kurzschluss}). Ursache hierfür war eine fehlerhafte Verkabelung, weshalb der Treiber ausgetauscht werden musste. Ein weiteres wiederkehrendes Problem bestand darin, dass die Adern des Verbindungskabels zwischen Treiber und Motor erneut in einer falschen Reihenfolge angeschlossen waren. Dieses Fehlerbild entsprach dem bereits in Kapitel~\ref{subsec:motor_problem_cncshield} für den A4988 beschriebenen Fall.
 
 \section{Sensorintegration}
 \label{sec:sensorintegration}

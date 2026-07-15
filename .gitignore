@@ -25,6 +25,7 @@ ls-R
 *.pdf
 !/logos/*.pdf
 !/Quellen/*.pdf
+!/Stundenlisten/*.pdf
 *.zip
 *.fls
 *.fdb_latexmk
